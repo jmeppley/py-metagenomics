@@ -18,6 +18,19 @@ class LineCounter():
         self.lines+=1
         return line
 
+def checkNoneOption(value):
+    """
+    Check if a given option has been set to the string 'None' and return None if so. Otherwise return the value unchanged
+    """
+    if value is None:
+        return value
+    if value=='None':
+        return None
+    if isinstance(value,list):
+        if len(value)==1 and value[0]=='None':
+            return None
+    return value
+
 def countBasesInFasta(fastaFile):
     """
     Given a fasta file, return a dict where the number of records and the total number of bases are given by 'records' and 'bases' respectively.
@@ -35,6 +48,7 @@ def countBasesInFasta(fastaFile):
 
     return {'records':totalSeqs,'bases':totalBases}
 
+urlRE=re.compile(r'[a-z]+\:\/\/')
 def openInputFile(infile, *args):
     """
     return input stream. Allow for text, gzipped text, or standard input if None given.
@@ -44,6 +58,9 @@ def openInputFile(infile, *args):
         return sys.stdin
 
     if isinstance(infile, str):
+        if urlRE.match(infile):
+            import urllib2
+            return urllib2.urlopen(infile)
         if len(infile)>3 and infile[-3:]=='.gz':
             import gzip
             return gzip.GzipFile(infile,'rb')

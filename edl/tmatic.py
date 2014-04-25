@@ -2,7 +2,7 @@ import subprocess, logging
 logger = logging.getLogger(__name__)
 
 class TMOptions():
-    baseCommand=['java', '-classpath', '/opt/edl/scripts/jar/trimmomatic.jar']
+    baseCommand=['java', '-classpath', '/slipstream/opt/scripts/jar/trimmomatic.jar']
     #baseCommand=['java', '-classpath', '/common/lib/java/trimmomatic.jar']
     def runTmatic(self):
         command=self.buildCommand()

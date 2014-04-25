@@ -14,7 +14,7 @@ def pickBestHitByAbundance(m8stream, filterParams=None, returnLines=True, return
     Ambiguous hits (multiple 'best' hits to one read) are resolved as follows:
         given a set of reads that all hit the same list of translated hits:
             divvy up reads so that the abundance ratios change minimally
-    Abundeance is recorded for whatever the Hittranslator returns. If a hit map and taxonomy are give, this will be organisms, if only the parseStyle is given and it's set to ACC, then accessions will be the currency. The default is HITID.
+    Abundeance is recorded for whatever the Hittranslator returns. If a hit map and taxonomy are given, this will be organisms, if only the parseStyle is given and it's set to ACC, then accessions will be the currency. The default is HITID.
     Yields (read,hit) tuples, (read, [translated hits]) tuples, or hit table lines.
     """
     if returnLines and returnTranslations:
@@ -92,7 +92,7 @@ def pickBestHitByAbundance(m8stream, filterParams=None, returnLines=True, return
                 ambiguousHits.setdefault(orgs,[]).append(hitByOrg)
             else:
                 # Use given counts to resolve
-                for (hit,org) in assignHits(orgs,hitsByOrg,organismCounts,winnerTakeAll):
+                for (hit,org) in assignHits(orgs,[hitByOrg,],organismCounts,winnerTakeAll):
                     yield formatReturn(hit,org,returnLines, returnTranslations)
 
     logger.info( "Processed %d reads:" % (totalReads) )

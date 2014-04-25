@@ -54,7 +54,7 @@ def countHits(infile, **kwargs):
                                           allMethod=kwargs.pop('allMethod',ALLEQ),
                                           returnMap=False)
 
-    logging.info("Total hits: %s" % total)
+    logger.info("Total hits: %s" % total)
     if isinstance(infile,str):
         inhandle.close()
 

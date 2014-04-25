@@ -87,9 +87,9 @@ def getFileType(options, infile):
             sys.exit("We cannot infer the record separator from the filename when using standar input. Please specify the input file type with -T or a pattern to match the first line with -p")
         fileType = getTypeFromFileName(infile)
         if fileType.sepRE is not None:
-            logging.info('File looks like %s, using pattern to split files: /%s/' % (options.infileType, fileType.sepRE.pattern))
+            logging.info('File looks like %s, using pattern to split files: /%s/' % (fileType.name, fileType.sepRE.pattern))
         else:
-            logging.info('File looks like %s, using number of lines (%d) to split files' % (options.infileType, fileType.numLines))
+            logging.info('File looks like %s, using number of lines (%d) to split files' % (fileType.name, fileType.numLines))
     return fileType
 
 def getTypeFromFileName(filename):

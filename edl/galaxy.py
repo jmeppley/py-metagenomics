@@ -6,45 +6,108 @@ import urllib2, re, os, sys
 from bioblend.galaxy import GalaxyInstance
 
 # For retrieving data
-def getDatasetFile(apiKey, apiURL, historyName, datasetNumber):
+def getDatasetFile(apiKey, apiURL, historyName, datasetNumber, returnURL=False, returnDict=False):
     """
     Given the URL and KEY for a Galaxy instance's API and:
         A history name
         A history item index
-    return a file handle to that file
+    return a file handle to the first matched file (or just the URL)
 
-    Under the hood, this is an HTTP connection using urllib2. If there are multiple histories with the same name, it will only look in the first one returned by the API.
+   Uses getDatasetData() to find a given file. Only takes hitoryName and datasetNumber. Can also return just the URL (instead of an open file-like-objet)
+    """
+    for dataset in getDatasetData(apiKey, apiURL, historyName=historyName, datasetNumber=datasetNumber):
+        durl=dataset['download_url']
+        if returnURL:
+            return durl
+        else:
+            return urllib2.urlopen(durl)
+
+    else:
+        raise Exception("No match found for item %d in history '%s'" % (datasetNumber, historyName))
+
+def getDatasetData(apiKey, apiURL, historyName=None, historyId=None, datasetNumber=None, datasetName=None):
+    """
+    Given the URL and KEY for a Galaxy instance's API and:
+        A history (name or ID)
+        A history item (index integer, name, or regex to match name) 
+    return the data dicts (as an iterator/generator) for any matching datasets
+
+    Under the hood, this is an HTTP connection using urllib2. 
+
+    HistoryName can be a string or compiled re object. It will be ignored if historyId is not None. The same is true for datasetNumber and datasetName.
+    """
+
+    # Collate history IDs
+    historyIds=[]
+    if historyId is None:
+        for history in getHistories(apiKey, apiURL, historyName, 
+                returnDict=True):
+            historyIds.append(history[u'id'])
+        if len(historyIds)==0:
+            raise Exception("Cannot find history: %s" % historyName)
+    else:
+        historyIds.append(historyId)
+
+    # Loop over found histories
+    for historyId in historyIds:
+        hurl=apiURL+"/histories/"+historyId+"/contents?key="+apiKey
+        logger.debug("Searching for datasets in url: %s" % hurl)
+        count=0
+        for dataset in json.loads(urllib2.urlopen(hurl).read()):
+            logger.debug("Getting details with url: %s" % hurl)
+            hurl = apiURL+"/histories/" + historyId + "/contents/" + dataset[u'id'] + "?key=" + apiKey
+            details = json.loads(urllib2.urlopen(hurl).read())
+            if _dataset_match(details, datasetNumber, datasetName):
+                durl = details['download_url'][4:]
+                if "?" in durl:
+                    qstringsep="&"
+                else:
+                    qstringsep="?"
+                details['download_url'] = apiURL + durl + qstringsep + "key=" + apiKey
+                count+=1
+                yield details
+
+        if count==0:
+            logger.warn("No matching dataset in history: %s" % historyId)
+
+def _dataset_match(dataset, datasetNumber, datasetName):
+    """
+    helper method to check for dataset number or name in dataset details
+    """
+    if datasetNumber is not None:
+        return dataset[u'hid']==datasetNumber
+    elif isinstance(datasetName,str):
+        return dataset[u'name']==datasetName
+    else:
+        return datasetName.search(dataset[u'name'])!=None
+
+def getHistories(apiKey, apiURL, nameRE=None, returnDict=False):
+    """
+    Return an iterator over histories.
+    
+    Optionally filter list with a regular expression (nameRE). If nameRE is a string, it must match exactly.
     """
     hurl=apiURL+"/histories?key="+apiKey
     logger.debug("Searching for histories at url: %s" % hurl)
     for history in json.loads(urllib2.urlopen(hurl).read()):
-        if history[u'name']==historyName:
-            break
-    else:
-        raise Exception("Cannot find history: %s" % historyName)
+        if nameRE is not None:
+            if isinstance(nameRE, str):
+                # just do exact match
+                if nameRE != history[u'name']:
+                    continue
+            else:
+                m=nameRE.search(history[u'name'])
+                if m is None:
+                    continue
 
-    hurl=apiURL+"/histories/"+history[u'id']+"/contents?key="+apiKey
-    logger.debug("Searching for datasets in url: %s" % hurl)
-    for dataset in json.loads(urllib2.urlopen(hurl).read()):
-        logger.debug("Getting details with url: %s" % hurl)
-        hurl = apiURL+"/histories/" + history[u'id']+"/contents/" + dataset[u'id'] + "?key=" + apiKey
-        details = json.loads(urllib2.urlopen(hurl).read())
-        if details[u'hid']==datasetNumber:
-            break
-    else:
-        raise Exception("Cannot find dataset %d in history %s" % (datasetNumber, historyName))
-    if 'download_url' in details:
-        durl = details['download_url'][4:]
-        if "?" in durl:
-            qstringsep="&"
+        if u'deleted' in history and history[u'deleted']:
+            # Skip delted histories
+            continue
+
+        if returnDict:
+            yield history
         else:
-            qstringsep="?"
-        hurl = apiURL + durl + qstringsep + "key=" + apiKey
-        logger.debug("Download with URL: %s" % hurl)
-        return urllib2.urlopen(hurl)
-    else:
-        raise Exception("Dataset does not have a download url!")
-
+            yield history[u'name']
 
 # Running workflows on MiSeq data 
 #  These are pretty specific to our setup
@@ -54,7 +117,11 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
     Parses a MiSeq run in the Galaxy shared library area and returns a dictionary keyed on the sample number (as a string, eg: '1'). Each entry is a dictionary of the form: {'name': __, 'R1': __, 'R2': __}, where the last two blanks are encoded Galaxy IDs for use in the API.
     """
     files={}
-    libID=galaxyInstance.libraries.get_libraries(name=libraryNameTemplate % (runName))[0][u'id']
+    libName=libraryNameTemplate % (runName)
+    libs=galaxyInstance.libraries.get_libraries(name=libName)
+    if len(libs)==0:
+        raise Exception("No library named %s" % (libName))
+    libID=libs[0][u'id']
     for item in galaxyInstance.libraries.show_library(libID,contents=True):
         # skip folders and other things that are not files
         if item[u'type']!=u'file':
@@ -84,9 +151,22 @@ def parseSampleSheet(runName,**kwargs):
     """
     dataDir=kwargs.get('dataDir','/minilims/data/incoming/miseq')
     sampleSheet=os.path.sep.join([dataDir,runName,'SampleSheet.csv'])
-    chemistry='truseq'
+    chemistry='scriptseq'
     barcodes={}
     with open(sampleSheet) as f:
+
+        # find Assay line
+        line = ""
+        while re.match(r'Assay,',line) is None:
+            line = f.next()
+
+        # not the fastest approach, but should be clear
+        if re.search(r'[Nn]extera',line) is not None:
+            chemistry='nextera'
+        elif re.search(r'[Tt]rue?[Ss]eq',line) is not None:
+            chemistry='truseq'
+        elif re.search(r'[Ss]cript[Ss]eq',line) is not None:
+            chemistry='scriptseq'
         
         # Skip ahead to sample table
         line = ""
@@ -97,8 +177,6 @@ def parseSampleSheet(runName,**kwargs):
         headers = f.next().split(',')
         indexIndex = headers.index('index')
         if 'index2' in headers:
-            # overly simplistic logic: two barcodes => Nextera
-            chemistry = 'nextera'
             index2Index = headers.index('index2')
             
         # get the barcode for each sample
@@ -111,8 +189,7 @@ def parseSampleSheet(runName,**kwargs):
                 barcodes[i+1]=[cells[indexIndex],""]
     return (chemistry, barcodes)
 
-
-def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None, historyPrefix='MGP.b011', apiURL=u'http://localhost:8443/api', **kwargs):
+def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None, historyPrefix='MGP.b011', apiURL=u'http://edminilims.mit.edu/api', **kwargs):
     """
     Given:
         apiKey: the connection code for the Galaxy API
@@ -140,6 +217,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
         workflow = getWorkflow(galaxyInstance, workflowName)
         workflowID = workflow[u'id']
         logger.info("Found workflow: %s" % workflowID)
+    primerToolID=getPrimerToolId(galaxyInstance, workflowID)
     workflowInputs = getWorkflowInputs(galaxyInstance, workflowID)
     files = locateDatasets(runName, galaxyInstance,**kwargs)
     (chemistry,barcodes) = parseSampleSheet(runName,**kwargs)
@@ -169,14 +247,25 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
             data={'workflow_id':workflowID,
                   'history':historyName,
                   'ds_map':dsMap,
-                  'parameters':{'wf_parm':{'name':sampleName},
-                                u'CreatePrimerFile':{'chemistry':chemistry,'barcode1':barcode1,'barcode2':barcode2}}
+                  'replacement_params':{'name':sampleName},
+                  'parameters':{primerToolID:{'chemistry':chemistry,
+                                              'barcode1':barcode1,
+                                              'barcode2':barcode2}}
             }
             response['data']=data
             response['response']=submit(apiKey, apiURL+"/workflows",data)
         except Exception as e:
             response['error']=e
         yield response
+
+def getPrimerToolId(gi, workflowID):
+    for stepid, step in gi.workflows.show_workflow(workflowID)[u'steps'].iteritems():
+        if u'tool_id' not in step or step[u'tool_id'] is None:
+            continue
+        if re.search(r'CreatePrimerFile',step[u'tool_id']):
+            return step[u'tool_id']
+    else:
+        raise Exception("Could not find CreatePrimerFile tool in workflow!")
 
 def getWorkflowInputs(galaxyInstance, workflowId):
     workflowInputs = {}

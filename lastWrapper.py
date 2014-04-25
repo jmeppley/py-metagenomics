@@ -14,10 +14,14 @@ binDir='/usr/local/bin'
 lastBin='%s/lastal' % binDir
 tantanBin='%s/tantan' % binDir
 #scriptDir='/Users/jmeppley/work/delong/projects/scripts'
-scriptDir='/minilims/home/jmeppley/work/delong/projects/scripts'
+scriptDir='/slipstream/opt/scripts'
+#scriptDir='/slipstream/home/jmeppley/work/delong/projects/scripts'
 #scriptDir='/common/bin/scripts'
-tmpDirRoot='/minilims/tmp'
+tmpDirRoot='/slipstream/tmp'
 #tmpDirRoot='/tmp'
+# this may have to change based on the system. I haven't figured the cases yet
+#sorttab="$'\t'"
+sorttab="'\t'"
 
 protDefaults={'-b':'1','-x':'15','-y':'7','-z':'25'}
 nuclDefaults={}
@@ -358,7 +362,7 @@ def getConvertCommand(format, sort, maxHits):
         else:
             scoreCol=11
 
-        command += " | sort -T %s -t $'\t' -k 1,1 -k %drn,%d" % (tmpDirRoot, scoreCol,scoreCol)
+        command += " | sort -T %s -t %s -k 1,1 -k %drn,%d" % (tmpDirRoot,sorttab, scoreCol,scoreCol)
 
         if maxHits >= 0:
             command += " | %s/filter_blast_m8.py -H %s -f %s" % (scriptDir, maxHits, format)
@@ -377,7 +381,7 @@ def getSortCommand(sort,maxHits):
         maxHits="| %s/filter_blast_m8.py -f last -H %s" % (scriptDir,maxHits)
 
     if sort:
-        return "grep -v '^#' | sort -T %s -t $'\t' -k 7,7 -k 1rn,1 %s" % (tmpDirRoot,maxHits)
+        return "grep -v '^#' | sort -T %s -t %s -k 7,7 -k 1rn,1 %s" % (tmpDirRoot,sorttab,maxHits)
     else:
         return maxhits[2:]
 

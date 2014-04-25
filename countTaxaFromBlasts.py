@@ -5,7 +5,7 @@ from optparse import OptionParser
 import sys, re
 from edl.taxon import *
 from edl.hits import *
-from edl.util import addUniversalOptions, setupLogging
+from edl.util import addUniversalOptions, setupLogging, checkNoneOption
 from edl.expressions import accessionRE, nrOrgRE
 
 def main():
@@ -39,6 +39,10 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
 
     if len(args)==0:
         parser.error("Must supply at least one m8 file to parse")
+
+    # Handle the case where Galaxy tries to set None as a string
+    options.ranks=checkNoneOption(options.ranks)
+    options.printRanks=checkNoneOption(options.printRanks)
 
     # Set defaults and check for some conflicts
     if options.ranks is None and options.taxdir is None:

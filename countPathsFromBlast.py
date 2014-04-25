@@ -233,7 +233,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
                 # get pathway/family for this gene at the indicated level in the heirarch
                 if translateToPaths:
                     pathway = geneTranslator(gene)
-                elif level is None:
+                elif level is None or options.heirarchyType != 'kegg':
                     pathway = gene
                 else:
                     pathway = "%s\t%s" % (gene,geneTranslator(gene))
