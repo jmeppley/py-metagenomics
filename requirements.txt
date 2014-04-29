@@ -1,0 +1,13 @@
+py-metagenomics
+numpy>=1.8.0
+biopython>=1.60
+pandas>=0.13.0
+rpy2
+pysurvey
+simplejson
+bioblend
+numexpr
+ipython
+jinja2
+matplotlib
+scipy
