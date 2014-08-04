@@ -25,6 +25,8 @@ kegkoRE = re.compile(r'^D\s+.+\b(K\d{5})(?:<\/a>)?\s*(.*)$')
 britekoRE = re.compile(r'^[A-Z]\s+(K\d{5})\s*(.*)$')
 geneListRE=re.compile(r'(?<=\s)([a-zA-Z0-9_.-]+)\b')
 orgRE=re.compile('^([A-Z]{3,4}):')
+cogGroupRE = re.compile(r'(.+)\[(.+)\]')
+cogMapRE = re.compile(r'^\[(\S+)\]\s+(\S+)\s+(\S.+)$')
 
 #############
 # Functions #
@@ -44,6 +46,42 @@ def readSEEDTree(treeFile):
             seedTree['3'][role]=l3
             seedTree['2'][role]=l2
     return seedTree
+
+def readCogTree(mapFile):
+    """
+    return maps from CDD id to COGID, COG description, and COG category
+    """
+    cogMap = {'gene':{},'description':{},'group':{}}
+    with open(mapFile) as f:
+        for line in f:
+            cdd,cog,gene,description,count = line.rstrip().split('\t')
+            description,group=cogGroupRE.match(description).groups()
+            cogMap['gene'][cdd]=cog
+            cogMap['description'][cdd]=description
+            groups = [re.sub(' +',' ',g.strip()) for g in group.split("/")]
+            cogMap['group'][cdd]=groups
+
+    # hack to make things work with the previous methods (ie SEED)
+    cogMap['3']=cogMap['group']
+    return cogMap
+
+
+def readCogTreeFromWhog(mapFile):
+    """
+    Return a map from COG  id to category
+    """
+    cogMap = {'gene':{},'group':{}}
+    with open(mapFile) as f:
+        for line in f:
+            line.rstrip()
+            m=cogMapRE.maatch(line)
+            if m:
+                category=m.group(1)
+                cog=m.group(2)
+                description=m.group(3)
+                cogMap['gene'][cog]=description
+                cogMap['group'][cog]=category
+    return cogMap
 
 def parseSeedMap(mapFile):
     """
@@ -434,7 +472,7 @@ def addPathOptions(parser,defaults={},choices={}):
 def addPathwaysOption(parser, defaults={}):
     parser.add_option("-T", "--heirarchyType", 
             default=defaults.get("heirarchyType",'kegg'),
-            choices=['kegg','seed','cazy'],
+            choices=['kegg','seed','cazy','cog'],
             help="What kind of functional heirarchy to use. 'kegg', seed', or 'cazy'. Defaults to '%s'" % (defaults.get("heirarchyType",'kegg')))
     parser.add_option("-H", "--heirarchyFile", metavar="HEIRARCHY_FILE",
                     default=defaults.get('heirarchyFile',None),

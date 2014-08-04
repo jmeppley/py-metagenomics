@@ -1,6 +1,7 @@
 """
 A collection of methods and classes to simplify interactive parsing of hit tables
 """
+from edl.blastm8 import *
 from edl.hits import *
 import numpy as np
 import logging, pandas
@@ -85,7 +86,7 @@ def countRefSeqHits(filename, **kwargs):
 
     return countHits(filename, **kwargs)
 
-def getCountDataFrameNp(*args, **kwargs):
+def getCountDataFrame(*args, **kwargs):
     """
     For each file name (in *args), count hits (with options in **kwargs). Merge all counts into a dataframe and return.
     Pass useRefSeq=True to use countRefSeqHits defaults.

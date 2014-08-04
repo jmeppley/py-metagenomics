@@ -5,13 +5,15 @@
 #$ -S /usr/bin/python
 #$ -l greedy=24
 
-import sys, threading, logging, tempfile, subprocess, shutil
+import sys, threading, logging, tempfile, subprocess, shutil, os
 from edl.batch import fileTypeMap, getSizePerChunk, fragmentInputBySize, formatCommand, getFragmentPath
-from edl.util import addUniversalOptions, setupLogging
+from edl.util import addUniversalOptions, setupLogging, parseMapFile
+from edl.blastm8 import getHitCol
 
 binDir='/usr/local/bin'
 #binDir='/common/bin'
-lastBin='%s/lastal' % binDir
+#lastBin='%s/lastal' % binDir
+lastBin='/slipstream/home/jmeppley/tmp/phylosift/phylosift/bin/lastal'
 tantanBin='%s/tantan' % binDir
 #scriptDir='/Users/jmeppley/work/delong/projects/scripts'
 scriptDir='/slipstream/opt/scripts'
@@ -53,6 +55,11 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
     -n HITS_PER_READ            Maximim number of hits per read to keep
                                 Defaults to 10. Set to -1 to turn off.
 
+    Hit Descriptions:
+    Lastal does not return hit descriptions, just the ID string, but some formats have description columns (gene and liz). If the output format is one of these and if there is a DB.ids file (next to the DB.prj file), lastWrapper will use that file as a map from hit ids to descriptions.
+    -d ID-TO-DESC-MAP            Map hit ids to descriptions using file
+    -D                             Don't insert descriptions even if ids file present
+
     Help/Info:
     -A, --about, -h, --help     This message
 
@@ -69,6 +76,8 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
     # Get last argument as input file name
     infile=args.pop(-1)
     logging.info("Reading sequences from: " + infile)
+    dbfile=args[-1]
+    logging.info('Searching database: %s' % dbfile)
     outfile=options.outfile
     logging.info("Writing output to: %s " % outfile)
 
@@ -175,17 +184,41 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
     # start jobs
     for thread in threads:
         thread.start()
+    
+    # Do we need to look up descriptions
+    if options.format in ('gene','liz'):
+        if isinstance(options.idMap,bool):
+            # Default behaviour, check for DB.ids file
+            idMapPath=dbfile+".ids"
+            if os.path.exists(idMapPath):
+                options.idMap=idMapPath
+            else:
+                options.idMap=None
+
+        # If user supplied map file or we found one:
+        if options.idMap is not None:
+            idToDescriptionMap=parseMapFile(options.idMap, delim="\t")
+            # lookup and save column indices
+            hitColumnIndex = getHitCol(options.format)
+            hitDesColIndex = getHitCol(options.format, useDesc=True)
+    else:
+        options.idMap=None
+
 
     # wait and collect output
     exitcode=0
     output=None
     for thread in threads:
         thread.join()
+
+        # when processing first thread, we'll need to create output file
         if output is None:
             if outfile is None:
                 output=sys.stdout
             else:
                 output=open(outfile,'w')
+
+        # Check thread status
         if thread.exitcode != 0:
             if thread.shell:
                 logging.error("Command '%s' returned %s" % (thread.cmd, thread.exitcode))
@@ -195,11 +228,22 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
         else:
             logging.info("Thread %s completed!" % (str(thread)))
 
+            # Handle output
             threadstream=open(thread.outfile)
-            # just copy
-            for line in threadstream:
-                output.write(line)
+            if options.idMap is None:
+                # just copy
+                for line in threadstream:
+                    output.write(line)
+            else:
+                logging.debug("options.idMap: %s" % options.idMap)
+                # insert descriptions
+                for line in threadstream:
+                    cells=line.split('\t')
+                    hitId = cells[hitColumnIndex]
+                    cells[hitDesColIndex]=idToDescriptionMap.get(hitId,'NA')
+                    output.write('\t'.join(cells))
             threadstream.close()
+
     output.close()
 
     if options.verbose<=1:
@@ -244,6 +288,7 @@ class Options():
         self.userFlags=[]
         self.maxHits=10
         self.fastq=False
+        self.idMap=True
 
 ##############
 # Methods
@@ -301,6 +346,13 @@ def parseArgs():
             args.pop(index)
             options.sort=False
             continue
+        elif arg=='-d':
+            args.pop(index)
+            options.idMap=args.pop(index)
+            continue
+        elif arg=='-D':
+            args.pop(index)
+            options.idMap=None
         elif arg=='-n':
             args.pop(index)
             options.maxHits=int(args.pop(index))
