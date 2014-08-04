@@ -34,7 +34,7 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
                       anything not synonymous with 'gene' to 
                       get CAZy groups. Defaults to ortholog/role and 
                       levels 1, 2, and 3 for KEGG and SEED
-                      and gene and group for CAZy.""")
+                      and gene and group for CAZy and COG.""")
 
     # cutoff options
     hits.addCountOptions(parser)
@@ -94,6 +94,8 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
                 options.mapStyle='seed'
             elif tabMapRE.search(firstLine):
                 options.mapStyle='tab'
+            #elif cogMapRE.search(firstLine):
+            #    options.mapStyle='cog'
             else:
                 raise Exception("Cannot figure out map type from first line:\n%s" % (firstLine))
 
@@ -102,6 +104,8 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
             valueMap=kegg.parseLinkFile(options.mapFile)
         elif options.mapStyle=='seed':
             valueMap=kegg.parseSeedMap(options.mapFile)
+        #elif options.mapStyle=='cog':
+        #    valueMap=kegg.parseCogMap(options.mapFile)
         else:
             if options.parseStyle == hits.GIS:
                 keyType=int
@@ -186,10 +190,15 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
     if options.heirarchyType == 'seed':
         logging.info("Reading SEED subsystem assignments from %s" % (options.heirarchyFile))
         seedTree = kegg.readSEEDTree(options.heirarchyFile)
+    elif options.heirarchyType == 'cog':
+        logging.info("Reading COG subsystem assignments from %s" % (options.heirarchyFile))
+        seedTree = kegg.readCogTree(options.heirarchyFile)
 
     # create an output table for each requested level
     for level in options.levels:
+        logging.debug("Processing level %s" % (level))
         translateToPaths = level not in koSyns
+        addDescColumn = False
         if translateToPaths:
             if options.heirarchyType == 'cazy':
                 geneTranslator = getCazyGroup
@@ -201,16 +210,26 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
                     logging.info("Reading KEGG level %s assignments from %s" % (level,options.heirarchyFile))
                     geneTranslation = kegg.readKEGGFile(options.heirarchyFile, lookupLevel)
                 else:
+                    # SEED or COG/KOG
                     geneTranslation = seedTree[lookupLevel]
                 geneTranslator = lambda gene: geneTranslation.get(gene,gene)
 
         elif level is not None and options.heirarchyType == 'kegg':
-            # return descriptions
+            # return descriptions if level explicitly set to ko (or syn.)
+            addDescColumn = True
             logging.info("Reading KO descriptions from %s" % options.heirarchyFile)
             geneTranslation = kegg.readKEGGFile(options.heirarchyFile, "DESCRIPTION")
-            geneTranslator = lambda gene: geneTranslation.get(gene,gene)
-
+            geneTranslator = lambda gene: "%s\t%s" % (gene,
+                                             geneTranslation.get(gene,gene))
+        elif level is not None and options.heirarchyType == 'cog':
+            # return descriptions if level explicitly set to ko (or syn.)
+            addDescColumn = True
+            geneTranslator = lambda gene: "%s\t%s\t%s" % (
+                                     seedTree['gene'].get(gene, gene),
+                                     seedTree['description'].get(gene,"None"),
+                                     seedTree['group'].get(gene,"None"))
         else:
+            # just return gene if no level set or not KEGG/COG/KOG
             geneTranslator = lambda gene: gene
         
 
@@ -230,13 +249,8 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
                 geneCount = counts[gene]
                 fileTotal+=geneCount
 
-                # get pathway/family for this gene at the indicated level in the heirarch
-                if translateToPaths:
-                    pathway = geneTranslator(gene)
-                elif level is None or options.heirarchyType != 'kegg':
-                    pathway = gene
-                else:
-                    pathway = "%s\t%s" % (gene,geneTranslator(gene))
+                # translate gene to pathway (or not depending on above code)
+                pathway = geneTranslator(gene)
 
                 # update counts
                 # Some KOs will map to multiple pathways,
@@ -298,11 +312,13 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
         # write to file(s?)
         # header
         if level in koSyns:
-            if level is None or options.heirarchyType != 'kegg':
-                outs.write("Gene\t%s\n" % ('\t'.join(fileNames)))
-            else:
+            # Header for when level is the gene
+            if addDescColumn:
                 outs.write("Gene\tDescription\t%s\n" % ('\t'.join(fileNames)))
+            else:
+                outs.write("Gene\t%s\n" % ('\t'.join(fileNames)))
         else:
+            # Header for when level is a pathway or group
             outs.write("Pathway\t%s\n" % ('\t'.join(fileNames)))
 
         for pathway in sorted(levelPaths.keys()):
@@ -331,6 +347,7 @@ koSyns = [None, 'ko', 'gene', 'ortholog', 'family', 'role']
 level3Syns = ['subsystem','pathway','group']
 koMapRE = re.compile(r'\sko:K\d{5}')
 seedMapRE = re.compile(r'^Mapped roles:')
+cogMapRE = re.compile(r'^\d+\t[KC]OG\d+\t')
 tabMapRE = re.compile(r'^[^\t]+\t[^\t+]')
 cazyRE = re.compile(r'([a-zA-Z]+)\d+')
 

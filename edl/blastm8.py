@@ -421,6 +421,7 @@ def getReadCol(format):
         return 6
     else:
         return 0
+
 def getHitCol(format, useDesc=False):
     logger.info("Getting hit col for format: %s" % format)
     if format == GENE:

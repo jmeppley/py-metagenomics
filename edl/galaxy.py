@@ -6,6 +6,32 @@ import urllib2, re, os, sys
 from bioblend.galaxy import GalaxyInstance
 
 # For retrieving data
+def findDatasets(apiKey, patterns, dsName=None, dsNum=None, apiURL='http://localhost/api'):
+    histories=set()
+    for pattern in patterns:
+        # loop over matching histories
+        logger.debug("Looking for histories that match '%s'" % pattern)
+        for history in getHistories(apiKey,
+                                    apiURL,
+                                    re.compile(pattern),
+                                    returnDict=True):
+            
+            historyId=history[u'id']
+            if history[u'id'] in histories:
+                logger.warn("Skipping history '%s(%s)', it was processed in a previous regex" % (history[u'name'],history[u'id']))
+                continue
+            histories.add(history[u'id'])
+
+            logger.debug("Looking at history %s" % history)
+
+            # loop over matching datasets
+            for dataset in getDatasetData(apiKey,
+                                          apiURL,
+                                          historyId=historyId,
+                                          datasetNumber=dsNum,
+                                          datasetName=dsName):
+                yield (history, dataset)
+
 def getDatasetFile(apiKey, apiURL, historyName, datasetNumber, returnURL=False, returnDict=False):
     """
     Given the URL and KEY for a Galaxy instance's API and:
@@ -162,10 +188,13 @@ def parseSampleSheet(runName,**kwargs):
 
         # not the fastest approach, but should be clear
         if re.search(r'[Nn]extera',line) is not None:
+            print (line)
             chemistry='nextera'
         elif re.search(r'[Tt]rue?[Ss]eq',line) is not None:
+            print (line)
             chemistry='truseq'
-        elif re.search(r'[Ss]cript[Ss]eq',line) is not None:
+        elif re.search(r'[Ss]cript?[Ss]eq',line) is not None:
+            print (line)
             chemistry='scriptseq'
         
         # Skip ahead to sample table
@@ -189,7 +218,7 @@ def parseSampleSheet(runName,**kwargs):
                 barcodes[i+1]=[cells[indexIndex],""]
     return (chemistry, barcodes)
 
-def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None, historyPrefix='MGP.b011', apiURL=u'http://edminilims.mit.edu/api', **kwargs):
+def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None, historyPrefix='MGP.b011', apiURL=u'http://edminilims.mit.edu/api', chemistry=None, **kwargs):
     """
     Given:
         apiKey: the connection code for the Galaxy API
@@ -220,7 +249,11 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
     primerToolID=getPrimerToolId(galaxyInstance, workflowID)
     workflowInputs = getWorkflowInputs(galaxyInstance, workflowID)
     files = locateDatasets(runName, galaxyInstance,**kwargs)
-    (chemistry,barcodes) = parseSampleSheet(runName,**kwargs)
+    (ssChemistry,barcodes) = parseSampleSheet(runName,**kwargs)
+    if chemistry is None:
+        chemistry=ssChemistry
+    else:
+        logger.info("Using user specified chemistry: %s" % chemistry)
     responses=[]
     for (sample, sampleData) in files.iteritems():
         response={'sample':sample}
@@ -236,6 +269,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
             # check if history exists
             historyName = historyTemplate % (historyPrefix, runName, sampleName)
             for history in galaxyInstance.histories.get_histories(name=historyName):
+                logger.warn("History already exists: %s" % historyName)
                 raise Exception("History already exists: %s" % historyName)
             
             dsMap={}

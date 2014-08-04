@@ -326,9 +326,17 @@ def _multipleFileGenerator(m8files, filterParams, readFileDict, returnLines=True
     Note to self: this causes us to parse Hits twice if the resulting lines are parsed. It may speed things up to be able to return the Hit objects
     """
     for m8file in m8files:
+        # allow for list of (file,tag) tuples
+        if isinstance(m8file,tuple):
+            m8file,fileTag=m8file
+        else:
+            fileTag=m8file
+
+        # get file stream
         m8stream = blastm8.M8Stream(m8file)
         for hit in blastm8.getHitStream(m8stream, filterParams):
-            readFileDict[hit.read]=m8file
+            # build map from reads to files/tags
+            readFileDict[hit.read]=fileTag
             if returnLines:
                 yield hit.line
             else:

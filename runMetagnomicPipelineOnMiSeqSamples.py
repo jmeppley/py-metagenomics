@@ -20,12 +20,15 @@ run the samples through the Metagenomic pipeline in Galaxy
     parser.add_option('-P', '--pipelineName', default="MG Pipeline ",
                       help="Name of pipeline (wihout version string)")
     parser.add_option('-u', '--api_url', 
-                      default="http://edminilims.mit.edu/api",
+                      default="http://localhost/api",
                       help="URL of Galaxy API")
     parser.add_option('-k', '--api_key', default=None,
                       help="Galaxy API key for connecting. REQUIRED!")
     parser.add_option('-s', '--sample_regex', default=None,
                       help="Expression for matching sample names. If empty, all samples in given runs are processed")
+    parser.add_option('-c', '--chemistry', dest='chem', default=None,
+                      help="Override chemistry from SampleSheet with this value. One of 'truseq','scriptseq',or 'nextera'",
+                      choices=['truseq','scriptseq','nextera'])
 
     addUniversalOptions(parser)
 
@@ -43,6 +46,9 @@ run the samples through the Metagenomic pipeline in Galaxy
 
     logging.debug("SampleRE:\t%r\nworkflow:\t%s\nhistPref:\t%s" % (sampleRE, wfName, hpref))
 
+    if options.api_key is None:
+        parser.error("You must speicfy an API key with the -k flag!")
+
     total=0
     for runName in args:
         wfcount=0
@@ -50,9 +56,11 @@ run the samples through the Metagenomic pipeline in Galaxy
                                                     workflowName=wfName, 
                                                     sampleRE=sampleRE,
                                                     apiURL=options.api_url,
-                                                    historyPrefix=hpref):
-            wfcount+=1
+                                                    historyPrefix=hpref,
+                                                    chemistry=options.chem):
             logging.debug(repr(r))
+            if 'error' not in r:
+                wfcount+=1
 
         logging.info("Launched workflow on %d samples in %s" % (wfcount,runName))
         total+=wfcount
