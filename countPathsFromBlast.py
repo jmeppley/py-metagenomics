@@ -198,7 +198,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
     for level in options.levels:
         logging.debug("Processing level %s" % (level))
         translateToPaths = level not in koSyns
-        addDescColumn = False
+        descString = None
         if translateToPaths:
             if options.heirarchyType == 'cazy':
                 geneTranslator = getCazyGroup
@@ -216,14 +216,14 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
 
         elif level is not None and options.heirarchyType == 'kegg':
             # return descriptions if level explicitly set to ko (or syn.)
-            addDescColumn = True
+            descString = "Description"
             logging.info("Reading KO descriptions from %s" % options.heirarchyFile)
             geneTranslation = kegg.readKEGGFile(options.heirarchyFile, "DESCRIPTION")
             geneTranslator = lambda gene: "%s\t%s" % (gene,
                                              geneTranslation.get(gene,gene))
         elif level is not None and options.heirarchyType == 'cog':
             # return descriptions if level explicitly set to ko (or syn.)
-            addDescColumn = True
+            descString = "Description\tCategories"
             geneTranslator = lambda gene: "%s\t%s\t%s" % (
                                      seedTree['gene'].get(gene, gene),
                                      seedTree['description'].get(gene,"None"),
@@ -313,8 +313,9 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
         # header
         if level in koSyns:
             # Header for when level is the gene
-            if addDescColumn:
-                outs.write("Gene\tDescription\t%s\n" % ('\t'.join(fileNames)))
+            if descString is not None:
+                outs.write("Gene\t%s\t%s\n" % (descString,
+                                               '\t'.join(fileNames)))
             else:
                 outs.write("Gene\t%s\n" % ('\t'.join(fileNames)))
         else:
