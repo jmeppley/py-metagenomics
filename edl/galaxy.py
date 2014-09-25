@@ -4,9 +4,13 @@ logger=logging.getLogger(__name__)
 import simplejson as json
 import urllib2, re, os, sys
 from bioblend.galaxy import GalaxyInstance
+from httplib import IncompleteRead
 
 # For retrieving data
 def findDatasets(apiKey, patterns, dsName=None, dsNum=None, apiURL='http://localhost/api'):
+    """
+    Return an iterator over (history,dataset) tuples where the history name matches one of the given patterns and the dataset is identified by name or number.
+    """
     histories=set()
     for pattern in patterns:
         # loop over matching histories
@@ -32,7 +36,7 @@ def findDatasets(apiKey, patterns, dsName=None, dsNum=None, apiURL='http://local
                                           datasetName=dsName):
                 yield (history, dataset)
 
-def getDatasetFile(apiKey, apiURL, historyName, datasetNumber, returnURL=False, returnDict=False):
+def getDatasetFile(apiKey, apiURL, historyName, datasetNumber, returnURL=False):
     """
     Given the URL and KEY for a Galaxy instance's API and:
         A history name
@@ -140,7 +144,12 @@ def getHistories(apiKey, apiURL, nameRE=None, returnDict=False):
 
 def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s", sampleRE=None):
     """
-    Parses a MiSeq run in the Galaxy shared library area and returns a dictionary keyed on the sample number (as a string, eg: '1'). Each entry is a dictionary of the form: {'name': __, 'R1': __, 'R2': __}, where the last two blanks are encoded Galaxy IDs for use in the API.
+    Parses a MiSeq or NextSeq run in the Galaxy shared library area and returns a dictionary keyed on the sample number (as a string, eg: '1'). Each entry is a dictionary of the form: 
+    {'name': __, 'lanes':{
+        '001':{'R1': __, 'R2': __},
+        ...}
+    }
+    where the last two blanks are encoded Galaxy IDs for use in the API. MiSeq runs will only have the 001 lane, NextSeq runs should have up to 004.
     """
     files={}
     libName=libraryNameTemplate % (runName)
@@ -154,17 +163,21 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
             continue
         
         # Parse name into components
-        m = re.search(r'([^\/]+)_S(\d+)_L\d+_(R[12])_.+\.fastq', item[u'name'])
+        m = re.search(r'([^\/]+)_S(\d+)_L(\d+)_(R[12])_.+\.fastq', 
+                      item[u'name'])
         if m:
-            (name, number, direction) = m.groups()
+            (name, number, lane, direction) = m.groups()
             if sampleRE is not None:
                 if sampleRE.search(name) is None:
                     continue
             fileId=item[u'id']
             if number in files:
-                files[number][direction]=fileId
+                if lane in files[number]['lanes']:
+                    files[number]['lanes'][lane][direction]=fileId
+                else:
+                    files[number]['lanes'][lane]={direction:fileId}
             else:
-                files[number]={'name':name,direction:fileId}
+                files[number]={'name':name,'lanes':{lane:{direction:fileId}}}
     return files
 
 def parseSampleSheet(runName,**kwargs):
@@ -257,7 +270,8 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
     responses=[]
     for (sample, sampleData) in files.iteritems():
         response={'sample':sample}
-        try:
+        #try:
+        if True:
             sample = int(sample)
             if sample not in barcodes:
                 #barcode = "NNNNNN"
@@ -273,11 +287,30 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
                 raise Exception("History already exists: %s" % historyName)
             
             dsMap={}
-            for (direction, inputid) in workflowInputs.iteritems():
-                if direction not in sampleData:
-                    raise Exception("Missing direction in input: %s" % (direction))
-                dsMap[inputid] = {'src':'ld','id':sampleData[direction]}
-    
+            lanes=sampleData['lanes']
+            if len(lanes)==1:
+                # MiSeq data has only one lane, so we can just launch
+                #  the workflow directly
+                laneData = lanes['001']
+                for (direction, inputid) in workflowInputs.iteritems():
+                    if direction not in laneData:
+                        raise Exception("Missing direction in input: %s" % (direction))
+                    dsMap[inputid] = {'src':'ld','id':laneData[direction]}
+            else:
+                # NextSeq data has 4 lanes that need to be merged first
+                historyId,datasets = launchNextSeqLaneMerge(lanes,
+                                                         historyName,
+                                                         galaxyInstance,
+                                                         sampleName=sampleName)
+
+                # create dataset map
+                for (direction, inputid) in workflowInputs.iteritems():
+                    dsMap[inputid] = {'src':'hda','id':datasets[direction]}
+
+                # This is how we tell galaxy to use an existing hitory
+                historyName="hist_id=%s" % (historyId)
+                logger.debug("Using same history: %s" % (historyName))
+
             data={'workflow_id':workflowID,
                   'history':historyName,
                   'ds_map':dsMap,
@@ -287,13 +320,75 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
                                               'barcode2':barcode2}}
             }
             response['data']=data
+            logger.debug(data)
             response['response']=submit(apiKey, apiURL+"/workflows",data)
-        except Exception as e:
-            response['error']=e
+        #except Exception as e:
+        #    response['error']=e
         yield response
 
-def getPrimerToolId(gi, workflowID):
-    for stepid, step in gi.workflows.show_workflow(workflowID)[u'steps'].iteritems():
+def launchNextSeqLaneMerge(laneDatasets, historyName,
+                           galaxyInstance, 
+                           mergeWorkflowName="NextSeq Lane Merge",
+                           mergeWorkflowID=None,
+                           sampleName="Merge"):
+    """
+    Runs the "NextSeq Lane Merge" workflow on the 4 lanes of data.
+    Returns the id of the created history and Ca datasetMap to the 
+    merged read files
+    """
+
+    # Locate workflow
+    if mergeWorkflowID is None:
+        logger.debug("Looking up workflow: %s" % mergeWorkflowName)
+        workflow = getWorkflow(galaxyInstance, mergeWorkflowName)
+        mergeWorkflowID = workflow[u'id']
+        logger.info("Found workflow: %s" % mergeWorkflowID)
+
+    # make datasetMap for merge workflow
+    dsMap={}
+    workflowInputs = getNextSeqMergeInputs(galaxyInstance, mergeWorkflowID)
+    for (direction, laneInputs) in workflowInputs.iteritems():
+        for lane, inputid in laneInputs.iteritems():
+            dsMap[inputid] = {'src':'ld','id':laneDatasets[lane][direction]}
+
+    # run merge workflow
+    data={'workflow_id':mergeWorkflowID,
+          'history':historyName,
+          'ds_map':dsMap,
+          'replacement_params':{'name':sampleName}
+    }
+    logger.debug("Launching merge workflow")
+    response=submit(galaxyInstance.key, 
+                    galaxyInstance.base_url+"/workflows",
+                    data,
+                    return_formatted=False)
+    logger.debug(response)
+    historyID = response[u'history']
+
+    # find merge outputs 
+    mergedDatasets={}
+    mergedRE = re.compile(r'(R[12])\s+merged')
+    for dataset in galaxyInstance.histories.show_history(historyID, 
+                                                         contents=True):
+        m = mergedRE.search(dataset[u'name'])
+        if m:
+            mergedDatasets[m.group(1)]=dataset[u'id']
+
+    logger.debug("Merging in process: %s, %r" % (historyID, mergedDatasets))
+    return (historyID,mergedDatasets)
+
+inputRE = re.compile(r'Lane\s+(\d{3})\s+(R\d)')
+def getNextSeqMergeInputs(galaxyInstance, workflowId):
+    inputs={'R1':{},'R2':{}}
+    wfInputs = galaxyInstance.workflows.show_workflow(workflowId)['inputs']
+    for inputId, inputInfo in wfInputs.iteritems():
+        label=inputInfo[u'label']
+        lane,direction = inputRE.search(label).groups()
+        inputs[direction][lane]=inputId
+    return inputs
+
+def getPrimerToolId(galaxyInstance, workflowID):
+    for stepid, step in galaxyInstance.workflows.show_workflow(workflowID)[u'steps'].iteritems():
         if u'tool_id' not in step or step[u'tool_id'] is None:
             continue
         if re.search(r'CreatePrimerFile',step[u'tool_id']):
@@ -315,7 +410,7 @@ def getWorkflow(galaxyInstance, name):
         if workflow[u'name']==name:
             break
     else:
-        raise Excepton("Cannot find workflow: %s" % (name))
+        raise Exception("Cannot find workflow: %s" % (name))
     return workflow 
 
 ####
@@ -341,6 +436,7 @@ def submit( api_key, url, data, return_formatted=True ):
     # Sends an API POST request and acts as a generic formatter for the JSON response.
     # 'data' will become the JSON payload read by Galaxy.
     try:
+        logging.debug("SUBMIT: %s\n%r" % (url,data))
         r = post( api_key, url, data )
     except urllib2.HTTPError, e:
         if return_formatted:
@@ -370,5 +466,137 @@ def submit( api_key, url, data, return_formatted=True ):
                 print i
     else:
         print r
+
+######
+# Methods for manipulating libraries
+######
+def findLibrariesWithName(name, galaxyInstance, libs_cache=None, createMissing=True):
+    """
+    Look for a library with the given name (on the server or in the given cached list).
+    Return list of libraries with matching names.
+    If nothing found, create the library (turn off with createMissing=False)
+    """
+    # list for returned data
+    libraries=[]
+
+    # Library list from cache or from server API
+    if libs_cache is None:
+        libs=galaxyInstance.libraries.get_libraries()
+    else:
+        libs=libs_cache
+
+    # brute force search for matching name(s)
+    for lib in libs:
+        if lib[u'name']==name:
+            lib[u'contents']=galaxyInstance.libraries.show_library(lib[u'id'],contents=True)
+            libraries.append(lib)
+
+    # return new library if not found
+    if len(libraries)==0 and createMissing:
+        # Create new library
+        lib=galaxyInstance.libraries.create_library(name)
+        # Add class and contents to object to match what you get from get_libraries()
+        lib[u'model_class']=u'Library'
+        lib[u'contents']=galaxyInstance.libraries.show_library(lib[u'id'],contents=True)
+        # Add to return list
+        libraries.append(lib)
+
+        if libs_cache is not None:
+            # Add to cached list, if given
+            libs.append(lib)
+
+    return libraries
+
+def createOrFindFolderInLibrary(folder, library, galaxyInstance):
+    """
+    Given a folder name, look for it in the given library. 
+    First check the 'contents' entry, if missing, create folder in gi and add to contents
+    Returns tuple with folder dict and boolean for whether or not it had to be created.
+    The folder dict has 'library' entry added that points back to the enclosing library.
+    """
+    path=u'/'+folder
+
+    # loop over items
+    for item in library[u'contents']:
+        if u'type' in item and item[u'type']==u'folder':
+            if item[u'name']==path:
+                item[u'library']=library
+                return (item,False)
+            if item[u'name']==u'/':
+                # save root folder in case we need to create the folder
+                rootFolder=item
+    else:
+        # Folder not found, create it
+        try:
+            libid=library[u'id']
+            data=galaxyInstance.libraries.create_folder(libid, folder, base_folder_id=rootFolder[u'id'])
+        except IncompleteRead as inst:
+            # This error usually happens after the folder is
+            # created. Let's see if it exists...
+            for item in galaxyInstance.libraries.show_library(library[u'id'], contents=True):
+                if u'type' in item and item[u'type']==u'folder' and item[u'name']==path:
+                    # found it!
+                    library[u'contents'].append(item)
+                    item[u'library']=library
+                    return (item,True)
+            else:
+                # nope, it was an error
+                raise inst
+        item=data[0]
+        item[u'name']=path
+        library[u'contents'].append(item)
+        item[u'library']=library
+        return (item,True)
+
+def uploadFileToFolder(galaxyInstance, folder, fileName, metadata=None, file_type='fastq'):
+    """
+    Check to see if this file has already been uploaded.
+    Upload if it's new.
+    Return data dictionary and boolean indicating whether it is new
+    """
+    library=folder[u'library']
+    libID=library[u'id']
+    runFolderID=folder[u'id']
+
+    # search library contents for file path
+    fullPath="%s/%s" % (folder[u'name'],os.path.split(fileName)[1])
+    fileData=getFileDataFromLibrary(fullPath,library[u'contents'])
+    if fileData is not None:
+        logging.debug("Skipping file %s" % (fileName))
+        return (fileData, False)
+
+    # upload file
+    logging.debug("Uploading file %s" % (fileName))
+    try:
+        if metadata is not None:
+            upload=galaxyInstance.libraries.upload_file_from_local_path(libID,    fileName, folder_id=runFolderID, file_type=file_type, extended_metadata=metadata)
+        else:
+            # no metadata
+            upload=galaxyInstance.libraries.upload_file_from_local_path(libID,    fileName, folder_id=runFolderID, file_type=file_type)
+        fileData=upload[0]
+    except IncompleteRead as inst:
+        # This error usually happens after the dataset is
+        # created. Let's see if it exists:
+        fileData=getFileDataFromLibrary(fullPath,galaxyInstance.libraries.        show_library(library[u'id']))
+        if fileData is None:
+            # Nope.
+            raise inst
+        else:
+            logging.debug("Ignored IncompleteRead in upload of %s" %
+                          basecall)
+    library[u'contents'].append(fileData)
+    return (fileData,True)
+
+def getFileDataFromLibrary(fullPath, libraryContents):
+    """
+    Look for file (and file without gz suffix) in library
+    """
+    paths=[fullPath]
+    if fullPath[-3:]=='.gz':
+        paths.append(fullPath[:-3])
+    for item in libraryContents:
+        if u'type' in item and item[u'type']==u'file' and item[u'name'] in paths:
+            return item
+    return None
 
 

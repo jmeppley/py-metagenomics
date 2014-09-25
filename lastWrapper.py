@@ -1,9 +1,6 @@
 #!/usr/bin/python
 #$ -cwd
-#$ -V
-#$ -p -10
 #$ -S /usr/bin/python
-#$ -l greedy=24
 
 import sys, threading, logging, tempfile, subprocess, shutil, os
 from edl.batch import fileTypeMap, getSizePerChunk, fragmentInputBySize, formatCommand, getFragmentPath
@@ -12,14 +9,14 @@ from edl.blastm8 import getHitCol
 
 binDir='/usr/local/bin'
 #binDir='/common/bin'
-#lastBin='%s/lastal' % binDir
-lastBin='/slipstream/home/jmeppley/tmp/phylosift/phylosift/bin/lastal'
+lastBin='%s/lastal' % binDir
+#lastBin='/slipstream/home/jmeppley/tmp/phylosift/phylosift/bin/lastal'
 tantanBin='%s/tantan' % binDir
 #scriptDir='/Users/jmeppley/work/delong/projects/scripts'
 scriptDir='/slipstream/opt/scripts'
 #scriptDir='/slipstream/home/jmeppley/work/delong/projects/scripts'
 #scriptDir='/common/bin/scripts'
-tmpDirRoot='/slipstream/tmp'
+tmpDirRoot='/localtmp'
 #tmpDirRoot='/tmp'
 # this may have to change based on the system. I haven't figured the cases yet
 #sorttab="$'\t'"

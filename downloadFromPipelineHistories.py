@@ -12,7 +12,7 @@ from optparse import OptionParser
 def main():
     usage = "usage: %prog [OPTIONS] EXPR [EXPR ...]"
     description="""
-Given a list of regular expressions pulls the Nth (default is 24th) dataset from each matching history.
+Given a list of regular expressions pulls the Nth (default is 24th) dataset from each matching history. If this is run on a machine that can access the galaxy files directory, it will create symlinks to the originals unles the "-c" option is given.
 """
     parser = OptionParser(usage, description=description)
     parser.add_option('-u', '--api_url', 
@@ -30,6 +30,8 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
                      help="If set, give this name to output files, otherwise pull name from galaxy")
     parser.add_option("-C", "--chunk_size", default=1024, type='int', 
             help="Chunk size for file downloads. Bigger should speed up the download of large files, but slow down lots of small files. Defaults to 1024")
+    parser.add_option("-c", "--force_copy", default=False, action='store_true',
+            help="Copy data files even if symlinks are possible")
 
     addUniversalOptions(parser)
 
@@ -48,6 +50,9 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
         dsNum=None
         dsName=re.compile(options.dataset_regex)
 
+    # Are we on the same machine as galaxy?
+    filesAreLocal = re.search(r'://localhost',options.api_url) is not None
+
     for (history,dataset) in edl.galaxy.findDatasets(options.api_key, args,
                                                      dsName=dsName,
                                                      dsNum=dsNum,
@@ -56,19 +61,26 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
         # create dir for history if it doesn't already exist
         hdir = _get_output_dir(options, history)
 
-        # Copy to local file from download URL
-        url = dataset['download_url']
+        # generate name for downloaded/linked file
         out_file_name = _get_output_file(options,
                 hdir, dataset)
-        response = requests.get(url, stream=True)
-        logging.debug("Copying data from:\n%s" % (url))
-        logging.info("Copyting to: %s" % (out_file_name))
-        #with open(out_file_name, 'wb') as out_file:
-        #    shutil.copyfileobj(response.raw, out_file)
-        with open(out_file_name, 'wb') as out_file:
-            for chunk in response.iter_content(options.chunk_size):
-                out_file.write(chunk)
-        del response
+
+        # Create symlink if we can find the file locally
+        if filesAreLocal and 'file_name' in dataset:
+            originalFile=dataset['file_name']
+            os.symlink(originalFile, out_file_name)
+        else:
+            # Copy to local file from download URL
+            url = dataset['download_url']
+            response = requests.get(url, stream=True)
+            logging.debug("Copying data from:\n%s" % (url))
+            logging.info("Copyting to: %s" % (out_file_name))
+            #with open(out_file_name, 'wb') as out_file:
+            #    shutil.copyfileobj(response.raw, out_file)
+            with open(out_file_name, 'wb') as out_file:
+                for chunk in response.iter_content(options.chunk_size):
+                    out_file.write(chunk)
+            del response
                                    
 def _get_output_dir(options, history):
     """

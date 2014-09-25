@@ -456,7 +456,7 @@ def addScreenOptions(parser, defaults={}, accs=False):
                       action="store_true", dest="keep", default=False,
                       help="Keep listed reads instead of removing")
     parser.add_option("-D", "--listDelim", dest="listDelim", default=None,
-                      help="list delimiter. If listColumn set, default is '\t', otherwise, the whole line (stripped) is used. '\w' will split on any whitespace.", metavar="DELIM")
+                      help="list delimiter. If listColumn set, default is any whitespace, otherwise, the whole line (stripped of whietspace at the ends) is used. '\\t' will split on tab characters.", metavar="DELIM")
     parser.add_option("-C", "--listColumn", dest="listColumn", default=None, type='int',
                       help="Column in listFile to get names from. Defaults to 0 if a delimiter is set.")
     parser.add_option("-G", "--galaxy", default=False, action="store_true", help="Column indices should start with 1")

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """
 Take in a csv of taxids and counts and generate a sunburst plot.
 """
