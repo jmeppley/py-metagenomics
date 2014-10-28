@@ -515,14 +515,16 @@ def filterM8Stream(instream, options, returnLines=True):
     """
     return an iterator over the lines in given input stream that pass filter
     """
+    logger.debug("Processing stream: %s" % instream)
 
     currentRead=None
     hits=[]
     needsFilter=doWeNeedToFilter(options)
+    logger.debug("Filtering" if needsFilter else "Not filtering")
     for hit in getHitStream(instream, options):
         if hit.read != currentRead:
             if currentRead is not None:
-                logging.debug("processing %d hits for %s" % (len(hits), currentRead))
+                logger.debug("processing %d hits for %s" % (len(hits), currentRead))
                 if options.sort is not None:
                     sortHits(hits,options.sort)
                 if needsFilter:
@@ -578,6 +580,8 @@ def doWeNeedToFilter(options):
     if options.hitsPerRead>0:
         return True
     if options.hspsPerHit>0:
+        return True
+    if options.nonoverlapping:
         return True
     return False
 

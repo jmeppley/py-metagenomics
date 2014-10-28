@@ -59,7 +59,9 @@ run the samples through the Metagenomic pipeline in Galaxy
                                                     historyPrefix=hpref,
                                                     chemistry=options.chem):
             logging.debug(repr(r))
-            if 'error' not in r:
+            if 'error' in r:
+                logging.warn(r['error'])
+            else:
                 wfcount+=1
 
         logging.info("Launched workflow on %d samples in %s" % (wfcount,runName))

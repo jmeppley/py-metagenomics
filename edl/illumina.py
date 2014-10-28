@@ -161,6 +161,7 @@ def runPandaseq(forward, reverse, output, unpairedList=None, catchUnpaired=True,
         #unpaired=scanPandaseqLog(stderr,singles=True,errFile=errFile)
         # this works,but apparently may deadlock
         (unpaired,counts)=scanPandaseqLog(p.stderr,errFile=errFile)
+
         logger.info("PAndaseq left %d read pairs unassembled" % (len(unpaired)))
         exitcode=p.wait()
         if exitcode != 0:

@@ -86,8 +86,14 @@ def getDatasetData(apiKey, apiURL, historyName=None, historyId=None, datasetNumb
         for dataset in json.loads(urllib2.urlopen(hurl).read()):
             logger.debug("Getting details with url: %s" % hurl)
             hurl = apiURL+"/histories/" + historyId + "/contents/" + dataset[u'id'] + "?key=" + apiKey
+
             details = json.loads(urllib2.urlopen(hurl).read())
+            if details['deleted']:
+                continue
             if _dataset_match(details, datasetNumber, datasetName):
+                if 'download_url' not in details:
+                    logger.warn("Can't find the download URL in %r\nHistory: %r" % (details,historyId))
+                    continue
                 durl = details['download_url'][4:]
                 if "?" in durl:
                     qstringsep="&"
@@ -270,8 +276,8 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
     responses=[]
     for (sample, sampleData) in files.iteritems():
         response={'sample':sample}
-        #try:
-        if True:
+        try:
+        #if True:
             sample = int(sample)
             if sample not in barcodes:
                 #barcode = "NNNNNN"
@@ -283,7 +289,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
             # check if history exists
             historyName = historyTemplate % (historyPrefix, runName, sampleName)
             for history in galaxyInstance.histories.get_histories(name=historyName):
-                logger.warn("History already exists: %s" % historyName)
+                #logger.warn("History already exists: %s" % historyName)
                 raise Exception("History already exists: %s" % historyName)
             
             dsMap={}
@@ -322,8 +328,8 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
             response['data']=data
             logger.debug(data)
             response['response']=submit(apiKey, apiURL+"/workflows",data)
-        #except Exception as e:
-        #    response['error']=e
+        except Exception as e:
+            response['error']=e
         yield response
 
 def launchNextSeqLaneMerge(laneDatasets, historyName,
