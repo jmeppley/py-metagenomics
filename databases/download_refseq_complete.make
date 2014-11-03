@@ -4,8 +4,8 @@ FTP_ROOT=ftp://ftp.ncbi.nlm.nih.gov/refseq/release
 REL?=$(shell curl $(FTP_ROOT)/RELEASE_NUMBER)
 REL:=$(REL)
 
-DB_SCRIPT_DIR?=./databases
-BUILD_ROOT?=./databases/RefSeq
+DB_SCRIPT_DIR?=.
+BUILD_ROOT?=./RefSeq
 RSDIR:=$(BUILD_ROOT)/RefSeq-$(REL)
 
 BUILD_LASTDB:=False
@@ -20,7 +20,7 @@ ADDITIONS_TAXIDS:=$(ADDITIONS_SOURCE)/acc.to.taxid.protein.additions
 ADDITIONS_FILTER:=$(ADDITIONS_SOURCE)/taxids.in.RefSeq.$(REL)
 
 BUILD_KO_MAP:=False
-KEGG_ROOT?=database/KEGG
+KEGG_ROOT?=./KEGG
 ifeq ($(BUILD_KO_MAP),False)
 	KEGGDATE=LATEST	# Placeholder
 else
@@ -39,10 +39,10 @@ COMPLETEFAA=$(RSDIR)/complete.protein.fasta
 # Final protein outputs
 ifeq ($(ADD_CUSTOM_SEQS),False)
 	FAA_NAME:=RefSeq-$(REL).AllProteins.faa
-	FAA_PREREQS:=$(COMPLETEFAA)
+	FAA_PREREQS=$(COMPLETEFAA)
 else
 	FAA_NAME:=RefSeq-$(REL).AllProteinsPlus.faa
-	FAA_PREREQS:=$(ADDFAA) $(COMPLETEFAA)
+	FAA_PREREQS=$(ADDFAA) $(COMPLETEFAA)
 endif
 FAA:=$(RSDIR)/$(FAA_NAME)
 # LAST database will be packaged in it's own directory
@@ -134,7 +134,7 @@ $(ADDITIONS_FILTER):
 
 $(ADDACCMAPP): $(ADDITIONS_TAXIDS) $(ADDITIONS_FILTER)
 	@echo "==Importing taxid map for additions"
-	if [ -s $(ADDITIONS_FILTER) ]; then screen_table.py $^ -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $^ $@; fi
+	if [ -s $(ADDITIONS_FILTER) ]; then screen_table.py $^ -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $< $@; fi
     
 %.protein.fasta: %/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
