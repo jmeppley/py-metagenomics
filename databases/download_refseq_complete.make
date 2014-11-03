@@ -4,17 +4,22 @@ FTP_ROOT=ftp://ftp.ncbi.nlm.nih.gov/refseq/release
 REL?=$(shell curl $(FTP_ROOT)/RELEASE_NUMBER)
 REL:=$(REL)
 
-BUILD_ROOT?=databases/RefSeq
+DB_SCRIPT_DIR?=./databases
+BUILD_ROOT?=./databases/RefSeq
 RSDIR:=$(BUILD_ROOT)/RefSeq-$(REL)
 
-BUILD_LASTDB?=False
+BUILD_LASTDB:=False
 LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb/RefSeq/$(REL)
 LASTDBCHUNK?=100G
 
-ADD_CUSTOM_SEQS?=False
-ADDITIONS_SOURCE:=$(BUILD_ROOT)/../additions
+ADD_CUSTOM_SEQS:=False
+ADDITIONS_SOURCE:=$(BUILD_ROOT)/additions
+ADDITIONS_FAA:=$(ADDITIONS_SOURCE)/additions.protein.fasta
+ADDITIONS_TAXIDS:=$(ADDITIONS_SOURCE)/acc.to.taxid.protein.additions
+# If filter file is not empty, listed taxids will be removed from additions
+ADDITIONS_FILTER:=$(ADDITIONS_SOURCE)/taxids.in.RefSeq.$(REL)
 
-BUILD_KO_MAP?=False
+BUILD_KO_MAP:=False
 KEGG_ROOT?=database/KEGG
 ifeq ($(BUILD_KO_MAP),False)
 	KEGGDATE=LATEST	# Placeholder
@@ -26,8 +31,8 @@ endif
 # Most folks won't need to edit below this line
 
 # Define the layout of the build directory
-MDDIR=$(RSDIR)/metadata
-TAXDUMP=$(RSDIR)/taxdump
+MDDIR:=$(RSDIR)/metadata
+TAXDUMP:=$(RSDIR)/taxdump
 
 COMPLETEFAA=$(RSDIR)/complete.protein.fasta
 
@@ -42,12 +47,9 @@ endif
 FAA:=$(RSDIR)/$(FAA_NAME)
 # LAST database will be packaged in it's own directory
 LASTDIR=$(LASTDB_ROOT)/$(FAA_NAME).ldb
-LASTP=$(FAA_NAME).ldb/lastdb  # last database naming prfix
-LASTFILE=$(LASTP).prj    # use prj file for dependencies
+LASTP=$(LASTDIR)/lastdb
+LASTFILE=$(LASTP).prj
 
-ADDPDIR_REL=additions/protein
-ADDDIR=$(RSDIR)/additions
-ADDPDIR=$(RSDIR)/$(ADDPDIR_REL)
 ADDFAA=$(RSDIR)/additions.protein.fasta
 
 ACCPREFREL=acc.to.taxid
@@ -56,12 +58,12 @@ ACCPREFP=$(ACCPREF).protein
 ACCMAPP=$(ACCPREFP)
 ADDACCMAPP=$(ACCPREFP).additions
 PLUSACCMAPP=$(ACCPREFP).plus
-ACCTAXMAP=$(LASTP).tax
-HITIDMAP=$(LASTP).ids
+ACCTAXMAPDB:=$(LASTP).tax
+HITIDMAP:=$(LASTP).ids
 ifeq ($(ADD_CUSTOM_SEQS),False)
-	ACCTAXMAP_DEP:=$(ACCMAPP)
+	ACCTAXMAP:=$(ACCMAPP)
 else
-	ACCTAXMAP_DEP:=$(PLUSACCMAPP)
+	ACCTAXMAP:=$(PLUSACCMAPP)
 endif
 
 # KEGG locations
@@ -81,37 +83,36 @@ else
 endif
 
 KEGGLINKDIR:=$(KEGG_ROOT)/$(KEGGDATE)/links
-ACCGIMAP=$(RSDIR)/acc.to.gi.protein
 KEGGGENE_GI_MAP=$(KEGGLINKDIR)/genes_ncbi-gi.list
 KEGGGENE_KO_MAP=$(KEGGLINKDIR)/genes_ko.list
-ADMINSCRIPTS=~/work/delong/xserveadmin/bin
-KOMAPSCRIPT=$(ADMINSCRIPTS)/buildAccKOMapping.py
-TAXMAPSCRIPT=$(ADMINSCRIPTS)/buildRefSeqAccToTaxidMap.py
+KOMAPSCRIPT=$(DB_SCRIPT_DIR)/buildAccKOMapping.py
+TAXMAPSCRIPT=$(DB_SCRIPT_DIR)/buildRefSeqAccToTaxidMap.py
 
 ##
 # Build the arguments for all
-ifeq ($(FORMAT_LASTDB),FALSE)
-	ALL_TARGETS:=fasta
+ifeq ($(BUILD_LASTDB),False)
+	ALL_TARGETS:=fasta $(ACCTAXMAP)
 else
-	ALL_TARGETS:=lastdb
+	ALL_TARGETS:=lastdb  $(ACCTAXMAPDB)
 endif
-ALL_TARGETS:=$(ALL_TARGETS) maps
+ALL_TARGETS:=$(ALL_TARGETS)
 ifneq ($(BUILD_KO_MAP),False)
 	ALL_TARGETS:=$(ALL_TARGETS) keggmap
 endif
 
 all: report $(ALL_TARGETS)
 
-lastdb: $(LASTFILE)
+lastdb: $(LASTFILE) $(HITIDMAP)
 fasta: $(FAA)
-maps: $(ACCGIMAP) $(ACCTAXMAP) $(HITIDMAP)
 keggmap: $(KOMAP_DEP) 
 
 report:
 	@echo RefSeq release number is: $(REL)
 	@echo Building database in: $(RSDIR)
-	@echo Output fasta is $(FAA)
-	@if [ "$(BUILD_LASTDB)" != "False" ]; then echo Final database written to $(LASTDB_ROOT); fi
+	@echo "Output fasta is $(FAA)"
+	@echo "BUILD_LASTDB is $(BUILD_LASTDB)"
+	@echo "all target list is $(ALL_TARGETS)"
+	@if [ "$(BUILD_LASTDB)" != "False" ]; then echo Final database written to $(LASTDB_ROOT); else echo "Lastdb formatting will be skipped"; fi
 	@if [ "$(ADD_CUSTOM_SEQS)" != "False" ]; then echo Adding sequences from  $(ADDITIONS_SOURCE); fi
 	@if [ "$(BUILD_KO_MAP)" != "False" ]; then echo Building KO map from link files in $(KEGG_ROOT); fi
 
@@ -124,27 +125,16 @@ $(FAA): $(FAA_PREREQS)
 	@echo "==Masking low complexity with tantan"
 	tantan -p $^ | perl -ne 'if (m/^>(?!gi\|\d+)(.*)$$/) { if (defined $$n) { $$n++; } else { $$n=10000000000; } print ">gi|$$n|loc|$$1\n"; } else { print; }' > $@
     
-$(ADDDIR)/additions.taxids.in.latest.RefSeq:
-	mkdir -p $(ADDDIR)
-	touch $(ADDDIR)/additions.taxids.in.latest.RefSeq
-
-$(ADDFAA): $(ADDACCMAPP) $(ADDPDIR)/additions.protein.fasta
-	screen_list.py -a -k -C 0 $(ADDPDIR)/additions.protein.fasta -l $(ADDPDIR)/acc.to.taxid.protein.additions -o $(ADDPDIR)/additions.protein.fasta.updated
-	rm -f $@
-	ln -s $(ADDPDIR_REL)/additions.protein.fasta.updated $@
-
-$(ADDACCMAPP): $(ADDDIR)/additions.taxids.in.latest.RefSeq
+$(ADDFAA): $(ADDACCMAPP) $(ADDITIONS_FAA)
 	@echo "==Copying $@ from previous installation"
-	mkdir -p $(ADDPDIR)
-	cp LATEST/acc.to.taxid.protein.additions $(ADDPDIR)/
-	screen_table.py $(ADDPDIR)/acc.to.taxid.protein.additions -l $(ADDDIR)/additions.taxids.in.latest.RefSeq -c 1 -o $(ADDPDIR)/acc.to.taxid.protein.additions.updated
-	rm -f $@
-	ln -s $(ADDPDIR_REL)/acc.to.taxid.protein.additions.updated $@
+	screen_list.py -a -k -C 0 $(ADDITIONS_FAA) -l $(ADDACCMAPP) -o $@
 
-$(ADDPDIR)/additions.protein.fasta:
-	@echo "==Copying additions from previous release: $@"
-	mkdir -p $(ADDPDIR)
-	cp LATEST/additions.protein.fasta $@
+$(ADDITIONS_FILTER):
+	touch $(ADDITIONS_FILTER)
+
+$(ADDACCMAPP): $(ADDITIONS_TAXIDS) $(ADDITIONS_FILTER)
+	@echo "==Importing taxid map for additions"
+	if [ -s $(ADDITIONS_FILTER) ]; then screen_table.py $^ -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $^ $@; fi
     
 %.protein.fasta: %/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
@@ -160,7 +150,7 @@ $(ACCMAPP): $(MDDIR) $(TAXDUMP) $(TAXMAPSCRIPT)
 	gunzip -c complete.nonredundant_protein.38.protein.gpff.gz | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' | sort > $@
 	gunzip -c $(MDDIR)/RefSeq-release$(REL).catalog.gz | $(TAXMAPSCRIPT) $(TAXDUMP) | sort > $@.oldway
 
-ACCTAXMAP: $(ACCTAXMAP_DEP)
+$(ACCTAXMAPDB): $(ACCTAXMAP)
 	mkdir -p $(LASTDIR)
 	cp $< $@
 
@@ -191,10 +181,6 @@ $(KOMAP_ADD):
 $(KOMAP): $(COMPLETEFAA) $(KEGGGENE_KO_MAP) $(KEGGGENE_GI_MAP) $(KOMAPSCRIPT)
 	@echo "==Building map from accessions to kos"
 	$(KOMAPSCRIPT) -v $(COMPLETEFAA) -l $(KEGGLINKDIR) | sort > $@
-
-$(ACCGIMAP): $(COMPLETEFAA)
-	@echo "==Building map from accessions to lists of gis: $@"
-	grep ">" $^ | perl -pe 's/^>[a-z]+\|([A-Z_0-9]+)\.\d\S*\s+/\1\t/; s/gi\|(\d+)\S+\s+(?:.(?!gi\|))+ */\1,/g; s/,$$//;' > $@
 
 $(HITIDMAP): $(FAA)
 	mkdir -p $(LASTDIR)
