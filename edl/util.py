@@ -498,6 +498,10 @@ def parseAcc(read):
     return read
 
 def treeGenerator(node, kidsFirst=False, **kwargs):
+    """
+    Yields the given node and children recursively.
+    Starts with this node unless kidsFirst==True
+    """
     if not kidsFirst:
         yield node
     for kid in sorted(node.children,**kwargs):
