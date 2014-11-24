@@ -4,7 +4,7 @@ import edl.util, edl.taxon, edl.silva
 logging.basicConfig(stream=sys.stdout)
 logger=logging.getLogger(sys.argv[0])
 logger.setLevel(logging.INFO)
-logger.setLevel(logging.DEBUG)
+#logger.setLevel(logging.DEBUG)
 
 ## Some ranks need to be renamed to work with existing scripts
 # superkingdom->major_clade: NCBI uses superkingdom for domain, so this has to be changed to a reasonable alternative
