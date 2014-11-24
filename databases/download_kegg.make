@@ -1,24 +1,31 @@
-DATE=$(shell date +%Y%m%d)
-KGDIR=$(DATE)
+DATE?=$(shell date +%Y%m%d)
+KGVER:=$(DATE)
+KEGG_USER?=delong@mit.edu
+KEGG_PASSWORD?=mbari1
+
+DB_SCRIPT_DIR?=.
+BUILD_ROOT?=./KEGG
+KGDIR:=$(BUILD_ROOT)/$(KGVER)
+
+BUILD_LASTDB:=False
+LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb
+LASTDBCHUNK?=100G
 
 KOKEG=$(KGDIR)/ko00001.keg
 KOKO=$(KGDIR)/ko/ko
 GENES=$(KGDIR)/fasta/genes.pep.gz
-KEGGGENES=KeggGene.pep.$(DATE).faa
-BLASTDBDIR=/common/data/KEGG
-LASTDBDIR=/common/ldb/KEGG
-LASTDBCHUNK=100G
-KEGGBLAST=$(BLASTDBDIR)/KeggGene.pep.$(DATE).faa
-KEGGLAST=$(LASTDBDIR)/KeggGene.pep.$(DATE).ldb
-KOMAP=$(LASTDBDIR)/KeggGene.pep.$(DATE).genes_ko.list
-DESCMAP=$(LASTDBDIR)/KeggGene.pep.$(DATE).genes_desc.list
-KEGGLAST_PRJ=$(KEGGLAST).prj
+KEGGGENES=$(KGDIR)/KeggGene.pep.$(DATE).faa
+LASTDB_DIR:=$(LASTDB_ROOT)/KEGG/KeggGene.pep.$(DATE)
+LASTP:=$(LASTDB_DIR)/lastdb
+LASTFILE=$(LASTP).prj
+KOMAP=$(LASTP).kos
+HITIDMAP:=$(LASTP).ids
 LINKS=$(KGDIR)/links
 GENOME=$(KGDIR)/genome
 BRITE=$(KGDIR)/brite
 TAX=$(KGDIR)/taxonomy
 
-WGET=wget -c --user=delong@mit.edu --password=mbari1
+WGET:=wget -c --user=$(KEGG_USER) --password=$(KEGG_PASSWORD)
 FGENES=ftp://ftp.bioinformatics.jp/kegg/genes/MD5.genes ftp://ftp.bioinformatics.jp/kegg/genes/fasta/genes.pep.gz ftp://ftp.bioinformatics.jp/kegg/genes/README.genes
 FLINKS=ftp://ftp.bioinformatics.jp/kegg/genes/links/*gz
 FGENOME=ftp://ftp.bioinformatics.jp/kegg/genes/genome.tar.gz
@@ -26,21 +33,25 @@ FKO=ftp://ftp.bioinformatics.jp/kegg/genes/ko.tar.gz
 FTAX=ftp://ftp.bioinformatics.jp/kegg/genes/taxonomy
 FBRITE=ftp://ftp.bioinformatics.jp/kegg/brite/*.tar.gz ftp://ftp.bioinformatics.jp/kegg/brite/brite* ftp://ftp.bioinformatics.jp/kegg/brite/*brite
 
-all: $(KEGGBLAST) noblast
-noblast: $(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX) $(KEGGLAST_PRJ) maps
-maps: $(KOMAP) $(DESCMAP)
+ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX)
+ifeq ($(BUILD_LASTDB),False)
+	ALL_TARGETS:=$(ALL_TARGETS) $(KEGGGENES)
+else
+	ALL_TARGETS:=$(ALL_TARGETS) $(LASTFILE) maps
+endif
+
+all: $(ALL_TARGETS)
+maps: $(KOMAP) $(HITIDMAP)
 
 $(KOMAP): $(LINKS)
 	cp $(LINKS)/genes_ko.list $@
 
-$(DESCMAP): $(KEGGGENES)
+$(HITIDMAP): $(KEGGGENES)
 	grep ">" $< | perl -pe 's/^>(\S+)\s+(\S.*)/\1\t\2/' > $@
 
-$(KEGGLAST_PRJ): $(KEGGGENES)
-	lastdb -v -c -p -s $(LASTDBCHUNK) $(KEGGLAST) $(KEGGGENES)
-
-$(KEGGBLAST): $(KEGGGENES)
-	edlformatdb $(KEGGGENES)
+$(LASTFILE): $(KEGGGENES)
+	mkdir -p $(LASTDB_DIR)
+	lastdb -v -c -p -s $(LASTDBCHUNK) $(LASTP) $(KEGGGENES)
 
 $(KEGGGENES): $(GENES)
 	rm -f $(KEGGGENES)

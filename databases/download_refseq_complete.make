@@ -9,7 +9,8 @@ BUILD_ROOT?=./RefSeq
 RSDIR:=$(BUILD_ROOT)/RefSeq-$(REL)
 
 BUILD_LASTDB:=False
-LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb/RefSeq/$(REL)
+LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb
+LASTDB_DIR:=$(LASTDB_ROOT)/RefSeq/$(REL)
 LASTDBCHUNK?=100G
 
 ADD_CUSTOM_SEQS:=False
@@ -18,6 +19,7 @@ ADDITIONS_FAA:=$(ADDITIONS_SOURCE)/additions.protein.fasta
 ADDITIONS_TAXIDS:=$(ADDITIONS_SOURCE)/acc.to.taxid.protein.additions
 # If filter file is not empty, listed taxids will be removed from additions
 ADDITIONS_FILTER:=$(ADDITIONS_SOURCE)/taxids.in.RefSeq.$(REL)
+ADDITIONS_KOMAP:=$(ADDITIONS_SOURCE)/acc.to.ko.additions
 
 BUILD_KO_MAP:=False
 KEGG_ROOT?=./KEGG
@@ -32,7 +34,7 @@ endif
 
 # Define the layout of the build directory
 MDDIR:=$(RSDIR)/metadata
-TAXDUMP:=$(RSDIR)/taxdump
+TAXDUMP_SOURCE:=$(RSDIR)/taxdump
 
 COMPLETEFAA=$(RSDIR)/complete.protein.fasta
 
@@ -46,9 +48,10 @@ else
 endif
 FAA:=$(RSDIR)/$(FAA_NAME)
 # LAST database will be packaged in it's own directory
-LASTDIR=$(LASTDB_ROOT)/$(FAA_NAME).ldb
+LASTDIR=$(LASTDB_DIR)/$(FAA_NAME).ldb
 LASTP=$(LASTDIR)/lastdb
 LASTFILE=$(LASTP).prj
+TAXDUMP_DB=$(LASTDIR)/nodes.dmp
 
 ADDFAA=$(RSDIR)/additions.protein.fasta
 
@@ -69,7 +72,7 @@ endif
 # KEGG locations
 KOMAP=$(RSDIR)/acc.to.ko.protein
 KOMAP_PLUS=$(RSDIR)/acc.to.ko.protein.plus
-KOMAP_ADD=$(RSDIR)/KEGG/acc.to.ko.additions
+KOMAP_ADD=$(RSDIR)/acc.to.ko.protein.additions
 ifeq ($(ADD_CUSTOM_SEQS),False)
 	KOMAP_ALL:=$(KOMAP)
 else
@@ -92,10 +95,12 @@ TAXMAPSCRIPT=$(DB_SCRIPT_DIR)/buildRefSeqAccToTaxidMap.py
 # Build the arguments for all
 ifeq ($(BUILD_LASTDB),False)
 	ALL_TARGETS:=fasta $(ACCTAXMAP)
+	TAXDUMP=$(TAXDUMP_SOURCE)
 else
-	ALL_TARGETS:=lastdb  $(ACCTAXMAPDB)
+	ALL_TARGETS:=lastdb $(ACCTAXMAPDB)
+	TAXDUMP=$(TAXDUMP_DB)
 endif
-ALL_TARGETS:=$(ALL_TARGETS)
+ALL_TARGETS:=$(ALL_TARGETS) $(TAXDUMP)
 ifneq ($(BUILD_KO_MAP),False)
 	ALL_TARGETS:=$(ALL_TARGETS) keggmap
 endif
@@ -116,8 +121,10 @@ report:
 	@if [ "$(ADD_CUSTOM_SEQS)" != "False" ]; then echo Adding sequences from  $(ADDITIONS_SOURCE); fi
 	@if [ "$(BUILD_KO_MAP)" != "False" ]; then echo Building KO map from link files in $(KEGG_ROOT); fi
 
-$(LASTFILE): $(FAA)
+$(LASTDIR):
 	mkdir -p $(LASTDIR)
+
+$(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
 	lastdb -v -c -p -s $(LASTDBCHUNK) $(LASTP) $(FAA)
 
@@ -126,7 +133,7 @@ $(FAA): $(FAA_PREREQS)
 	tantan -p $^ | perl -ne 'if (m/^>(?!gi\|\d+)(.*)$$/) { if (defined $$n) { $$n++; } else { $$n=10000000000; } print ">gi|$$n|loc|$$1\n"; } else { print; }' > $@
     
 $(ADDFAA): $(ADDACCMAPP) $(ADDITIONS_FAA)
-	@echo "==Copying $@ from previous installation"
+	@echo "==Copying records from $@ that are included in $(ADDACCMAPP)"
 	screen_list.py -a -k -C 0 $(ADDITIONS_FAA) -l $(ADDACCMAPP) -o $@
 
 $(ADDITIONS_FILTER):
@@ -146,12 +153,19 @@ $(RSDIR)/complete/.download.complete.aa:
 	cd $(RSDIR)/complete && wget -c $(FTP_ROOT)/complete/complete.nonredundant_protein.*.protein.gpff.gz
 	touch $@
 
-$(ACCMAPP): $(MDDIR) $(TAXDUMP) $(TAXMAPSCRIPT) 
-	gunzip -c complete.nonredundant_protein.38.protein.gpff.gz | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' | sort > $@
-	gunzip -c $(MDDIR)/RefSeq-release$(REL).catalog.gz | $(TAXMAPSCRIPT) $(TAXDUMP) | sort > $@.oldway
+$(ACCMAPP).oldway: $(MDDIR) $(TAXDUMP) $(TAXMAPSCRIPT) 
+	# The catalog only has one taxid even for multispecies entries, so
+	# now we get the taxid maps from the gpff files
+	export PYTHONPATH=$(DB_SCRIPT_DIR)/..; gunzip -c $(MDDIR)/RefSeq-release$(REL).catalog.gz | $(TAXMAPSCRIPT) $(TAXDUMP) | sort > $@
 
-$(ACCTAXMAPDB): $(ACCTAXMAP)
-	mkdir -p $(LASTDIR)
+$(ACCMAPP): $(RSDIR)/complete/.download.complete.aa
+	# For multispecies entries, you'll get multiple lines in the tax map
+	gunzip -c $(RSDIR)/complete/complete.nonredundant_protein.*.protein.gpff.gz | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' | sort > $@
+
+$(PLUSACCMAPP): $(ADDACCMAPP) $(ACCMAP)
+	cat $^ > $@
+
+$(ACCTAXMAPDB): $(ACCTAXMAP) | $(LASTDIR)
 	cp $< $@
 
 $(MDDIR):
@@ -159,15 +173,16 @@ $(MDDIR):
 	mkdir -p $(MDDIR)
 	cd $(MDDIR) && wget -c $(FTP_ROOT)/release-notes/RefSeq*.txt $(FTP_ROOT)/release-statistics/RefSeq-release*.stats.txt $(FTP_ROOT)/release-catalog/RefSeq-release$(REL).catalog.gz $(FTP_ROOT)/release-catalog/release$(REL)*
 
-$(TAXDUMP):
+$(TAXDUMP_SOURCE):
 	@echo "==Downloading taxonomy"
-	mkdir -p $(TAXDUMP)
-	cd $(TAXDUMP) && wget -c ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz && tar -zxvf taxdump.tar.gz
-	if [ "$(BUILD_LASTDB)" != "False" ]; then mkdir -p $(LASTDIR); cp $(TAXDUMP)/n??es.dmp $(LASTDIR)/; fi
+	mkdir -p $(TAXDUMP_SOURCE)
+	cd $(TAXDUMP_SOURCE) && wget -c ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz && tar -zxvf taxdump.tar.gz
 
-$(KOMAP_DB): $(KOMAP_ALL)
-	mkdir -p $(LASTDIR)
-	cp $^ $@
+$(TAXDUMP_DB): $(TAXDUMP_SOURCE) | $(LASTDIR)
+	cp $(TAXDUMP_SOURCE)/n??es.dmp $(LASTDIR)/
+
+$(KOMAP_DB): $(KOMAP_ALL) | $(LASTDIR)
+	cp $< $@
 
 $(KOMAP_PLUS): $(KOMAP) $(KOMAP_ADD)
 	@echo "==Combine kegg ko map with ko map from additions"
@@ -175,14 +190,12 @@ $(KOMAP_PLUS): $(KOMAP) $(KOMAP_ADD)
 
 $(KOMAP_ADD):
 	@echo "==Copy provided acc.to.ko map"
-	mkdir -p $(RSDIR)/KEGG
-	cp $(ADDITIONS_SOURCE)/acc.to.ko.additions $@
+	cp $(ADDITIONS_KOMAP) $@
 
 $(KOMAP): $(COMPLETEFAA) $(KEGGGENE_KO_MAP) $(KEGGGENE_GI_MAP) $(KOMAPSCRIPT)
 	@echo "==Building map from accessions to kos"
-	$(KOMAPSCRIPT) -v $(COMPLETEFAA) -l $(KEGGLINKDIR) | sort > $@
+	export PYTHONPATH=$(DB_SCRIPT_DIR)/..; $(KOMAPSCRIPT) -v $(COMPLETEFAA) -l $(KEGGLINKDIR) | sort > $@
 
-$(HITIDMAP): $(FAA)
-	mkdir -p $(LASTDIR)
+$(HITIDMAP): $(FAA) | $(LASTDIR)
 	@echo "==Building map from hit ids to descriptions"
-	grep "^>" $^ | perl -pe 's/>(\S+)\s+(.*)$$/\1\t\2/' > $@
+	grep "^>" $< | perl -pe 's/>(\S+)\s+(.*)$$/\1\t\2/' > $@
