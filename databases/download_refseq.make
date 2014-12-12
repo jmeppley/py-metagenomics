@@ -19,7 +19,7 @@ ADDITIONS_FAA:=$(ADDITIONS_SOURCE)/additions.protein.fasta
 ADDITIONS_TAXIDS:=$(ADDITIONS_SOURCE)/acc.to.taxid.protein.additions
 # If filter file is not empty, listed taxids will be removed from additions
 ADDITIONS_FILTER:=$(ADDITIONS_SOURCE)/taxids.in.RefSeq.$(REL)
-ADDITIONS_KOMAP:=$(ADDITIONS_SOURCE)/acc.to.ko.additions
+ADDITIONS_KOMAP:=$(ADDITIONS_SOURCE)/acc.to.ko.protein.additions
 
 BUILD_KO_MAP:=False
 KEGG_ROOT?=./KEGG
