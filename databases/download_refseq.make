@@ -11,7 +11,7 @@ RSDIR:=$(BUILD_ROOT)/RefSeq-$(REL)
 BUILD_LASTDB:=False
 LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb
 LASTDB_DIR:=$(LASTDB_ROOT)/RefSeq/$(REL)
-LASTDBCHUNK?=100G
+LASTDBCHUNK?=150G
 
 ADD_CUSTOM_SEQS:=False
 ADDITIONS_SOURCE:=$(BUILD_ROOT)/additions
@@ -105,7 +105,7 @@ ifneq ($(BUILD_KO_MAP),False)
 	ALL_TARGETS:=$(ALL_TARGETS) keggmap
 endif
 
-all: report $(ALL_TARGETS)
+all: report $(MDDIR) $(ALL_TARGETS)
 
 lastdb: $(LASTFILE) $(HITIDMAP)
 fasta: $(FAA)
@@ -136,21 +136,24 @@ $(ADDFAA): $(ADDACCMAPP) $(ADDITIONS_FAA)
 	@echo "==Copying records from $@ that are included in $(ADDACCMAPP)"
 	screen_list.py -a -k -C 0 $(ADDITIONS_FAA) -l $(ADDACCMAPP) -o $@
 
-$(ADDITIONS_FILTER):
-	touch $(ADDITIONS_FILTER)
+$(ADDITIONS_FILTER): $(ADDITIONS_TAXIDS) $(MDDIR)/release$(REL).taxon.new
+	#touch $(ADDITIONS_FILTER)
+	cut -f 2 $(ADDITIONS_TAXIDS) | uniq | screen_table.py -l $(MDDIR)/release$(REL).taxon.new -k > $@
 
 $(ADDACCMAPP): $(ADDITIONS_TAXIDS) $(ADDITIONS_FILTER)
 	@echo "==Importing taxid map for additions"
-	if [ -s $(ADDITIONS_FILTER) ]; then screen_table.py $^ -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $< $@; fi
+	if [ -s $(ADDITIONS_FILTER) ]; then screen_table.py $(ADDITIONS_TAXIDS) -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $< $@; fi
     
 %.protein.fasta: %/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
-	for FILE in $(RSDIR)/$(*F)/*nonredundant_protein*gpff.gz; do gunzip -c $$FILE; done | getSequencesFromGbk.py -F fasta -r > $@
+	for FILE in $(RSDIR)/$(*F)/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | getSequencesFromGbk.py -F fasta -r > $@
+	#for FILE in $(RSDIR)/$(*F)/*nonredundant_protein*gpff.gz; do gunzip -c $$FILE; done | getSequencesFromGbk.py -F fasta -r > $@
 
 $(RSDIR)/complete/.download.complete.aa:
 	@echo "==Dowloading complete RefSeq proteins"
 	mkdir -p $(RSDIR)/complete
-	cd $(RSDIR)/complete && wget -c $(FTP_ROOT)/complete/complete.nonredundant_protein.*.protein.gpff.gz
+	#cd $(RSDIR)/complete && wget -c $(FTP_ROOT)/complete/complete.nonredundant_protein.*.protein.gpff.gz
+	cd $(RSDIR)/complete && wget -c $(FTP_ROOT)/complete/complete.[0-9]*.protein.gpff.gz
 	touch $@
 
 $(ACCMAPP).oldway: $(MDDIR) $(TAXDUMP) $(TAXMAPSCRIPT) 
@@ -160,10 +163,11 @@ $(ACCMAPP).oldway: $(MDDIR) $(TAXDUMP) $(TAXMAPSCRIPT)
 
 $(ACCMAPP): $(RSDIR)/complete/.download.complete.aa
 	# For multispecies entries, you'll get multiple lines in the tax map
-	gunzip -c $(RSDIR)/complete/complete.nonredundant_protein.*.protein.gpff.gz | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' | sort > $@
+	#gunzip -c $(RSDIR)/complete/complete.nonredundant_protein.*.protein.gpff.gz | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' | sort > $@
+	gunzip -c $(RSDIR)/complete/complete.[0-9]*.protein.gpff.gz | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' | sort > $@
 
-$(PLUSACCMAPP): $(ADDACCMAPP) $(ACCMAP)
-	cat $^ > $@
+$(PLUSACCMAPP): $(ADDACCMAPP) $(ACCMAPP)
+	cat $(ADDACCMAPP) $(ACCMAPP) > $@
 
 $(ACCTAXMAPDB): $(ACCTAXMAP) | $(LASTDIR)
 	cp $< $@

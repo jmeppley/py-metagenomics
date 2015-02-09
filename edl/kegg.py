@@ -106,7 +106,10 @@ def parseSeedMap(mapFile):
 
     return accMap
 
-def parseLinkFile(mapFile):
+def _stripKeggKeyPrefix(key):
+    return key.split(":",1)[1]
+
+def parseLinkFile(mapFile, stripKeys=False, stripVals=True):
     """
     Parse the gene_ko.list file from KEGG
 
@@ -129,7 +132,12 @@ def parseLinkFile(mapFile):
         if len(cells)>1:
             rows+=1
             key=cells[0].strip()
-            value=cells[1].strip()[3:]   # strip 'ko:' from start of each value
+            if stripKeys:
+                key = _stripKeggKeyPrefix(key)
+            value=cells[1].strip()
+            if stripVals:
+                # strip 'ko:' from start of each value
+                value = _stripKeggKeyPrefix(value) 
             if key==lastKey:
                 translation[key].append(value)
             else:
@@ -141,6 +149,12 @@ def parseLinkFile(mapFile):
 
     logger.info("Read %d records from %d lines of %s" % (len(translation), rows, mapFile))
     return translation
+
+def parseModuleMap(mapFile):
+    """
+    Parse module file to dict
+    """
+    return parseLinkFile(mapFile, stripKeys=True, stripVals=False)
 
 def parseGeneKOMap(koFile):
     """
@@ -454,7 +468,7 @@ def addPathOptions(parser,defaults={},choices={}):
     pgroup.add_option("-C", "--countMethod", dest="countMethod",
             default=defaults.get("countMethod","first"),
             choices=choices.get('countMethod',('first','most','all','consensus')),
-            help="How to deal with counts from multiple hits. (first, most: can return multiple hits, LCA: MEGAN-like, rLCA: redistributed LCA, all: return every hit, consensus: return None unless all the same). Do not use most or consensus with more than one rank at a time. Default is %s" % (defaults.get("countMethod","first")),
+            help="How to deal with counts from multiple hits. (first, most: can return multiple hits, all: return every hit, consensus: return None unless all the same). Do not use most or consensus with more than one level at a time. Default is %s" % (defaults.get("countMethod","first")),
             metavar="COUNTMETHOD")
     if defaults.get("filterForPath",False):
         action='store_false'
@@ -472,7 +486,7 @@ def addPathOptions(parser,defaults={},choices={}):
 def addPathwaysOption(parser, defaults={}):
     parser.add_option("-T", "--heirarchyType", 
             default=defaults.get("heirarchyType",'kegg'),
-            choices=['kegg','seed','cazy','cog'],
+            choices=['kegg','seed','cazy','cog','kegg_module'],
             help="What kind of functional heirarchy to use. 'kegg', seed', or 'cazy'. Defaults to '%s'" % (defaults.get("heirarchyType",'kegg')))
     parser.add_option("-H", "--heirarchyFile", metavar="HEIRARCHY_FILE",
                     default=defaults.get('heirarchyFile',None),

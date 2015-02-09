@@ -19,9 +19,9 @@ Takes an m8 blast and assigns each read to a pathway or gene family. Blast may b
     parser.add_option("-i", "--inputfile", dest="infile",
                       metavar="INFILE", help="Read data table from INFILE"),
     addIOOptions(parser)
-    parser.add_option('-O', "--pythonText", default=False,
-                      action='store_true',
-                      help="Output is formatted as python strings (hits in quotes and multiple hits in brackets). By default, there are no quotes and multiple hits are in multiple columns")
+    parser.add_option('-O', "--outputStyle", default="cols",
+                      choices=['cols','lines','python'],
+                      help="How are multiple assignments displayed in output. By default ('cols'), multiple hits show up in multiple columns. The 'lines' option prints out a new line for each assignment. The 'python' option prints each assignment as a python string (in quotes) or a list of strings (in quotes, separted by commas, surrounded bya  pair of sqaure brackets).")
     parser.add_option("-m", "--mapFile", dest="mapFile",
                       metavar="MAPFILE", help="Location of file containing table of with db hit name as first column and geneIDs (Knumber) in second column.")
     parser.add_option("-M", "--mapStyle", default='auto', choices=['auto','kegg','tab'],
@@ -38,7 +38,7 @@ Takes an m8 blast and assigns each read to a pathway or gene family. Blast may b
     addHitTableOptions(parser)
 
     parser.add_option("-C", "--countMethod", dest="countMethod", default="all", choices=('first','most','all','consensus'),
-                      help="How to deal with counts from multiple hits. (first, most: can return multiple hits, all (default): return every hit, consensus: return None unless all the same)",
+                      help="How to deal with assignments from multiple hits. (first, most: can return multiple hits, all (default): return every hit, consensus: return None unless all the same)",
                     metavar="COUNTMETHOD")
     parser.add_option("-r","--filterForKO",action="store_true", dest="koHitsOnly", default=False, help="ignore hits with no KO assignment. This means reads with no hits to KO tagged sequences will not be in the output.")
     parser.add_option("-l","--level", dest="level", default="ko", choices=('ko','NAME','DEFINITION','EC','PATHWAY','1','2','3'), help="Either 'ko'; a string to look for in ko file ('PATHWAY','NAME', 'DEFINITION', or 'EC'); or level in kegg class heirarchy (1, 2, or 3 (should be same as PATHWAY))")
@@ -92,13 +92,27 @@ Takes an m8 blast and assigns each read to a pathway or gene family. Blast may b
 
         # print out hit table
         outhandle.write("Read\tHit\n")
-        if options.pythonText:
+        if options.outputStyle=='python':
             for read in sorted(hitMap.keys()):
                 hit=hitMap[read]
                 outhandle.write(str(read))
                 outhandle.write("\t")
                 outhandle.write(repr(hit))
                 outhandle.write("\n")
+        if options.outputStyle=='lines':
+            for read in sorted(hitMap.keys()):
+                hit=hitMap[read]
+                if type(hit) is type([]):
+                    for h in sorted(hit):
+                        outhandle.write(str(read))
+                        outhandle.write("\t")
+                        outhandle.write(str(h))
+                        outhandle.write("\n")
+                else:
+                    outhandle.write(str(read))
+                    outhandle.write("\t")
+                    outhandle.write(str(hit))
+                    outhandle.write("\n")
         else:
              for read in sorted(hitMap.keys()):
                 hit=hitMap[read]
@@ -118,148 +132,6 @@ Takes an m8 blast and assigns each read to a pathway or gene family. Blast may b
 log = logging.info
 warn = logging.warn
 debug = logging.debug
-
-def parseM8FileOrig(infile, mapFile, hitCol, style, scoreCol, countMethod, filterHits):
-    """
-    return a map from read names to hits. If mapFile given, translate hit names. Use
-    scoreCol, etc to pick best hit among many
-    """
-
-    translateHit=False
-    if mapFile is not None:
-        hitMap = parseMapFile(mapFile)
-        translateHit = True
-    justFirst = countMethod=="first"
-    readMap={}
-    lastRead=None
-    hits={}
-    for line in infile:
-        cells = line.split('\t')
-        read = cells[0].strip()
-        hit = cells[hitCol].strip()
-        if style is ACCS:
-            m=accessionRE.search(hit)
-            if (m):
-                hit=m.group(1)
-        elif style is KEGG:
-            m = koRE.search(hit)
-            if m:
-                hit=m.group(0)
-            else:
-                hit=None
-        if translateHit:
-            # return hit if it's not in the map
-            hit = hitMap.get(hit,hit)
-        if filterHits:
-            if hit is None or hit == "None" or hit == '':
-                continue
-
-        if read != lastRead:
-            if justFirst:
-                readMap[read]=hit
-                lastRead=read
-                continue
-
-            if lastRead is not None:
-                readMap[lastRead]=pickBestHit(hits, countMethod)
-                hits={}
-            lastRead=read
-
-        if not justFirst:
-            score = cells[scoreCol].strip()
-            scores = hits.setdefault(hit,[])
-            scores.append(score)
-
-    if not justFirst:
-        readMap[read]=pickBestHit(hits, countMethod)
-
-    return readMap
-
-def pickBestHit(hits, countMethod):
-    if countMethod == 'plurality':
-        bestHit = pickMostCommonHit(hits)
-    elif countMethod == 'best-score':
-        bestHit = findBestScore(hits)
-    else:
-        sys.exit("Unrecognized count method: %s!" % (countMethod))
-
-    # make sure there is not a None or '' in the list
-    if type(bestHit) is type([]):
-        try:
-            bestHit.remove(None)
-        except ValueError:
-            pass
-        try:
-            bestHit.remove('')
-        except ValueError:
-            pass
-        if len(bestHit)==1:
-            bestHit=bestHit[0]
-        elif len(bestHit)==0:
-            bestHit=None
-
-    return bestHit
-
-def findBestScore(hits):
-    bestHit=None
-    bestScore=0
-    for hit in hits:
-        maxScore = max(hits[hit])
-        if bestHit is None or maxScore>bestScore:
-            bestHit = hit
-            bestScore = maxScore
-        elif maxScore==bestScore:
-            if type(bestHit)==type([]):
-                bestHit.append(hit)
-            else:
-                bestHit=[bestHit,hit]
-
-    return bestHit
-
-def pickMostCommonHit(hits):
-    """
-    for all hits, return hit with most scores.
-    Use sum of scores as a tiebreaker.
-    """
-
-    """
-    # find utoff score
-    cutoff=0
-    if topPct>=0:
-        # start with the highest score
-        for (hit,scores) in hits.iteritems():
-            cutoff=max(max(scores),cutoff)
-
-        # subtract topPct from it
-        if topPct>0:
-            cutoff = cutoff*(100.0 - float(topPct))/100.0
-    """
-
-    # count hits over cutoff
-    bestHit=None
-    bestCount=0
-    bestScores=0
-    for (hit,scores) in hits.iteritems():
-        count=len(scores)
-        scoreSum=0
-        for score in scores:
-            scoreSum+=float(score)
-        if bestHit is None or count>bestCount:
-            bestHit=hit
-            bestCount=count
-            bestScores=scoreSum
-        elif count==bestCount:
-            if scoreSum>bestScores:
-                bestHit=hit
-                bestCount=count
-                bestScores=scoreSum
-            elif scoreSum==bestScores:
-                if type(bestHit)==type([]):
-                    bestHit.append(hit)
-                else:
-                    besetHit=[bestHit,hit]
-
-    return bestHit
 
 def applySimpleCutoff(hitMap, cutoff, koTranslation):
     """

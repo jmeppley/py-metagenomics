@@ -307,6 +307,7 @@ def applyCountMethod(hitIter, method, ignoreEmpty=True):
         hits = removeEmptyFunc(hits)
         if hits is not None:
             hitsOut+=len(hits)
+        logger.debug("%s=>%r" % (read, hits))
         yield (read,hits)
 
     logger.info("Collected %d hits into %d hits for %d reads" % (hitsIn, hitsOut, reads))

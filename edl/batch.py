@@ -19,12 +19,6 @@ def checkTmpDir(tmpDir,jobName):
     logging.debug("Created temporary directory: %s" % tmpDir)
     return tmpDir
 
-def getJobName():
-    """
-    generate a job name for task array
-    """
-    return "Bat%d" % os.getpid()
-
 def fragmentInput(infile, options, tmpdir, fragmentBase, suffix='.in'):
     """
     Wraps the following methods into one:

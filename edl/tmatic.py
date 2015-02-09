@@ -1,4 +1,4 @@
-import subprocess, logging
+import subprocess, logging, re
 logger = logging.getLogger(__name__)
 
 class TMOptions():
@@ -13,6 +13,8 @@ class TMOptions():
         self.stdout=stdout
         self.stderr=stderr
         self.exitcode=p.returncode
+        logger.debug("scanning output")
+        self.getCountsFromLog()
 
 class TMOptionsPE(TMOptions):
     javaclass='org.usadellab.trimmomatic.TrimmomaticPE'
@@ -56,6 +58,22 @@ class TMOptionsPE(TMOptions):
             command += " ILLUMINACLIP:%s:%s" % (self.primers,clippingVals)
         return command
 
+    def getCountsFromLog(self):
+        """
+        parses STDERR string for line listing read counts:
+
+        Input Read Pairs: 23132462 Both Surviving: 23008441 (99.46%) Forward Only Surviving: 124005 (0.54%) Reverse Only Surviving: 0 (0.00%) Dropped: 16 (0.00%)
+        """
+        match=re.search(r'Input Read Pairs:\s*(\d+)\s+Both Surviving:\s*(\d+)\s+.+Dropped:\s*(\d+)\b', self.stderr)
+        if match:
+            (processed, passed, dropped) = match.groups()
+            self.counts={'processed':processed,
+                         'passed':passed,
+                         'dropped':dropped}
+        else:
+            logger.warn("Cannot parse counts from Trimmomatic log!")
+            self.counts=None
+
 class TMOptionsSE(TMOptions):
     javaclass='org.usadellab.trimmomatic.Trimmomatic'
     def __init__(self,input,output,endQuality=5,minLength=45):
@@ -67,11 +85,28 @@ class TMOptionsSE(TMOptions):
     def buildCommand(self):
         command=join(list(self.baseCommand))
         command+=" " + self.javaclass
-        command = '%s "%s"' %  self.input
-        command='%s "%s"' %  self.output
+        command = '%s "%s"' %  (command, self.input)
+        command='%s "%s"' %  (command, self.output)
         if self.endQuality>0:
             command+= " " + "LEADING:%d" % (self.endQuality)
             command+= " " + "TRAILING:%d" % (self.endQuality)
         if self.minLength>0:
             command+= " " + "MINLEN:%d" % (self.minLength)
         return command
+
+    def getCountsFromLog(self):
+        """
+        parses STDERR string for line listing read counts:
+
+        Input Reads: 1517888 Surviving: 0 (0.00%) Dropped: 1517888 (100.00%)
+        """
+        match=re.search(r'Input Reads:\s*(\d+)\s+Surviving:\s*(\d+)\s+.+Dropped:\s*(\d+)\b', self.stderr)
+        if match:
+            (processed, passed, dropped) = match.groups()
+            self.counts={'processed':processed,
+                         'passed':passed,
+                         'dropped':dropped}
+        else:
+            logger.warn("Cannot parse counts from Trimmomatic log!")
+            self.counts=None
+        passmatch=re.search(r'Input Read Pairs: ')
