@@ -3,6 +3,8 @@
 """
 
 from Bio import SeqIO, SeqRecord
+from Bio.Seq import Seq
+from Bio.Alphabet import IUPAC
 from optparse import OptionParser
 import sys, traceback
 
@@ -90,7 +92,7 @@ def translateStream(instream, inf, outstream, outf, cds, translate, makeRefSeq):
     for record in records:
         if cds:
             # get coding sequences if requested
-            translations = getCodingSequences(record)
+            translations = getCodingSequences(record, makeRefSeq)
         else:
             if makeRefSeq and 'gi' in record.annotations:
                 record.id = "gi|%s|ref|%s|" % \
@@ -110,7 +112,7 @@ def translateStream(instream, inf, outstream, outf, cds, translate, makeRefSeq):
             log("writing %s" % (str(t)))
             SeqIO.write([t], outstream, outf)
 
-def getCodingSequences(record):
+def getCodingSequences(record, makeRefSeq):
     try:
         org = " [%s]" % (record.annotations['organism'])
     except:
@@ -121,37 +123,60 @@ def getCodingSequences(record):
     for f in record.features:
         if f.type == 'CDS':
             gene_count+=1
-            seq = f.extract(record.seq)
-            r=SeqRecord.SeqRecord(seq)
-            foundName=True
-            if 'protein_id' in f.qualifiers:
-                r.id=f.qualifiers['protein_id'][0]
-                r.name=r.id
-            elif 'db_xref' in f.qualifiers:
-                for ref in f.qualifiers['db_xref']:
-                    if ref[0:2]=='GI':
-                        r.id=ref
-                        r.name=ref
-                        break
+            if makeRefSeq:
+                if 'protein_id' in f.qualifiers:
+                    acc=f.qualifiers['protein_id'][0]
+                else:
+                    continue
+                if 'db_xref' in f.qualifiers:
+                    for ref in f.qualifiers['db_xref']:
+                        if ref[0:2]=='GI':
+                            gi=ref[3:]
+                            break
+                    else:
+                        continue
+                if 'translation' in f.qualifiers:
+                    translation=f.qualifiers['translation'][0]
+                else:
+                    continue
+                seq = Seq(translation, IUPAC.protein)
+                r=SeqRecord.SeqRecord(seq,
+                                      id="gi|%s|acc|%s|" % (gi,acc),
+                                      name=acc)
+            else:
+                seq = f.extract(record.seq)
+                r=SeqRecord.SeqRecord(seq)
+                foundName=True
+                if 'protein_id' in f.qualifiers:
+                    r.id=f.qualifiers['protein_id'][0]
+                    r.name=r.id
+                elif 'db_xref' in f.qualifiers:
+                    for ref in f.qualifiers['db_xref']:
+                        if ref[0:2]=='GI':
+                            r.id=ref
+                            r.name=ref
+                            break
+                    else:
+                        foundName=False
                 else:
                     foundName=False
-            else:
-                foundName=False
 
-            if not foundName:
-                for q in ('locus_tag','name','id'):
-                    if q in f.qualifiers:
-                        r.id = f.qualifiers[q][0]
-                        r.name=r.id
-                        break
-                else:
-                    #warn("No suitable name found for feature: %s" % (str(f.qualifiers)))
-                    r.name='%s_GENE_%s' % (record.id,gene_count)
-                    r.id=r.name
+                if not foundName:
+                    for q in ('locus_tag','name','id'):
+                        if q in f.qualifiers:
+                            r.id = f.qualifiers[q][0]
+                            r.name=r.id
+                            break
+                    else:
+                        #warn("No suitable name found for feature: %s" % (str(f.qualifiers)))
+                        r.name='%s_GENE_%s' % (record.id,gene_count)
+                        r.id=r.name
+
             desc = r.name
-            for q in ('gene','product','note'):
+            for q in ('product','gene','note'):
                 if q in f.qualifiers:
-                    desc += "; %s:=%s" % (q,f.qualifiers[q][0])
+                    desc = f.qualifiers[q][0]
+                    break
 
             if org is not None:
                 desc+=org

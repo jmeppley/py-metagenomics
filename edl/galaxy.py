@@ -501,6 +501,8 @@ def findLibrariesWithName(name, galaxyInstance, libs_cache=None, createMissing=T
     if len(libraries)==0 and createMissing:
         # Create new library
         lib=galaxyInstance.libraries.create_library(name)
+        if isinstance(lib,list):
+            raise Exception("create_library returned a list, this usually means your request was redirected and the library wasn't created. Try switching the root api url from http to https or vice versa")
         # Add class and contents to object to match what you get from get_libraries()
         lib[u'model_class']=u'Library'
         lib[u'contents']=galaxyInstance.libraries.show_library(lib[u'id'],contents=True)

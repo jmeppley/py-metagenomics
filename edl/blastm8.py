@@ -196,6 +196,7 @@ class Hit:
         self.qend=qend
         self.astart=int(cells[3])
         self.aend=self.astart+alenh-1
+        self.qlen=len(cells[9])
         if pctid is not None:
             self.pctid=pctid
         else:

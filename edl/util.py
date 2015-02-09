@@ -417,7 +417,7 @@ def addUniversalOptions(parser,addQuiet=True):
               action="store_true", dest="about", default=False,
               help="Print description")
 
-DEFAULT_LOGGER_FORMAT='%(asctime)s::%(levelname)s:%(name)s:%(funcName)s:\n%(message)s'
+DEFAULT_LOGGER_FORMAT=':%(asctime)s::%(levelname)s:%(name)s:%(funcName)s:\n%(message)s'
 def setupLogging(options, description, stream=sys.stderr, format=DEFAULT_LOGGER_FORMAT):
     """
     Do some basic setup common to all scripts.
@@ -510,3 +510,70 @@ def treeGenerator(node, kidsFirst=False, **kwargs):
                 yield n
     if kidsFirst:
         yield node
+
+returnSelf=lambda x: x
+def pairwise(items, sortKey=returnSelf):
+    """
+    iterate over unique pairs of items
+    """
+    itemList = sorted(items, key=sortKey)
+    for i in range(len(itemList)):
+        for j in range(i+1,len(itemList)):
+            yield itemList[i],itemList[j]
+from numpy import ceil
+from numpy import log as nplog
+def asciiHistogram(histogram, log=False, width=60):
+    (values,edges)=histogram[:2]
+    
+    maxValue=max(values)
+    
+    centers=[int(float(sum(edges[i:i+2]))/2.) for i in range(len(values))]
+    largestLabel = min(max([len(str(c)) for c in centers]),4)
+    
+    plotWidth=width-largestLabel+1
+    
+    midPoint = maxValue/2
+    output="%s|count%s%s|%s%s|\n" % (rightPad('len',largestLabel),
+                                     "".join([" " for i in range(plotWidth/2 - len(str(int(midPoint))) - len("count"))]),
+                                     str(int(midPoint)),
+                                     "".join([" " for i in range(int(ceil(plotWidth/2.)) - 1 - len(str(int(maxValue))))]),
+                                     str(int(maxValue)),
+                                     )
+    #output+="%s|%s\n" % ("".join(["_" for i in range(largestLabel)]),
+    #                     "".join(["_" for i in range(plotWidth)]),
+    #                     )
+    for i, v in enumerate(values):
+        output+="%s|%s\n" % (rightPad(str(centers[i]),largestLabel),getBarString(v, maxValue, plotWidth, log))
+    return output
+
+logChars=['-','~','=','#']
+def getBarString(value, maxValue, maxWidth, log):
+    """
+    return string of various signs (-,~,=,#) based on value and scale
+    """
+    if log:
+        value=nplog(value)-nplog(.5) if value>0 else 0
+        maxValue=nplog(maxValue)-nplog(.5)
+    width=maxWidth*(value/float(maxValue))
+    if width<1:
+        return ''
+    char=logChars[0]
+    s=char
+    while len(s)<width:
+        if log:
+            #print "s: %s, mw: %s, w: %s" % (s, maxWidth, width)
+            char=logChars[int(ceil(len(logChars)*len(s)/float(maxWidth))-1)]
+        s+=char
+    return s
+
+def rightPad(name, width):
+    if len(name)>width:
+        if width<8:
+            raise Exception("Can't force names to be fewer than 8 characters")
+        # remove middle and insert elipsis to get to -width- characters
+        return name[:width-7]+'***'+name[-4:]
+    while len(name)<width:
+        # pad with trailing space to get to 13 characters
+        name+=' '
+    return name
+
