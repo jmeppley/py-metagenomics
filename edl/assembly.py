@@ -12,27 +12,49 @@ logger=logging.getLogger(__name__)
 # Date: 09 Feb. 2013
 # http://travispoulsen.com/blog/2013/07/basic-assembly-statistics/
 # https://gist.github.com/tpoulsen/422b1a19cbd8c0f514fe/raw/assembly_quality_stats.py
-def calc_stats(file_in, txt_width=0, log=False, backend=None,  **kwargs):
+def calc_stats(file_in, return_data=False, txt_width=0, log=False, backend=None, format='fasta', **kwargs):
     with open(file_in, 'r') as seq:
-            sizes = [len(record) for record in SeqIO.parse(seq, 'fasta')]
-    min_contig = min(sizes)
-    max_contig = max(sizes)
-    avg_contig = numpy.mean(sizes)
-    num_contig = len(sizes)
-    print 'Number of contigs:\t%i' % num_contig
-    print 'N50:\t%i' % int(getN50(sizes))
-    print 'N75:\t%i' % int(getN50(sizes,N=75))
-    print 'N90:\t%i' % int(getN50(sizes,N=90))
-    print 'Mean contig length:\t%.2f' % avg_contig
-    print 'Minimum contig length:\t%i' % min_contig
-    print 'Maximum contig length:\t%i' % max_contig
+            sizes = [len(record) for record in SeqIO.parse(seq, format)]
+
+    sizes = numpy.array(sizes)
+    data = {'min':numpy.min(sizes),
+            'max':numpy.max(sizes),
+            'mean':numpy.mean(sizes),
+            'median':numpy.median(sizes),
+            'N50':int(getN50(sizes)),
+            'N75':int(getN50(sizes,N=75)),
+            'N90':int(getN50(sizes,N=90)),
+            'count':len(sizes),
+            }
+
+    if not return_data:
+        report ='Number of contigs:\t%i' % data['count']
+        report += '\nN50:\t%i' % data['N50']
+        report += '\nN75:\t%i' % data['N75']
+        report += '\nN90:\t%i' % data['N90']
+        report += '\nMean contig length:\t%.2f' % data['mean']
+        report += '\nMedian contig length:\t%.2f' % data['median']
+        report += '\nMinimum contig length:\t%i' % data['min']
+        report += '\nMaximum contig length:\t%i' % data['max']
     if backend is not None:
         h = plot_assembly(sizes, file_in, min_contig, max_contig, avg_contig, num_contig, log=log, backend=backend, **kwargs)
     if txt_width>0:
         if backend is None:
             h=histogram(sizes, **kwargs)
-        print "\nContig length histogram:"
-        print asciiHistogram(h, log=log, width=txt_width)
+        histogramText = asciiHistogram(h, log=log, width=txt_width)
+        if not return_data:
+            if log:
+                report += "\n\nContig length histogram (log):\n"
+            else:
+                report += "\n\nContig length histogram:\n"
+            report += histogramText
+        else:
+            data['histogram']=histogramText
+
+    if return_data:
+        return data
+    else:
+        return report
 
 def plot_assembly(sizes, file_in, min_contig, max_contig, avg_contig, num_contig, backend=None,**kwargs):
     if backend:

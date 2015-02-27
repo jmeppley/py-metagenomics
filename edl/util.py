@@ -521,7 +521,7 @@ def pairwise(items, sortKey=returnSelf):
         for j in range(i+1,len(itemList)):
             yield itemList[i],itemList[j]
 from numpy import ceil
-from numpy import log as nplog
+from numpy import log as nplog, exp as npexp
 def asciiHistogram(histogram, log=False, width=60):
     (values,edges)=histogram[:2]
     
@@ -532,7 +532,7 @@ def asciiHistogram(histogram, log=False, width=60):
     
     plotWidth=width-largestLabel+1
     
-    midPoint = maxValue/2
+    midPoint = npexp((nplog(maxValue)-nplog(.5))/2) if log else maxValue/2
     output="%s|count%s%s|%s%s|\n" % (rightPad('len',largestLabel),
                                      "".join([" " for i in range(plotWidth/2 - len(str(int(midPoint))) - len("count"))]),
                                      str(int(midPoint)),
