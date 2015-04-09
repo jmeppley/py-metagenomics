@@ -84,7 +84,7 @@ $(LSU_LASTDB_DIR):
 
 $(LSU_LASTFILE): $(LSU_FASTA) | $(LSU_LASTDB_DIR)
 	@echo Formatting database for lastal searches
-	lastdb -v -c -p -s $(LASTDBCHUNK) $(LSU_LASTP) $<
+	lastdb -v -c -s $(LASTDBCHUNK) $(LSU_LASTP) $<
 
 $(LSU_HITIDMAP): $(LSU_FASTA) | $(LSU_LASTDB_DIR)
 	grep ">" $< | perl -pe 's/^>(\S+)\s+(\S.*)/\1\t\2/' > $@
@@ -94,7 +94,7 @@ $(SSU_LASTDB_DIR):
 
 $(SSU_LASTFILE): $(SSU_FASTA) | $(SSU_LASTDB_DIR)
 	@echo Formatting database for lastal searches
-	lastdb -v -c -p -s $(LASTDBCHUNK) $(SSU_LASTP) $<
+	lastdb -v -c -s $(LASTDBCHUNK) $(SSU_LASTP) $<
 
 $(SSU_HITIDMAP): $(SSU_FASTA) | $(SSU_LASTDB_DIR)
 	grep ">" $< | perl -pe 's/^>(\S+)\s+(\S.*)/\1\t\2/' > $@

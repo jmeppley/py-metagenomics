@@ -158,6 +158,14 @@ def buildPR2Tree(fastaFile, fastaout=None, nextId=0):
                 if fastaout:
                     outhandle.write(line)
 
+    # There should only be one child of root: Eukaryota
+    if len(rootNode.children) != 1:
+        logging.warn("There should only be one child of root! Not %d:\n%s" % \
+                (len(rootNode.children),
+                 ", ".join([c.name for c in rootNode.children])))
+    rootNode=rootNode.children[0]
+    logging.info("New root is: %s" % (rootNode.name))
+
     if fastaout:
         outhandle.close()
 
