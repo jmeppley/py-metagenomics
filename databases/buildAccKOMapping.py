@@ -22,9 +22,9 @@ def main():
     parser.add_option("-o", "--outfile", dest="outfile",
                       metavar="OUTFILE", help="Write count table to OUTFILE")
     parser.add_option("-d", "--gisInDesc", default=False, action="store_true", help="Look for GIs in description")
-    parser.add_option("-l", "--keggGeneLinkDir", dest="keggGeneLinkDir", default="/common/FASTA/KEGG/LATEST/links",
+    parser.add_option("-l", "--keggGeneLinkDir", dest="keggGeneLinkDir", default=None,
                       metavar="DIR",
-                      help="Directory containing lists of kegg gene ids mapped to other identifiers. Defaults to: /common/FASTA/KEGG/LATEST/links")
+                      help="Directory containing lists of kegg gene ids mapped to other identifiers. ")
 
     # log level and help
     addUniversalOptions(parser)
@@ -34,8 +34,11 @@ def main():
     setupLogging(options, description)
 
     # map kos to gis
+    if options.keggGeneLinkDir is None:
+        parser.error("You must supply the location of the KEGG link files")
     gi2kos = processKeggGeneLinks(options.keggGeneLinkDir)
     logging.info("Parsed ko map for %d gis" % len(gi2kos))
+    
     if logging.getLogger().level <= logging.DEBUG:
         logging.debug(repr(["%s:\t%s" % (key,gi2kos[key]) for key in gi2kos.keys()[:10]]))
 

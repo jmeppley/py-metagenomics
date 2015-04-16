@@ -11,7 +11,6 @@ For each RefSeq entry that is a protein and is not (in)vertebrate:
 
 from optparse import OptionParser
 import sys, logging, re
-sys.path.append('/common/bin/scripts')
 from edl.taxon import readTaxonomy, getNodeFromHit
 
 def main():

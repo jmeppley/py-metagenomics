@@ -105,7 +105,7 @@ def errCountString(errCount):
         retStr="%s#   %s:   %d\n" %(retStr, code, count)
     return retStr
 
-def runPandaseq(forward, reverse, output, unpairedList=None, catchUnpaired=True, exe='/common/bin/pandaseq', fastq=False, gap=20, errFile=None, inputFormat='fastq', threshold=0.6, expectedCount=None):
+def runPandaseq(forward, reverse, output, unpairedList=None, catchUnpaired=True, exe='pandaseq', fastq=False, gap=20, errFile=None, inputFormat='fastq', threshold=0.6, expectedCount=None):
     """
     Runs pandaseq on the two given (forward,reverse) fastq files, printing the paired
     reads to the file or stream named in the third argument. By default, unparied reads are
