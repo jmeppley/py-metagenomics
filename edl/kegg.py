@@ -222,7 +222,7 @@ def readKEGGFile(kFile, keggLevel):
         return readKOFile(kFile, keggLevel)
 
 def readKOFileLevels(kofile, keggLevel):
-    raise Exception("Cannot parse KEGG levels form ko file. Sorry. Use the brite jeirarchy file: /common/FASTA/KEGG/LATEST/brite/ko/ko00001.keg")
+    raise Exception("Cannot parse KEGG levels form ko file. Sorry. Use the brite hierarchy file: brite/ko/ko00001.keg")
 
 def readKOFile(kofile, keggLevel):
     """
@@ -296,9 +296,9 @@ def readKOFile(kofile, keggLevel):
 
     if len(koMap)==0:
         if keggLevel in ['1','2','3',1,2,3]:
-            raise Exception("Cannot parse KEGG levels from newer ko files. Sorry. Use the brite heirarchy file: /common/FASTA/KEGG/LATEST/brite/ko/ko00001.keg")
+            raise Exception("Cannot parse KEGG levels from newer ko files. Sorry. Use the brite heirarchy file: brite/ko/ko00001.keg")
         else:
-            raise Exception("No kegg levels were parsed! The newer ko files have a modified format. You may need to try the brite heirachy file: /common/FASTA/KEGG/LATEST/brite/ko/ko00001.keg")
+            raise Exception("No kegg levels were parsed! The newer ko files have a modified format. You may need to try the brite heirachy file: brite/ko/ko00001.keg")
     return koMap
 
 def _parseName(string, sep, index):

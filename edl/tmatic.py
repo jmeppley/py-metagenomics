@@ -2,8 +2,18 @@ import subprocess, logging, re
 logger = logging.getLogger(__name__)
 
 class TMOptions():
-    baseCommand=['java', '-classpath', '/slipstream/opt/scripts/jar/trimmomatic.jar']
-    #baseCommand=['java', '-classpath', '/common/lib/java/trimmomatic.jar']
+    def getBaseCommand(self):
+        baseCommand = ['java', '-classpath', self.jarPath]
+        return baseCommand
+
+    def findJar(self, jarPath):
+        if jarPath is not None:
+            return jarPath
+
+        # jar is in edl dir
+        edlLib = os.path.dirname(os.path.abspath(__file__))
+        return glob.glob(os.path.sep.join([edlLib,'trimmomatic.jar']))
+        
     def runTmatic(self):
         command=self.buildCommand()
         logger.info("Running Trimmomatic")
@@ -18,13 +28,14 @@ class TMOptions():
 
 class TMOptionsPE(TMOptions):
     javaclass='org.usadellab.trimmomatic.TrimmomaticPE'
-    def __init__(self,forward,reverse,primers=None,pref=None,primerSettings=None):
+    def __init__(self,forward,reverse,jarPath=None,primers=None,pref=None,primerSettings=None):
         self.forward=forward
         self.reverse=reverse
         self.outpref=pref
         self.primers=primers
         self.setOutfiles()
         self.primerSettings=primerSettings
+        self.jarPath = self.findJar(jarPath)
 
     def setOutfiles(self):
         self.outfiles={}
@@ -39,7 +50,7 @@ class TMOptionsPE(TMOptions):
             self.outfiles['2p']="%s.tm.p" %(self.reverse)
 
     def buildCommand(self):
-        command=" ".join(list(self.baseCommand))
+        command=" ".join(list(self.getBaseCommand()))
         command+=" " + self.javaclass
         if logging.getLogger().level<=logging.DEBUG:
             command+=" -trimlog %s.log" % self.outfiles['1p']
@@ -76,14 +87,15 @@ class TMOptionsPE(TMOptions):
 
 class TMOptionsSE(TMOptions):
     javaclass='org.usadellab.trimmomatic.Trimmomatic'
-    def __init__(self,input,output,endQuality=5,minLength=45):
+    def __init__(self,input,output,jarPath=None,endQuality=5,minLength=45):
         self.input=input
         self.output=output
         self.endQuality=endQuality
         self.minLength=minLength
+        self.jarPath = self.findJar(jarPath)
 
     def buildCommand(self):
-        command=join(list(self.baseCommand))
+        command=" ".join(list(self.getBaseCommand()))
         command+=" " + self.javaclass
         command = '%s "%s"' %  (command, self.input)
         command='%s "%s"' %  (command, self.output)
