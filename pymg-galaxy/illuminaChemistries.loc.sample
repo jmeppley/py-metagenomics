@@ -1,4 +1,0 @@
-#<unique_id>	<name>  <primerTemplatePath>
-nextera	Nextera	/minilims/galaxy-data/primerTemplates/nextera.2x.primers.fasta
-truseq	TruSeq	/minilims/galaxy-data/primerTemplates/truseq.1x.primers.fasta
-scriptseq	StriptSeq	/minilims/galaxy-data/primerTemplates/scripseq.1x.primers.fasta

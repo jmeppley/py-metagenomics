@@ -1,4 +1,0 @@
-<?xml version="1.0"?>
-<repositories description="This requires the LAST datatype definitions (e.g. the lastdbn format).">
-    <repository changeset_revision="106ff0a74bc4" name="last_datatypes" owner="jmeppley" toolshed="http://127.0.0.1:9009/toolshed" />
-</repositories>
