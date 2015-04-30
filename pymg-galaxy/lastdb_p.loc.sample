@@ -1,0 +1,16 @@
+#This is a modified version of blastdb_p.loc for defining the location of the LAST databases.
+#Using three columns tab separated
+#(longer whitespace are TAB characters):
+#
+#<unique_id>	<database_caption>	<base_name_path>	<acc_to_taxid_map>
+#<ko_map>	<desc_map>	<taxonomy>
+#
+#The captions typically contain spaces and might end with the build date.
+#It is important that the actual database name does not have a space in it,
+#and that the first tab that appears in the line is right before the path.
+#
+# These databases and associated files may be built using the databases/download_silva.make Makefile in the py-metagenomics package.
+#
+## Examples
+#RefSeq_61_pIlus	RefSeq 61 with additions	/path-to-sequencedbs/lastdb/RefSeq/61/RefSeq-61.AllProteinsPlus.faa.ldb	/path-to-sequencedbs/lastdb/RefSeq/61/acc.to.taxid.protein.plus	/path-to-sequencedbs/lastdb/RefSeq/61/acc.to.ko.protein.plus	/path-to-sequencedbs/lastdb/RefSeq/61/hitid.to.desc.protein.plus	/path-to-sequencedbs/lastdb/RefSeq/61
+#KEGG201309	KEGG from Sept 2013	/path-to-sequencedbs/lastdb/KEGG/KeggGene.pep.20130924.ldb	None	/path-to-sequencedbs/lastdb/KEGG/KeggGene.pep.20130924.genes_ko.list	/path-to-sequencedbs/lastdb/KEGG/KeggGene.pep.20130924.genes_desc.list	None

@@ -1,0 +1,80 @@
+<tool id="translate_column" name="Translate Column" version="0.1.01">
+    <description>Add new column using map from existing column</description>
+    <command interpreter='python'>
+    translateColumn.py $input
+    -o $outfile
+    -c $source_column
+
+    ## different ways to get map file
+    #if $map.source=="Table"
+    -m "${map.mapfile}"
+    #end if
+    #if $map.source=="Lastdb"
+    -m "${'.'.join(os.path.join($map.mapfile.extra_files_path,'lastdb'),'ids')}"
+    #end if
+    #if $map.source=="LastWrapper"
+    -m "${map.mapdb.fields.descfile}"
+    #end if
+    #if $map.source=="Silva"
+    -m "${map.mapfile.fields.path}"
+    #end if
+
+    ## options
+    #if str($fill.action).strip()=="Key" # -f KEY #else # -f $fill.fill_string #end if
+    #if str($dest_column).strip()!="" # -C $dest_column #end if 
+    #for $d in $delete # -D $d.delete_column #end for
+
+</command>
+<inputs>
+    <param format="tabular" name="input" type="data" label="Add column to this table:"/>
+    <param name="source_column" label="key column" type="data_column" data_ref="input" />
+    <conditional name="map">
+        <param name="source" type="select" label="Map file source">
+            <option value="Table" selected="true">Table in current history</option>
+            <option value="Lastdb">Lastdb database in history</option>
+            <option value="LastWrapper">Built-in lastdb protein database</option>
+            <option value="Silva">Built-in Silva lastdb database</option>
+        </param>
+        <when value="Table">
+            <param format="tabular" name="mapfile" type="data" label="Map to apply" help="Uses the first two columns as key and value for map"/>
+        </when>
+        <when value="Lastdb">
+            <param format="lastdbn,lastdbp" name="mapfile" type="data" label="Database for sequence ids"/>
+        </when>
+        <when value="LastWrapper">
+            <param name="mapdb" type="select" display="radio" label="against target database">
+                <options from_data_table="pipe_lastdb_p" />
+            </param>
+        </when>
+        <when value="Silva">
+          <param name="mapfile" type="select" display="radio" label="Taxon rank to count">
+              <options from_data_table="pipe_silva_mapping_tables">
+                   <filter type="static_value" value="None" column="3" keep="true"/>
+              </options>
+          </param>
+      </when>
+  </conditional>
+    <param name="dest_column" type="integer" optional="true" label="Column number to create. " help="Leave blank to put just after key column. 0 for first column, -1 for last."/>
+    <conditional name="fill">
+        <param name="action" type="select" label="Fill missing values:">
+            <option value="Skip" selected="True">Skip unmatched lines</option>
+            <option value="Key">Fill with value in key column</option>
+            <option value="String">Fill with specified string</option>
+        </param>
+        <when value="String">
+            <param name="fill_string" type="text" label="Fill with this string:"/>
+        </when>
+    </conditional>
+    <repeat name="delete" title="Delete Column">
+        <param name="delete_column" label="Delete column from final table" type="integer" value="1"/>
+    </repeat>
+</inputs>
+    <outputs>
+        <data name="outfile" format="tabular"/>
+    </outputs>
+    <help>
+        This script takes a tab delimited text table and creates a new column
+        from an existing one using an external translation table.
+
+    </help>
+</tool>

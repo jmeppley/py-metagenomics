@@ -1,0 +1,46 @@
+<tool id="FilterBlast" name="Filter Hits" version="0.1.1">
+  <description>Remove hits from a blast (or other) hit table. </description>
+  <command>
+	filter_blast_m8.py  $input1 -o $out_file1 -f $m8format
+	-B $bitScore
+	-F $filterPct
+	-E $evalue
+	-I $pctID
+    -H $numHits
+#if $nonoverlapping
+    --nonoverlapping
+#end if
+
+  </command>
+  <inputs>
+    <param format="tabular" name="input1" type="data" label="In data table" help="Data missing? See TIP below"/>
+     <param name="m8format" type="select" label="Hit table format">
+            <option value="last">Lastal tabular</option>
+            <option value="blast">Blast-like </option>
+            <option value="gene" selected="True">Gene: Blast-like plus read and hit description columns</option> 
+            <option value="liz">Liz: Blast-like plus hit description column</option>
+     </param>
+     <param name="numHits" type="integer" size="10" value="0" label="Keep this many hits per read" help="0 -> all"/>
+    <param name="bitScore" type="integer" size="10" value="50" label="Keep only hits with this score or greater"/>
+	 <param name="filterPct" type="integer" size="10" value="10" label="Keep only hits within this percentage of the best hit for each read. 0-> only the top score for each read."/>
+	<param name="evalue" type="float" size="10" value="0.01" label="Keep only hits with this evalue or less"/>
+    <param name="pctID" type="float" size="10" value="0.0" label="Keep only hits with this percent identity or greater"/>
+    <param name="nonoverlapping" type="boolean" checked="False" truevalue="True" falsevalue="False" label="Remove hits that overlap higher-scoring hits on the same query sequence."/>
+  </inputs>
+  <outputs>
+    <data format="tabular" name="out_file1" metadata_source="input1"/>
+  </outputs>
+  <help>
+
+ .. class:: infomark
+
+**TIP:** If your data is not TAB delimited, use *Text Manipulation-&gt;Convert* or *Blast-&gt;Parse blast text*
+
+-----
+
+**What it does**
+
+This tool takes a (b)last hit table and reomves hits that don't meet the specified criteria.
+
+</help>
+</tool>

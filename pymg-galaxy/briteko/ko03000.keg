@@ -1,0 +1,1046 @@
++D	Transcription factors
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Transcription Factors</h2>
+#<!---
+#ENTRY       ko03000
+#NAME        Transcription
+#DEFINITION  Transcription factors
+#--->
+!
+A<b>Eukaryotic Type</b>
+B
+B  <b>Basic leucine zipper (bZIP)</b>
+C    AP-1(-like) components, Jun
+D      K09027  XBP1; X box-binding protein 1
+D      K04448  JUN; transcription factor AP-1
+D      K09028  JUNB; transcription factor jun-B
+D      K04449  JUND; transcription factor jun-D
+C    AP-1(-like) components, Fos
+D      K04379  FOS; proto-oncogene protein c-fos
+D      K09029  FOSB; protein FosB
+D      K04502  FOSL1; fos-like antigen 1
+D      K09030  FOSL2; fos-like antigen 2
+D      K09031  FOSLN; fos-like antigen, invertebrate
+D      K09032  ATF3, LRF1; activating transcription factor 3
+D      K09033  JDP2; jun dimerization protein 2
+D      K09034  BATF; ATF-like basic leucine zipper transcriptional factor
+C    AP-1(-like) components, Maf
+D      K09035  CMAF, MAF; transcription factor Maf
+D      K07595  MAFA; transcription factor MAFA
+D      K09036  MAFB; transcription factor MAFB
+D      K09037  MAFF_G_K; transcription factor MAFF/G/K
+D      K09038  NRL; neural retina-specific leucine zipper protein
+C    AP-1(-like) components, NF-E2
+D      K09039  NFE2; nuclear factor erythroid 2
+D      K09040  NFE2L1_3; nuclear factor erythroid 2-related factor 1/3
+D      K05638  NFE2L2, NRF2; nuclear factor erythroid 2-related factor 2
+D      K09041  NFE2N, CNC; nuclear factor erythroid 2, invertebrate
+D      K09042  BACH; transcription regulator BACH
+C    AP-1(-like) components, Fungal regulators
+D      K09464  GCN4; general control protein GCN4
+D      K09043  AP1F; fungal AP-1-like factor
+C    AP-1(-like) components, CRE-BP/ATF
+D      K04450  ATF2, CREBP1; cyclic AMP-dependent transcription factor ATF-2
+D      K09032  ATF3, LRF1; activating transcription factor 3
+D      K04374  ATF4, CREB2; cyclic AMP-dependent transcription factor ATF-4
+D      K09044  ATF5; activating transcription factor 5
+D      K09045  ATF7, ATFA; activating transcription factor 7
+D      K09047  CREB5, CREBPA; cyclic AMP-responsive element-binding protein 5
+D      K09051  SKO1, ATF1, PCR1; ATF/CREB family transcription factor
+C    CREB
+D      K05870  CREB1; cyclic AMP-responsive element-binding protein 1
+D      K09048  CREB3; cyclic AMP-responsive element-binding protein 3
+D      K09049  ATF6B, CREBL1; cyclic AMP-dependent transcription factor ATF-6 beta
+D      K09050  CREBN; cAMP response element-binding protein, invertebrate
+D      K09052  CREM; cAMP response element modulator
+D      K09053  ATF1; activating transcription factor 1
+D      K09054  ATF6A; cyclic AMP-dependent transcription factor ATF-6 alpha
+D      K16230  HAC1; transcriptional activator HAC1
+C    C/EBP-like factors
+D      K09055  CEBPA; CCAAT/enhancer binding protein (C/EBP), alpha
+D      K10048  CEBPB; CCAAT/enhancer binding protein (C/EBP), beta
+D      K10049  CEBPG; CCAAT/enhancer binding protein (C/EBP), gamma
+D      K10050  CEBPD; CCAAT/enhancer binding protein (C/EBP), delta
+D      K10051  CEBPE; CCAAT/enhancer binding protein (C/EBP), epsilon
+D      K10052  CEBPN; CCAAT/enhancer binding protein (C/EBP), invertebrate
+D      K04452  DDIT3, GADD153; DNA damage-inducible transcript 3
+C    bZIP/PAR
+D      K09056  DBP; albumin D box-binding protein
+D      K09057  HLF; hepatic leukemia factor
+D      K09058  TEF; thyrotrophic embryonic factor
+D      K09059  NFIL3, E4BP4; nuclear factor, interleukin 3 regulated
+C    Plant G-box-binding factors
+D      K14431  TGA; transcription factor TGA
+D      K09060  GBF; plant G-box-binding factor
+D      K16241  HY5; transcription factor HY5
+C    AREB/ABF
+D      K14432  ABF; ABA responsive element binding factor
+C    ZIP only
+D      K06649  SWI4; regulatory protein SWI4
+D      K06648  SWI6; regulatory protein SWI6
+D      K09061  GCF, C2orf3; GC-rich sequence DNA-binding factor
+D      K12114  VRI; vrille
+C    Other bZIP factors
+D      K09062  K09062; bZIP factor, other
+B
+B  <b>Basic helix-loop-helix (bHLH)</b>
+C    Ubiquitous (class A) factors
+D      K09063  TCF3, E2A; transcription factor E2-alpha
+D      K15603  TCF4_12; transcription factor 4/12
+C    Myogenic transcription factors
+D      K09064  MYOD, MYF; myogenic factor
+D      K09066  FIGLA; factor in the germline alpha
+C    Achaete-Scute
+D      K09067  ASCL; achaete-scute complex protein
+C    Tal/Twist/Atonal/Hen, Lymphoid factors
+D      K09068  TAL; T-cell acute lymphocytic leukemia protein
+D      K15604  LYL1; protein lyl-1
+C    Tal/Twist/Atonal/Hen, Mesodermal Twist-like factors
+D      K09069  TWIST; twist
+D      K09070  TCF15, PARAXIS; transcription factor 15
+D      K09071  HAND; heart-and neural crest derivatives-expressed protein
+D      K09072  MSC; musculin (activated B-cell factor-1)
+D      K09073  PTF1A; pancreas-specific transcription factor 1a
+D      K09074  TYE7; fungal twist-like factor
+C    Tal/Twist/Atonal/Hen, HEN
+D      K09075  NHLH, HEN, NSCL; nescient helix-loop-helix protein
+C    Tal/Twist/Atonal/Hen, Mesp
+D      K09076  MESP; mesoderm posterior
+D      K09077  MSGN1; mesogenin 1
+C    Tal/Twist/Atonal/Hen, Atonal
+D      K08033  NEUROD1; neurogenic differentiation factor 1
+D      K09078  NEUROD2; neurogenic differentiation factor 2
+D      K09079  NEUROD4, ATOH3, MATH3; neurogenic differentiation factor 4
+D      K09080  NEUROD6, ATOH2, MATH2; neurogenic differentiation factor 6
+D      K09081  NEUROG1; neurogenin 1
+D      K09082  NEUROG2; neurogenin 2
+D      K08028  NEUROG3; neurogenin 3
+D      K09083  ATOH1_7; atonal protein 1/7
+D      K09084  ATOH8; atonal protein 8
+D      K09085  BHLHB1_6_7; class B basic helix-loop-helix protein 1/6/7
+D      K08040  BHLHB8, MIST1; class B basic helix-loop-helix protein 8
+C    Tal/Twist/Atonal/Hen, Pancreatic factors
+D      K09086  BHLHB4_5, BETA; class B basic helix-loop-helix protein 4/5
+C    Hairy, Hairy/E(SPL)
+D      K06054  HES1; hairy and enhancer of split 1
+D      K09087  HES2_6_7; hairy and enhancer of split 2/6/7
+D      K09088  HES3; hairy and enhancer of split 3
+D      K09089  HES4; hairy and enhancer of split 4
+D      K06055  HES5; hairy and enhancer of split 5
+D      K09090  HESN; hairy and enhancer of split, invertebrate
+D      K09091  HEY; hairy and enhancer of split related with YRPW motif
+D      K03729  BHLHB2, DEC1; class B basic helix-loop-helix protein 2
+D      K03730  BHLHB3, DEC2; class B basic helix-loop-helix protein 3
+D      K09092  TCFL5, CHA; transcription factor-like 5
+C    Hairy, Fungal regulators
+D      K06658  PHO4; phosphate system positive regulatory protein PHO4
+D      K06654  PHO80; phosphate system cyclin PHO80
+C    Factors with PAS domain
+D      K09093  AHR; aryl hydrocarbon receptor
+D      K09094  AHRR, AHH; aryl hydrocarbon receptor repressor
+D      K08268  HIF1A; hypoxia-inducible factor 1 alpha
+D      K09095  HIF2A, EPAS1; hypoxia-inducible factor 2 alpha
+D      K09096  HIF3A; hypoxia-inducible factor 3 alpha
+D      K09097  ARNT; aryl hydrocarbon receptor nuclear translocator
+D      K15589  ARNT2; aryl hydrocarbon receptor nuclear translocator 2
+D      K09098  NPAS1_3; neuronal PAS domain-containing protein 1/3
+D      K09026  NPAS2; neuronal PAS domain-containing protein 2
+D      K02223  CLOCK, KAT13D; circadian locomoter output cycles kaput protein [EC:2.3.1.48]
+D      K02296  ARNTL, BMAL1, CYC; aryl hydrocarbon receptor nuclear translocator-like protein 1
+D      K09099  ARNTL2, BMAL2; aryl hydrocarbon receptor nuclear translocator-like protein 2
+D      K09100  SIM; single-minded
+C    INO
+D      K09102  INO; heteromeric Ino2p/Ino4p transcription factor
+C    HLH domain only
+D      K04680  ID; DNA-binding protein inhibitor ID
+D      K09103  EBF, COE; early B-cell factor
+D      K12126  PIF3; phytochrome-interacting factor 3
+D      K16189  PIF4; phytochrome-interacting factor 4
+D      K13422  MYC2; transcription factor MYC2
+C    Other bHLH factors
+D      K09104  K09104; bHLH factor, other
+B
+B  <b>Basic helix-loop-helix/leucine zipper (bHLH-ZIP)</b>
+C    Ubiquitous bHLH-ZIP factors
+D      K09105  TFE3; transcription factor E3
+D      K15590  TFEB; transcription factor EB
+D      K15591  TFEC; transcription factor EC
+D      K09455  MITF; microphthalmia-associated transcription factor
+D      K09106  USF; upstream stimulatory factor
+D      K07197  SREBP1, SREBF1; sterol regulatory element-binding transcription factor 1
+D      K09107  SREBP2, SREBF2; sterol regulatory element-binding transcription factor 2
+D      K09108  TFAP4; transcription factor AP-4
+C    Cell cycle controlling factors, Myc
+D      K04377  MYC; Myc proto-oncogene protein
+D      K09109  NMYC, MYCN; N-myc proto-oncogene protein
+D      K09110  LMYC, MYCL; L-myc proto-oncogene protein
+D      K09111  BMYC, MYCB; brain expressed myelocytomatosis oncogene
+D      K09112  SMYC, MYCS; myc-like oncogene
+C    Cell cycle controlling factors, Mad/Max
+D      K04453  MAX; Max protein
+D      K09113  MLX; MAX-like protein X
+D      K09114  MXD, MAD; MAX dimerization protein
+D      K09115  MNT, ROX; MAX-binding protein
+C    Other bHLH-ZIP factors
+D      K17482  SPZ1; spermatogenic leucine zipper protein 1
+B
+B  <b>Other basic domains</b>
+C    NF-1
+D      K09168  NFIA; nuclear factor I/A
+D      K09169  NFIB; nuclear factor I/B
+D      K09170  NFIC; nuclear factor I/C
+D      K09171  NFIX; nuclear factor I/X
+D      K09172  NFIN; nuclear factor I, invertebrate
+C    RF-X
+D      K09173  RFX1_2_3; regulatory factor X 1/2/3
+D      K09174  RFX4; regulatory factor X 4
+D      K08061  RFX5; regulatory factor X 5
+D      K09175  RFXX; regulatory factor X, other
+C    AP-2 (bHSH)
+D      K09176  TFAP2A_B; transcription factor AP-2 alpha/beta
+D      K09177  TFAP2C; transcription factor AP-2 gamma
+D      K09178  TFAP2D; transcription factor AP-2 delta
+D      K09179  TFAP2E; transcription factor AP-2 epsilon
+D      K09180  TFAP2N; transcription factor AP-2, invertebrate
+B
+B  <b>Zinc finger</b>
+C    Cys4 thyroid hormone-like
+D      K05547  NR1A1, THRA; thyroid hormone receptor alpha
+D      K08362  NR1A2, THRB; thyroid hormone receptor beta
+D      K08527  NR1B1, RARA; retinoic acid receptor alpha
+D      K08528  NR1B2, RARB; retinoic acid receptor beta
+D      K08529  NR1B3, RARG; retinoic acid receptor gamma
+D      K07294  NR1C1, PPARA; peroxisome proliferator-activated receptor alpha
+D      K04504  NR1C2, PPARD; peroxisome proliferator-activated receptor delta
+D      K08530  NR1C3, PPARG; peroxisome proliferator-activated receptor gamma
+D      K03728  NR1D1; nuclear receptor subfamily 1 group D member 1
+D      K08531  NR1D2; nuclear receptor subfamily 1 group D member 2
+D      K08701  NR1D3; nuclear receptor subfamily 1 group D member 3
+D      K08532  NR1F1, RORA; RAR-related orphan receptor alpha
+D      K08533  NR1F2, RORB; RAR-related orphan receptor beta
+D      K08534  NR1F3, RORC; RAR-related orphan receptor gamma
+D      K14033  NR1F4; nuclear receptor subfamily 1 group F member 4
+D      K08536  NR1H3, LXRA; liver X receptor alpha
+D      K08535  NR1H2, LXRB; liver X receptor beta
+D      K08537  NR1H4, FXR; farnesoid X receptor
+D      K08538  NR1H5, FXRB; farnesoid X receptor beta
+D      K14034  NR1H1, EcR; ecdysone receptor
+D      K08539  NR1I1, VDR; vitamin D3 receptor
+D      K08540  NR1I2, PXR; pregnane X receptor
+D      K08541  NR1I3, CAR; constitutive androstane receptor
+D      K14035  NR1IN; nuclear receptor subfamily 1 group I
+C    Cys4 hepatocyte nuclear factor 4-like
+D      K07292  NR2A1, HNF4A; hepatocyte nuclear factor 4-alpha
+D      K08037  NR2A2, HNF4G; hepatocyte nuclear factor 4-gamma
+D      K08542  NR2A3, HNF4B; hepatocyte nuclear factor 4-beta
+D      K08704  NR2A4, Hnf4; hepatocyte nuclear factor 4
+D      K07295  NR2AN, dsf; nuclear receptor subfamily 2 group A
+D      K08524  NR2B1, RXRA; retinoid X receptor alpha
+D      K08525  NR2B2, RXRB; retinoid X receptor beta
+D      K08526  NR2B3, RXRG; retinoid X receptor gamma
+D      K14030  NR2B4, usp; nuclear receptor subfamily 2 group B member 4
+D      K08543  NR2C1, TR2; testicular receptor 2
+D      K08544  NR2C2, TR4; testicular receptor 4
+D      K14031  NR2CN; nuclear receptor subfamily 2 group C
+D      K08545  NR2E1, TLX, tll; nuclear receptor subfamily 2 group E member 1
+D      K08546  NR2E3, PNR; nuclear receptor subfamily 2 group E member 3
+D      K08547  NR2F1, TFCOUP1; COUP transcription factor 1
+D      K08548  NR2F2, TFCOUP2; COUP transcription factor 2
+D      K14032  NR2F3, svp; nuclear receptor subfamily 2 group F member 3
+D      K08702  NR2F5, SVP46; nuclear receptor subfamily 2 group F member 5
+D      K08549  NR2F6, EAR2; nuclear receptor subfamily 2 group F member 6
+C    Cys4 estrogen-like
+D      K08550  NR3A1, ESR1; estrogen receptor alpha
+D      K08551  NR3A2, ESR2; estrogen receptor beta
+D      K08552  NR3B1, ESRRA; estrogen-related receptor alpha
+D      K08553  NR3B2, ESRRB; estrogen-related receptor beta
+D      K08554  NR3B3, ESRRG; estrogen-related receptor gamma
+D      K08703  NR3BN, ERR; estrogen-related receptor ERR
+D      K05771  NR3C1, GR; glucocorticoid receptor
+D      K08555  NR3C2, MR; mineralocorticoid receptor
+D      K08556  NR3C3, PGR; progesterone receptor
+D      K08557  NR3C4, AR; androgen receptor
+C    Cys4 nerve growth factor IB-like
+D      K04465  NR4A1, HMR; nuclear receptor subfamily 4 group A member 1
+D      K08558  NR4A2, NURR1; nuclear receptor subfamily 4 group A member 2
+D      K08559  NR4A3, NOR1; nuclear receptor subfamily 4 group A member 3
+C    Cys4 Fushi tarazu-F1-like
+D      K08560  NR5A1, SF1; steroidogenic factor 1
+D      K08027  NR5A2, FTF; nuclear receptor subfamily 5 group A member 2
+D      K08705  NR5A3, ftz-f1; nuclear receptor subfamily 5 group A member 3
+C    Cys4 germ cell nuclear factor
+D      K08561  NR6A1, GCNF; germ cell nuclear factor
+D      K09185  NR6AN; nuclear receptor subfamily 6 group A
+C    Cys4 Knirps/DAX 1-like
+D      K08706  NR0AN, kni; nuclear receptor subfamily 0 group A
+D      K08562  NR0B1, DAX1; nuclear receptor subfamily 0 group B member 1
+D      K08563  NR0B2, SHP; nuclear receptor subfamily 0 group B member 2
+C    Cys4 GATA-factors
+D      K09182  GATA1_2_3; GATA-binding protein 1/2/3
+D      K09183  GATA4_5_6; GATA-binding protein 4/5/6
+D      K09184  GATAF; GATA-binding protein, other eukaryote
+C    Cys4 Trithorax
+D      K09186  MLL1; histone-lysine N-methyltransferase MLL1 [EC:2.1.1.43]
+D      K09187  MLL2, ALR; histone-lysine N-methyltransferase MLL2 [EC:2.1.1.43]
+D      K09188  MLL3; histone-lysine N-methyltransferase MLL3 [EC:2.1.1.43]
+D      K14959  MLL4; histone-lysine N-methyltransferase MLL4 [EC:2.1.1.43]
+D      K09189  MLL5; histone-lysine N-methyltransferase MLL5 [EC:2.1.1.43]
+C    Other Cys4 zinc finger factors
+D      K07466  RFA1, RPA1, rpa; replication factor A1
+D      K10779  ATRX; transcriptional regulator ATRX [EC:3.6.4.12]
+D      K14960  CXXC1, SPP1, CPS40; COMPASS component SPP1
+C    Cys2His2 ubiquitous factors
+D      K09191  GTF3A; general transcription factor IIIA
+D      K04684  SP1; transcription factor Sp1
+D      K09192  SP2; transcription factor Sp2
+D      K09193  SP3; transcription factor Sp3
+D      K09194  SP4; transcription factor Sp4
+D      K09195  SP5; transcription factor Sp5
+D      K09196  SP6; transcription factor Sp6
+D      K09197  SP7; transcription factor Sp7
+D      K09198  SP8; transcription factor Sp8
+D      K09199  SP9; transcription factor Sp9
+D      K09200  SP-N; transcription factor Sp, invertebrate
+D      K09201  YY; transcription factor YY
+C    Cys2His2 developmental/cell cycle regulators, Egr/Krox
+D      K09202  SWI5; regulatory protein SWI5
+D      K09203  EGR1; early growth response protein 1
+D      K12496  EGR2; early growth response protein 2
+D      K12497  EGR3; early growth response protein 3
+D      K12498  EGR4; early growth response protein 4
+C    Cys2His2 developmental/cell cycle regulators, Krueppel-like
+D      K09204  KLF1_2_4; krueppel-like factor 1/2/4
+D      K15605  KLF3; krueppel-like factor 3
+D      K09206  KLF5; krueppel-like factor 5
+D      K09207  KLF6_7; krueppel-like factor 6/7
+D      K09205  KLF8_12; krueppel-like factor 8/12
+D      K09208  KLF9S, BTEB; krueppel-like factor 9/13/14/16
+D      K09209  KLF10_11, TIEG; krueppel-like factor 10/11
+D      K09210  KLF15; krueppel-like factor 15
+D      K09211  KLF17; krueppel-like factor 17
+D      K09212  KLFN; krueppel-like factor, other
+D      K13943  CBT; cabut
+D      K09213  HB; hunchback
+D      K09214  GL; glass
+D      K09215  OSR, ODD; odd-skipped
+D      K09216  OVOL; ovo
+D      K05707  SNAI1; snail 1
+D      K05706  SNAI2, SLUG; snail 2
+D      K09217  SNAI3; snail 3
+D      K09218  SNAIN; snail, invertebrate
+D      K09219  SCRT; scratch
+D      K02215  CF2; chorion factor 2
+D      K04462  EVI1; ecotropic virus integration site 1 protein
+D      K09220  IKZF, ZNFN1A; IKAROS family zinc finger protein
+D      K09221  MZF1; myeloid zinc finger protein 1
+D      K09222  REST; RE1-silencing transcription factor
+D      K09223  GFI1; growth factor independent 1
+D      K09224  ZIC1_3; zinc finger protein ZIC 1/3
+D      K06235  ZIC2; zinc finger protein ZIC 2
+D      K09225  ZIC4; zinc finger protein ZIC 4
+D      K09226  ZIC5; zinc finger protein ZIC 5
+D      K09227  ZICN; zinc finger protein ZIC, invertebrate
+D      K09228  KRAB; KRAB domain-containing zinc finger protein
+D      K12458  ZNF274; zinc finger protein 274
+D      K09229  ZKSCAN; KRAB and SCAN domains-containing zinc finger protein
+D      K09230  SCAN; SCAN domain-containing zinc finger protein
+D      K10489  ZBTB2; zinc finger and BTB domain-containing protein 2
+D      K10492  ZBTB5; zinc finger and BTB domain-containing protein 5
+D      K10494  ZBTB7; zinc finger and BTB domain-containing protein 7
+D      K17452  AEBP2; zinc finger protein AEBP2
+D      K09231  KR; krueppel-like family, other
+C    Cys2His2 developmental/cell cycle regulators, GLI-like
+D      K16797  GLI1; zinc finger protein GLI1
+D      K16798  GLI2; zinc finger protein GLI2
+D      K06230  GLI3; zinc finger protein GLI3
+D      K09232  GLIS1_3; zinc finger protein GLIS1/3
+D      K09233  GLIS2; zinc finger protein GLIS2
+D      K16799  CI; transcriptional activator cubitus interruptus
+D      K09234  WT1; Wilms tumor protein 1
+D      K09235  RME1; zinc finger protein RME1
+D      K09465  BRLA; zinc finger protein BrlA
+C    Cys2His2 developmental/cell cycle regulators, Others
+D      K09236  TSHZ; teashirt
+D      K09237  K09237; Cys2His2 zinc finger developmental/cell cycle regulator, other
+C    Cys2His2 metabolic regulators in fungi
+D      K09238  ACE2; metallothionein expression activator
+D      K09466  ADR1; zinc finger protein ADR1
+D      K09467  MIG; zinc-finger protein CreA/MIG
+D      K09468  MSN2_4; zinc finger protein MSN2/4
+C    Cys2His2 large factors with NF-6B-like binding properties
+D      K09239  HIVEP; human immunodeficiency virus type I enhancer-binding protein
+C    Cys6 metabolic regulators in fungi
+D      K09240  CAT8; transcriptional regulatory protein CAT8
+D      K09241  GAL4; transcriptional regulatory protein GAL4
+D      K09242  LEU3; transcriptional regulatory protein LEU3
+D      K09243  UME6; transcriptional regulatory protein UME6
+D      K09244  AMDR; transcriptional regulatory protein AMDR
+D      K09245  UGA3; transcriptional activator protein UGA3
+D      K09246  ARG81, ARGR2; arginine metabolism regulation protein II
+D      K09247  CYP1, HAP1; heme activator protein 1
+D      K09248  PUT3; proline utilization trans-activator
+C    Cys4HisCys3 PHD fingers
+D      K11467  PHF1, PCL1; polycomb-like protein 1
+D      K11485  MTF2, PCL2; polycomb-like protein 2
+D      K11486  PHF19, PCL3; polycomb-like protein 3
+D      K12236  NFX1; transcriptional repressor NF-X1 [EC:6.3.2.-]
+C    Zinc fingers of alternating composition
+D      K09249  ABF1, BAF1; ARS-binding factor 1
+D      K09250  CNBP; cellular nucleic acid-binding protein
+D      K17441  ZFPM1, FOG1; zinc finger protein ZFPM1
+D      K17442  ZFPM2, FOG2; zinc finger protein ZFPM2
+B
+B  <b>Helix-turn-helix</b>
+C    Homeo domain only, AbdB
+D      K09294  HOX_9; homeobox protein HoxA/B/C/D9
+D      K17443  HOXA10; homrobox protein Hox-A10
+D      K17444  HOXC10; homrobox protein Hox-C10
+D      K09295  HOXD10; homrobox protein Hox-D10
+D      K09296  HOX_11; homeobox protein HoxA/C/D11
+D      K09297  HOX_12; homeobox protein HoxC/D12
+D      K09298  HOX_13; homeobox protein HoxA/C/D13
+D      K09299  ZEB1_2; zinc finger homeobox protein 1/2
+D      K09300  ABDB; homeobox protein abdominal-B and related proteins
+C    Homeo domain only, Antp
+D      K09301  HOX_1; homeobox protein HoxA/B/D1
+D      K09302  HOX_2; homeobox protein HoxA/B2
+D      K09303  HOX_3; homeobox protein HoxA/B/D3
+D      K09304  HOX_4; homeobox protein HoxA/B/C/D4
+D      K09305  HOX_5; homeobox protein HoxA/B/C5
+D      K09306  HOX_6; homeobox protein HoxA/B/C6
+D      K09307  HOX_7; homeobox protein HoxA/B7
+D      K09308  HOX_8; homeobox protein HoxB/C/D8
+D      K09309  NKX1; homeobox protein Nkx-1
+D      K09310  GSH; homeobox protein GSH
+D      K07594  IPF1, PDX1; insulin promoter factor 1
+D      K09311  ANTP; Antp family, other
+C    Homeo domain only, Cad
+D      K09312  CDX; homeobox protein CDX
+C    Homeo domain only, Cut
+D      K09313  CUTL; homeobox protein cut-like
+C    Homeo domain only, Dll
+D      K09314  DLX1_4_6; homeobox protein DLX1/4/6
+D      K09315  DLX2_3_5; homeobox protein DLX2/3/5
+D      K09316  DLXN; homeobox protein DLX, invertebrate
+C    Homeo domain only, Ems
+D      K09317  EMX; homeobox protein EMX
+D      K09318  VAX; homeobox protein ventral anterior
+C    Homeo domain only, En
+D      K09319  EN; homeobox protein engrailed
+C    Homeo domain only, Eve
+D      K09320  EVX; homeobox even-skipped homolog protein
+D      K09321  GBX; homeobox protein GBX
+D      K08025  HLXB9, HB9; homeobox protein HB9
+D      K09322  MEOX, MOX; homeobox protein MOX
+C    Homeo domain only, Prd
+D      K09452  ARX; homeobox protein aristaless-related
+D      K09323  ALX3; homeobox protein aristaless-like 3
+D      K09451  ALX4; homeobox protein aristaless-like 4
+D      K09324  GSC; homeobox protein goosecoid
+D      K09325  GSCL; homeobox protein goosecoid-like
+D      K09326  OTX; homeobox protein OTX
+D      K09327  PROP1; homeobox protein prophet of Pit-1
+D      K09328  UNC4; homeobox protein Unc-4
+D      K09329  PRRX, PMX; paired mesoderm homeobox protein
+D      K09330  PHOX2, PMX2; paired mesoderm homeobox protein 2
+D      K09331  SHOX; short stature homeobox protein
+D      K09332  RAX, RX; retina and anterior neural fold homeobox protein
+D      K09333  RAXL; retina and anterior neural fold homeobox-like protein
+D      K09334  CART1; cartilage homeoprotein 1
+D      K09335  VSX1; visual system homeobox protein 1
+D      K09336  VSX2, CHX10; visual system homeobox protein 2
+D      K09337  CRX; cone-rod homeobox protein
+C    Homeo domain only, HD-ZIP
+D      K09338  HD-ZIP; homeobox-leucine zipper protein
+C    Homeo domain only, H2.0
+D      K09339  HLX1; homeobox protein HLX1
+D      K09340  TLX1, HOX11; T-cell leukemia homeobox protein 1
+D      K15606  TLX2, HOX11L1; T-cell leukemia homeobox protein 2
+D      K15607  TLX3, HOX11L2; T-cell leukemia homeobox protein 3
+C    Homeo domain only, HNF1
+D      K08036  TCF1, HNF1A; transcription factor 1, hepatocyte nuclear factor 1-alpha
+D      K08034  TCF2, HNF1B; transcription factor 2, hepatocyte nuclear factor 1-beta
+C    Homeo domain only, Msh
+D      K09341  MSX; homeobox protein MSX
+C    Homeo domain only, NK-2
+D      K09342  NKX2-1, TITF1; homeobox protein Nkx-2.1
+D      K08029  NKX2-2; homeobox protein Nkx-2.2
+D      K09343  NKX2-3; homeobox protein Nkx-2.3
+D      K09344  NKX2-4; homeobox protein Nkx-2.4
+D      K09345  NKX2-5; homeobox protein Nkx-2.5
+D      K09346  NKX2-6; homeobox protein Nkx-2.6
+D      K09347  NKX2-8; homeobox protein Nkx-2.8
+D      K09348  NKX3-1; homeobox protein Nkx-3.1
+D      K09995  NKX3-2, BAPX1; homeobox protein Nkx-3.2
+D      K09349  NKX5, HMX; homeobox protein Nkx-5
+D      K08030  NKX6-1; homeobox protein Nkx-6.1
+D      K09350  NKX6-2; homeobox protein Nkx-6.2
+D      K09351  NKX6-3; homeobox protein Nkx-6.3
+D      K09352  NKXN; homeobox protein Nkx, invertebrate
+D      K09353  LBX; homeobox protein LBX
+C    Homeo domain only, XANF
+D      K09354  HESX1; homeobox protein expressed in ES cells 1
+C    Homeo domain only, PBC
+D      K09355  PBX1; pre-B-cell leukemia transcription factor 1
+D      K15609  PBX2; pre-B-cell leukemia transcription factor 2
+D      K15610  PBX3; pre-B-cell leukemia transcription factor 3
+D      K15611  PBX4; pre-B-cell leukemia transcription factor 4
+C    Homeo domain only, MEIS
+D      K15613  MEIS1; homeobox protein Meis1
+D      K16670  MEIS2; homeobox protein Meis2
+D      K16671  MEIS3; homeobox protein Meis3
+D      K16672  HTH; homeobox protein homothorax
+C    Homeo domain only, not assigned
+D      K09356  PITX1; paired-like homeodomain transcription factor 1
+D      K04686  PITX2; paired-like homeodomain transcription factor 2
+D      K09357  PITX3; paired-like homeodomain transcription factor 3
+D      K09358  MATA1; mating-type protein A1
+D      K09359  MATA2; mating-type protein A2
+D      K02646  PHO2; regulatory protein PHO2
+D      K08024  HHEX, HEX, PRH; homeobox protein HEX
+D      K09360  BARHL; BarH-like
+D      K09361  BARX; BarH-like homeobox
+D      K10164  NANOG; homeobox protein Nanog
+D      K12411  YOX1, YHP1; homeobox protein YOX1/YHP1
+D      K09362  K09362; homeo domain only family, other
+C    POU domain factors
+D      K09363  POU1F, PIT1; POU domain transcription factor, class 1
+D      K09364  POU2F, OTF; POU domain transcription factor, class 2
+D      K09365  POU3F, OTF; POU domain transcription factor, class 3
+D      K09366  POU4F, BRN3; POU domain transcription factor, class 4
+D      K09367  POU5F; POU domain transcription factor, class 5
+D      K09368  POU6F; POU domain transcription factor, class 6
+D      K09369  POU7F; POU domain transcription factor, class 7
+C    Homeo domain with LIM region
+D      K09370  ISL; insulin gene enhancer protein ISL
+D      K09371  LMX1; LIM homeobox transcription factor 1
+D      K09372  LHX1_5; LIM homeobox protein 1/5
+D      K09373  LHX2_9; LIM homeobox protein 2/9
+D      K09374  LHX3_4; LIM homeobox protein 3/4
+D      K09375  LHX6_8; LIM homeobox protein 6/8
+D      K09376  LHXN; LIM homeobox, invertebrate
+C    Homeo domain with LIM region, LIM-only transcription (co-)factors
+D      K09377  CSRP; cysteine and glycine-rich protein
+C    Homeo domain plus zinc finger motifs
+D      K09378  ATBF1; AT-binding transcription factor 1
+D      K09379  ZFHX2; zinc finger homeobox protein 2
+D      K09380  ZFHX4; zinc finger homeobox protein 4
+C    Paired box plus homeo domain
+D      K09381  PAX3_7; paired box protein 3/7
+D      K08032  PAX4; paired box protein 4
+D      K08031  PAX6; paired box protein 6
+C    Paired box domain only
+D      K09382  PAX1_9; paired box protein 1/9
+D      K15608  PAX2; paired box protein 2
+D      K09383  PAX5; paired box protein 5
+D      K09293  PAX8; paired box protein 8
+C    Fork head/winged helix developmental regulators
+D      K08035  FOXA2, HNF3B; forkhead box protein A2, hepatocyte nuclear factor 3-beta
+D      K09396  FOXC; forkhead box protein C
+D      K09385  FOXG; forkhead box protein G
+D      K09407  FOXN; forkhead box protein N
+C    Fork head/winged helix tissue-specific regulators
+D      K09387  FOXA1, HNF3A; forkhead box protein A1, hepatocyte nuclear factor 3-alpha
+D      K08038  FOXA3, HNF3G; forkhead box protein A3, hepatocyte nuclear factor 3-gamma
+D      K09402  FOXJ1; forkhead box protein J1
+C    Fork head/winged helix cell cycle-controlling factors, E2F
+D      K17454  E2F1; transcription factor E2F1
+D      K09389  E2F2; transcription factor E2F2
+D      K06620  E2F3; transcription factor E2F3
+D      K04682  E2F4_5; transcription factor E2F4/5
+D      K09390  E2F6; transcription factor E2F6
+D      K09391  E2F7_8; transcription factor E2F7/8
+C    Fork head/winged helix cell cycle-controlling factors, DP
+D      K04683  TFDP1; transcription factor Dp-1
+D      K09392  TFDP2; transcription factor Dp-2
+D      K09393  TFDP3; transcription factor Dp-3
+D      K09394  TFDPN; transcription factor Dp, invertebrate
+C    Fork head/winged helix other regulators
+D      K09395  FOXB; forkhead box protein B
+D      K09397  FOXD; forkhead box protein D
+D      K09398  FOXE; forkhead box protein E
+D      K09399  FOXF; forkhead box protein F
+D      K09400  FOXH; forkhead box protein H
+D      K09401  FOXI; forkhead box protein I
+D      K09403  FOXJ2_3; forkhead box protein J2/3
+D      K09404  FOXK; forkhead box protein K
+D      K09405  FOXL; forkhead box protein L
+D      K09406  FOXM; forkhead box protein M
+D      K07201  FOXO1; forkhead box protein O1
+D      K09408  FOXO3; forkhead box protein O3
+D      K12358  FOXO4; forkhead box protein O4
+D      K09409  FOXP; forkhead box protein P
+D      K10163  FOXP3, IPEX; forkhead box P3
+D      K09410  FOXQ, HFH1; forkhead box protein Q
+D      K09411  FOXX; forkhead box protein, other
+D      K09412  FKHL18; forkhead-like 18 protein
+D      K09413  HCM1; forkhead transcription factor HCM1
+C    Heat shock factors
+D      K09414  HSF1; heat shock transcription factor 1
+D      K09415  HSF2; heat shock transcription factor 2
+D      K09416  HSF3; heat shock transcription factor 3
+D      K09417  HSF4; heat shock transcription factor 4
+D      K09418  HSFN; heat shock transcription factor, invertebrate
+D      K09419  HSFF; heat shock transcription factor, other eukaryote
+C    Tryptophan clusters Myb, Myb-factors
+D      K09420  MYB; myb proto-oncogene protein
+D      K09421  MYBL; myb-related protein
+D      K09422  MYBP; myb proto-oncogene protein, plant
+D      K16166  PAP1, MYB75; transcription factor MYB75
+D      K12133  LHY; MYB-related transcription factor LHY
+D      K12134  CCA1; circadian clock associated 1
+C    Tryptophan clusters Myb, Myb-like factors
+D      K09453  SNAPC4; snRNA-activating protein complex subunit 4
+D      K09423  BAS1; Myb-like DNA-binding protein BAS1
+D      K09424  REB1; Myb-like DNA-binding protein REB1
+D      K09425  K09425; Myb-like DNA-binding protein FlbD
+D      K09426  RAP1; Myb-like DNA-binding protein RAP1
+D      K09427  ADF1; Adh transcription factor 1
+C    Tryptophan clusters Ets-type
+D      K09428  ELF1_2_4; E74-like factor 1/2/4
+D      K09429  K09429, ELF3; E74-like factor 3
+D      K17101  ELF5; E74-like factor 5
+D      K17102  EHF; ETS homologous factor
+D      K04375  ELK1; ETS domain-containing protein Elk-1
+D      K09430  ELK3; ETS domain-containing protein Elk-3 (SRF accessory protein 2)
+D      K04376  ELK4, SAP1; ETS domain-containing protein Elk-4
+D      K09431  ETV1; ets translocation variant 1
+D      K09432  ETV2, ER71; ETS translocation variant 2
+D      K09433  ETV3; ETS translocation variant 3
+D      K15592  ETV4; ets translocation variant 4
+D      K15593  ETV5; ets translocation variant 5
+D      K03211  ETV6_7, yan; ETS translocation variant 6/7
+D      K09434  ERF; ETS domain-containing transcription factor ERF
+D      K02678  ETS, pnt; c-ets proto-oncogene protein
+D      K09435  ERG; transcriptional regulator ERG
+D      K09436  FLI1; friend leukemia integration 1 transcription factor
+D      K09437  FEV; ETS oncogene family protein FEV
+D      K09438  SPI1; transcription factor PU.1
+D      K09439  SPIB; transcription factor Spi-B
+D      K09440  SPIC; transcription factor Spi-C
+D      K09441  GABPA; GA-binding protein transcription factor, alpha
+D      K09442  SPDEF; SAM pointed domain-containing ETS transcription factor
+D      K09443  K09443; ETS-type family, other
+C    Tryptophan clusters interferon-regulating factors
+D      K09444  IRF1; interferon regulatory factor 1
+D      K10153  IRF2; interferon regulatory factor 2
+D      K05411  IRF3; interferon regulatory factor 3
+D      K09445  IRF4; interferon regulatory factor 4
+D      K09446  IRF5; interferon regulatory factor 5
+D      K10154  IRF6; interferon regulatory factor 6
+D      K09447  IRF7; interferon regulatory factor 7
+D      K10155  IRF8; interferon regulatory factor 8
+D      K04693  IRF9, ISGF3G, P48; interferon regulatory factor 9
+C    TEA domain
+D      K09448  TEAD; transcriptional enhancer factor
+B
+B  <b>beta-Scaffold factors with minor groove contacts</b>
+C    RHR (Rel homology region) Rel/Ankyrin
+D      K02580  NFKB1; nuclear factor NF-kappa-B p105 subunit
+D      K04469  NFKB2; nuclear factor of kappa light polypeptide gene enhancer in B-cells 2
+D      K04735  RELA; transcription factor p65
+D      K09253  RELB; transcription factor RelB
+D      K09254  REL; c-Rel proto-oncogene protein
+D      K09255  K09255; Rel/ankyrin family, other
+C    RHR (Rel homology region) Ankyrin only
+D      K04734  NFKBIA; NF-kappa-B inhibitor alpha
+D      K02581  NFKBIB; NF-kappa-B inhibitor beta
+D      K14214  NFKBID; NF-kappa-B inhibitor delta
+D      K05872  NFKBIE; NF-kappa-B inhibitor epsilon
+D      K14242  NFKBIZ; NF-kappa-B inhibitor zeta
+D      K09256  NFKBIL1; NF-kappa-B inhibitor-like protein 1
+D      K09257  NFKBIL2; NF-kappa-B inhibitor-like protein 2
+D      K09258  BCL3; B-cell CLL/lymphoma protein 3
+D      K09454  GABPB; GA-binding protein transcription factor, beta
+D      K09259  K09259; ankyrin only family, other
+C    RHR (Rel homology region) NF-AT
+D      K04446  NFATC1, NFAT2, NFATC; nuclear factor of activated T-cells, cytoplasmic 1
+D      K17332  NFATC2, NFAT1, NFATP; nuclear factor of activated T-cells, cytoplasmic 2
+D      K17333  NFATC3, NFAT4; nuclear factor of activated T-cells, cytoplasmic 3
+D      K17334  NFATC4, NFAT3; nuclear factor of activated T-cells, cytoplasmic 4
+D      K17335  NFAT5; nuclear factor of activated T-cells 5
+C    STAT
+D      K11220  STAT1; signal transducer and activator of transcription 1
+D      K11221  STAT2; signal transducer and activator of transcription 2
+D      K04692  STAT3; signal transducer and activator of transcription 3
+D      K11222  STAT4; signal transducer and activator of transcription 4
+D      K11223  STAT5A; signal transducer and activator of transcription 5A
+D      K11224  STAT5B; signal transducer and activator of transcription 5B
+D      K11225  STAT6; signal transducer and activator of transcription 6
+C    p53
+D      K04451  TP53, P53; tumor protein p53
+D      K10148  TP73; tumor protein p73
+D      K10149  TP63; tumor protein p63
+C    MADS-box regulators of differentiation, MEF-2
+D      K09260  MEF2A; MADS-box transcription enhancer factor 2A
+D      K09261  MEF2B; MADS-box transcription enhancer factor 2B
+D      K04454  MEF2C; MADS-box transcription enhancer factor 2C
+D      K09262  MEF2D; MADS-box transcription enhancer factor 2D
+D      K09263  MEF2N; MADS-box transcription enhancer factor 2, invertebrate
+C    MADS-box regulators of differentiation, Homeotic genes
+D      K09264  K09264; MADS-box transcription factor, plant
+C    MADS-box regulators of differentiation, Yeast regulators
+D      K12412  MCM1; pheromone receptor transcription factor
+D      K09265  K09265; MADS-box transcription factor, other eukaryote
+C    MADS-box responders to external signals
+D      K04378  SRF; serum response factor
+C    TATA-binding proteins
+D      K03120  TBP, tbp; transcription initiation factor TFIID TATA-box-binding protein
+C    HMG SOX
+D      K09266  SRY; sex-determining region Y protein (SOX group A)
+D      K09267  SOX1S; transcription factor SOX1/3/14/21 (SOX group B)
+D      K16796  SOX2; transcription factor SOX2 (SOX group B)
+D      K09268  SOX4_11_12; transcription factor SOX4/11/12 (SOX group C)
+D      K09269  SOX5_6_13; transcription factor SOX5/6/13 (SOX group D)
+D      K09270  SOX7S; transcription factor SOX7/8/9/10/18 (SOX group E/F)
+D      K04495  SOX17; transcription factor SOX17 (SOX group F)
+D      K09271  SOXX; transcription factor SOX, other
+C    HMG TCF-1
+D      K04492  LEF1; lymphoid enhancer-binding factor 1
+D      K02620  TCF7; transcription factor 7
+D      K04490  TCF7L1; transcription factor 7-like 1
+D      K04491  TCF7L2; transcription factor 7-like 2
+C    HMG2-related
+D      K09272  SSRP1; structure-specific recognition protein 1
+C    UBF
+D      K09273  UBTF; upstream-binding transcription factor
+C    Other HMG box factors
+D      K09274  K09274; HMG box factor, other
+C    Heteromeric CCAAT factors
+D      K08064  NFYA; nuclear transcription factor Y, alpha
+D      K08065  NFYB; nuclear transcription Y subunit beta
+D      K08066  NFYC; nuclear transcription factor Y, gamma
+C    Grainyhead
+D      K09275  TFCP2; transcription factor CP2 and related proteins
+C    Cold-shock domain factors, DbpA-like
+D      K06099  CSDA, ZONAB; cold shock domain protein A
+C    Cold-shock domain factors, YB-1/DbpB-like
+D      K09276  YBX1, NSEP1; Y-box-binding protein 1
+C    Cold-shock domain factors, FRG Y2-like
+D      K09277  YBX2; Y-box-binding protein 2
+C    Runt
+D      K08367  RUNX1, AML1; runt-related transcription factor 1
+D      K09278  RUNX2, AML3; runt-related transcription factor 2
+D      K09279  RUNX3, AML2; runt-related transcription factor 3
+D      K09280  RUNXX; runt-related transcription factor, other
+B
+B  <b>Other transcription factors</b>
+C    Copper-fist proteins fungal regulators
+D      K09281  K09281; copper-fist transcription factor
+C    HMGI(Y)
+D      K09282  HMGA1; high mobility group AT-hook protein 1
+D      K09283  HMGA2; high mobility group AT-hook protein 2
+C    Pocket domain Rb
+D      K06618  RB1; retinoblastoma-associated protein
+D      K04681  RBL1; retinoblastoma-like protein 1
+D      K16332  RBL2; retinoblastoma-like protein 2
+C    Pocket domain CBP
+D      K04498  EP300, CREBBP, KAT3; E1A/CREB-binding protein [EC:2.3.1.48]
+C    AP2
+D      K09284  AP2; AP2-like factor, euAP2 lineage
+D      K09285  OVM, ANT; AP2-like factor, ANT lineage
+C    EREBP
+D      K09286  EREBP; EREBP-like factor
+D      K14516  ERF1; ethylene-responsive transcription factor 1
+D      K14517  ERF2; ethylene-responsive transcription factor 2
+D      K14507  ORCA2_3; AP2-domain DNA-binding protein ORCA2/3
+D      K13432  PTI4; pathogenesis-related genes transcriptional activator PTI4
+D      K13433  PTI5; pathogenesis-related genes transcriptional activator PTI5
+D      K13434  PTI6; pathogenesis-related genes transcriptional activator PTI6
+C    AP2/B3
+D      K09287  RAV; RAV-like factor
+C    T-box
+D      K10172  BRA, T; brachyury protein
+D      K10173  EOMES, TBR2; eomesodermin protein
+D      K10174  TBR1; T-box brain protein 1
+D      K10175  TBX1; T-box protein 1
+D      K10176  TBX2; T-box protein 2
+D      K10177  TBX3; T-box protein 3
+D      K10178  TBX4; T-box protein 4
+D      K10179  TBX5, HOS; T-box protein 5
+D      K10180  TBX6; T-box protein 6
+D      K10181  TBX10, TBX7; T-box protein 10
+D      K10182  TBX15, TBX14; T-box protein 15
+D      K10183  TBX18; T-box protein 18
+D      K10184  TBX19; T-box protein 19
+D      K10185  TBX20; T-box protein 20
+D      K10166  TBX21; T-box protein 21
+D      K10186  TBX22; T-box protein 22
+C    WRKY
+D      K13425  WRKY22; WRKY transcription factor 22
+D      K13423  WRKY25; WRKY transcription factor 25
+D      K13426  WRKY29; WRKY transcription factor 29
+D      K13424  WRKY33; WRKY transcription factor 33
+C    TCP
+D      K16221  TCP21, CHE; transcription factor TCP21 (protein CCA1 HIKING EXPEDITION)
+C    Others
+D      K11215  STE12; transcription factor STE12
+D      K12413  WHI5; G1-specific transcriptional repressor WHI5
+D      K12764  IME1; meiosis-inducing protein 1
+D      K12769  NDT80; meiosis-specific transcription factor NDT80
+D      K12779  SUM1; suppressor of MAR1-1 protein
+D      K14514  EIN3; ethylene-insensitive protein 3
+#
+A<b>Prokaryotic Type</b>
+B
+B  <b>Helix-turn-helix</b>
+C    AraC family
+D      K02099  araC; AraC family transcriptional regulator, arabinose operon regulatory protein
+D      K02508  hpaA; AraC family transcriptional regulator, 4-hydroxyphenylacetate 3-monooxygenase operon regulatory protein
+D      K02854  rhaR; AraC family transcriptional regulator, L-rhamnose operon transcriptional activator RhaR
+D      K02855  rhaS; AraC family transcriptional regulator, L-rhamnose operon regulatory protein RhaS
+D      K03490  celD; AraC family transcriptional regulator, cel operon repressor
+D      K03755  adiY; AraC family transcriptional regulator, transcriptional activator of adiA
+D      K04033  eutR; AraC family transcriptional regulator, ethanolamine operon transcriptional activator
+D      K05372  ybtA; AraC family transcriptional regulator
+D      K06599  chpD; AraC family transcriptional regulator, chemosensory pili system protein ChpD
+D      K07780  appY; AraC family transcriptional regulator, transcriptional regulator required for anaerobic and stationary phase induction of genes
+D      K10923  tcpN, toxT; AraC family transcriptional regulator, TCP pilus virulence regulatory protein
+D      K11920  envY; AraC family transcriptional regulator
+D      K12243  pchR; AraC family transcriptional regulator, transcriptional activator of the genes for pyochelin and ferripyochelin receptors
+D      K13631  soxS; AraC family transcriptional regulator, transcriptional activator of the superoxide response regulon
+D      K13632  marA; AraC family transcriptional regulator, multiple antibiotic resistance protein MarA
+D      K14063  feaR; AraC family transcriptional regulator, positive regulator of tynA and feaB
+D      K13652  K13652; AraC family transcriptional regulator
+D      K13653  K13653; AraC family transcriptional regulator
+D      K07506  K07506; AraC family transcriptional regulator
+D      K10778  ada; AraC family transcriptional regulator, regulatory protein of adaptative response / methylated-DNA-[protein]-cysteine methyltransferase [EC:2.1.1.63]
+D      K13529  ada-alkA; AraC family transcriptional regulator, regulatory protein of adaptative response / DNA-3-methyladenine glycosylase II [EC:3.2.2.21]
+D      K13530  adaA; AraC family transcriptional regulator, regulatory protein of adaptative response / methylphosphotriester-DNA alkyltransferase methyltransferase [EC:2.1.1.-]
+D      K13633  ftrA; AraC family transcriptional regulator, transcriptional activator FtrA
+C    LysR family
+D      K03566  gcvA; LysR family transcriptional regulator, glycine cleavage system transcriptional activator
+D      K02521  ilvY; LysR family transcriptional regulator, positive regulator for ilvC
+D      K02623  pcaQ; LysR family transcriptional regulator, pca operon transcriptional activator
+D      K03576  metR; LysR family transcriptional regulator, regulator for metE and metH
+D      K03717  nhaR; LysR family transcriptional regulator, transcriptional activator of nhaA
+D      K04761  oxyR; LysR family transcriptional regulator, hydrogen peroxide-inducible genes activator
+D      K05596  iciA; LysR family transcriptional regulator, chromosome initiation inhibitor
+D      K05798  leuO; LysR family transcriptional regulator, transcriptional activator for leuABCD operon
+D      K05817  hcaR; LysR family transcriptional regulator, hca operon transcriptional activator
+D      K07592  tdcA; LysR family transcriptional regulator, tdc operon transcriptional activator
+D      K09681  gltC; LysR family transcriptional regulator, transcription activator of glutamate synthase operon
+D      K10918  aphB; LysR family transcriptional regulator, transcriptional activator AphB
+D      K10972  allS; LysR family transcriptional regulator, transcriptional activator of the allD operon
+D      K11921  cynR; LysR family transcriptional regulator, cyn operon transcriptional activator
+D      K13634  cysB; LysR family transcriptional regulator, cys regulon transcriptional activator
+D      K13635  cbl; LysR family transcriptional regulator, cys regulon transcriptional activator
+D      K13636  dsdC; LysR family transcriptional regulator, D-serine deaminase activator
+D      K13794  tcuR; LysR family transcriptional regulator, regulatory protein for tcuABC
+D      K13928  mdcR; LysR family transcriptional regulator, malonate utilization transcriptional regulator
+D      K14057  abgR; LysR family transcriptional regulator, regulator of abg operon
+D      K14657  nodD; LysR family transcriptional regulator, nod-box dependent transcriptional activator
+D      K16135  dmlR; LysR family transcriptional regulator, transcriptional activator for dmlA
+D      K16516  galR; LysR family transcriptional regulator, regulator for genes of the gallate degradation pathway
+C    DeoR family
+D      K11534  deoR; DeoR family transcriptional regulator, deoxyribose operon repressor
+D      K02444  glpR; DeoR family transcriptional regulator, glycerol-3-phosphate regulon repressor
+D      K02530  lacR; DeoR family transcriptional regulator, lactose phosphotransferase system repressor
+D      K02436  gatR; DeoR family transcriptional regulator, galactitol utilization operon repressor
+D      K02081  agaR; DeoR family transcriptional regulator, aga operon transcriptional repressor
+D      K02430  fucR; DeoR family transcriptional regulator, L-fucose operon activator
+D      K03436  fruR2, fruR; DeoR family transcriptional regulator, fructose operon transcriptional repressor
+D      K02468  srlR, gutR; DeoR family transcriptional regulator, glucitol operon repressor
+D      K03477  ulaR; DeoR family transcriptional regulator, ulaG and ulaABCDEF operon transcriptional repressor
+D      K06283  spoIIID; putative DeoR family transcriptional regulator, stage III sporulation protein D
+D      K06608  iolR; DeoR family transcriptional regulator, myo-inositol catabolism operon repressor
+D      K09012  sufR; DeoR family transcriptional regulator, suf operon transcriptional repressor
+C    LacI family
+D      K02529  lacI, galR; LacI family transcriptional regulator
+D      K02525  kdgR; LacI family transcriptional regulator, kdg operon repressor
+D      K05499  cytR; LacI family transcriptional regulator, repressor for deo operon, udp, cdd, tsx, nupC, and nupG
+D      K03435  fruR1, fruR; LacI family transcriptional regulator, fructose operon transcriptional repressor
+D      K03484  scrR; LacI family transcriptional regulator, sucrose operon repressor
+D      K03485  treR1, treR; LacI family transcriptional regulator, trehalose operon repressor
+D      K03487  ascG; LacI family transcriptional regulator, asc operon repressor
+D      K03604  purR; LacI family transcriptional regulator, purine nucleotide synthesis repressor
+D      K06145  gntR; LacI family transcriptional regulator, gluconate utilization system Gnt-I transcriptional repressor
+D      K06146  idnR, gntH; LacI family transcriptional regulator, gluconate utilization system Gnt-II transcriptional activator
+D      K12113  ebgR; LacI family transcriptional regulator, ebg operon repressor
+D      K16136  malI; LacI family transcriptional regulator, maltose regulon regulatory protein
+C    GntR family
+D      K02103  araR; GntR family transcriptional regulator, arabinose operon transcriptional repressor
+D      K03482  yidP; GntR family transcriptional regulator, glv operon transcriptional regulator
+D      K03486  treR2, treR; GntR family transcriptional regulator, trehalose operon transcriptional repressor
+D      K03489  yydK; GntR family transcriptional regulator, transcriptional regulator of bglA
+D      K03492  ydhQ; GntR family transcriptional regulator
+D      K02043  phnF; GntR family transcriptional regulator, phosphonate transport system regulatory protein
+D      K03710  K03710; GntR family transcriptional regulator
+D      K05836  hutC; GntR family transcriptional regulator, histidine utilization repressor
+D      K10711  frlR; GntR family transcriptional regulator, frlABCD operon transcriptional regulator
+D      K11922  mngR, farR; GntR family transcriptional regulator, mannosyl-D-glycerate transport/metabolism system repressor
+D      K03603  fadR; GntR family transcriptional regulator, negative regulator for fad regulon and positive regulator of fabA
+D      K05799  pdhR; GntR family transcriptional regulator, transcriptional repressor for pyruvate dehydrogenase complex
+D      K11474  glcC; GntR family transcriptional regulator, glc operon transcriptional activator
+D      K13637  uxuR; GntR family transcriptional regulator, uxuAB operon transcriptional repressor
+D      K14348  lldR; GntR family transcriptional regulator, L-lactate dehydrogenase operon regulator
+D      K00375  K00375; GntR family transcriptional regulator / MocR family aminotransferase
+D      K07978  plmA; GntR family transcriptional regulator
+D      K07979  ytrA; GntR family transcriptional regulator
+D      K11476  K11476, gntR; GntR family transcriptional regulator, gluconate operon transcriptional repressor
+D      K11475  vanR; GntR family transcriptional regulator, vanillate catabolism transcriptional regulator
+D      K13654  mcbR; GntR family transcriptional regulator, colanic acid and biofilm gene transcriptional regulator
+D      K15735  csiR; GntR family transcriptional regulator, carbon starvation induced regulator
+C    TetR/AcrR family
+D      K02167  betI; TetR/AcrR family transcriptional regulator, transcriptional repressor of bet genes
+D      K03577  acrR; TetR/AcrR family transcriptional regulator, acrAB operon repressor
+D      K05501  slmA, ttk; TetR/AcrR family transcriptional regulator
+D      K09017  rutR; TetR/AcrR family transcriptional regulator
+D      K10913  hapR; TetR/AcrR family transcriptional regulator, hemagglutinin/protease regulatory protein
+D      K13770  ysiA, fadR; TetR/AcrR family transcriptional regulator, fatty acid metabolism regulator protein
+D      K16137  nemR; TetR/AcrR family transcriptional regulator, transcriptional repressor for nem operon
+D      K16138  uidR; TetR/AcrR family transcriptional regulator, repressor for uid operon
+C    Lrp/AsnC family
+D      K03718  asnC; Lrp/AsnC family transcriptional regulator, regulator for asnA, asnC and gidA
+D      K03719  lrp; Lrp/AsnC family transcriptional regulator, leucine-responsive regulatory protein
+D      K06154  lysM; Lrp/AsnC family transcriptional regulator, involved in the regulation of lysine biosynthesis
+D      K15782  doeX; Lrp/AsnC family transcriptional regulator, regulator of ectoine-degradation genes
+D      K05800  ybaO; Lrp/AsnC family transcriptional regulator
+C    LuxR family
+D      K15852  luxR; LuxR family transcriptional regulator, transcriptional activator of the bioluminescence operon
+D      K03556  malT; LuxR family transcriptional regulator, maltose regulon positive regulatory protein
+D      K04333  csgD; LuxR family transcriptional regulator, csgAB operon transcriptional regulatory protein
+D      K01994  gerE; LuxR family transcriptional regulator, transcriptional regulator of spore coat protein
+D      K07781  rcsA; LuxR family transcriptional regulator, capsular biosynthesis positive transcription factor
+D      K07782  sdiA; LuxR family transcriptional regulator
+D      K16247  gutR; LuxR family transcriptional regulator, glucitol operon activator
+C    MarR family
+D      K03712  marR; MarR family transcriptional regulator, multiple antibiotic resistance protein MarR
+D      K06075  slyA; MarR family transcriptional regulator, transcriptional regulator for hemolysin
+D      K09682  hpr; MarR family transcriptional regulator, protease production regulatory protein HPr
+D      K15973  mhqR; MarR family transcriptional regulator, 2-MHQ and catechol-resistance regulon repressor
+D      K15974  emrR, mprA; MarR family transcriptional regulator, negative regulator of the multidrug operon emrRAB
+C    MerR family
+D      K03713  glnR; MerR family transcriptional regulator, glutamine synthetase repressor
+D      K08365  merR; MerR family transcriptional regulator, mercuric resistance operon regulatory protein
+D      K11923  cueR; MerR family transcriptional regulator, copper efflux regulator
+D      K13638  zntR; MerR family transcriptional regulator, Zn(II)-responsive regulator of zntA
+D      K13639  soxR; MerR family transcriptional regulator, redox-sensitive transcriptional activator SoxR
+D      K13640  hspR; MerR family transcriptional regulator, heat shock protein HspR
+C    Fur family
+D      K03711  fur; Fur family transcriptional regulator, ferric uptake regulator
+D      K09823  zur; Fur family transcriptional regulator, zinc uptake regulator
+D      K02076  zurR, zur; Fur family transcriptional regulator, zinc uptake regulator
+D      K09825  perR; Fur family transcriptional regulator, peroxide stress response regulator
+D      K09826  irr; Fur family transcriptional regulator, iron response regulator
+C    IclR family
+D      K13641  iclR; IclR family transcriptional regulator, acetate operon repressor
+D      K02624  pcaR; IclR family transcriptional regulator, pca regulon regulatory protein
+D      K05818  mhpR; IclR family transcriptional regulator, mhp operon transcriptional activator
+D      K10973  allR; IclR family transcriptional regulator, negative regulator of allantoin and glyoxylate utilization operons
+C    CRP/FNR family
+D      K10914  crp; CRP/FNR family transcriptional regulator, cyclic AMP receptor protein
+D      K01420  fnr; CRP/FNR family transcriptional regulator, anaerobic regulatory protein
+D      K13642  ftrB; CRP/FNR family transcriptional regulator, transcriptional activator FtrB
+D      K15861  fixK; CRP/FNR family transcriptional regulator, nitrogen fixation regulation protein
+D      K16326  yeiL; CRP/FNR family transcriptional regulator, putaive post-exponential-phase nitrogen-starvation regulator
+C    Rrf2 family
+D      K13643  iscR; Rrf2 family transcriptional regulator, iron-sulfur cluster assembly transcription factor
+D      K13771  nsrR; Rrf2 family transcriptional regulator, nitric oxide-sensitive transcriptional repressor
+D      K13772  rirA; Rrf2 family transcriptional regulator, iron-responsive regulator
+D      K17472  cymR; Rrf2 family transcriptional regulator, cysteine metabolism repressor
+C    Other families
+D      K03709  troR; DtxR family transcriptional regulator, Mn-dependent transcriptional regulator
+D      K11924  mntR; DtxR family transcriptional regulator, manganese transport regulator
+D      K07722  nikR; CopG family transcriptional regulator, nickel-responsive regulator
+D      K07723  ydcD; CopG family transcriptional regulator
+D      K10947  padR; PadR family transcriptional regulator, regulatory protein PadR
+D      K10917  K10917, aphA; PadR family transcriptional regulator, regulatory protein AphA
+D      K03892  arsR; ArsR family transcriptional regulator
+D      K07721  K07721; ArsR family transcriptional regulator
+D      K03481  glvR; RpiR family transcriptional regulator, glv operon transcriptional regulator
+D      K15835  murR; RpiR family transcriptional regulator, murPQ operon repressor
+D      K03524  birA; BirA family transcriptional regulator, biotin operon repressor / biotin-[acetyl-CoA-carboxylase] ligase [EC:6.3.4.15]
+D      K03557  fis; Fis family transcriptional regulator, factor for inversion stimulation protein
+D      K03720  trpR; TrpR family transcriptional regulator, trp operon repressor
+D      K02688  prpR; transcriptional regulator, propionate catabolism operon regulatory protein
+D      K06211  nadR; HipB family transcriptional regulator, involved in the regulation of NAD biosynthesis
+D      K13655  mqsA; HTH-type transcriptional regulator / antitoxin for MqsR toxin
+D      K14056  puuR; HTH-type transcriptional regulator, repressor for puuD
+D      K15773  hipB; HTH-type transcriptional regulator, antitoxin HipB
+D      K10941  flrA; sigma-54 specific transcriptional regulator, flagellar regulatory protein A
+D      K02584  nifA; Nif-specific regulatory protein
+D      K02647  cdaR; carbohydrate diacid regulator
+D      K06714  rocR; arginine utilization regulatory protein
+D      K07724  ner, nlp, sfsB; Ner family transcriptional regulator
+D      K03706  codY; transcriptional pleiotropic repressor
+D      K02019  modE; molybdate transport system regulatory protein
+D      K11925  sgrR; SgrR family transcriptional regulator
+D      K11908  vasH; sigma-54 specific transcriptional regulator
+D      K17473  dgaR; sigma-54 dependent transcriptional regulator, dga operon transcriptional activator
+D      K11917  sfa3; sigma-54 specific transcriptional regulator
+D      K11914  sfa2; sigma-54 dependent transcriptional regulator
+D      K12146  hyfR; hydrogenase-4 transcriptional activator
+D      K12266  norR; anaerobic nitric oxide reductase transcription regulator
+D      K15836  fhlA; formate hydrogenlyase transcriptional activator
+D      K01926  rex; redox-sensing transcriptional repressor
+D      K15546  boxR, bzdR; XRE family transcriptional regulator, aerobic/anaerobic benzoate catabolism transcriptional regulator
+D      K17071  dcmR; transcriptional repressor of dcmA and dcmR
+D      K07725  K07725; putative transcriptional regulator
+D      K07726  K07726; putative transcriptional regulator
+D      K07727  K07727; putative transcriptional regulator
+D      K07728  K07728; putative transcriptional regulator
+D      K07729  K07729; putative transcriptional regulator
+D      K07730  K07730; putative transcriptional regulator
+D      K07731  K07731; putative transcriptional regulator
+B
+B  <b>Other transcription factors</b>
+C    BglG family
+D      K02538  manR; activator of the mannose operon, transcriptional antiterminator
+D      K03480  glcT; transcriptional antiterminator
+D      K03483  mtlR2, mtlR; mannitol operon transcriptional antiterminator
+D      K03488  licT, bglG; beta-glucoside operon transcriptional antiterminator
+D      K03491  licR; lichenan operon transcriptional antiterminator
+D      K03493  bglG1; transcriptional antiterminator
+C    Others
+D      K02443  glpP; glycerol uptake operon antiterminator
+D      K02531  lacT; transcriptional antiterminator
+D      K05785  rfaH; transcriptional antiterminator RfaH
+D      K03402  argR, ahrC; transcriptional regulator of arginine metabolism
+D      K02565  nagC; N-acetylglucosamine repressor
+D      K15545  mlc; transcriptional regulator of PTS gene
+D      K02562  mtlR1, mtlR; mannitol operon repressor
+D      K03704  cspA; cold shock protein (beta-ribbon, CspA family)
+D      K03764  metJ; transcriptional repressor of met regulon (beta-ribbon, MetJ family)
+D      K03705  hrcA; heat-inducible transcriptional repressor
+D      K03707  tenA; thiaminase (transcriptional activator TenA) [EC:3.5.99.2]
+D      K10810  tenI; transcriptional regulator TenI
+D      K03708  ctsR; transcriptional regulator CtsR
+D      K03721  tyrR; transcriptional regulator of aroF, aroG, tyrA and aromatic amino acid transport
+D      K03765  cadC; transcriptional activator of cad operon
+D      K03567  gcvR; glycine cleavage system transcriptional repressor
+D      K02616  paaX; phenylacetic acid degradation operon negative regulatory protein
+D      K03974  pspF; psp operon transcriptional activator
+D      K03973  pspC; phage shock protein C
+D      K06284  abrB; transcriptional pleiotropic regulator of transition state genes
+D      K04769  spoVT; AbrB family transcriptional regulator, stage V sporulation protein T
+D      K05311  cggR; central glycolytic genes regulator
+D      K05346  K05346, deoR; deoxyribonucleoside regulator
+D      K11531  lsrR; lsr operon transcriptional repressor
+D      K03497  parB, spo0J; chromosome partitioning protein, ParB family
+D      K05519  med; transcriptional activator of comK gene
+D      K05880  dhaR; transcriptional activator for dhaKLM operon
+D      K06140  rnk; regulator of nucleoside diphosphate kinase
+D      K06285  mtrB1, mtrB; transcription attenuation protein (tryptophan RNA-binding attenuator protein)
+D      K02825  pyrR; pyrimidine operon attenuation protein / uracil phosphoribosyltransferase [EC:2.4.2.9]
+D      K06314  rsfA; prespore-specific regulator
+D      K06315  splA; transcriptional regulator of the spore photoproduct lyase operon
+D      K07733  alpA; prophage regulatory protein
+D      K07734  paiB; transcriptional regulator
+D      K07735  algH; putative transcriptional regulator
+D      K08277  caiF; transcriptional activator CaiF
+D      K06204  dksA; DnaK suppressor protein
+D      K07736  K07736; CarD family transcriptional regulator
+D      K07737  K07737; putative transcriptional regulator
+D      K07738  nrdR; transcriptional repressor NrdR
+D      K09683  hutP; hut operon positive regulatory protein
+D      K09684  pucR; purine catabolism regulatory protein
+D      K09685  K09685, purR; purine operon repressor
+D      K11926  crl; sigma factor-binding protein Crl
+D      K12296  comX1_2; competence protein ComX
+D      K07471  ygiV; probable transcriptional regulator
+D      K14414  rtcR; transcriptional regulatory protein RtcR
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: August 22, 2013
+#<br>Classification taken and modified from TRANSFAC 7.0

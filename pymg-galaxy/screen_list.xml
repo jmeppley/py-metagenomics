@@ -1,0 +1,86 @@
+<tool id="screen_list" name="ScreenRecords" version="0.1.0">
+    <description> Remove or extract records from a sequence file</description>
+    <stdio>
+    	<exit_code range="1:"   level="fatal"   description="ERROR"/>
+    	<regex match="WARNING" source="both" level="warning"/>
+    </stdio>
+
+    <command interpreter="python">
+      $SCRIPTDIR/screen_list.py
+	    --galaxy
+        -l $listFile
+		#if $list_type.format == "table":
+			-C $list_type.col
+		#end if
+        -o $outputFile
+		#if str($accs) == "True"
+		 -a 
+		#end if
+		#if str($keep) == "True"
+		 -k 
+		#end if
+        -f $format_type.format
+		-F $format_type.outputFormat 
+        $inputFile
+    </command>
+    <inputs>
+		<!--param name="SCRIPTDIR" type="hidden" value="/opt/edl/scripts/"/-->
+      <param name="SCRIPTDIR" type="hidden" value="/minilims/home/jmeppley/work/delong/projects/scripts"/>
+      <conditional name="format_type">
+       <param name="format" type="select" label="Sequence format">
+        <option value="fasta">Fasta</option>
+        <option value="fastq" selected="True">Fastq</option>
+       </param>
+       <when value="fasta">
+        <param name="inputFile" type="data" format="fasta" label="Screen records in"/>
+        <param name="outputFormat" type="select" label="Output format">
+            <option value="fasta" selected="True">Fasta</option>
+        </param>
+       </when>
+       <when value="fastq">
+        <param name="inputFile" type="data" format="fastq" label="Screen records in"/>
+        <param name="outputFormat" type="select" label="Output format">
+            <option value="fasta">Fasta</option>
+            <option value="fastq" selected="True">Fastq</option>
+        </param>
+       </when>
+      </conditional>
+	  <conditional name="list_type">
+		  <param name="format" type="select" label="List type">
+			  <option value="text">Text (whole line)</option>
+			  <option selected="True" value="table">Column (in a table)</option>
+		  </param>
+		  <when value="text">
+			  <param name="listFile" type="data" format="txt" label="List of records to drop or keep" help="Each line is a record identifier"/>
+		  </when>
+		  <when value="table">
+			  <param name="listFile" type="data" format="tabular" label="Table with column of record IDs to drop or keep"/>
+			  <param name="col" label="Column with record IDs" type="data_column" data_ref="listFile" />
+		  </when>
+	  </conditional>
+      <param name="keep" type="select" display="radio" label="Matching records">
+       <option selected="true" value="True">Keep</option>
+       <option value="False">Discard</option>
+      </param>
+      <param name="accs" type="select" display="radio" label="Identifiers are" help="If selected, accessions will be parsed from record IDs in sequence file and matched to entries in list with any version suffixes removed">
+       <option selected="true" value="True">Full record IDs</option>
+       <option value="False">Accessions</option>
+      </param>
+    </inputs>
+    <outputs>
+        <data name="outputFile" format="fasta">
+	  <change_format>
+            <when input="format_type.outputFormat" value="fastq" format="fastq" />
+          </change_format>
+        </data>
+
+    </outputs>
+    <help>
+
+
+**What it does**
+
+This tool uses biopython to parse sequence records and compare their IDs to records in the given list. Matches are kept or discared based on the options selected.
+
+    </help>
+</tool>

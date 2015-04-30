@@ -1,0 +1,781 @@
++C	Peptidase
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Peptidases</h2>
+#<!---
+#ENTRY       ko01002
+#DEFINITION  Peptidases
+#--->
+!
+A<b>Aspartic Peptidases</b>
+B  Family A1: pepsin family
+C    K06002  PGA; pepsin A [EC:3.4.23.1]
+C    K01377  PGC; gastricsin [EC:3.4.23.3]
+C    K04521  BACE1; beta-site APP-cleaving enzyme 1 (memapsin 2) [EC:3.4.23.46]
+C    K07747  BACE2; beta-site APP-cleaving enzyme 2 (memapsin 1) [EC:3.4.23.45]
+C    K01378  CYM; chymosin [EC:3.4.23.4]
+C    K01380  REN; renin [EC:3.4.23.15]
+C    K01379  CTSD; cathepsin D [EC:3.4.23.5]
+C    K01382  CTSE; cathepsin E [EC:3.4.23.34]
+C    K01383  E3.4.23.35; barrierpepsin [EC:3.4.23.35]
+C    K06004  E3.4.23.18; aspergillopepsin I [EC:3.4.23.18]
+C    K01381  E3.4.23.25; saccharopepsin [EC:3.4.23.25]
+C    K08245  E3.4.23.40; phytepsin [EC:3.4.23.40]
+C    K06007  E3.4.23.38; plasmepsin I [EC:3.4.23.38]
+C    K06008  E3.4.23.39; plasmepsin II [EC:3.4.23.39]
+C    K06009  E3.4.23.41; yapsin 1 [EC:3.4.23.41]
+C    K06005  SAP; candidapepsin [EC:3.4.23.24]
+C    K08565  NAPSA; napsin-A [EC:3.4.23.-]
+B  Family A5: thermopsin family
+C    K01385  E3.4.23.42; thermopsin [EC:3.4.23.42]
+B  Family A8: signal peptidase II family
+C    K03101  lspA; signal peptidase II [EC:3.4.23.36]
+B  Family A22: presenilin family
+C    K04505  PSEN1, PS1; presenilin 1 [EC:3.4.23.-]
+C    K04522  PSEN2, PS2; presenilin 2 [EC:3.4.23.-]
+C    K06060  PSENN; presenilin, other
+C    K09595  HM13; minor histocompatibility antigen H13 [EC:3.4.23.-]
+C    K09596  SPPL2A; signal peptide peptidase-like 2A [EC:3.4.23.-]
+C    K09597  SPPL2B; signal peptide peptidase-like 2B [EC:3.4.23.-]
+C    K14212  SPPL2C, IMP5; signal peptide peptidase-like 2C [EC:3.4.23.-]
+C    K09598  SPPL3; signal peptide peptidase-like 3 [EC:3.4.23.-]
+B  Family A24: type IV prepilin peptidase family
+C    K02654  pilD, pppA; leader peptidase (prepilin peptidase) / N-methyltransferase [EC:3.4.23.43 2.1.1.-]
+C    K02464  gspO; general secretion pathway protein O [EC:3.4.23.43 2.1.1.-]
+C    K10966  tcpJ; toxin co-regulated pilus biosynthesis protein J [EC:3.4.23.43 2.1.1.-]
+C    K02506  hofD, hopD; leader peptidase HopD [EC:3.4.23.43]
+C    K07991  flaK-A, flaK; archaeal preflagellin peptidase FlaK [EC:3.4.23.52]
+B  Family A25: gpr protease family
+C    K06012  gpr; spore protease [EC:3.4.24.78]
+B  Family A26: omptin family
+C    K01355  ompT; omptin [EC:3.4.23.49]
+C    K08566  pla; plasminogen activator [EC:3.4.23.48]
+C    K08477  pgtE; outer membrane protease E [EC:3.4.21.-]
+C    K13520  icsP, sopA; outer membrane protease [EC:3.4.23.-]
+B  Family A31: HybD endopeptidase family
+C    K03605  hyaD; hydrogenase 1 maturation protease [EC:3.4.24.-]
+C    K08567  hybD; hydrogenase 2 maturation protease [EC:3.4.24.-]
+C    K08315  hycI; hydrogenase 3 maturation protease [EC:3.4.23.51]
+#
+A<b>Cysteine Peptidases</b>
+B  Family C1: papain family
+C    K06000  E3.4.22.2; papain [EC:3.4.22.2]
+C    K16292  CEP, CYSEP; KDEL-tailed cysteine endopeptidase [EC:3.4.22.-]
+C    K01363  CTSB; cathepsin B [EC:3.4.22.1]
+C    K01275  CTSC; cathepsin C [EC:3.4.14.1]
+C    K01373  CTSF; cathepsin F [EC:3.4.22.41]
+C    K01366  CTSH; cathepsin H [EC:3.4.22.16]
+C    K01371  CTSK; cathepsin K [EC:3.4.22.38]
+C    K01365  CTSL; cathepsin L [EC:3.4.22.15]
+C    K09600  CTSM; cathepsin M [EC:3.4.22.-]
+C    K01374  CTSO; cathepsin O [EC:3.4.22.42]
+C    K09599  CTSP; cathepsin P [EC:3.4.22.-]
+C    K09601  CTSR; cathepsin R [EC:3.4.22.-]
+C    K01368  CTSS; cathepsin S [EC:3.4.22.27]
+C    K01375  CTSL2, CTSV; cathepsin V [EC:3.4.22.43]
+C    K08569  CTSW; cathepsin W [EC:3.4.22.-]
+C    K08568  CTSZ; cathepsin X [EC:3.4.18.1]
+C    K08570  EHCP; histolysain [EC:3.4.22.35]
+C    K13441  RCR3; cysteine protease
+C    K16290  XCP; xylem cysteine proteinase [EC:3.4.22.-]
+C    K08571  E3.4.22.51; cruzipain [EC:3.4.22.51]
+C    K13538  CPA; cysteine peptidase A [EC:3.4.22.-]
+C    K13537  CPB; cysteine peptidase B [EC:3.4.22.-]
+C    K08572  CPC; cysteine peptidase C [EC:3.4.22.-]
+C    K01372  E3.4.22.40, pepC; bleomycin hydrolase [EC:3.4.22.40]
+B  Family C2: calpain family
+C    K01367  CAPN1; calpain-1 [EC:3.4.22.52]
+C    K03853  CAPN2; calpain-2 [EC:3.4.22.53]
+C    K08573  CAPN3; calpain-3 [EC:3.4.22.54]
+C    K08574  CAPN5; calpain-5 [EC:3.4.22.-]
+C    K08575  CAPN6; calpain-6 [EC:3.4.22.-]
+C    K08576  CAPN7; calpain-7 [EC:3.4.22.-]
+C    K08577  CAPN8; calpain-8 [EC:3.4.22.-]
+C    K08578  CAPN9; calpain-9 [EC:3.4.22.-]
+C    K08579  CAPN10; calpain-10 [EC:3.4.22.-]
+C    K08580  CAPN11; calpain-11 [EC:3.4.22.-]
+C    K04740  CAPN12; calpain-12 [EC:3.4.22.-]
+C    K08581  CAPN13; calpain-13 [EC:3.4.22.-]
+C    K13442  CAPN14; calpain-14 [EC:3.4.22.-]
+C    K08582  CAPN15; calpain-15 [EC:3.4.22.-]
+C    K08583  CAPNS1, CAPN4; calpain, small subunit 1
+C    K08584  CAPNS2; calpain, small subunit 2
+C    K08585  CAPNN; calpain, invertebrate [EC:3.4.22.-]
+C    K08586  tpr; thiol protease [EC:3.4.22.-]
+B  Family C10: streptopain family
+C    K01364  speB; streptopain [EC:3.4.22.10]
+B  Family C11: clostripain family
+C    K08587  cloSI; clostripain [EC:3.4.22.8]
+B  Family C12: ubiquitin C-terminal hydrolase family
+C    K05611  UCHL1; ubiquitin carboxyl-terminal hydrolase L1 [EC:3.4.19.12]
+C    K05609  UCHL3, YUH1; ubiquitin carboxyl-terminal hydrolase L3 [EC:3.4.19.12]
+C    K08588  BAP1, UCHL2; ubiquitin carboxyl-terminal hydrolase BAP1 [EC:3.4.19.12]
+C    K05610  UCHL5, UCH37; ubiquitin carboxyl-terminal hydrolase L5 [EC:3.4.19.12]
+B  Family C13: legumain family
+C    K01369  LGMN; legumain [EC:3.4.22.34]
+B  Family C14: caspase family
+C    K01370  CASP1; caspase 1 [EC:3.4.22.36]
+C    K02186  CASP2; caspase 2 [EC:3.4.22.55]
+C    K02187  CASP3; caspase 3 [EC:3.4.22.56]
+C    K04394  CASP4; caspase 4 [EC:3.4.22.57]
+C    K04395  CASP5; caspase 5 [EC:3.4.22.58]
+C    K04396  CASP6; caspase 6 [EC:3.4.22.59]
+C    K04397  CASP7; caspase 7 [EC:3.4.22.60]
+C    K04398  CASP8; caspase 8 [EC:3.4.22.61]
+C    K04399  CASP9; caspase 9 [EC:3.4.22.62]
+C    K04400  CASP10; caspase 10 [EC:3.4.22.63]
+C    K12808  CASP11; caspase 11 [EC:3.4.22.64]
+C    K04741  CASP12; caspase 12 [EC:3.4.22.-]
+C    K04401  CASP14; caspase 14 [EC:3.4.22.-]
+C    K13521  CASP15; caspase 15
+C    K04489  CASPN; caspase invertebrate, apoptosis-related cysteine protease [EC:3.4.22.-]
+C    K07369  MALT1; mucosa-associated lymphoid tissue lymphoma translocation protein 1 [EC:3.4.22.-]
+C    K04724  CFLAR, FLIP; CASP8 and FADD-like apoptosis regulator
+B  Family C15: pyroglutamyl peptidase I family
+C    K01304  E3.4.19.3, pcp; pyroglutamyl-peptidase [EC:3.4.19.3]
+B  Family C19: ubiquitin-specific protease family
+C    K11836  USP5_13, UBP14; ubiquitin carboxyl-terminal hydrolase 5/13 [EC:3.1.2.15]
+C    K11870  UBP1; ubiquitin carboxyl-terminal hydrolase 1 [EC:3.1.2.15]
+C    K11837  USP6_32; ubiquitin carboxyl-terminal hydrolase 6/32 [EC:3.1.2.15]
+C    K11835  USP4_11_15, UBP12; ubiquitin carboxyl-terminal hydrolase 4/11/15 [EC:3.1.2.15]
+C    K11839  USP8, UBP5; ubiquitin carboxyl-terminal hydrolase 8 [EC:3.1.2.15]
+C    K11833  USP2_21; ubiquitin carboxyl-terminal hydrolase 2/21 [EC:3.1.2.15]
+C    K11843  USP14, UBP6; ubiquitin carboxyl-terminal hydrolase 14 [EC:3.1.2.15]
+C    K11838  USP7, UBP15; ubiquitin carboxyl-terminal hydrolase 7 [EC:3.1.2.15]
+C    K11840  USP9_24; ubiquitin carboxyl-terminal hydrolase 9/24 [EC:3.1.2.15]
+C    K11841  USP10, UBP3; ubiquitin carboxyl-terminal hydrolase 10 [EC:3.1.2.15]
+C    K11832  USP1; ubiquitin carboxyl-terminal hydrolase 1 [EC:3.1.2.15]
+C    K11842  USP12_46; ubiquitin carboxyl-terminal hydrolase 12/46 [EC:3.1.2.15]
+C    K11844  USP16_45; ubiquitin carboxyl-terminal hydrolase 16/45 [EC:3.1.2.15]
+C    K11845  USP17, DUB3; ubiquitin carboxyl-terminal hydrolase 17 [EC:3.1.2.15]
+C    K11847  USP19; ubiquitin carboxyl-terminal hydrolase 19 [EC:3.1.2.15]
+C    K11848  USP20_33; ubiquitin carboxyl-terminal hydrolase 20/33 [EC:3.1.2.15]
+C    K11986  USP3; ubiquitin carboxyl-terminal hydrolase 3 [EC:3.1.2.15]
+C    K11846  USP18_41; ubiquitin carboxyl-terminal hydrolase 18/41 [EC:3.1.2.15]
+C    K11366  USP22_27_51, UBP8; ubiquitin carboxyl-terminal hydrolase 22/27/51 [EC:3.1.2.15]
+C    K11849  USP25_28, UBP2; ubiquitin carboxyl-terminal hydrolase 25/28 [EC:3.1.2.15]
+C    K11850  USP26_29_37; ubiquitin carboxyl-terminal hydrolase 26/29/37 [EC:3.1.2.15]
+C    K11855  USP36_42; ubiquitin carboxyl-terminal hydrolase 36/42 [EC:3.1.2.15]
+C    K11857  USP47; ubiquitin carboxyl-terminal hydrolase 47 [EC:3.1.2.15]
+C    K11854  USP35_38; ubiquitin carboxyl-terminal hydrolase 35/38 [EC:3.1.2.15]
+C    K11834  USP44_49; ubiquitin carboxyl-terminal hydrolase 44/49 [EC:3.1.2.15]
+C    K11851  USP30; ubiquitin carboxyl-terminal hydrolase 30 [EC:3.1.2.15]
+C    K11853  USP34; ubiquitin carboxyl-terminal hydrolase 34 [EC:3.1.2.15]
+C    K11858  USP48; ubiquitin carboxyl-terminal hydrolase 48 [EC:3.1.2.15]
+C    K11869  USP40; ubiquitin carboxyl-terminal hydrolase 40 [EC:3.1.2.15]
+C    K11852  USP31; ubiquitin carboxyl-terminal hydrolase 31 [EC:3.1.2.15]
+C    K11873  UBP10; ubiquitin carboxyl-terminal hydrolase 10 [EC:3.1.2.15]
+C    K11856  USP43; ubiquitin carboxyl-terminal hydrolase 43 [EC:3.1.2.15]
+C    K11871  UBP7_11; ubiquitin carboxyl-terminal hydrolase 7/11 [EC:3.1.2.15]
+C    K11872  UBP9_13; ubiquitin carboxyl-terminal hydrolase 9/13 [EC:3.1.2.15]
+C    K11874  UBP16; ubiquitin carboxyl-terminal hydrolase 16 [EC:3.1.2.15]
+C    K01072  E3.1.2.15; ubiquitin thiolesterase [EC:3.1.2.15]
+B  Family C25: gingipain family
+C    K08589  E3.4.22.37; gingipain R [EC:3.4.22.37]
+B  Family C26: gamma-glutamyl hydrolase family
+C    K01307  GGH; gamma-glutamyl hydrolase [EC:3.4.19.9]
+C    K01951  E6.3.5.2, guaA; GMP synthase (glutamine-hydrolysing) [EC:6.3.5.2]
+C    K01948  CPS1; carbamoyl-phosphate synthase (ammonia) [EC:6.3.4.16]
+C    K11540  CAD; carbamoyl-phosphate synthase / aspartate carbamoyltransferase / dihydroorotase [EC:6.3.5.5 2.1.3.2 3.5.2.3]
+C    K09473  puuD; gamma-glutamyl-gamma-aminobutyrate hydrolase [EC:3.5.1.94]
+C    K07010  K07010; putative glutamine amidotransferase
+B  Family C40
+C    K13694  spr; lipoprotein Spr
+C    K13695  nlpC; probable lipoprotein NlpC
+B  Family C44
+C    K00764  purF, PPAT; amidophosphoribosyltransferase [EC:2.4.2.14]
+C    K00820  E2.6.1.16, glmS; glucosamine--fructose-6-phosphate aminotransferase (isomerizing) [EC:2.6.1.16]
+C    K01953  asnB, ASNS; asparagine synthase (glutamine-hydrolysing) [EC:6.3.5.4]
+B  Family C45
+C    K10852  E2.3.1.164; isopenicillin-N N-acyltransferase [EC:2.3.1.164]
+B  Family C46: hedgehog family
+C    K06224  HH; hedgehog
+C    K11988  SHH; sonic hedgehog
+C    K11989  IHH; indian hedgehog
+C    K11990  DHH; desert hedgehog
+B  Family C47: staphopain family
+C    K08258  sspB2, sspP, scpA; staphopain A [EC:3.4.22.48]
+C    K13715  sspB1; staphopain B [EC:3.4.22.-]
+B  Family C48: Ulp1 endopeptidase family
+C    K08592  SENP1; sentrin-specific protease 1 [EC:3.4.22.68]
+C    K03345  SENP2, AXAM2; sentrin-specific protease 2 (axin associating molecule) [EC:3.4.22.68]
+C    K08593  SENP3; sentrin-specific protease 3 [EC:3.4.22.68]
+C    K08594  SENP5; sentrin-specific protease 5 [EC:3.4.22.68]
+C    K08595  SENP6; sentrin-specific protease 6 [EC:3.4.22.68]
+C    K08596  SENP7; sentrin-specific protease 7 [EC:3.4.22.68]
+C    K08597  SENP8, NEDP1, DEN1; sentrin-specific protease 8 [EC:3.4.22.68]
+B  Family C50: separase family
+C    K02365  ESP1; separase [EC:3.4.22.49]
+B  Family C54: Aut2 peptidase family
+C    K08342  ATG4; autophagy-related protein 4 [EC:3.4.22.-]
+B  Family C55: YopJ protease family
+C    K08598  yopJ; YopJ protease family
+B  Family C56: PfpI endopeptidase family
+C    K05520  pfpI; protease I [EC:3.2.-.-]
+C    K05687  PARK7; protein DJ-1
+C    K03152  thiJ; 4-methyl-5(b-hydroxyethyl)-thiazole monophosphate biosynthesis
+B  Family C58
+C    K08599  yopT; YopT peptidase [EC:3.4.22.-]
+C    K13440  avrPphB; cysteine protease avirulence protein AvrPphB [EC:3.4.22.-]
+B  Family C59
+C    K01434  E3.5.1.11; penicillin amidase [EC:3.5.1.11]
+B  Family C60
+C    K07284  srtA; sortase A [EC:3.4.22.70]
+C    K08600  srtB; sortase B [EC:3.4.22.70]
+B  Family C64
+C    K11860  OTUD7; OTU domain-containing protein 7 [EC:3.-.-.-]
+C    K11859  TNFAIP3, A20; tumor necrosis factor, alpha-induced protein 3 [EC:3.-.-.-]
+C    K11862  ZRANB1, TRABID; ubiquitin thioesterase ZRANB1 [EC:3.1.2.-]
+C    K11861  VCPIP1, VCIP135; deubiquitinating protein VCIP135 [EC:3.4.22.-]
+B  Family C65
+C    K09602  OTUB1; ubiquitin thioesterase protein OTUB1 [EC:3.4.-.-]
+C    K09603  OTUB2; ubiquitin thioesterase protein OTUB2 [EC:3.4.-.-]
+B  Family C67
+C    K08601  CYLD, USLP2; ubiquitin thioesterase CYLD [EC:3.1.2.15]
+B  Family C69
+C    K08659  pepDA, pepDB; dipeptidase [EC:3.4.-.-]
+C    K14358  SCRN; secernin
+B  Family C70
+C    K13439  avrRpt2; cysteine protease avirulence protein AvrRpt2 [EC:3.4.22.-]
+B  Family C75
+C    K07813  agrB; accessory gene regulator B
+B  Family C82
+C    K16291  erfK; L,D-transpeptidase
+B  Family C85: DUBA deubiquitinylating enzyme
+C    K13716  OTUD1; OTU domain-containing protein 1
+C    K13717  OTUD3; OTU domain-containing protein 3
+C    K13718  OTUD4; OTU domain-containing protein 4
+C    K12655  OTUD5, DUBA; OTU domain-containing protein 5 [EC:3.1.2.15]
+B  Family C86
+C    K11863  ATXN3, MJD; Ataxin-3 [EC:3.4.22.-]
+C    K15235  JOSD; josephin [EC:3.4.19.12]
+B  Family C88
+C    K13719  OTU1, YOD1; ubiquitin thioesterase OTU1 [EC:3.1.2.-]
+B  Family C89
+C    K12348  ASAH1; acid ceramidase [EC:3.5.1.23]
+C    K13720  NAAA; N-acylethanolamine-hydrolyzing acid amidase [EC:3.5.1.-]
+#
+A<b>Metallo Peptidases</b>
+B  Family M1
+C    K11140  ANPEP; aminopeptidase N [EC:3.4.11.2]
+C    K11141  ENPEP; glutamyl aminopeptidase [EC:3.4.11.7]
+C    K01254  E3.3.2.6, LTA4H; leukotriene-A4 hydrolase [EC:3.3.2.6]
+C    K01256  pepN; aminopeptidase N [EC:3.4.11.2]
+C    K13721  APE2; aminopeptidase 2 [EC:3.4.11.-]
+C    K01306  TRHDE; pyroglutamyl-peptidase II [EC:3.4.19.6]
+C    K08776  NPEPPS; puromycin-sensitive aminopeptidase [EC:3.4.11.-]
+C    K01257  LNPEP; cystinyl aminopeptidase [EC:3.4.11.3]
+C    K01260  RNPEP; aminopeptidase B [EC:3.4.11.6]
+C    K09604  ARTS1; adipocyte-derived leucine aminopeptidase [EC:3.4.11.-]
+C    K13722  trf2_3; tricorn protease interacting factor F2/3 [EC:3.4.11.-]
+C    K09605  RNPEPL1; arginyl aminopeptidase-like 1 [EC:3.4.11.-]
+C    K13723  ERAP2; endoplasmic reticulum aminopeptidase 2 [EC:3.4.11.-]
+C    K13724  AQPEP; aminopeptidase Q [EC:3.4.11.-]
+C    K09606  C9ORF3; aminopeptidase O [EC:3.4.11.-]
+C    K13725  PFAM1; M1-family aminopeptidase [EC:3.4.11.-]
+C    K03128  TAF2; transcription initiation factor TFIID subunit 2
+B  Family M2
+C    K01283  E3.4.15.1, ACE; peptidyl-dipeptidase A [EC:3.4.15.1]
+C    K09708  ACEH, ACE2; angiotensin-converting enzyme 2 [EC:3.4.17.23]
+B  Family M3
+C    K01392  THOP1; thimet oligopeptidase [EC:3.4.24.15]
+C    K01393  NLN; neurolysin [EC:3.4.24.16]
+C    K01405  PRD1; saccharolysin [EC:3.4.24.37]
+C    K01414  prlC; oligopeptidase A [EC:3.4.24.70]
+C    K01284  dcp; peptidyl-dipeptidase Dcp [EC:3.4.15.5]
+C    K01410  E3.4.24.59, MIPEP; mitochondrial intermediate peptidase [EC:3.4.24.59]
+C    K13726  MEPB; metallopeptidase MepB [EC:3.4.24.-]
+C    K08602  pepF, pepB; oligoendopeptidase F [EC:3.4.24.-]
+B  Family M4: thermolysin family
+C    K08603  E3.4.24.27; thermolysin [EC:3.4.24.27]
+C    K08604  E3.4.24.25; vibriolysin [EC:3.4.24.25]
+C    K01399  lasB; pseudolysin [EC:3.4.24.26]
+C    K08605  E3.4.24.30; coccolysin [EC:3.4.24.30]
+C    K01401  aur; aureolysin [EC:3.4.24.29]
+C    K08777  nprB; neutral peptidase B [EC:3.4.24.-]
+C    K01400  E3.4.24.28; bacillolysin [EC:3.4.24.28]
+B  Family M6: immune inhibitor A family
+C    K09607  ina; immune inhibitor A [EC:3.4.24.-]
+B  Family M7: snapalysin family
+C    K01416  E3.4.24.77; snapalysin [EC:3.4.24.77]
+B  Family M8: leishmanolysin family
+C    K01404  GP63; leishmanolysin [EC:3.4.24.36]
+C    K13539  LMLN; leishmanolysin-like peptidase [EC:3.4.24.-]
+B  Family M9
+C    K01387  colA; microbial collagenase [EC:3.4.24.3]
+B  Family M10
+C    K01388  MMP1; matrix metalloproteinase-1 (interstitial collagenase) [EC:3.4.24.7]
+C    K01398  MMP2; matrix metalloproteinase-2 (gelatinase A) [EC:3.4.24.24]
+C    K01394  MMP3; matrix metalloproteinase-3 (stromelysin 1, progelatinase) [EC:3.4.24.17]
+C    K01397  MMP7; matrix metalloproteinase-7 (matrilysin, uterine) [EC:3.4.24.23]
+C    K01402  MMP8; matrix metalloproteinase-8 (neutrophil collagenase) [EC:3.4.24.34]
+C    K01403  MMP9; matrix metalloproteinase-9 (gelatinase B) [EC:3.4.24.35]
+C    K01396  MMP10; matrix metalloproteinase-10 (stromelysin 2) [EC:3.4.24.22]
+C    K07993  MMP11; matrix metalloproteinase-11 (stromelysin 3) [EC:3.4.24.-]
+C    K01413  MMP12; matrix metalloproteinase-12 (macrophage elastase) [EC:3.4.24.65]
+C    K07994  MMP13; matrix metalloproteinase-13 (collagenase 3) [EC:3.4.24.-]
+C    K07763  MMP14; matrix metalloproteinase-14 (membrane-inserted) [EC:3.4.24.80]
+C    K07995  MMP15; matrix metalloproteinase-15 (membrane-inserted) [EC:3.4.24.-]
+C    K07996  MMP16; matrix metalloproteinase-16 (membrane-inserted) [EC:3.4.24.-]
+C    K07997  MMP17; matrix metalloproteinase-17 (membrane-inserted) [EC:3.4.24.-]
+C    K07998  MMP19, MMP18; matrix metalloproteinase-19 (RASI) [EC:3.4.24.-]
+C    K07999  MMP20; matrix metalloproteinase-20 (enamelysin) [EC:3.4.24.-]
+C    K08000  MMP21; matrix metalloproteinase-21 [EC:3.4.24.-]
+C    K08001  MMP23; matrix metalloproteinase-23 (CA-MMP) [EC:3.4.24.-]
+C    K08002  MMP24; matrix metalloproteinase-24 (membrane-inserted) [EC:3.4.24.-]
+C    K08003  MMP25; matrix metalloproteinase-25 (membrane-inserted) [EC:3.4.24.-]
+C    K08004  MMP26; matrix metalloproteinase-26 (matrilysin-2, endometase) [EC:3.4.24.-]
+C    K08005  MMP27; matrix metalloproteinase-27 [EC:3.4.24.-]
+C    K08006  MMP28; matrix metalloproteinase-28 (epilysin) [EC:3.4.24.-]
+C    K01406  E3.4.24.40; serralysin [EC:3.4.24.40]
+B  Family M12: astacin/adamalysin family
+C    K08076  E3.4.24.21; astacin [EC:3.4.24.21]
+C    K08778  ASTL; astacin-like metalloendopeptidase [EC:3.4.-.-]
+C    K01395  MEP1A; meprin A, alpha [EC:3.4.24.18]
+C    K08606  MEP1B; meprin A, beta [EC:3.4.24.18]
+C    K05502  BMP1, TLD; bone morphogenetic protein 1 [EC:3.4.24.19]
+C    K13045  tld; tolloid [EC:3.4.24.-]
+C    K13046  tok; tolkin [EC:3.4.24.-]
+C    K09608  TLL1; tolloid-like protein 1 [EC:3.4.24.-]
+C    K13047  TLL2; tolloid-like protein 2 [EC:3.4.24.-]
+C    K08607  ADAM1; disintegrin and metalloproteinase domain-containing protein 1 [EC:3.4.24.-]
+C    K06833  ADAM2; disintegrin and metalloproteinase domain-containing protein 2 [EC:3.4.24.-]
+C    K16071  ADAM7; disintegrin and metalloproteinase domain-containing protein 7 [EC:3.4.24.-]
+C    K06540  ADAM8; disintegrin and metalloproteinase domain-containing protein 8 [EC:3.4.24.-]
+C    K06834  ADAM9; disintegrin and metalloproteinase domain-containing protein 9 [EC:3.4.24.-]
+C    K06704  ADAM10; disintegrin and metalloproteinase domain-containing protein 10 [EC:3.4.24.81]
+C    K16067  ADAM11; disintegrin and metalloproteinase domain-containing protein 11 [EC:3.4.24.-]
+C    K06835  ADAM12; disintegrin and metalloproteinase domain-containing protein 12 [EC:3.4.24.-]
+C    K06836  ADAM15; disintegrin and metalloproteinase domain-containing protein 15 [EC:3.4.24.-]
+C    K06059  ADAM17, TACE; disintegrin and metalloproteinase domain-containing protein 17 [EC:3.4.24.86]
+C    K16909  ADAM18; disintegrin and metalloproteinase domain-containing protein 18 [EC:3.4.24.-]
+C    K08608  ADAM19; disintegrin and metalloproteinase domain-containing protein 19 [EC:3.4.24.-]
+C    K08609  ADAM20; disintegrin and metalloproteinase domain-containing protein 20 [EC:3.4.24.-]
+C    K08610  ADAM21; disintegrin and metalloproteinase domain-containing protein 21 [EC:3.4.24.-]
+C    K16068  ADAM22; disintegrin and metalloproteinase domain-containing protein 22 [EC:3.4.24.-]
+C    K06837  ADAM23; disintegrin and metalloproteinase domain-containing protein 23 [EC:3.4.24.-]
+C    K08611  ADAM24; disintegrin and metalloproteinase domain-containing protein 24 [EC:3.4.24.-]
+C    K08612  ADAM25; disintegrin and metalloproteinase domain-containing protein 25 [EC:3.4.24.-]
+C    K08613  ADAM26; disintegrin and metalloproteinase domain-containing protein 26 [EC:3.4.24.-]
+C    K08614  ADAM28; disintegrin and metalloproteinase domain-containing protein 28 [EC:3.4.24.-]
+C    K16069  ADAM29; disintegrin and metalloproteinase domain-containing protein 29 [EC:3.4.24.-]
+C    K08615  ADAM30; disintegrin and metalloproteinase domain-containing protein 30 [EC:3.4.24.-]
+C    K16070  ADAM32; disintegrin and metalloproteinase domain-containing protein 32 [EC:3.4.24.-]
+C    K08616  ADAM33; disintegrin and metalloproteinase domain-containing protein 33 [EC:3.4.24.-]
+C    K08617  ADAMTS1; a disintegrin and metalloproteinase with thrombospondin motifs 1 [EC:3.4.24.-]
+C    K08618  ADAMTS2; a disintegrin and metalloproteinase with thrombospondin motifs 2 [EC:3.4.24.14]
+C    K08619  ADAMTS3; a disintegrin and metalloproteinase with thrombospondin motifs 3 [EC:3.4.24.-]
+C    K07764  ADAMTS4; a disintegrin and metalloproteinase with thrombospondin motifs 4 [EC:3.4.24.82]
+C    K08620  ADAMTS5; a disintegrin and metalloproteinase with thrombospondin motifs 5 [EC:3.4.24.-]
+C    K08621  ADAMTS6; a disintegrin and metalloproteinase with thrombospondin motifs 6 [EC:3.4.24.-]
+C    K08622  ADAMTS7; a disintegrin and metalloproteinase with thrombospondin motifs 7 [EC:3.4.24.-]
+C    K08623  ADAMTS8; a disintegrin and metalloproteinase with thrombospondin motifs 8 [EC:3.4.24.-]
+C    K08624  ADAMTS9; a disintegrin and metalloproteinase with thrombospondin motifs 9 [EC:3.4.24.-]
+C    K08625  ADAMTS10; a disintegrin and metalloproteinase with thrombospondin motifs 10 [EC:3.4.24.-]
+C    K08626  ADAMTS12; a disintegrin and metalloproteinase with thrombospondin motifs 12 [EC:3.4.24.-]
+C    K08627  ADAMTS13; a disintegrin and metalloproteinase with thrombospondin motifs 13 [EC:3.4.24.-]
+C    K08628  ADAMTS14; a disintegrin and metalloproteinase with thrombospondin motifs 14 [EC:3.4.24.-]
+C    K08629  ADAMTS15; a disintegrin and metalloproteinase with thrombospondin motifs 15 [EC:3.4.24.-]
+C    K08630  ADAMTS16; a disintegrin and metalloproteinase with thrombospondin motifs 16 [EC:3.4.24.-]
+C    K08631  ADAMTS17; a disintegrin and metalloproteinase with thrombospondin motifs 17 [EC:3.4.24.-]
+C    K08632  ADAMTS18; a disintegrin and metalloproteinase with thrombospondin motifs 18 [EC:3.4.24.-]
+C    K08633  ADAMTS19; a disintegrin and metalloproteinase with thrombospondin motifs 19 [EC:3.4.24.-]
+C    K09609  ADAMTS20; a disintegrin and metalloproteinase with thrombospondin motifs 20 [EC:3.4.24.-]
+C    K08634  ADAMDEC1; ADAM-like, decysin 1 [EC:3.4.24.-]
+B  Family M13: neprilysin family
+C    K01389  MME; neprilysin [EC:3.4.24.11]
+C    K01415  E3.4.24.71, ECE1, ECE2; endothelin-converting enzyme [EC:3.4.24.71]
+C    K07386  pepO; putative endopeptidase [EC:3.4.24.-]
+C    K09610  ECEL1; endothelin-converting enzyme-like 1 [EC:3.4.24.-]
+C    K08635  MMEL1; membrane metallo-endopeptidase-like 1
+C    K06577  KEL; Kell blood group glycoprotein [EC:3.4.24.-]
+C    K08636  PHEX; phosphate-regulating neutral endopeptidase [EC:3.4.24.-]
+B  Family M14: carboxypeptidase A family
+C    K08779  CPA1; carboxypeptidase A1 [EC:3.4.17.1]
+C    K08780  CPA3; carboxypeptidase A3 [EC:3.4.17.1]
+C    K08781  CPA5; carboxypeptidase A5 [EC:3.4.17.1]
+C    K08782  CPA6; carboxypeptidase A6 [EC:3.4.17.1]
+C    K01298  CPA2; carboxypeptidase A2 [EC:3.4.17.15]
+C    K08637  CPA4; carboxypeptidase A4 [EC:3.4.17.-]
+C    K01290  CPAN; carboxypeptidase A, invertebrate [EC:3.4.17.-]
+C    K01291  CPB1; carboxypeptidase B [EC:3.4.17.2]
+C    K01300  CPB2; carboxypeptidase B2 [EC:3.4.17.20]
+C    K08783  ECM14; extracellular matrix protein 14 [EC:3.4.17.-]
+C    K07752  CPD; carboxypeptidase D [EC:3.4.17.22]
+C    K01294  CPE; carboxypeptidase E [EC:3.4.17.10]
+C    K01296  CPM; carboxypeptidase M [EC:3.4.17.12]
+C    K01292  CPN1; carboxypeptidase N catalytic subunit [EC:3.4.17.3]
+C    K05996  cpt; carboxypeptidase T [EC:3.4.17.18]
+C    K08638  CPXM1; carboxypeptidase X1 [EC:3.4.17.-]
+C    K08639  CPXM2; carboxypeptidase X2
+C    K13022  CPZ; carboxypeptidase Z [EC:3.4.17.-]
+C    K01308  E3.4.19.11; g-D-glutamyl-meso-diaminopimelate peptidase [EC:3.4.19.11]
+B  Family M15
+C    K08640  E3.4.17.14; zinc D-Ala-D-Ala carboxypeptidase [EC:3.4.17.14]
+C    K07260  vanY; D-alanyl-D-alanine carboxypeptidase [EC:3.4.16.4]
+C    K08641  vanX; D-alanyl-D-alanine dipeptidase [EC:3.4.13.22]
+B  Family M16: pitrilysin family
+C    K01407  ptr; protease III [EC:3.4.24.55]
+C    K01408  IDE, ide; insulysin [EC:3.4.24.56]
+C    K01412  E3.4.24.64; mitochondrial processing peptidase [EC:3.4.24.64]
+C    K01411  NRD1; nardilysin [EC:3.4.24.61]
+C    K07263  pqqL; zinc protease [EC:3.4.24.-]
+B  Family M17: leucyl aminopeptidase family
+C    K11142  LAP3; cytosol aminopeptidase [EC:3.4.11.1 3.4.11.5]
+C    K01255  CARP, pepA; leucyl aminopeptidase [EC:3.4.11.1]
+C    K07751  pepB; PepB aminopeptidase [EC:3.4.11.23]
+C    K09611  NPEPL1; probable aminopeptidase NPEPL1 [EC:3.4.11.-]
+B  Family M18
+C    K01268  E3.4.11.22, LAP4; aminopeptidase I [EC:3.4.11.22]
+C    K01267  E3.4.11.21, DNPEP; aspartyl aminopeptidase [EC:3.4.11.21]
+B  Family M19: membrane dipeptidase family
+C    K01273  E3.4.13.19, DPEP1; membrane dipeptidase [EC:3.4.13.19]
+B  Family M20
+C    K01295  E3.4.17.11; glutamate carboxypeptidase [EC:3.4.17.11]
+C    K01293  E3.4.17.4; Gly-Xaa carboxypeptidase [EC:3.4.17.4]
+C    K01258  pepT; tripeptide aminopeptidase [EC:3.4.11.4]
+C    K05604  CNDP1; beta-Ala-His dipeptidase [EC:3.4.13.20]
+C    K08660  CNDP2; cytosolic nonspecific dipeptidase [EC:3.4.13.18]
+C    K15428  DUG1; Cys-Gly metallodipeptidase DUG1 [EC:3.4.13.-]
+C    K14262  DUG2; di- and tripeptidase [EC:3.4.-.-]
+C    K01270  K01270, pepD; dipeptidase D [EC:3.4.13.-]
+C    K13048  CPS; carboxypeptidase Ss1 [EC:3.4.17.-]
+C    K13049  PM20D1; carboxypeptidase PM20D1 [EC:3.4.17.-]
+C    K02083  allC; allantoate deiminase [EC:3.5.3.9]
+C    K14664  ILR1; IAA-amino acid hydrolase [EC:3.5.1.-]
+C    K14677  ACY1; aminoacylase [EC:3.5.1.14]
+C    K05823  E3.5.1.47; N-acetyldiaminopimelate deacetylase [EC:3.5.1.47]
+C    K01451  hipO; hippurate hydrolase [EC:3.5.1.32]
+C    K12940  abgA; aminobenzoyl-glutamate utilization protein A
+C    K12941  abgB; aminobenzoyl-glutamate utilization protein B
+C    K14665  amhX; amidohydrolase [EC:3.5.1.-]
+C    K01436  K01436; amidohydrolase [EC:3.5.1.-]
+B  Family M22
+C    K01409  gcp, QRI7, OSGEPL; O-sialoglycoprotein endopeptidase [EC:3.4.24.57]
+C    K15900  KAE1, OSGEP; tRNA threonylcarbamoyladenosine biosynthesis protein
+C    K15904  K15904; bifunctional tRNA threonylcarbamoyladenosine biosynthesis protein [EC:2.7.11.1]
+C    K14742  yeaZ; hypothetical protease [EC:3.4.-.-]
+B  Family M23
+C    K08642  lasA; LasA protease [EC:3.4.24.-]
+C    K08259  lytM; lysostaphin [EC:3.4.24.75]
+B  Family M24
+C    K01265  E3.4.11.18, map; methionyl aminopeptidase [EC:3.4.11.18]
+C    K01271  pepQ; Xaa-Pro dipeptidase [EC:3.4.13.9]
+C    K14213  PEPD; Xaa-Pro dipeptidase [EC:3.4.13.9]
+C    K01262  pepP; Xaa-Pro aminopeptidase [EC:3.4.11.9]
+C    K14208  XPNPEP2; Xaa-Pro aminopeptidase 2 [EC:3.4.11.9]
+C    K08326  ypdF; aminopeptidase [EC:3.4.11.-]
+B  Family M26
+C    K01390  E3.4.24.13; IgA-specific metalloendopeptidase [EC:3.4.24.13]
+C    K08643  zmpB; zinc metalloprotease ZmpB [EC:3.4.24.-]
+B  Family M27
+C    K08644  tetX; tentoxilysin [EC:3.4.24.68]
+C    K06011  boNT; botulinum neurotoxin [EC:3.4.24.69]
+B  Family M28: aminopeptidase Y family
+C    K01264  E3.4.11.15, APE3; aminopeptidase Y [EC:3.4.11.15]
+C    K05994  E3.4.11.10; bacterial leucyl aminopeptidase [EC:3.4.11.10]
+C    K09612  iap; alkaline phosphatase isozyme conversion protein [EC:3.4.11.-]
+C    K14592  FOLH1; folate hydrolase 1 [EC:3.4.17.21]
+C    K01301  E3.4.17.21; glutamate carboxypeptidase II [EC:3.4.17.21]
+B  Family M32: carboxypeptidase Taq family
+C    K01299  E3.4.17.19; carboxypeptidase Taq [EC:3.4.17.19]
+B  Family M34: anthrax lethal factor family
+C    K08645  lef; anthrax lethal toxin endopeptidase [EC:3.4.24.83]
+B  Family M35: deuterolysin family
+C    K08646  E3.4.24.20; peptidyl-Lys metalloendopeptidase [EC:3.4.24.20]
+B  Family M38: beta-aspartyl dipeptidase family
+C    K01305  iadA; beta-aspartyl-dipeptidase (metallo-type) [EC:3.4.19.-]
+C    K11540  CAD; carbamoyl-phosphate synthase / aspartate carbamoyltransferase / dihydroorotase [EC:6.3.5.5 2.1.3.2 3.5.2.3]
+B  Family M41: FtsH endopeptidase family
+C    K03798  ftsH, hflB; cell division protease FtsH [EC:3.4.24.-]
+C    K08956  AFG3; AFG3 family protein [EC:3.4.24.-]
+C    K08955  YME1; ATP-dependent metalloprotease [EC:3.4.24.-]
+C    K09552  SPG7; spastic paraplegia 7 [EC:3.4.24.-]
+B  Family M42: glutamyl aminopeptidase family
+C    K01261  pepA; glutamyl aminopeptidase [EC:3.4.11.7]
+B  Family M43: cytophagalysin familyv
+C    K07762  PAPPA; pappalysin-1 [EC:3.4.24.79]
+C    K08647  PAPPA2; pappalysin-2 [EC:3.4.24.-]
+B  Family M48: Ste24 endopeptidase family
+C    K06013  STE24; STE24 endopeptidase [EC:3.4.24.84]
+C    K03799  htpX; heat shock protein HtpX [EC:3.4.24.-]
+C    K07387  K07387; putative metalloprotease [EC:3.4.24.-]
+B  Family M49: dipeptidyl-peptidase III family
+C    K01277  E3.4.14.4, DPP3; dipeptidyl-peptidase III [EC:3.4.14.4]
+B  Family M50: S2P protease family
+C    K07765  MBTPS2; S2P endopeptidase [EC:3.4.24.85]
+C    K06402  spoIVFB; stage IV sporulation protein FB [EC:3.4.24.-]
+C    K11749  rseP; regulator of sigma E protease [EC:3.4.24.-]
+C    K16922  yydH; putative peptide zinc metalloprotease protein
+B  Family M55: DppA aminopeptidase family
+C    K16203  dppA1; D-amino peptidase [EC:3.4.11.-]
+B  Family M67
+C    K03030  PSMD14, RPN11, POH1; 26S proteasome regulatory subunit N11
+C    K09613  COPS5, CSN5; COP9 signalosome complex subunit 5 [EC:3.4.-.-]
+C    K11867  STAMBPL1; AMSH-like protease [EC:3.1.2.15]
+C    K11864  BRCC3; BRCA1/BRCA2-containing complex subunit 3
+C    K11865  MYSM1; protein MYSM1
+C    K11866  STAMBP, AMSH; STAM-binding protein [EC:3.1.2.15]
+B  Family M74
+C    K07261  mepA; penicillin-insensitive murein endopeptidase [EC:3.4.24.-]
+#
+A<b>Mixed Peptidases</b>
+B  Family P1: DmpA aminopeptidase family
+C    K01266  dmpA; D-aminopeptidase [EC:3.4.11.19]
+#
+A<b>Serine Peptidases</b>
+B  Family S1: chymotrypsin family
+C    K01310  CTRB; chymotrypsin [EC:3.4.21.1]
+C    K09614  CORIN; corin [EC:3.4.21.-]
+C    K08661  MCPT1; mast cell peptidase 1 [EC:3.4.21.-]
+C    K08662  MCPT2; mast cell peptidase 2 [EC:3.4.21.-]
+C    K01340  E3.4.21.59; tryptase [EC:3.4.21.59]
+C    K09615  TPSG1; tryptase gamma 1 [EC:3.4.21.-]
+C    K08648  HABP2; hyaluronan binding protein 2 [EC:3.4.21.-]
+C    K01327  ELANE; leukocyte elastase [EC:3.4.21.37]
+C    K01319  CTSG; cathepsin G [EC:3.4.21.20]
+C    K01350  PRTN3; myeloblastin [EC:3.4.21.76]
+C    K01352  GZMA; granzyme A [EC:3.4.21.78]
+C    K01353  GZMB; granzyme B [EC:3.4.21.79]
+C    K09616  GZMH, CTSGL2; granzyme H (cathepsin G-like 2) [EC:3.4.21.-]
+C    K08663  GZMK; granzyme K [EC:3.4.21.-]
+C    K08649  GZMM; granzyme M [EC:3.4.21.-]
+C    K01329  CMA1; chymase [EC:3.4.21.39]
+C    K01326  CELA1; pancreatic elastase I [EC:3.4.21.36]
+C    K01346  CELA2; pancreatic elastase II [EC:3.4.21.71]
+C    K01345  CELA3; pancreatic endopeptidase E [EC:3.4.21.70]
+C    K01311  CTRC; chymotrypsin C [EC:3.4.21.2]
+C    K01325  KLK1_2; tissue kallikrein [EC:3.4.21.35]
+C    K01324  KLKB1; plasma kallikrein [EC:3.4.21.34]
+C    K01351  KLK3; semenogelase [EC:3.4.21.77]
+C    K08666  KLK4, PRSS17; kallikrein 4 (prostase, enamel matrix, prostate) [EC:3.4.21.-]
+C    K09617  KLK5; kallikrein 5 [EC:3.4.21.-]
+C    K08667  KLK6, PRSS9; kallikrein 6 (neurosin, zyme) [EC:3.4.21.-]
+C    K08668  KLK7, PRSS6; kallikrein 7 (chymotryptic, stratum corneum) [EC:3.4.21.117]
+C    K08650  KLK8, PRSS19; kallikrein 8 (neuropsin/ovasin) [EC:3.4.21.118]
+C    K09618  KLK9; kallikrein 9 [EC:3.4.21.-]
+C    K09619  KLK10, PRSSL1; kallikrein 10 [EC:3.4.21.-]
+C    K09620  KLK11, PRSS20; kallikrein 11 [EC:3.4.21.-]
+C    K09621  KLK12; kallikrein 12 [EC:3.4.21.-]
+C    K09462  E3.4.21.119; glandular kallikrein 13 [EC:3.4.21.119]
+C    K09463  KLK13; kallikrein 13 [EC:3.4.21.-]
+C    K09622  KLK14; kallikrein 14 [EC:3.4.21.-]
+C    K09623  KLK15; kallikrein 15 [EC:3.4.21.-]
+C    K01339  KLK16; g-renin [EC:3.4.21.54]
+C    K01312  PRSS; trypsin [EC:3.4.21.4]
+C    K01316  PRSS7; protease, serine, 7 (enterokinase) [EC:3.4.21.9]
+C    K08664  PRSS8; protease, serine, 8 (prostasin) [EC:3.4.21.-]
+C    K09624  PRSS12; protease, serine, 12 (neurotrypsin, motopsin) [EC:3.4.21.-]
+C    K09625  PRSS21; protease, serine, 21 (testisin) [EC:3.4.21.-]
+C    K09626  PRSS22; protease, serine, 22 [EC:3.4.21.-]
+C    K09627  PRSS23; protease, serine, 23 [EC:3.4.21.-]
+C    K09628  PRSS27; protease, serine 27 [EC:3.4.21.-]
+C    K09629  PRSS33; protease, serine, 33
+C    K09630  PRSS36; protease, serine, 36 [EC:3.4.21.-]
+C    K03992  MASP1; mannan-binding lectin serine protease 1 [EC:3.4.21.-]
+C    K03993  MASP2; mannan-binding lectin serine protease 2 [EC:3.4.21.104]
+C    K01330  C1R; complement component 1, r subcomponent [EC:3.4.21.41]
+C    K01331  C1S; complement component 1, s subcomponent [EC:3.4.21.42]
+C    K01332  C2; complement component 2 [EC:3.4.21.43]
+C    K01335  CFB; component factor B [EC:3.4.21.47]
+C    K01334  CFD; component factor D [EC:3.4.21.46]
+C    K01333  CFI; complement factor I [EC:3.4.21.45]
+C    K01313  F2; coagulation factor II (thrombin) [EC:3.4.21.5]
+C    K01320  F7; coagulation factor VII [EC:3.4.21.21]
+C    K01321  F9; coagulation factor IX (Christmas factor) [EC:3.4.21.22]
+C    K01314  F10; coagulation factor X [EC:3.4.21.6]
+C    K01323  F11; coagulation factor XI [EC:3.4.21.27]
+C    K01328  F12; coagulation factor XII (Hageman factor) [EC:3.4.21.38]
+C    K01344  PROC; protein C (activated) [EC:3.4.21.69]
+C    K01317  ACR; acrosin [EC:3.4.21.10]
+C    K08665  HPN; hepsin (transmembrane protease, serine 1) [EC:3.4.21.-]
+C    K09631  HGFAC; hepatocyte growth factor activator [EC:3.4.21.-]
+C    K01343  PLAT; tissue plasminogen activator [EC:3.4.21.68]
+C    K01348  PLAU; urokinase plasminogen activator [EC:3.4.21.73]
+C    K01315  PLG; plasminogen [EC:3.4.21.7]
+C    K09632  CTRL; chymotrypsin-like protease [EC:3.4.21.-]
+C    K04775  ydgD; protease YdgD [EC:3.4.21.-]
+C    K01318  E3.4.21.19, sspA; glutamyl endopeptidase [EC:3.4.21.19]
+C    K04771  degP, htrA; serine protease Do [EC:3.4.21.107]
+C    K04772  degQ, hhoA; serine protease DegQ [EC:3.4.21.-]
+C    K04691  hhoB, degS; serine protease DegS [EC:3.4.21.-]
+C    K01337  E3.4.21.50; lysyl endopeptidase [EC:3.4.21.50]
+C    K08784  HTRA1, PRSS11; HtrA serine peptidase 1 [EC:3.4.21.-]
+C    K08669  HTRA2, PRSS25; HtrA serine peptidase 2 [EC:3.4.21.108]
+C    K08785  HTRA3; HtrA serine peptidase 3 [EC:3.4.21.-]
+C    K08786  HTRA4; HtrA serine peptidase 4 [EC:3.4.21.-]
+C    K08670  ST14, PRSS14; suppressor of tumorigenicity protein 14 [EC:3.4.21.109]
+C    K09633  TMPRSS2; transmembrane protease, serine 2
+C    K09634  TMPRSS3; transmembrane protease, serine 3 [EC:3.4.21.-]
+C    K09635  TMPRSS4; transmembrane protease, serine 4
+C    K09636  TMPRSS5; transmembrane protease, serine 5 (spinesin) [EC:3.4.21.-]
+C    K09637  TMPRSS6; transmembrane protease, serine 6 [EC:3.4.21.-]
+C    K09638  TMPRSS7; transmembrane protease, serine 7 [EC:3.4.21.-]
+C    K09639  TMPRSS8; transmembrane protease, serine 8 [EC:3.4.21.-]
+C    K09640  TMPRSS9; transmembrane protease, serine 9 [EC:3.4.21.-]
+C    K09750  TMPRSS11A; transmembrane protease, serine 11A [EC:3.4.21.-]
+C    K09751  TMPRSS11B; transmembrane protease, serine 11B [EC:3.4.21.-]
+C    K14359  TMPRSS11C; transmembrane protease, serine 11C [EC:3.4.21.-]
+C    K09641  TMPRSS11D; transmembrane protease, serine 11D [EC:3.4.21.-]
+C    K09642  TMPRSS11E; transmembrane protease, serine 11E [EC:3.4.21.-]
+C    K09752  TMPRSS11F; transmembrane protease, serine 11F [EC:3.4.21.-]
+C    K09643  TMPRSS13, TMPRSS11; transmembrane protease, serine 13
+C    K09644  LPA; apolipoprotein(a) [EC:3.4.21.-]
+C    K08372  pepD; putative serine protease PepD [EC:3.4.21.-]
+C    K16142  HP; haptoglobin
+B  Family S6
+C    K01347  iga; IgA-specific serine endopeptidase [EC:3.4.21.72]
+B  Family S8: subtilisin family
+C    K01342  aprE; subtilisin [EC:3.4.21.62]
+C    K13274  wprA; cell wall-associated protease [EC:3.4.21.-]
+C    K08651  E3.4.21.66; thermitase [EC:3.4.21.66]
+C    K13276  bpr; bacillopeptidase F [EC:3.4.21.-]
+C    K01361  E3.4.21.96; lactocepin [EC:3.4.21.96]
+C    K08652  C5AP, scpA, scpB; C5a peptidase [EC:3.4.21.110]
+C    K01336  E3.4.21.48; cerevisin [EC:3.4.21.48]
+C    K13275  isp; major intracellular serine protease [EC:3.4.21.-]
+C    K14644  OSW3, RRT12; subtilase-type proteinase RRT12 [EC:3.4.21.-]
+C    K08653  MBTPS1; membrane-bound transcription factor site-1 protease [EC:3.4.21.112]
+C    K14645  K14645; serine protease [EC:3.4.21.-]
+C    K01341  E3.4.21.61; kexin [EC:3.4.21.61]
+C    K01349  FURIN, PCSK3; furin [EC:3.4.21.75]
+C    K01359  PCSK1; proprotein convertase subtilisin/kexin type 1 [EC:3.4.21.93]
+C    K01360  PCSK2; proprotein convertase subtilisin/kexin type 2 [EC:3.4.21.94]
+C    K08671  PCSK4; proprotein convertase subtilisin/kexin type 4 [EC:3.4.21.-]
+C    K08654  PCSK5; proprotein convertase subtilisin/kexin type 5 [EC:3.4.21.-]
+C    K08672  PCSK6; proprotein convertase subtilisin/kexin type 6 [EC:3.4.21.-]
+C    K08673  PCSK7; proprotein convertase subtilisin/kexin type 7 [EC:3.4.21.-]
+C    K13050  PCSK9; proprotein convertase subtilisin/kexin type 9 [EC:3.4.21.-]
+C    K01280  TPP2; tripeptidyl-peptidase II [EC:3.4.14.10]
+C    K14647  vpr; minor extracellular serine protease Vpr [EC:3.4.21.-]
+C    K13277  epr; minor extracellular protease Epr [EC:3.4.21.-]
+C    K14743  mycP; membrane-anchored mycosin MYCP [EC:3.4.21.-]
+B  Family S9: prolyl oligopeptidase family
+C    K01322  E3.4.21.26, PREP; prolyl oligopeptidase [EC:3.4.21.26]
+C    K08787  STE13; dipeptidyl aminopeptidase Ste13 [EC:3.4.14.-]
+C    K01278  DPP4; dipeptidyl-peptidase 4 [EC:3.4.14.5]
+C    K08655  DPP8; dipeptidyl-peptidase 8 [EC:3.4.14.5]
+C    K08656  DPP9; dipeptidyl-peptidase 9 [EC:3.4.14.5]
+C    K01303  APEH; acylaminoacyl-peptidase [EC:3.4.19.1]
+C    K08674  FAP; fibroblast activation protein, alpha [EC:3.4.21.-]
+C    K01354  ptrB; oligopeptidase B [EC:3.4.21.83]
+C    K13702  ABHD10; abhydrolase domain-containing protein 10
+C    K13704  ABHD12; abhydrolase domain-containing protein 12 [EC:3.1.1.23]
+C    K13705  ABHD12B; abhydrolase domain-containing protein 12B
+C    K13616  AADAC; arylacetamide deacetylase [EC:3.1.1.3]
+C    K14349  NCEH1, AADACL1; neutral cholesterol ester hydrolase 1 [EC:3.1.1.-]
+B  Family S10
+C    K13289  CTSA; cathepsin A (carboxypeptidase C) [EC:3.4.16.5]
+C    K01288  KEX1; carboxypeptidase D [EC:3.4.16.6]
+C    K09645  CPVL; vitellogenic carboxypeptidase-like protein [EC:3.4.16.-]
+C    K09646  SCPEP1; serine carboxypeptidase 1 [EC:3.4.16.-]
+C    K09757  SCPL8, SNG1; serine carboxypeptidase-like 8 [EC:3.4.16.- 2.3.1.92]
+C    K09756  SCPL19, SNG2; serine carboxypeptidase-like 19 [EC:3.4.16.- 2.3.1.91]
+C    K16296  SCPL-I; serine carboxypeptidase-like clade I [EC:3.4.16.-]
+C    K16297  SCPL-II; serine carboxypeptidase-like clade II [EC:3.4.16.-]
+C    K16298  SCPL-IV; serine carboxypeptidase-like clade IV [EC:3.4.16.-]
+B  Family S11: D-Ala-D-Ala carboxypeptidase A family
+C    K07258  dacC, dacA, dacD; D-alanyl-D-alanine carboxypeptidase (penicillin-binding protein 5/6) [EC:3.4.16.4]
+C    K07262  pbpG; D-alanyl-D-alanine endopeptidase (penicillin-binding protein 7) [EC:3.4.21.-]
+B  Family S12: D-Ala-D-Ala carboxypeptidase B family
+C    K17382  LACTB; serine beta-lactamase-like protein LACTB, mitochondrial
+B  Family S13: D-Ala-D-Ala peptidase C family
+C    K07259  dacB; D-alanyl-D-alanine carboxypeptidase / D-alanyl-D-alanine-endopeptidase (penicillin-binding protein 4) [EC:3.4.16.4 3.4.21.-]
+B  Family S14: ClpP endopeptidase family
+C    K01358  clpP, CLPP; ATP-dependent Clp protease, protease subunit [EC:3.4.21.92]
+B  Family S15
+C    K01281  E3.4.14.11, pepXP; X-Pro dipeptidyl-peptidase [EC:3.4.14.11]
+B  Family S16: lon protease family
+C    K01338  lon; ATP-dependent Lon protease [EC:3.4.21.53]
+C    K08675  PRSS15, PIM1; Lon-like ATP-dependent protease [EC:3.4.21.-]
+C    K04076  lonB; Lon-like ATP-dependent protease [EC:3.4.21.-]
+C    K04770  lonH; Lon-like ATP-dependent protease [EC:3.4.21.-]
+B  Family S24: LexA family
+C    K01356  lexA; repressor LexA [EC:3.4.21.88]
+C    K03503  DPO5D, umuD; DNA polymerase V [EC:3.4.21.-]
+B  Family S26: signal peptidase I family
+C    K03100  lepB; signal peptidase I [EC:3.4.21.89]
+C    K13280  SEC11, sipW; signal peptidase, endoplasmic reticulum-type [EC:3.4.-.-]
+C    K09647  IMP1; mitochondrial inner membrane protease subunit 1 [EC:3.4.21.-]
+C    K09648  IMP2; mitochondrial inner membrane protease subunit 2 [EC:3.4.21.-]
+B  Family S28
+C    K01285  PRCP; lysosomal Pro-X carboxypeptidase [EC:3.4.16.2]
+C    K01276  DPP7; dipeptidyl-peptidase II [EC:3.4.14.2]
+C    K09649  PRSS16; protease, serine, 16 (thymus) [EC:3.4.-.-]
+B  Family S33
+C    K01259  pip; proline iminopeptidase [EC:3.4.11.5]
+C    K13698  ABHD4; abhydrolase domain-containing protein 4
+C    K13699  ABHD5, CGI-58; abhydrolase domain-containing protein 5 [EC:2.3.1.51]
+C    K13700  ABHD6; abhydrolase domain-containing protein 6 [EC:3.1.1.23]
+C    K13701  ABHD8; abhydrolase domain-containing protein 8
+C    K13703  ABHD11; abhydrolase domain-containing protein 11
+C    K13706  ABHD14; abhydrolase domain-containing protein 14
+C    K01054  MGLL; acylglycerol lipase [EC:3.1.1.23]
+C    K13617  PPME1; protein phosphatase methylesterase 1 [EC:3.1.1.89]
+B  Family S41: C-terminal processing peptidase family
+C    K03797  E3.4.21.102, prc, ctpA; carboxyl-terminal processing protease [EC:3.4.21.102]
+C    K08676  tri; tricorn protease [EC:3.4.21.-]
+B  Family S45: cephalosporin acylase precursor
+C    K12748  gca; glutaryl-7-aminocephalosporanic-acid acylase [EC:3.5.1.93]
+B  Family S49: protease IV family
+C    K04773  sppA; protease IV [EC:3.4.21.-]
+C    K04774  sohB; serine protease SohB [EC:3.4.21.-]
+B  Family S51
+C    K05995  pepE; dipeptidase E [EC:3.4.13.21]
+C    K13282  cphB; cyanophycinase [EC:3.4.15.6]
+B  Family S53
+C    K05998  E3.4.21.100; pseudomonalisin [EC:3.4.21.100]
+C    K05999  E3.4.21.101; xanthomonalisin [EC:3.4.21.101]
+C    K01279  TPP1, CLN2; tripeptidyl-peptidase I [EC:3.4.14.9]
+C    K08677  K08677; kumamolisin
+B  Family S54: Rhomboid family
+C    K02857  RHBDL1_2_3; rhomboid-related protein 1/2/3 [EC:3.4.21.105]
+C    K09650  PARL, PSARL, PCP1; rhomboid-like protein [EC:3.4.21.105]
+C    K09651  RHBDD1; rhomboid domain-containing protein 1 [EC:3.4.21.-]
+C    K09652  RHBDD2, RHBDL7; rhomboid domain-containing protein 2
+B  Family S55: SpoIVB peptidase family
+C    K06399  spoIVB; stage IV sporulation protein B [EC:3.4.21.116]
+B  Family S66
+C    K01297  ldcA; muramoyltetrapeptide carboxypeptidase [EC:3.4.17.13]
+#
+A<b>Threonine Peptidases</b>
+B  Family T1: proteasome family
+C    K02730  PSMA6; 20S proteasome subunit alpha 1 [EC:3.4.25.1]
+C    K02726  PSMA2; 20S proteasome subunit alpha 2 [EC:3.4.25.1]
+C    K02728  PSMA4; 20S proteasome subunit alpha 3 [EC:3.4.25.1]
+C    K02731  PSMA7; 20S proteasome subunit alpha 4 [EC:3.4.25.1]
+C    K02729  PSMA5; 20S proteasome subunit alpha 5 [EC:3.4.25.1]
+C    K02725  PSMA1; 20S proteasome subunit alpha 6 [EC:3.4.25.1]
+C    K02727  PSMA3; 20S proteasome subunit alpha 7 [EC:3.4.25.1]
+C    K03432  psmA, prcA; proteasome alpha subunit [EC:3.4.25.1]
+C    K02738  PSMB6; 20S proteasome subunit beta 1 [EC:3.4.25.1]
+C    K02739  PSMB7; 20S proteasome subunit beta 2 [EC:3.4.25.1]
+C    K02735  PSMB3; 20S proteasome subunit beta 3 [EC:3.4.25.1]
+C    K02734  PSMB2; 20S proteasome subunit beta 4 [EC:3.4.25.1]
+C    K02737  PSMB5; 20S proteasome subunit beta 5 [EC:3.4.25.1]
+C    K02732  PSMB1; 20S proteasome subunit beta 6 [EC:3.4.25.1]
+C    K02736  PSMB4; 20S proteasome subunit beta 7 [EC:3.4.25.1]
+C    K02740  PSMB8, LMP7; 20S proteasome subunit beta 8 [EC:3.4.25.1]
+C    K02741  PSMB9, LMP2; 20S proteasome subunit beta 9 [EC:3.4.25.1]
+C    K02733  PSMB10, MECL1; 20S proteasome subunit beta 10 [EC:3.4.25.1]
+C    K03433  psmB, prcB; proteasome beta subunit [EC:3.4.25.1]
+C    K01419  hslV, clpQ; ATP-dependent HslUV protease, peptidase subunit HslV [EC:3.4.25.2]
+B  Family T2
+C    K13051  iaaA, ASRGL1; beta-aspartyl-peptidase (threonine type) [EC:3.4.19.5]
+C    K08657  TASP1; taspase, threonine aspartase, 1 [EC:3.4.25.-]
+B  Family T3: gamma-glutamyltransferase family
+C    K00681  ggt; gamma-glutamyltranspeptidase [EC:2.3.2.2]
+#
+A<b>Peptidases of Unknown Catalytic Type</b>
+B  Family U4: SpoIIGA peptidase family
+C    K06383  spoIIGA; stage II sporulation protein GA (sporulation sigma-E factor processing peptidase) [EC:3.4.23.-]
+B  Family U32
+C    K08303  K08303; putative protease [EC:3.4.-.-]
+B  Family U48: prenyl protease 2 family
+C    K08658  RCE1, FACE2; prenyl protein peptidase [EC:3.4.22.-]
+B  Family U62
+C    K03592  pmbA; PmbA protein
+C    K03568  tldD; TldD protein
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: July 24, 2013
+#<br>Classification taken and modified from MEROPS
