@@ -25,11 +25,7 @@
 	#end if
         -Q $format_type.format
         -o $output1
-        #if $db_type.source=="history"
-            "${os.path.join($db_type.database.extra_files_path,'lastdb')}"
-        #else
-            "${db_type.lastdb.fields.path}"
-        #end if
+        "${db_type.lastdb.fields.path}"
         $input_query
     </command>
     <inputs>
@@ -70,20 +66,9 @@
       <param name="numChunks" type="integer" size="10" value="12" label="Number of threads to run (by fragmenting FASTA into chunks)"/>
         
       <param name="hitsPerRead" type="integer" size="10" value="10" label="Limit output to this many hits per read." help="Less than or equal to 0 means unlimited."/>
-      <conditional name="db_type">
-       <param name="source" type="select" label="Reference Database Source">
-        <option value="galaxy">Built-in</option>
-        <option value="history">History</option>
-       </param>
-       <when value="galaxy">
 	<param name="lastdb" type="select" display="radio" label="against target database">
             <options from_data_table="lastdb" />
         </param>
-       </when>
-       <when value="history">
-         <param name="database" type="data" format="lastdbp,lastdbn" label="target last database from history" help="You must have a last-formatted sequence datbase in your history. Use the lastdb tool to make one."/> 
-       </when>
-      </conditional>
         <param name="frameShiftPenalty" type="integer" size="10" value="" label="Score penalty for frameshift when comparing nucleotide queries to a protein database. Leave blank if query adn database are the same type." help="Set to 15 for 454 data, 500 for Illumina."/>
       <param name="multiplicity" type="integer" size="10" value="10" label="Initial match multiplicity (-m)" help="10 is good deafult, though 5 is faster and does a good enough job for rRNA"/> 
       <conditional name="advanced">

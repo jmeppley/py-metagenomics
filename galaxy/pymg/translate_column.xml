@@ -10,9 +10,6 @@
     -m "${map.mapfile}"
     #end if
     #if $map.source=="Lastdb"
-    -m "${'.'.join(os.path.join($map.mapfile.extra_files_path,'lastdb'),'ids')}"
-    #end if
-    #if $map.source=="LastWrapper"
 	#if $map.map_select=="taxmap"
 	    -m "${map.mapdb.fields.taxmapfile}"
 	#elsif $map.map_select=="komap"
@@ -34,17 +31,12 @@
     <conditional name="map">
         <param name="source" type="select" label="Map file source">
             <option value="Table" selected="true">Table in current history</option>
-            <option value="Lastdb">Lastdb database in history</option>
-            <option value="LastWrapper">Built-in lastdb protein database</option>
-            <option value="Silva">Built-in Silva lastdb database</option>
+            <option value="Lastdb">Built-in lastdb protein database</option>
         </param>
         <when value="Table">
             <param format="tabular" name="mapfile" type="data" label="Map to apply" help="Uses the first two columns as key and value for map"/>
         </when>
         <when value="Lastdb">
-            <param format="lastdbn,lastdbp" name="mapfile" type="data" label="Database for sequence ids"/>
-        </when>
-        <when value="LastWrapper">
             <param name="mapdb" type="select" display="radio" label="against target database">
                 <options from_data_table="lastdb" />
             </param>

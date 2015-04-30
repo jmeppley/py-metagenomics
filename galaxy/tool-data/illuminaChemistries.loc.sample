@@ -1,4 +1,4 @@
-#<unique_id>	<name>  <primerTemplatePath>
-nextera	Nextera	/galaxy-tool-data/primerTemplates/nextera.2x.primers.fasta
-truseq	TruSeq	/galaxy-tool-data/primerTemplates/truseq.1x.primers.fasta
-scriptseq	StriptSeq	/galaxy-tool-data/primerTemplates/scripseq.1x.primers.fasta
+#<unique_id>	<name>	<primerTemplatePath>
+nextera	Nextera	../py-metagenomics/primerTemplates/nextera.2x.primers.fasta
+truseq	TruSeq	../py-metagenomics/primerTemplates/truseq.1x.primers.fasta
+scriptseq	StriptSeq	../py-metagenomics/primerTemplates/scripseq.1x.primers.fasta
