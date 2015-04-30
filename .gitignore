@@ -36,4 +36,12 @@ nosetests.xml
 .pydevproject
 
 # Vim
-*.swp
+*.sw[pon]
+
+# Bash dirhist
+.dir_hist_*
+
+# Database Buils
+databases/RefSeq
+databases/KEGG
+databases/Silva

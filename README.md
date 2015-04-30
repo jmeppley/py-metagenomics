@@ -62,7 +62,21 @@ Second, add the following XML snippet to the tool_conf.xml file:
 
 Thrid, set up the lastdb filetype. This is a little involved (sorry, the toolshed version will fix this)
 
+Normally you would install datatypes via a ToolShed, which would move
+the provided lastdb.py file into a suitable location and process the
+datatypes_conf.xml entry to be combined with your local configuration. If you have a private toolshed running, you can upload the galaxy/last_dataypes folder into a toolshed repository and use it from there.
 
+However, if you don't have a private toolshed already set up, it's much easier to install the datatypes manually. (1) Add
+the following lines from galaxy/last_datatypes/dataypes_conf.xml in this package to the datatypes_conf.xml file in the Galaxy main folder::
+
+        <datatype extension="lastdbn" type="galaxy.datatypes.lastdb:LastalNucDb" mimetype="text/html" display_in_upload="false"/>
+        <datatype extension="lastdbp" type="galaxy.datatypes.lastdb:LastalProtDb" mimetype="text/html" display_in_upload="false"/>
+
+(2) Also create the file lib/galaxy/datatypes/lastdb.py by moving, 
+copying or linking the lastdb.py file in galaxy/last_datatypes. 
+(3) Finally add 'import lastdb' near the start of file 
+lib/galaxy/datatypes/registry.py (after the other import
+lines).
 
 Overview
 --------
