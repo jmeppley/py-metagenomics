@@ -1,4 +1,4 @@
-<tool id="Assign_Paths" name="AssignPaths" version="0.1.0">
+<tool id="Assign_Paths" name="AssignPaths" version="0.1.2">
   <description>Assign a KEGG pathway to each read in a hit table. </description>
   <command>
       assignPathsToReadsFromBlast.py -i $input1 -o $out_file1 -q 

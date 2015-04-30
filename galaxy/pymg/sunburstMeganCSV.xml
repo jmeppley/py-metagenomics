@@ -1,4 +1,4 @@
-<tool id="sunburstMeganCSV" name="Sunburst Phylo Viz (MEGAN)" version="0.1.1">
+<tool id="sunburstMeganCSV" name="Sunburst Phylo Viz (MEGAN)" version="0.1.2">
     <description> Plot taxa from MEGAN csv file as a sunburst. </description>
     <command>
     export VERSIONER_PYTHON_PREFER_32_BIT=yes; 

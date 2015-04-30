@@ -1,4 +1,4 @@
-<tool id="Count_Taxa" name="CountTaxa" version="0.1.2">
+<tool id="Count_Taxa" name="CountTaxa" version="0.1.3">
   <description>Generate a table of counts of taxa accross a number of samples for selected ranks. Display graphs. </description>
   <command interpreter='python'>
     countTaxaPlotWrapper.py

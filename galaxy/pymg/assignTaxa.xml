@@ -1,4 +1,4 @@
-<tool id="Assign_Taxa" name="AssignTaxa" version="0.2.2">
+<tool id="Assign_Taxa" name="AssignTaxa" version="0.2.3">
   <description>Assign a taxon to each read in a hit table. </description>
   <command>
       assignTaxaToReadsFromBlast.py -i $input1 -o $out_file1 -q 

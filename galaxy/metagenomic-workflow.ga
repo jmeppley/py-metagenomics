@@ -1,0 +1,1218 @@
+{
+    "a_galaxy_workflow": "true", 
+    "annotation": "Take a pair of illumina fastq files (forward and reverse). Join them and search for rRNA and protein matches. ", 
+    "format-version": "0.1", 
+    "name": "MG Pipeline Beta 012 plus PhiX filter", 
+    "steps": {
+        "0": {
+            "annotation": "R1", 
+            "id": 0, 
+            "input_connections": {}, 
+            "inputs": [
+                {
+                    "description": "R1", 
+                    "name": "Forward Reads"
+                }
+            ], 
+            "name": "Input dataset", 
+            "outputs": [], 
+            "position": {
+                "left": 200, 
+                "top": 349
+            }, 
+            "tool_errors": null, 
+            "tool_id": null, 
+            "tool_state": "{\"name\": \"Forward Reads\"}", 
+            "tool_version": null, 
+            "type": "data_input", 
+            "user_outputs": []
+        }, 
+        "1": {
+            "annotation": "R2", 
+            "id": 1, 
+            "input_connections": {}, 
+            "inputs": [
+                {
+                    "description": "R2", 
+                    "name": "Reverse Reads"
+                }
+            ], 
+            "name": "Input dataset", 
+            "outputs": [], 
+            "position": {
+                "left": 200, 
+                "top": 432
+            }, 
+            "tool_errors": null, 
+            "tool_id": null, 
+            "tool_state": "{\"name\": \"Reverse Reads\"}", 
+            "tool_version": null, 
+            "type": "data_input", 
+            "user_outputs": []
+        }, 
+        "2": {
+            "annotation": "", 
+            "id": 2, 
+            "input_connections": {}, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool createPrimer", 
+                    "name": "chemistry"
+                }, 
+                {
+                    "description": "runtime parameter for tool createPrimer", 
+                    "name": "barcode1"
+                }, 
+                {
+                    "description": "runtime parameter for tool createPrimer", 
+                    "name": "barcode2"
+                }
+            ], 
+            "name": "createPrimer", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "fasta"
+                }
+            ], 
+            "position": {
+                "left": 200, 
+                "top": 515
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "primersForTrimming.fasta"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "CreatePrimerFile/0.1.0", 
+            "tool_state": "{\"__page__\": 0, \"__rerun_remap_job_id__\": null, \"SCRIPTDIR\": \"\\\"/opt/edl/scripts\\\"\", \"chemistry\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"barcode1\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"barcode2\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "3": {
+            "annotation": "", 
+            "id": 3, 
+            "input_connections": {
+                "input": {
+                    "id": 0, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 450, 
+                "top": 594
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} Forward Read Lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist/0.1.0", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"null\", \"__rerun_remap_job_id__\": null, \"bins\": \"\\\"50\\\"\", \"format\": \"\\\"png\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "4": {
+            "annotation": "", 
+            "id": 4, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 0, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 440, 
+                "top": 688
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} Forward Read Stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite/0.20.3", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "5": {
+            "annotation": "", 
+            "id": 5, 
+            "input_connections": {
+                "input": {
+                    "id": 1, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 447, 
+                "top": 795
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} Reverse Read Lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist/0.1.0", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"null\", \"__rerun_remap_job_id__\": null, \"bins\": \"\\\"50\\\"\", \"format\": \"\\\"png\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "6": {
+            "annotation": "", 
+            "id": 6, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 1, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 447, 
+                "top": 904
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} Reverse Read Stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite/0.20.3", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "7": {
+            "annotation": "", 
+            "id": 7, 
+            "input_connections": {
+                "primerFile": {
+                    "id": 2, 
+                    "output_name": "out_file1"
+                }, 
+                "read1": {
+                    "id": 0, 
+                    "output_name": "output"
+                }, 
+                "read2": {
+                    "id": 1, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "name": "illuminaPrep", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "fastq"
+                }, 
+                {
+                    "name": "output2", 
+                    "type": "txt"
+                }, 
+                {
+                    "name": "output3", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 458, 
+                "top": 374
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} Joined and Trimmed Reads"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "illumina_prep/0.1.0", 
+            "tool_state": "{\"trim\": \"{\\\"endQuality\\\": \\\"5\\\", \\\"dotrim\\\": \\\"trim\\\", \\\"polyFrac\\\": \\\"0.9\\\", \\\"__current_case__\\\": 0, \\\"minLength\\\": \\\"40\\\"}\", \"__page__\": 0, \"outFormat\": \"\\\"-F\\\"\", \"fakeJoinGap\": \"\\\"6\\\"\", \"primerFile\": \"null\", \"__rerun_remap_job_id__\": null, \"SCRIPTDIR\": \"\\\"/opt/edl/scripts/\\\"\", \"read1\": \"null\", \"read2\": \"null\", \"pandaseqCutoff\": \"\\\"0.32\\\"\", \"chromInfo\": \"\\\"/minilims/galaxy-data/tool-data/shared/ucsc/chrom/?.len\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "8": {
+            "annotation": "", 
+            "id": 8, 
+            "input_connections": {
+                "format_type|inputFile": {
+                    "id": 7, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "TanTanParallel", 
+            "outputs": [
+                {
+                    "name": "outputFile", 
+                    "type": "input"
+                }
+            ], 
+            "position": {
+                "left": 537, 
+                "top": 273
+            }, 
+            "post_job_actions": {
+                "ChangeDatatypeActionoutputFile": {
+                    "action_arguments": {
+                        "newtype": "fastqsanger"
+                    }, 
+                    "action_type": "ChangeDatatypeAction", 
+                    "output_name": "outputFile"
+                }, 
+                "RenameDatasetActionoutputFile": {
+                    "action_arguments": {
+                        "newname": "${name} joined reads masked"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "outputFile"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "tantan/0.1.0", 
+            "tool_state": "{\"__page__\": 0, \"__rerun_remap_job_id__\": null, \"isProtein\": \"\\\" \\\"\", \"outputOrder\": \"\\\"-k\\\"\", \"threads\": \"\\\"12\\\"\", \"chromInfo\": \"\\\"/minilims/galaxy-data/tool-data/shared/ucsc/chrom/?.len\\\"\", \"format_type\": \"{\\\"inputFile\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"fastq\\\"}\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "9": {
+            "annotation": "", 
+            "id": 9, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 7, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 712, 
+                "top": 544
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} Joined Read Stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite/0.20.3", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "10": {
+            "annotation": "", 
+            "id": 10, 
+            "input_connections": {
+                "input": {
+                    "id": 7, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 704, 
+                "top": 665
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} Joined Read Lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist/0.1.0", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"null\", \"__rerun_remap_job_id__\": null, \"bins\": \"\\\"50\\\"\", \"format\": \"\\\"png\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "11": {
+            "annotation": "", 
+            "id": 11, 
+            "input_connections": {
+                "library|input_1": {
+                    "id": 8, 
+                    "output_name": "outputFile"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Bowtie2", 
+            "outputs": [
+                {
+                    "name": "output_unaligned_reads_l", 
+                    "type": "fastqsanger"
+                }, 
+                {
+                    "name": "output_unaligned_reads_r", 
+                    "type": "fastqsanger"
+                }, 
+                {
+                    "name": "output", 
+                    "type": "bam"
+                }
+            ], 
+            "position": {
+                "left": 729, 
+                "top": 236
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput_unaligned_reads_l": {
+                    "action_arguments": {
+                        "newname": "${name} joined reads (no PhiX)"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_unaligned_reads_l"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "bowtie2", 
+            "tool_state": "{\"__page__\": 0, \"read_group\": \"{\\\"selection\\\": \\\"no\\\", \\\"__current_case__\\\": 1}\", \"__rerun_remap_job_id__\": null, \"unaligned_file\": \"\\\"True\\\"\", \"library\": \"{\\\"type\\\": \\\"single\\\", \\\"__current_case__\\\": 0, \\\"input_1\\\": null}\", \"reference_genome\": \"{\\\"source\\\": \\\"indexed\\\", \\\"__current_case__\\\": 0, \\\"index\\\": \\\"phix\\\"}\", \"params\": \"{\\\"full\\\": \\\"no\\\", \\\"__current_case__\\\": 1}\"}", 
+            "tool_version": "0.2", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "12": {
+            "annotation": "", 
+            "id": 12, 
+            "input_connections": {
+                "input_reads": {
+                    "id": 11, 
+                    "output_name": "output_unaligned_reads_l"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Filter with SortMeRNA", 
+            "outputs": [
+                {
+                    "name": "output_accept", 
+                    "type": "fasta"
+                }, 
+                {
+                    "name": "output_other", 
+                    "type": "fasta"
+                }, 
+                {
+                    "name": "output_log", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 902, 
+                "top": 415
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput_accept": {
+                    "action_arguments": {
+                        "newname": "${name} rRNA Reads"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_accept"
+                }, 
+                "RenameDatasetActionoutput_other": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA Reads"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_other"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bonsai/sortmerna/sortmerna_wrapper/1.0", 
+            "tool_state": "{\"__page__\": 0, \"read_family\": \"{\\\"read_family_selector\\\": \\\"--I\\\", \\\"__current_case__\\\": 2}\", \"log\": \"\\\"True\\\"\", \"input_reads\": \"null\", \"outputs_selected\": \"[\\\"accept\\\", \\\"other\\\"]\", \"sequencing_type\": \"{\\\"sequencing_type_selector\\\": \\\"not_paired\\\", \\\"__current_case__\\\": 1}\", \"databases_type\": \"{\\\"databases_selector\\\": \\\"cached\\\", \\\"input_databases\\\": [\\\"rfam-5.8s\\\", \\\"rfam-5s\\\", \\\"silva-arc-16s\\\", \\\"silva-arc-23s\\\", \\\"silva-bac-16s\\\", \\\"silva-bac-23s\\\", \\\"silva-euk-18s\\\", \\\"silva-euk-28s\\\"], \\\"__current_case__\\\": 0}\", \"__rerun_remap_job_id__\": null, \"options\": \"{\\\"number_of_threads\\\": \\\"12\\\", \\\"options_type_selector\\\": \\\"more\\\", \\\"__current_case__\\\": 1}\", \"strand_search\": \"\\\"\\\"\"}", 
+            "tool_version": "1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "13": {
+            "annotation": "", 
+            "id": 13, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 12, 
+                    "output_name": "output_other"
+                }
+            }, 
+            "inputs": [], 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 942, 
+                "top": 664
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA Read Stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite/0.20.3", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "14": {
+            "annotation": "", 
+            "id": 14, 
+            "input_connections": {
+                "input": {
+                    "id": 12, 
+                    "output_name": "output_other"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 946, 
+                "top": 812
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA Read Lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist/0.1.0", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"null\", \"__rerun_remap_job_id__\": null, \"bins\": \"\\\"50\\\"\", \"format\": \"\\\"png\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "15": {
+            "annotation": "", 
+            "id": 15, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 12, 
+                    "output_name": "output_accept"
+                }
+            }, 
+            "inputs": [], 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 1256, 
+                "top": 233
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} rRNA Read Stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite/0.20.3", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "16": {
+            "annotation": "", 
+            "id": 16, 
+            "input_connections": {
+                "input": {
+                    "id": 12, 
+                    "output_name": "output_accept"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 1248, 
+                "top": 362
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} rRNA Read Lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist/0.1.0", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"null\", \"__rerun_remap_job_id__\": null, \"bins\": \"\\\"50\\\"\", \"format\": \"\\\"png\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "17": {
+            "annotation": "", 
+            "id": 17, 
+            "input_connections": {
+                "input_file": {
+                    "id": 12, 
+                    "output_name": "output_other"
+                }
+            }, 
+            "inputs": [], 
+            "name": "FASTQ to FASTA", 
+            "outputs": [
+                {
+                    "name": "output_file", 
+                    "type": "fasta"
+                }
+            ], 
+            "position": {
+                "left": 962, 
+                "top": 928
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput_file": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA reads (fasta)"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_file"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "fastq_to_fasta_python", 
+            "tool_state": "{\"__page__\": 0, \"__rerun_remap_job_id__\": null, \"chromInfo\": \"\\\"/minilims/galaxy-data/tool-data/shared/ucsc/chrom/?.len\\\"\", \"input_file\": \"null\"}", 
+            "tool_version": "1.0.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "18": {
+            "annotation": "", 
+            "id": 18, 
+            "input_connections": {
+                "format_type|input_query": {
+                    "id": 12, 
+                    "output_name": "output_accept"
+                }
+            }, 
+            "inputs": [], 
+            "name": "LastWrapper", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1254, 
+                "top": 467
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} rRNA vs Silva (lastWrapper)"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "last_wrapper/0.2.3", 
+            "tool_state": "{\"hitsPerRead\": \"\\\"1\\\"\", \"__page__\": 0, \"outputFormat\": \"\\\"0\\\"\", \"numChunks\": \"\\\"7\\\"\", \"multiplicity\": \"\\\"10\\\"\", \"db_type\": \"{\\\"alph\\\": \\\"nucl\\\", \\\"__current_case__\\\": 0, \\\"source_select\\\": \\\"Silva119_SSU\\\"}\", \"SCRIPTDIR\": \"\\\"/opt/edl/scripts/\\\"\", \"maskWithTantan\": \"\\\"-u 2\\\"\", \"chromInfo\": \"\\\"/minilims/galaxy-data/tool-data/shared/ucsc/chrom/?.len\\\"\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"__current_case__\\\": 1, \\\"show\\\": \\\"no\\\"}\", \"format_type\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "19": {
+            "annotation": "", 
+            "id": 19, 
+            "input_connections": {
+                "format_type|input_query": {
+                    "id": 17, 
+                    "output_name": "output_file"
+                }
+            }, 
+            "inputs": [], 
+            "name": "LastWrapper", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1265, 
+                "top": 745
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA vs RefSqeq (lastWrapper)"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "last_wrapper/0.2.3", 
+            "tool_state": "{\"hitsPerRead\": \"\\\"10\\\"\", \"__page__\": 0, \"outputFormat\": \"\\\"gene\\\"\", \"numChunks\": \"\\\"7\\\"\", \"multiplicity\": \"\\\"10\\\"\", \"db_type\": \"{\\\"frameShiftPenalty\\\": \\\"500\\\", \\\"alph\\\": \\\"prot\\\", \\\"__current_case__\\\": 1, \\\"source_select\\\": \\\"RefSeq_69_plus\\\"}\", \"SCRIPTDIR\": \"\\\"/opt/edl/scripts/\\\"\", \"maskWithTantan\": \"\\\"-u 2\\\"\", \"chromInfo\": \"\\\"/minilims/galaxy-data/tool-data/shared/ucsc/chrom/?.len\\\"\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"__current_case__\\\": 1, \\\"show\\\": \\\"no\\\"}\", \"format_type\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 0, \\\"format\\\": \\\"0\\\"}\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "20": {
+            "annotation": "", 
+            "id": 20, 
+            "input_connections": {
+                "format_type|input_query": {
+                    "id": 17, 
+                    "output_name": "output_file"
+                }
+            }, 
+            "inputs": [], 
+            "name": "LastWrapper", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1263, 
+                "top": 1014
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA vs KEGG (lastWrapper)"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "last_wrapper/0.2.3", 
+            "tool_state": "{\"hitsPerRead\": \"\\\"10\\\"\", \"__page__\": 0, \"outputFormat\": \"\\\"gene\\\"\", \"numChunks\": \"\\\"7\\\"\", \"multiplicity\": \"\\\"10\\\"\", \"db_type\": \"{\\\"frameShiftPenalty\\\": \\\"500\\\", \\\"alph\\\": \\\"prot\\\", \\\"__current_case__\\\": 1, \\\"source_select\\\": \\\"Kegg201411\\\"}\", \"SCRIPTDIR\": \"\\\"/opt/edl/scripts/\\\"\", \"maskWithTantan\": \"\\\"-u 2\\\"\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"__current_case__\\\": 1, \\\"show\\\": \\\"no\\\"}\", \"format_type\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 0, \\\"format\\\": \\\"0\\\"}\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "21": {
+            "annotation": "", 
+            "id": 21, 
+            "input_connections": {
+                "input1": {
+                    "id": 18, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "AssignTaxa", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1516, 
+                "top": 464
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} Assign Taxids Silva SSU"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Assign_Taxa/0.2.3", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"input1\": \"null\", \"m8format\": \"\\\"last\\\"\", \"__page__\": 0, \"__rerun_remap_job_id__\": null, \"taxid\": \"\\\"-T\\\"\", \"rank\": \"\\\" \\\"\", \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"source\": \"{\\\"mappingFile\\\": \\\"Silva119.staxid\\\", \\\"__current_case__\\\": 1, \\\"blastdb\\\": \\\"Silva\\\"}\", \"method\": \"\\\"first\\\"\"}", 
+            "tool_version": "0.2.2", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "22": {
+            "annotation": "", 
+            "id": 22, 
+            "input_connections": {
+                "input1": {
+                    "id": 19, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "AssignTaxa", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1527, 
+                "top": 749
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} Assign Taxids LCA"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Assign_Taxa/0.2.3", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"input1\": \"null\", \"m8format\": \"\\\"gene\\\"\", \"__page__\": 0, \"__rerun_remap_job_id__\": null, \"taxids\": \"{\\\"taxid\\\": \\\"-T\\\", \\\"rank\\\": \\\" \\\", \\\"usetaxmap\\\": \\\"True\\\", \\\"__current_case__\\\": 0, \\\"taxonomies\\\": \\\"RS58\\\", \\\"method\\\": \\\"LCA\\\"}\", \"rank\": \"\\\" \\\"\", \"taxid\": \"\\\"-T\\\"\", \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"source\": \"{\\\"source_select\\\": \\\"RefSeq_69_plus\\\", \\\"__current_case__\\\": 0, \\\"blastdb\\\": \\\"RefSeq\\\"}\", \"SCRIPTDIR\": \"\\\"/opt/edl/scripts\\\"\", \"chromInfo\": \"\\\"/minilims/galaxy-data/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"LCA\\\"\"}", 
+            "tool_version": "0.2.2", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "23": {
+            "annotation": "", 
+            "id": 23, 
+            "input_connections": {
+                "inputs": {
+                    "id": 19, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "CountTaxa", 
+            "outputs": [
+                {
+                    "name": "html_file", 
+                    "type": "html"
+                }
+            ], 
+            "position": {
+                "left": 1960.296875, 
+                "top": 888
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionhtml_file": {
+                    "action_arguments": {
+                        "newname": "${name} count taxa first hit"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "html_file"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Taxa/0.1.3", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"m8format\": \"\\\"gene\\\"\", \"inputs\": \"null\", \"ranks\": \"[\\\"superkingdom\\\", \\\"phylum\\\", \\\"class\\\", \\\"order\\\", \\\"family\\\", \\\"genus\\\", \\\"species\\\"]\", \"__page__\": 0, \"__rerun_remap_job_id__\": null, \"printRanks\": \"[\\\"superkingdom\\\", \\\"phylum\\\", \\\"class\\\", \\\"order\\\", \\\"family\\\", \\\"genus\\\", \\\"species\\\"]\", \"taxid\": \"\\\" \\\"\", \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"source\": \"{\\\"source_select\\\": \\\"RefSeq_61_plus\\\", \\\"__current_case__\\\": 0, \\\"blastdb\\\": \\\"RefSeq\\\"}\", \"method\": \"\\\"first\\\"\"}", 
+            "tool_version": "0.1.1", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "24": {
+            "annotation": "", 
+            "id": 24, 
+            "input_connections": {
+                "input1": {
+                    "id": 20, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "AssignPaths", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1529, 
+                "top": 977
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} KEGG level 2 assignments"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Assign_Paths/0.1.2", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"KOFILE\": \"\\\"/minilims/home/jmeppley/projects/dbs/KEGG/LATEST/brite/ko/ko00001.keg\\\"\", \"input1\": \"null\", \"m8format\": \"\\\"gene\\\"\", \"__page__\": 0, \"lastdb\": \"\\\"Kegg201411\\\"\", \"keggLevel\": \"\\\"2\\\"\", \"__rerun_remap_job_id__\": null, \"SCRIPTDIR\": \"\\\"/opt/edl/scripts\\\"\", \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"method\": \"\\\"all\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "25": {
+            "annotation": "", 
+            "id": 25, 
+            "input_connections": {
+                "input1": {
+                    "id": 20, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "AssignPaths", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1535.296875, 
+                "top": 1100.5
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} KEGG ko assignments"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Assign_Paths/0.1.2", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"KOFILE\": \"\\\"/minilims/home/jmeppley/projects/dbs/KEGG/LATEST/brite/ko/ko00001.keg\\\"\", \"input1\": \"null\", \"m8format\": \"\\\"gene\\\"\", \"__page__\": 0, \"lastdb\": \"\\\"Kegg201411\\\"\", \"keggLevel\": \"\\\"ko\\\"\", \"__rerun_remap_job_id__\": null, \"SCRIPTDIR\": \"\\\"/opt/edl/scripts\\\"\", \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"method\": \"\\\"all\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "26": {
+            "annotation": "", 
+            "id": 26, 
+            "input_connections": {
+                "input1": {
+                    "id": 21, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "CountHits", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1721, 
+                "top": 471
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} Count SSU Taxids.csv"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Hits/0.2.0", 
+            "tool_state": "{\"__page__\": 0, \"input1\": \"null\", \"__rerun_remap_job_id__\": null, \"hitCol\": \"\\\"1\\\"\", \"hitsep\": \"\\\",\\\"\", \"showTotal\": \"\\\"False\\\"\", \"method\": \"\\\"all\\\"\", \"first\": \"\\\" \\\"\"}", 
+            "tool_version": "0.2.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "27": {
+            "annotation": "", 
+            "id": 27, 
+            "input_connections": {
+                "input1": {
+                    "id": 22, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "CountHits", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1740, 
+                "top": 761
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} Count Taxids LCA.csv"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Hits/0.2.0", 
+            "tool_state": "{\"__page__\": 0, \"input1\": \"null\", \"__rerun_remap_job_id__\": null, \"hitCol\": \"\\\"1\\\"\", \"SCRIPTDIR\": \"\\\"/opt/edl/scripts\\\"\", \"hitsep\": \"\\\",\\\"\", \"showTotal\": \"\\\"False\\\"\", \"chromInfo\": \"\\\"/minilims/galaxy-data/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"all\\\"\", \"first\": \"\\\" \\\"\"}", 
+            "tool_version": "0.2.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "28": {
+            "annotation": "", 
+            "id": 28, 
+            "input_connections": {
+                "input1": {
+                    "id": 24, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "CountHits", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1725, 
+                "top": 995
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} KEGG level 2 counts"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Hits/0.2.0", 
+            "tool_state": "{\"__page__\": 0, \"input1\": \"null\", \"__rerun_remap_job_id__\": null, \"hitCol\": \"\\\"-1\\\"\", \"SCRIPTDIR\": \"\\\"/opt/edl/scripts\\\"\", \"hitsep\": \"\\\"\\\"\", \"showTotal\": \"\\\"True\\\"\", \"method\": \"\\\"all\\\"\", \"first\": \"\\\" \\\"\"}", 
+            "tool_version": "0.2.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "29": {
+            "annotation": "", 
+            "id": 29, 
+            "input_connections": {
+                "input1": {
+                    "id": 25, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "CountHits", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1736.296875, 
+                "top": 1120.5
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} KEGG ko counts"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Hits/0.2.0", 
+            "tool_state": "{\"__page__\": 0, \"input1\": \"null\", \"__rerun_remap_job_id__\": null, \"hitCol\": \"\\\"-1\\\"\", \"SCRIPTDIR\": \"\\\"/opt/edl/scripts\\\"\", \"hitsep\": \"\\\"\\\"\", \"showTotal\": \"\\\"True\\\"\", \"method\": \"\\\"all\\\"\", \"first\": \"\\\" \\\"\"}", 
+            "tool_version": "0.2.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "30": {
+            "annotation": "", 
+            "id": 30, 
+            "input_connections": {
+                "datatable": {
+                    "id": 26, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Sunburst Phylo Viz (MEGAN)", 
+            "outputs": [
+                {
+                    "name": "plotname", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 1941.5, 
+                "top": 475
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionplotname": {
+                    "action_arguments": {
+                        "newname": "${name}.SSU.sunburst.png"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "plotname"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "sunburstMeganCSV/0.1.2", 
+            "tool_state": "{\"cutoff\": \"\\\"0.025\\\"\", \"__page__\": 0, \"NCBITAXDIR\": \"\\\"/minilims/galaxy-data/tool-data/sequencedbs/lastdb/RefSeq/61\\\"\", \"__rerun_remap_job_id__\": null, \"outputType\": \"{\\\"createImage\\\": \\\"True\\\", \\\"plotformat\\\": \\\"png\\\", \\\"icicle\\\": \\\"False\\\", \\\"rootNode\\\": \\\"\\\", \\\"__current_case__\\\": 0, \\\"exteriorLabels\\\": \\\"True\\\"}\", \"source\": \"{\\\"mappingFile\\\": \\\"Silva119.staxid\\\", \\\"__current_case__\\\": 1, \\\"blastdb\\\": \\\"Silva\\\"}\", \"rankList\": \"[\\\"superkingdom\\\", \\\"phylum\\\", \\\"class\\\"]\", \"nodeColors\": \"\\\"root=gray,Viruses=orange,Bacteria=r,Eukaryota=b,Archaea=g,Proteobacteria=purple\\\"\", \"datatable\": \"null\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }, 
+        "31": {
+            "annotation": "", 
+            "id": 31, 
+            "input_connections": {
+                "datatable": {
+                    "id": 27, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "name": "Sunburst Phylo Viz (MEGAN)", 
+            "outputs": [
+                {
+                    "name": "plotname", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 1955, 
+                "top": 768
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionplotname": {
+                    "action_arguments": {
+                        "newname": "${name}.func.sunburst.png"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "plotname"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "sunburstMeganCSV/0.1.2", 
+            "tool_state": "{\"cutoff\": \"\\\"0.025\\\"\", \"plotformat\": \"\\\"png\\\"\", \"icicle\": \"\\\"False\\\"\", \"NCBITAXDIR\": \"\\\"/minilims/galaxy-data/tool-data/sequencedbs/lastdb/RefSeq/61\\\"\", \"__page__\": 0, \"__rerun_remap_job_id__\": null, \"outputType\": \"{\\\"createImage\\\": \\\"True\\\", \\\"plotformat\\\": \\\"png\\\", \\\"icicle\\\": \\\"False\\\", \\\"rootNode\\\": \\\"\\\", \\\"__current_case__\\\": 0, \\\"exteriorLabels\\\": \\\"True\\\"}\", \"SCRIPTDIR\": \"\\\"/opt/edl/scripts/\\\"\", \"datatable\": \"null\", \"source\": \"{\\\"source_select\\\": \\\"RefSeq_69_plus\\\", \\\"__current_case__\\\": 0, \\\"blastdb\\\": \\\"RefSeq\\\"}\", \"rootNode\": \"\\\"\\\"\", \"rankList\": \"[\\\"superkingdom\\\", \\\"phylum\\\", \\\"class\\\"]\", \"nodeColors\": \"\\\"root=gray,Viruses=orange,Bacteria=r,Eukaryota=b,Archaea=g,Proteobacteria=purple\\\"\", \"exteriorLabels\": \"\\\"True\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": []
+        }
+    }
+}

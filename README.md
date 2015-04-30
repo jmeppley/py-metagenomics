@@ -34,41 +34,48 @@ More complex Galaxy installations have a shell script that runs before every job
 If you installed the python requirements/dependencies in a virtual environment, you must invoke this in the environment_setup_file, too.
 
 ## Tools ##
-The tools are not yet ready to be released as toolshed repositories. In the meantime, they must be installed manually. 
+The tools are not yet ready to be released as toolshed repositories. In the meantime, they must be installed manually. Many files have paths that assume the galaxy root diretory (usually galaxy-dist) and this repository (py-metagenomics) are in the same parent folder. If this is not the case, you'll have to edit a few extra files.
 
-First, copy the galaxy/pymg folder into the tools subfolder of your Galaxy installation. 
+# Tool definitions #
+Add the file galaxy/pymg_tool_conf.xml (using the full path or path 
+relative to the galaxy root) to the list of tool config files 
+(tool_config_file=) in the main galaxy configuration file config/galaxy.ini. 
+Also, if the galaxy root is not in the same parent directory as this 
+repository, you'll need to edit the tool_path value set in 
+galaxy/pymg_tool_conf.xml.
 
-Second, add the following XML snippet to the tool_conf.xml file:
+# Data tables #
+First, copy the contents of galaxy/tool-data/tool_data_table_conf.xml (from this repository) into the galaxy data table config file, usually config/tool_data_table_conf.xml (If it doesn't exist yet, copy the .sample version into place and edit from that. The lines to copy are also here:
 
-```
-  <section id="pymg" name="py-metagenomics">
-    <tool file="pymg/prinseq_lite.xml" />
-    <tool file="pymg/readLengths.xml" />
-    <tool file="pymg/screen_list.xml" />
-    <tool file="pymg/createPrimerFile.xml" />
-    <tool file="pymg/illuminaPrep.xml" />
-    <tool file="pymg/last_wrapper.xml" />
-    <tool file="pymg/filter_blast.xml" />
-    <tool file="pymg/translate_column.xml" />
-    <tool file="pymg/assignTaxa.xml" />
-    <tool file="pymg/assignPaths.xml" />
-    <tool file="pymg/countHits.xml" />
-    <tool file="pymg/countTaxa.xml" />
-    <tool file="pymg/countTaxaSimple.xml" />
-    <tool file="pymg/countPaths.xml" />
-    <tool file="pymg/sunburstMeganCSV.xml" />
-  </section>
-```
+    <!-- Locations of last(al) databases -->
+    <table name="lastdb" comment_char="#">
+        <columns>value, name, type, path, taxmapfile, taxkey, kofile, descfile, taxdump</columns>
+        <file path="tool-data/lastdb.loc" />
+    </table>
+    <!-- Information about the chemistries available to MiSeq -->
+    <table name="illuminaChemistries" comment_char="#">
+        <columns>value, name, primerTemplate</columns>
+        <file path="tool-data/illuminaChemistries.loc" />
+    </table>
 
-Thrid, set up the lastdb filetype. This is a little involved (sorry, the toolshed version will fix this)
+Next, link or copy the .loc.sample files into the tool-data folder in galaxy and drop the .sample extension from the names. If the py-metagenomics repository is not in the same parent folder as galaxy, you'll need to edit the paths in illuminaChemistries.loc. 
+
+To use any database searching tools, you'll need to build your own last databases from some or all of the public repositories REfSeq, Silva, or KEGG. See the instructions for downloading and building these in the databases subfolder. Once built, add the locations into lastdb.loc.
+
+# Lastdb Types #
+
+Third, set up the lastdb filetype. This is a little involved (sorry, the toolshed version will fix this)
 
 Normally you would install datatypes via a ToolShed, which would move
 the provided lastdb.py file into a suitable location and process the
 datatypes_conf.xml entry to be combined with your local configuration. If you have a private toolshed running, you can upload the galaxy/last_dataypes folder into a toolshed repository and use it from there.
 
-However, if you don't have a private toolshed already set up, it's much easier to install the datatypes manually. (1) Add
-the following lines from galaxy/last_datatypes/dataypes_conf.xml in this package to the datatypes_conf.xml file in the Galaxy main folder::
+However, if you don't have a private toolshed already set up, it's much 
+easier to install the datatypes manually. (1) Add the following lines from 
+galaxy/last_datatypes/dataypes_conf.xml in this package to the <registration> 
+tag in the config/datatypes_conf.xml file in the Galaxy main folder:
 
+	<!-- Last database definitions -->
         <datatype extension="lastdbn" type="galaxy.datatypes.lastdb:LastalNucDb" mimetype="text/html" display_in_upload="false"/>
         <datatype extension="lastdbp" type="galaxy.datatypes.lastdb:LastalProtDb" mimetype="text/html" display_in_upload="false"/>
 

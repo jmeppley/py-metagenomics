@@ -1,4 +1,4 @@
-<tool id="last_wrapper" name="LastWrapper" version="0.1.5">
+<tool id="last_wrapper" name="LastWrapper" version="0.2.3">
     <description> compare short reads against reference protein databases</description>
     <command>
       lastWrapper.py

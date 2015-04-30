@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<toolbox tool_path="../py-metagenomics/galaxy">
+  <section id="pymg" name="py-metagenomics">
+    <tool file="pymg/prinseq_lite.xml" />
+    <tool file="pymg/readLengths.xml" />
+    <tool file="pymg/screen_list.xml" />
+    <tool file="pymg/createPrimerFile.xml" />
+    <tool file="pymg/illuminaPrep.xml" />
+    <tool file="pymg/last_wrapper.xml" />
+    <tool file="pymg/filter_blast.xml" />
+    <tool file="pymg/translate_column.xml" />
+    <tool file="pymg/assignTaxa.xml" />
+    <tool file="pymg/assignPaths.xml" />
+    <tool file="pymg/countHits.xml" />
+    <tool file="pymg/countTaxa.xml" />
+    <tool file="pymg/countTaxaSimple.xml" />
+    <tool file="pymg/countPaths.xml" />
+    <tool file="pymg/sunburstMeganCSV.xml" />
+  </section>
+</toolbox>
