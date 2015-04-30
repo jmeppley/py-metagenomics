@@ -1,13 +1,10 @@
 <tool id="Count_Taxa" name="CountTaxa" version="0.1.2">
   <description>Generate a table of counts of taxa accross a number of samples for selected ranks. Display graphs. </description>
-  <requirements>
-      <requirement type="set_environment">REPO_PATH</requirement>
-  </requirements>
-  <command>
-    \$REPO_PATH/countTaxaPlotWrapper.py
+  <command interpreter='python'>
+    countTaxaPlotWrapper.py
     --htmlFile $html_file
     --outputDir $html_file.files_path
-    --supportFileLoc \$REPO_PATH/countTaxaFiles
+    --supportFileLoc \$PYMG_PATH/galaxy/countTaxaWebFiles
 
 #if $ranks.group_by_rank
     #if $ranks.rank_domain
@@ -43,16 +40,11 @@
     "${f.name}=${f.file_name}"
     #end for
       -f $m8format
-#if $source.blastdb == "RefSeq":
-        -p accs
-        -m "${source.source_select.fields.taxmapfile}"
-        -n "${source.source_select.fields.taxdump}"
-#end if
-#if $source.blastdb == "Silva":
-        -p hitid
-        -m "${source.mappingFile.fields.path}"
-        -n "${source.mappingFile.fields.taxdump}"
-#end if
+
+        -p ${lastdb.fields.taxkey}
+        -m "${lastdb.fields.taxmapfile}"
+        -n "${lastdb.fields.taxdump}"
+
         -c $cutoff
         -C $method
 #if $ranks.group_by_rank
@@ -75,34 +67,17 @@
             <option value="gene" selected="True">Gene: Blast-like plus read and hit description columns</option> 
             <option value="liz">Liz: Blast-like plus hit description column</option>
      </param>
-    <conditional name="source">
-	    <param name="blastdb" type="select" label="Which blast database was used?">
-              <option value="RefSeq">RefSeq</option>	    
-              <option value="Silva">Silva</option>	    
-	    </param>
-        <when value="RefSeq">
-	     <param name="source_select" type="select" display="radio" label="against target database">
-             <options from_file="lastdb_p.loc" >
-			   <column name="value" index="0"/>
-			   <column name="name" index="1"/>
-			   <column name="taxmapfile" index="3"/>
-               <column name="taxdump" index="6"/>
-			   <filter type="static_value" value="None" column="6" keep="false"/>
-		   </options>
-         </param>
-        </when>
-        <when value="Silva">
-          <param name="mappingFile" type="select" display="radio" label="Map Silva IDs to">
-           <options from_file="silva_mapping_tables.loc" >
-			   <column name="value" index="0"/>
-			   <column name="name" index="1"/>
-			   <column name="path" index="2"/>
-               <column name="taxdump" index="3"/>
-			   <filter type="static_value" value="None" column="3" keep="false"/>
-		   </options>
-          </param>
-        </when>
-    </conditional>
+     <param name="lastdb" type="select" display="radio" label="Which database was used:">
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="taxmapfile" index="4"/>
+		<column name="taxkey" index="5"/>
+		<column name="taxdump" index="8"/>
+		<filter type="static_value" value="None" column="8"
+			   keep="False"/>
+	     </options>
+     </param>
     <param name="cutoff" type="float" size="10" value="0.01" label="Hide counts below this fraction of total:"/>
     <conditional name="ranks">
         <param name="group_by_rank" type="boolean" label="Group counts by taxa at selected ranks" help="Choose which ranks below" checked="True" truevalue="True" falsevalue="False"/>

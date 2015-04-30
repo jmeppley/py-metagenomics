@@ -36,31 +36,31 @@ If you installed the python requirements/dependencies in a virtual environment, 
 ## Tools ##
 The tools are not yet ready to be released as toolshed repositories. In the meantime, they must be installed manually. 
 
-First, copy the pymg-galaxy folder into the tools subfolder of your Galaxy installation. 
+First, copy the galaxy/pymg folder into the tools subfolder of your Galaxy installation. 
 
 Second, add the following XML snippet to the tool_conf.xml file:
 
 ```
   <section id="pymg" name="py-metagenomics">
-    <tool file="prinseq_lite.xml" />
-    <tool file="readLengths.xml" />
-    <tool file="screen_list.xml" />
-    <tool file="createPrimerFile.xml" />
-    <tool file="illuminaPrep.xml" />
-    <tool file="last_wrapper.xml" />
-    <tool file="filter_blast.xml" />
-    <tool file="translate_column.xml" />
-    <tool file="assignTaxa.xml" />
-    <tool file="assignPaths.xml" />
-    <tool file="countHits.xml" />
-    <tool file="countTaxa.xml" />
-    <tool file="countTaxaSimple.xml" />
-    <tool file="countPaths.xml" />
-    <tool file="sunburstMeganCSV.xml" />
+    <tool file="pymg/prinseq_lite.xml" />
+    <tool file="pymg/readLengths.xml" />
+    <tool file="pymg/screen_list.xml" />
+    <tool file="pymg/createPrimerFile.xml" />
+    <tool file="pymg/illuminaPrep.xml" />
+    <tool file="pymg/last_wrapper.xml" />
+    <tool file="pymg/filter_blast.xml" />
+    <tool file="pymg/translate_column.xml" />
+    <tool file="pymg/assignTaxa.xml" />
+    <tool file="pymg/assignPaths.xml" />
+    <tool file="pymg/countHits.xml" />
+    <tool file="pymg/countTaxa.xml" />
+    <tool file="pymg/countTaxaSimple.xml" />
+    <tool file="pymg/countPaths.xml" />
+    <tool file="pymg/sunburstMeganCSV.xml" />
   </section>
 ```
 
-Thrid (maybe) hook up necessary filetypes config
+Thrid, set up the lastdb filetype. This is a little involved (sorry, the toolshed version will fix this)
 
 
 

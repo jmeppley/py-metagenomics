@@ -8,12 +8,7 @@
 #end if
     -C $cutoff
 	-R $rankList
-#if $source.blastdb == "RefSeq":
-        -n "${source.source_select.fields.taxdump}"
-#end if
-#if $source.blastdb == "Silva":
-        -n "${source.mappingFile.fields.taxdump}"
-#end if
+        -n "${lastdb.fields.taxdump}"
 #if $outputType.createImage:
  #if str($outputType.rootNode).strip() != "":
 	-r $outputType.rootNode
@@ -38,31 +33,17 @@
               <option value="RefSeq">RefSeq</option>	    
               <option value="Silva">Silva</option>	    
 	    </param>
-        <when value="RefSeq">
-	     <param name="source_select" type="select" display="radio" label="against target database">
-            <options from_file="lastdb_p.loc" >
-				<column name="value" index="0"/>
-				<column name="name" index="1"/>
-
-				<column name="taxmapfile" index="3"/>
-			   <column name="taxdump" index="6"/>
-			   <filter type="static_value" value="None" column="6"
-				   keep="False"/>
-			</options>
-         </param>
-        </when>
-        <when value="Silva">
-          <param name="mappingFile" type="select" display="radio" label="Map Silva IDs to">
-           <options from_file="silva_mapping_tables.loc" >
-			   <column name="value" index="0"/>
-			   <column name="name" index="1"/>
-			   <column name="path" index="2"/>
-			   <column name="taxdump" index="3"/>
-			   <filter type="static_value" value="None" column="3" keep="false"/>
-		   </options>
-          </param>
-        </when>
-    </conditional>
+     <param name="lastdb" type="select" display="radio" label="Which database was used:">
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="taxmapfile" index="4"/>
+		<column name="taxkey" index="5"/>
+		<column name="taxdump" index="8"/>
+		<filter type="static_value" value="None" column="8"
+			   keep="False"/>
+	     </options>
+     </param>
 
 	 <!--param name="rankList" label="Plot these ranks" type="text" value="superkingdom,phylum,family"/ -->
 	 <param name="rankList" type="select" multiple="true" label="Plot these ranks" display="checkboxes">

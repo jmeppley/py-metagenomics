@@ -5,10 +5,10 @@
         -N $numChunks
         -f $outputFormat
         -n $hitsPerRead
-        #if ($db_type.alph=="prot" or $db_type.alph=="prot-hist") and $db_type.frameShiftPenalty!="" 
-            -F $db_type.frameShiftPenalty
+        #if $frameShiftPenalty!="" 
+            -F $frameShiftPenalty
         #end if
-		$maskWithTantan
+	$maskWithTantan
         -m $multiplicity
 	#if $advanced.show=="yes"
 		#if str($advanced.matchScore).strip()!="" #-r $advanced.matchScore #end if
@@ -25,10 +25,10 @@
 	#end if
         -Q $format_type.format
         -o $output1
-        #if $db_type.alph=="nucl-hist" or $db_type.alph=="prot-hist"
+        #if $db_type.source=="history"
             "${os.path.join($db_type.database.extra_files_path,'lastdb')}"
         #else
-            "${db_type.source_select.fields.path}"
+            "${db_type.lastdb.fields.path}"
         #end if
         $input_query
     </command>
@@ -71,31 +71,20 @@
         
       <param name="hitsPerRead" type="integer" size="10" value="10" label="Limit output to this many hits per read." help="Less than or equal to 0 means unlimited."/>
       <conditional name="db_type">
-       <param name="alph" type="select" label="Reference Database">
-        <option value="nucl">Nucleotide (Built-in)</option>
-        <option value="prot">Protein (Built-in)</option>
-        <option value="nucl-hist">Nucleotide (History)</option>
-        <option value="prot-hist">Protein (History)</option>
+       <param name="source" type="select" label="Reference Database Source">
+        <option value="galaxy">Built-in</option>
+        <option value="history">History</option>
        </param>
-       <when value="nucl">
-	<param name="source_select" type="select" display="radio" label="against target database">
-            <options from_data_table="pipe_lastdb_n" />
+       <when value="galaxy">
+	<param name="lastdb" type="select" display="radio" label="against target database">
+            <options from_data_table="lastdb" />
         </param>
        </when>
-       <when value="prot">
-	<param name="source_select" type="select" display="radio" label="against target database">
-            <options from_data_table="pipe_lastdb_p" />
-        </param>
-        <param name="frameShiftPenalty" type="integer" size="10" value="500" label="Score penalty for frameshift. Set to 15 for 454 data." help="Leave blank if input sequences are protein" optional="true"/>
-       </when>
-       <when value="nucl-hist">
-         <param name="database" type="data" format="lastdbn" label="target last database from history" help="You must have a last-formatted sequence datbase in your history. Use the lastdb tool to make one."/> 
-       </when>
-       <when value="prot-hist">
-         <param name="database" type="data" format="lastdbp" label="target last database from history" help="You must have a last-formatted sequence datbase in your history. Use the lastdb tool to make one."/> 
-        <param name="frameShiftPenalty" type="integer" size="10" value="500" label="Score penalty for frameshift. Set to 15 for 454 data." help="Leave blank if input sequences are protein" optional="true"/>
+       <when value="history">
+         <param name="database" type="data" format="lastdbp,lastdbn" label="target last database from history" help="You must have a last-formatted sequence datbase in your history. Use the lastdb tool to make one."/> 
        </when>
       </conditional>
+        <param name="frameShiftPenalty" type="integer" size="10" value="" label="Score penalty for frameshift when comparing nucleotide queries to a protein database. Leave blank if query adn database are the same type." help="Set to 15 for 454 data, 500 for Illumina."/>
       <param name="multiplicity" type="integer" size="10" value="10" label="Initial match multiplicity (-m)" help="10 is good deafult, though 5 is faster and does a good enough job for rRNA"/> 
       <conditional name="advanced">
          <param name="show" type="select" label="Advanced Options (ignored if blank)">

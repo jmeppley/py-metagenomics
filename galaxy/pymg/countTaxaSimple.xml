@@ -7,20 +7,12 @@
 #end for
       -o $out_file  
       -f $m8format
-#if $source.blastdb == "RefSeq":
-        -p accs
-        -m "${source.source_select.fields.taxmapfile}"
+
+        -p ${lastdb.fields.taxkey}
+        -m "${lastdb.fields.taxmapfile}"
 	#if $taxids.usetaxmap:
-        -n "${source.source_select.fields.taxdump}"
+        -n "${lastdb.fields.taxdump}"
 	#end if
-#end if
-#if $source.blastdb == "Silva":
-        -p hitid
-        -m "${source.mappingFile.fields.path}"
-	#if $taxids.usetaxmap:
-        -n "${source.mappingFile.fields.taxdump}"
-	#end if
-#end if
         -c $cutoff
 #if $taxids.usetaxmap:
         -C $taxids.method
@@ -43,28 +35,17 @@
             <option value="gene" selected="True">Gene: Blast-like plus read and hit description columns</option> 
             <option value="liz">Liz: Blast-like plus hit description column</option>
      </param>
-    <conditional name="source">
-	    <param name="blastdb" type="select" label="Which blast database was used?">
-              <option value="RefSeq">RefSeq</option>	    
-              <option value="Silva">Silva</option>	    
-	    </param>
-        <when value="RefSeq">
-	     <param name="source_select" type="select" display="radio" label="against target database">
-             <options from_file="lastdb_p.loc" >
-			   <column name="value" index="0"/>
-			   <column name="name" index="1"/>
-			   <column name="taxmapfile" index="3"/>
-               <column name="taxdump" index="6"/>
-			   <filter type="static_value" value="None" column="6" keep="false"/>
-		   </options>
-         </param>
-        </when>
-        <when value="Silva">
-          <param name="mappingFile" type="select" display="radio" label="Map Silva IDs to">
-           <options from_data_table="pipe_silva_mapping_tables" />
-          </param>
-        </when>
-    </conditional>
+     <param name="lastdb" type="select" display="radio" label="Which database was used:">
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="taxmapfile" index="4"/>
+		<column name="taxkey" index="5"/>
+		<column name="taxdump" index="8"/>
+		<filter type="static_value" value="None" column="8"
+			   keep="False"/>
+	     </options>
+     </param>
     <param name="cutoff" type="float" size="10" value="0.01" label="Hide counts below this fraction of total:"/>
     <conditional name="taxids">
         <param name="usetaxmap" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Translate taxids into named Taxon objects" help="WARNING: if you map Silva IDs to something other than taxids, you MUST uncheck this box!"/>

@@ -3,16 +3,9 @@
   <command>
       assignTaxaToReadsFromBlast.py -i $input1 -o $out_file1 -q 
       -f $m8format
-#if $source.blastdb == "RefSeq":
-        -p accs
-        -m "${source.source_select.fields.taxmapfile}"
-        -n "${source.source_select.fields.taxdump}"
-#end if
-#if $source.blastdb == "Silva":
-        -p hitid
-        -m "${source.mappingFile.fields.path}"
-        -n "${source.mappingFile.fields.taxdump}"
-#end if
+        -p ${lastdb.fields.taxkey}
+        -m "${lastdb.fields.taxmapfile}"
+        -n "${lastdb.fields.taxdump}"
         -c $cutoff
         -C $method
         $rank
@@ -32,36 +25,17 @@
             <option value="liz">Liz: Blast-like plus hit description column</option>
             <option value="sam">SAM</option>
      </param>
-    <conditional name="source">
-	    <param name="blastdb" type="select" label="Which blast database was used?">
-              <option value="RefSeq">RefSeq</option>	    
-              <option value="Silva">Silva</option>	    
-	    </param>
-        <when value="RefSeq">
-	     <param name="source_select" type="select" display="radio" label="against target database">
-            <options from_file="lastdb_p.loc" >
-				<column name="value" index="0"/>
-				<column name="name" index="1"/>
-
-				<column name="taxmapfile" index="3"/>
-			   <column name="taxdump" index="6"/>
-			   <filter type="static_value" value="None" column="6"
-				   keep="False"/>
-			</options>
-         </param>
-        </when>
-        <when value="Silva">
-          <param name="mappingFile" type="select" display="radio" label="Map Silva IDs to">
-           <options from_file="silva_mapping_tables.loc" >
-			   <column name="value" index="0"/>
-			   <column name="name" index="1"/>
-			   <column name="path" index="2"/>
-			   <column name="taxdump" index="3"/>
-			   <filter type="static_value" value="None" column="3" keep="false"/>
-		   </options>
-          </param>
-        </when>
-    </conditional>
+     <param name="lastdb" type="select" display="radio" label="Which database was used:">
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="taxmapfile" index="4"/>
+		<column name="taxkey" index="5"/>
+		<column name="taxdump" index="8"/>
+		<filter type="static_value" value="None" column="8"
+			   keep="False"/>
+	     </options>
+     </param>
     <param name="cutoff" type="float" size="10" value="0.01" label="Hide counts below this fraction of total:"/>
          <param name="rank" type="select" label="Rank to collect counts on:">
             <option value=" " selected="True">None</option>

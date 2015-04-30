@@ -1,13 +1,10 @@
 <tool id="Count_Paths" name="CountPaths" version="0.1.2">
     <description>Generate a table of counts of genes ond/r pathways accross a number of samples. Display graphs. </description>
-    <requirements>
-        <requirement type="set_environment">REPO_PATH</requirement>
-    </requirements>
-    <command>
-    \$REPO_PATH/countPathsPlotWrapper.py
+    <command interpreter='python'>
+    countPathsPlotWrapper.py
     --htmlFile $html_file
     --outputDir $html_file.files_path
-    --supportFileLoc \$REPO_PATH/countTaxaFiles
+    --supportFileLoc \$PYMG_PATH/galaxy/countTaxaWebFiles
     #if $level_ko
     --koFile $ko_counts
     #end if
@@ -20,19 +17,15 @@
     #if $level_1
     --ko1File $ko1_counts
     #end if
-    -H \$REPO_PATH/briteko/ko00001.keg
+    -H \$PYMG_PATH/briteko/ko00001.keg
     countPathsFromBlast.py
     #for $f in $inputs
     "${f.name}=${f.file_name}"
     #end for
       -f $m8format
-      -m "${database.fields.kofile}"
+        -p ${lastdb.fields.kokey}
+        -m "${lastdb.fields.komap}"
       -M kegg
-#if $database.fields.name[:6].upper() == "REFSEQ"
-        -p accs
-#else
-        -p hitid
-#end if
         -c $cutoff
         -C tophit
 #if $filter.usefilter:
@@ -47,8 +40,15 @@
             <option value="gene" selected="True">Gene: Blast-like plus read and hit description columns</option> 
             <option value="liz">Liz: Blast-like plus hit description column</option>
      </param>
-	     <param name="database" type="select" display="radio" label="Which target database was used?">
-             <options from_data_table="pipe_lastdb_p"/>
+     <param name="lastdb" type="select" display="radio" label="Which target database was used?">
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="komap" index="6"/>
+		<column name="kokey" index="5"/>
+		<filter type="static_value" value="None" column="6"
+				   keep="False"/>
+	    </options>
          </param>
     <param name="cutoff" type="float" size="10" value="0.01" label="Hide counts below this fraction of total:"/>
     <param name="level_ko" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Collect counts at level: ortholog (ko)"/>

@@ -6,7 +6,7 @@
     </stdio>
 
     <command interpreter="python">
-      $SCRIPTDIR/screen_list.py
+      screen_list.py
 	    --galaxy
         -l $listFile
 		#if $list_type.format == "table":
@@ -24,8 +24,6 @@
         $inputFile
     </command>
     <inputs>
-		<!--param name="SCRIPTDIR" type="hidden" value="/opt/edl/scripts/"/-->
-      <param name="SCRIPTDIR" type="hidden" value="/minilims/home/jmeppley/work/delong/projects/scripts"/>
       <conditional name="format_type">
        <param name="format" type="select" label="Sequence format">
         <option value="fasta">Fasta</option>

@@ -1,21 +1,14 @@
 <tool id="Assign_Paths" name="AssignPaths" version="0.1.0">
   <description>Assign a KEGG pathway to each read in a hit table. </description>
-  <requirements>
-      <requirement type="set_environment">REPO_PATH</requirement>
-  </requirements>
   <command>
       assignPathsToReadsFromBlast.py -i $input1 -o $out_file1 -q 
       -f $m8format
-#if $lastdb.value[:4].upper() == 'KEGG'
-        -p hitid
-#else
-        -p accs
-#end if
-        -m "${lastdb.fields.kofile}"
+        -p ${lastdb.fields.kokey}
+        -m "${lastdb.fields.komap}"
         -M kegg
         -c $cutoff
 #if str($keggLevel) != "ko"
-        -k \$REPO_PATH/briteko/ko00001.keg
+        -k \$PYMG_PATH/briteko/ko00001.keg
 		-l $keggLevel
 #end if
         -C $method
@@ -33,7 +26,14 @@
             <option value="liz">Liz: Blast-like plus hit description column</option>
      </param>
 	     <param name="lastdb" type="select" display="radio" label="against target database">
-            <options from_data_table="pipe_lastdb_p" />
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="komap" index="6"/>
+		<column name="kokey" index="5"/>
+		<filter type="static_value" value="None" column="6"
+				   keep="False"/>
+	    </options>
          </param>
     <param name="cutoff" type="float" size="10" value="0.01" label="Hide counts below this fraction of total:"/>
          <param name="keggLevel" type="select" label="KEGG level to count">

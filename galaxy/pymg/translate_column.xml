@@ -13,10 +13,13 @@
     -m "${'.'.join(os.path.join($map.mapfile.extra_files_path,'lastdb'),'ids')}"
     #end if
     #if $map.source=="LastWrapper"
-    -m "${map.mapdb.fields.descfile}"
-    #end if
-    #if $map.source=="Silva"
-    -m "${map.mapfile.fields.path}"
+	#if $map.map_select=="taxmap"
+	    -m "${map.mapdb.fields.taxmapfile}"
+	#elsif $map.map_select=="komap"
+	    -m "${map.mapdb.fields.kofile}"
+	#else
+	    -m "${map.mapdb.fields.descfile}"
+	#end if
     #end if
 
     ## options
@@ -43,16 +46,14 @@
         </when>
         <when value="LastWrapper">
             <param name="mapdb" type="select" display="radio" label="against target database">
-                <options from_data_table="pipe_lastdb_p" />
+                <options from_data_table="lastdb" />
             </param>
+	    <param name="map_select" type="select" display="radio" label="Which mapping file:" help="WARNING: some map files are empty for some DBs. EG: rRNA dbs won't have a KO map.">
+		<option value="taxmap">Taxid map</option>
+		<option value="komap">KEGG ko map</option>
+		<option value="idmap" selected="True">Sequence descriptions</option>
+	    </param>
         </when>
-        <when value="Silva">
-          <param name="mapfile" type="select" display="radio" label="Taxon rank to count">
-              <options from_data_table="pipe_silva_mapping_tables">
-                   <filter type="static_value" value="None" column="3" keep="true"/>
-              </options>
-          </param>
-      </when>
   </conditional>
     <param name="dest_column" type="integer" optional="true" label="Column number to create. " help="Leave blank to put just after key column. 0 for first column, -1 for last."/>
     <conditional name="fill">
