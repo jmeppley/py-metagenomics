@@ -63,9 +63,9 @@ First, copy the contents of galaxy/tool-data/tool_data_table_conf.xml (from this
         <file path="tool-data/illuminaChemistries.loc" />
     </table>
 
-Next, link or copy the .loc.sample files into the tool-data folder in galaxy and drop the .sample extension from the names. You'll need to edit the paths in illuminaChemistries.loc to point to the absolute paths of the primer files.
+Next, link or copy the .loc.sample files into the tool-data folder in galaxy and drop the .sample extension from the names. 
 
-To use any database searching tools, you'll need to build your own last databases from some or all of the public repositories REfSeq, Silva, or KEGG. See the instructions for downloading and building these in the databases subfolder. Once built, add the locations into lastdb.loc.
+To use any database searching tools, you'll need to build your own last databases from some or all of the public repositories REfSeq, Silva, or KEGG. See the instructions for downloading and building these in the databases subfolder. Once you have your own databases built, you may need to alter the paths in lastdb.loc to reflect the newer versions and dates of your databases.
 
 # from the tool shed #
 
@@ -73,6 +73,10 @@ To run the included workflow, you'll need to install the following tools from th
 
  * sortmerna
  * fastq_to_fasta
+
+# workflow #
+
+The file galaxy/metagenomic-workflow.ga contains a workflow that can be imported into galaxy. 
 
 Overview
 --------
