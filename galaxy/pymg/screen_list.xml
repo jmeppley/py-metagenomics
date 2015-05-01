@@ -5,7 +5,7 @@
     	<regex match="WARNING" source="both" level="warning"/>
     </stdio>
 
-    <command interpreter="python">
+    <command>
       screen_list.py
 	    --galaxy
         -l $listFile
