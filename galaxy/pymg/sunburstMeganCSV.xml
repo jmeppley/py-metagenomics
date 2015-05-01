@@ -28,11 +28,6 @@
     </command>
     <inputs>
      <param name="datatable" label="Table of data" type="data" format="csv"/>
-    <conditional name="source">
-	    <param name="blastdb" type="select" label="Which blast database was used?">
-              <option value="RefSeq">RefSeq</option>	    
-              <option value="Silva">Silva</option>	    
-	    </param>
      <param name="lastdb" type="select" display="radio" label="Which database was used:">
             <options from_file="lastdb.loc" >
 		<column name="value" index="0"/>

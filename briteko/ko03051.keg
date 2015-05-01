@@ -1,0 +1,112 @@
++E	Proteasome
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Proteasome</h2>
+#<!---
+#ENTRY       ko03051
+#NAME        Proteasome
+#DEFINITION  Proteasome
+#--->
+!
+A<b>Eukaryotic proteasome</b>
+B  Core particles (20S proteasome)
+C    alpha type subunits
+D      K02730  PSMA6; 20S proteasome subunit alpha 1 [EC:3.4.25.1]
+D      K02726  PSMA2; 20S proteasome subunit alpha 2 [EC:3.4.25.1]
+D      K02728  PSMA4; 20S proteasome subunit alpha 3 [EC:3.4.25.1]
+D      K02731  PSMA7; 20S proteasome subunit alpha 4 [EC:3.4.25.1]
+D      K02729  PSMA5; 20S proteasome subunit alpha 5 [EC:3.4.25.1]
+D      K02725  PSMA1; 20S proteasome subunit alpha 6 [EC:3.4.25.1]
+D      K02727  PSMA3; 20S proteasome subunit alpha 7 [EC:3.4.25.1]
+C    beta type subunits
+D      K02738  PSMB6; 20S proteasome subunit beta 1 [EC:3.4.25.1]
+D      K02739  PSMB7; 20S proteasome subunit beta 2 [EC:3.4.25.1]
+D      K02735  PSMB3; 20S proteasome subunit beta 3 [EC:3.4.25.1]
+D      K02734  PSMB2; 20S proteasome subunit beta 4 [EC:3.4.25.1]
+D      K02737  PSMB5; 20S proteasome subunit beta 5 [EC:3.4.25.1]
+D      K02732  PSMB1; 20S proteasome subunit beta 6 [EC:3.4.25.1]
+D      K02736  PSMB4; 20S proteasome subunit beta 7 [EC:3.4.25.1]
+D      K02740  PSMB8, LMP7; 20S proteasome subunit beta 8 [EC:3.4.25.1]
+D      K02741  PSMB9, LMP2; 20S proteasome subunit beta 9 [EC:3.4.25.1]
+D      K02733  PSMB10, MECL1; 20S proteasome subunit beta 10 [EC:3.4.25.1]
+D      K11598  PSMB11; 20S proteasome subunit beta 11 [EC:3.4.25.1]
+B  Regulatory particles
+C    PA700 (19S proteasome)
+D      ATPase subunits
+E        K03061  PSMC2, RPT1; 26S proteasome regulatory subunit T1
+E        K03062  PSMC1, RPT2; 26S proteasome regulatory subunit T2
+E        K03063  PSMC4, RPT3; 26S proteasome regulatory subunit T3
+E        K03064  PSMC6, RPT4; 26S proteasome regulatory subunit T4
+E        K03065  PSMC3, RPT5; 26S proteasome regulatory subunit T5
+E        K03066  PSMC5, RPT6; 26S proteasome regulatory subunit T6
+D      non-ATPase subunits
+E        K03028  PSMD2, RPN1; 26S proteasome regulatory subunit N1
+E        K03032  PSMD1, RPN2; 26S proteasome regulatory subunit N2
+E        K03033  PSMD3, RPN3; 26S proteasome regulatory subunit N3
+E        K03035  PSMD12, RPN5; 26S proteasome regulatory subunit N5
+E        K03036  PSMD11, RPN6; 26S proteasome regulatory subunit N6
+E        K03037  PSMD6, RPN7; 26S proteasome regulatory subunit N7
+E        K03038  PSMD7, RPN8; 26S proteasome regulatory subunit N8
+E        K03039  PSMD13, RPN9; 26S proteasome regulatory subunit N9
+E        K03029  PSMD4, RPN10; 26S proteasome regulatory subunit N10
+E        K03030  PSMD14, RPN11, POH1; 26S proteasome regulatory subunit N11
+E        K03031  PSMD8, RPN12; 26S proteasome regulatory subunit N12
+E        K06691  RPN13; 26S proteasome regulatory subunit N13
+E        K10881  SHFM1, DSS1; 26 proteasome complex subunit DSS1
+E        K06692  PSMD5; 26S proteasome non-ATPase regulatory subunit 5
+E        K06693  PSMD9; 26S proteasome non-ATPase regulatory subunit 9
+E        K06694  PSMD10; 26S proteasome non-ATPase regulatory subunit 10
+C    PA28 (11S REG)
+D      K06696  PSME1; proteasome activator subunit 1 (PA28 alpha)
+D      K06697  PSME2; proteasome activator subunit 2 (PA28 beta)
+D      K06698  PSME3; proteasome activator subunit 3 (PA28 gamma)
+C    PA200
+D      K06699  PSME4; proteasome activator subunit 4
+C    PI31
+D      K06700  PSMF1; proteasome inhibitor subunit 1 (PI31)
+B  Assembling factors
+C    Assembling chaperones
+D      K11599  POMP, UMP1; proteasome maturation protein
+D      K11875  PSMG1, DSCR2, PAC1; proteasome assembly chaperone 1
+D      K11876  PSMG2, PAC2; proteasome assembly chaperone 2
+D      K11877  PSMG3, PAC3; proteasome assembly chaperone 3
+D      K11878  PSMG4, PAC4; proteasome assembly chaperone 4
+D      K11879  PBA1, POC1; proteasome chaperone 1
+D      K11880  ADD66, PBA2, POC2; proteasome chaperone 2
+D      K11881  IRC25, POC3; proteasome chaperone 3
+D      K11882  POC4; proteasome chaperone 4
+C    Other assembling factors
+D      K03250  EIF3E, INT6; translation initiation factor 3 subunit E
+D      K03283  HSPA1_8; heat shock 70kDa protein 1/8
+D      K04079  htpG, HSP90A; molecular chaperone HtpG
+D      K04687  IFNG; interferon gamma
+D      K11883  NOB1; RNA-binding protein NOB1
+D      K11884  PNO1, DIM2; RNA-binding protein PNO1
+B  Proteasome interacting proteins (PIPs)
+C    UBL-UBA shuttle proteins
+D      K10839  RAD23, HR23; UV excision repair protein RAD23
+D      K04523  UBQLN, DSK2; ubiquilin
+D      K11885  DDI1; DNA damage-inducible protein 1
+C    Other PIPs
+D      K11886  ECM29; proteasome component ECM29
+D      K11887  PAAF1, RPN14; proteasomal ATPase-associated factor 1
+D      K06692  PSMD5; 26S proteasome non-ATPase regulatory subunit 5
+D      K06693  PSMD9; 26S proteasome non-ATPase regulatory subunit 9
+D      K06694  PSMD10; 26S proteasome non-ATPase regulatory subunit 10
+D      K03034  RPN4; 26S proteasome regulatory subunit N4
+D      K06695  PSMC3IP; 26S proteasome regulatory subunit, ATPase 3, interacting protein
+D      K11888  CUT8, STS1; protein Cut8
+#
+A<b>Prokaryotic proteasome</b>
+B  Core particles (20S proteasome)
+C    K03432  psmA, prcA; proteasome alpha subunit [EC:3.4.25.1]
+C    K03433  psmB, prcB; proteasome beta subunit [EC:3.4.25.1]
+B  Bacterial regulatory particles
+C    K13527  mpa; proteasome-associated ATPase
+C    K13571  pafA; proteasome accessory factor A [EC:6.3.2.-]
+C    K13572  pafB; proteasome accessory factor B
+C    K13573  pafC; proteasome accessory factor C
+B  Archaeal regulatory particles
+C    K03420  psmR; proteasome regulatory subunit
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: December 26, 2012

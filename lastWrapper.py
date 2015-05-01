@@ -1,4 +1,6 @@
+#!/usr/bin/python
 #$ -cwd
+#$ -V
 #$ -S /usr/bin/python
 
 import sys, threading, logging, tempfile, subprocess, shutil, os
@@ -169,10 +171,11 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
         elif options.format in ('blast','gene','liz'):
             cmd.append(inFrag)
             # convert to m8 (and sort)
-            cmd = "%s | %s" % (getCommandString(cmd), getConvertCommand(options.format,
-                                                                        options.sort,
-                                                                        options.maxHits)i,
-                                                                        options.tmpDirRoot)
+            cmd = "%s | %s" % (getCommandString(cmd), 
+			       getConvertCommand(options.format,
+                                                 options.sort,
+                                                 options.maxHits,
+                                                 options.tmpDirRoot))
             useShell=True
         else:
             cmd.insert(-1,'-o')

@@ -1,0 +1,662 @@
++C	Kinase
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Protein Kinases</h2>
+#<!---
+#ENTRY       ko01001
+#NAME        Kinase
+#DEFINITION  Protein kinases
+#--->
+!
+A<b>Serine/threonine protein kinases: AGC group</b>
+B  PKA family
+C    K04345  PKA; protein kinase A [EC:2.7.11.11]
+B  PKG family
+C    K07376  PRKG; protein kinase, cGMP-dependent [EC:2.7.11.12]
+B  PKC family
+C    K06069  APKC; atypical protein kinase C [EC:2.7.11.13]
+C    K02677  CPKC; classical protein kinase C [EC:2.7.11.13]
+C    K06068  NPKC; novel protein kinase C [EC:2.7.11.13]
+B  AKT family
+C    K04456  AKT; RAC serine/threonine-protein kinase [EC:2.7.11.1]
+B  DMPK family
+C    K08788  DMPK; dystrophia myotonica-protein kinase [EC:2.7.11.1]
+C    K04514  ROCK1; Rho-associated protein kinase 1 [EC:2.7.11.1]
+C    K16307  CDC42BP; serine/threonine-protein kinase MRCK [EC:2.7.11.1]
+C    K16308  CIT; citron Rho-interacting kinase [EC:2.7.11.1]
+B  GRK family
+C    K00909  GRK1_7; rhodopsin kinase [EC:2.7.11.14]
+C    K00910  ADRBK, GRK; beta-adrenergic-receptor kinase [EC:2.7.11.15]
+C    K08291  GRK4_5_6; G protein-coupled receptor kinase [EC:2.7.11.16]
+B  MAST family
+C    K08789  MAST; microtubule-associated serine/threonine kinase [EC:2.7.11.1]
+C    K16309  MASTL, GW; serine/threonine-protein kinase greatwall [EC:2.7.11.1]
+C    K12767  RIM15; serine/threonine-protein kinase RIM15 [EC:2.7.11.1]
+B  NDR family
+C    K08790  STK38, NDR; serine/threonine kinase 38 [EC:2.7.11.1]
+C    K08791  LATS1_2, Wts; serine/threonine-protein kinase LATS1/2 [EC:2.7.11.1]
+B  PKB family
+C    K06276  PDPK1; 3-phosphoinositide dependent protein kinase-1 [EC:2.7.11.1]
+B  PKN family
+C    K06071  PKN; protein kinase N [EC:2.7.11.13]
+B  RSK family
+C    K04373  RPS6KA, RSK2; p90 ribosomal S6 kinase [EC:2.7.11.1]
+C    K04688  RPS6KB; p70 ribosomal S6 kinase [EC:2.7.11.1]
+C    K04445  MSK1, RPS6KA5; ribosomal protein S6 kinase alpha-5 [EC:2.7.11.1]
+C    K16510  MSK2, RPS6KA4; ribosomal protein S6 kinase alpha-4 [EC:2.7.11.1]
+B  SGK family
+C    K13302  SGK1; serum/glucocorticoid-regulated kinase 1 [EC:2.7.11.1]
+C    K13303  SGK2; serum/glucocorticoid-regulated kinase 2 [EC:2.7.11.1]
+C    K13304  SGK3; serum/glucocorticoid-regulated kinase 3 [EC:2.7.11.1]
+C    K08792  SGKN; serum/glucocorticoid-regulated kinase, invertebrate [EC:2.7.11.1]
+B  YANK family
+C    K08793  STK32, YANK; serine/threonine kinase 32 [EC:2.7.11.1]
+#
+A<b>Serine/threonine protein kinases: CAMK group</b>
+B  CAMK1 family
+C    K08794  CAMK1; calcium/calmodulin-dependent protein kinase I [EC:2.7.11.17]
+C    K05869  CAMK4; calcium/calmodulin-dependent protein kinase IV [EC:2.7.11.17]
+C    K08795  PNCK; pregnancy upregulated non-ubiquitously expressed CaM kinase [EC:2.7.11.17]
+C    K00908  E2.7.11.17; Ca2+/calmodulin-dependent protein kinase [EC:2.7.11.17]
+B  CAMK2 family
+C    K04515  CAMK2; calcium/calmodulin-dependent protein kinase (CaM kinase) II [EC:2.7.11.17]
+B  CAMKL family
+C    K08796  BRSK; BR serine/threonine kinase [EC:2.7.11.1]
+C    K02216  CHK1; serine/threonine-protein kinase Chk1 [EC:2.7.11.1]
+C    K08797  HUNK; hormonally upregulated Neu-associated kinase [EC:2.7.11.1]
+C    K08798  MARK; MAP/microtubule affinity-regulating kinase [EC:2.7.11.1]
+C    K08799  MELK; maternal embryonic leucine zipper kinase [EC:2.7.11.1]
+C    K16310  NIM1; serine/threonine-protein kinase NIM1 [EC:2.7.11.1]
+C    K08800  NUAK; NUAK family, SNF1-like kinase [EC:2.7.11.1]
+C    K08801  PASK; PAS domain containing serine/threonine kinase [EC:2.7.11.1]
+C    K07198  PRKAA, AMPK; 5'-AMP-activated protein kinase, catalytic alpha subunit [EC:2.7.11.11]
+C    K16311  SIK; serine/threonine-protein kinase SIK [EC:2.7.11.1]
+C    K08802  SNRK; SNF related kinase [EC:2.7.11.1]
+C    K07298  STK11, LKB1; serine/threonine-protein kinase 11
+C    K12761  SNF1; carbon catabolite-derepressing protein kinase [EC:2.7.11.1]
+C    K14498  SNRK2; serine/threonine-protein kinase SRK2 [EC:2.7.11.1]
+B  DAPK family
+C    K08803  DAPK; death-associated protein kinase [EC:2.7.11.1]
+C    K08804  STK17; serine/threonine kinase 17 [EC:2.7.11.1]
+B  DCAMKL family
+C    K08805  DCAMKL1; doublecortin and CaM kinase-like 1 [EC:2.7.11.1]
+B  MAPKAPK family
+C    K04443  MAPKAPK2; mitogen-activated protein kinase-activated protein kinase 2 [EC:2.7.11.1]
+C    K04444  MAPKAPK3; mitogen-activated protein kinase-activated protein kinase 3 [EC:2.7.11.1]
+C    K04442  MAPKAPK5, PRAK; mitogen-activated protein kinase-activated protein kinase 5 [EC:2.7.11.1]
+C    K04372  MKNK, MNK; MAP kinase interacting serine/threonine kinase [EC:2.7.11.1]
+B  MLCK family
+C    K00907  MYLK; myosin-light-chain kinase [EC:2.7.11.18]
+B  PHK family
+C    K00871  PHKG; phosphorylase kinase gamma subunit [EC:2.7.11.19]
+B  PIM family
+C    K04702  PIM1; proto-oncogene serine/threonine-protein kinase Pim-1 [EC:2.7.11.1]
+C    K08806  PIM2; proto-oncogene serine/threonine-protein kinase Pim-2 [EC:2.7.11.1]
+C    K08807  PIM3; proto-oncogene serine/threonine-protein kinase Pim-3 [EC:2.7.11.1]
+B  PKD family
+C    K06070  PKD; protein kinase D [EC:2.7.11.13]
+B  PSK family
+C    K08808  PSKH; protein serine kinase H [EC:2.7.11.1]
+B  RAD53 family
+C    K06641  CHK2; serine/threonine-protein kinase Chk2 [EC:2.7.11.1]
+C    K12776  MEK1; meiosis-specific serine/threonine-protein kinase MEK1 [EC:2.7.11.1]
+B  Trio family
+C    K08809  SPEG; striated muscle-specific serine/threonine protein kinase [EC:2.7.11.1]
+C    K08810  TRIO; triple functional domain protein [EC:2.7.11.1]
+C    K15048  KALRN; kalirin [EC:2.7.11.1]
+B  TSSK family
+C    K08811  TSSK, STK22; testis-specific serine kinase [EC:2.7.11.1]
+B  CDPK family
+C    K13412  CPK; calcium-dependent protein kinase [EC:2.7.11.1]
+B  Other families
+C    K08812  CAMKV; CaM kinase-like vesicle-associated [EC:2.7.11.-]
+C    K06103  CASK; calcium/calmodulin-dependent serine protein kinase [EC:2.7.11.1]
+C    K08813  STK33; serine/threonine kinase 33 [EC:2.7.11.1]
+C    K16312  STK40, SHIK; serine/threonine-protein kinase 40 [EC:2.7.11.1]
+C    K08814  TRIB; tribbles [EC:2.7.11.-]
+#
+A<b>Serine/threonine protein kinases: CK1 group</b>
+B  CK1 family
+C    K08957  CSNK1A; casein kinase 1, alpha [EC:2.7.11.1]
+C    K08958  CSNK1G; casein kinase 1, gamma [EC:2.7.11.1]
+C    K08959  CSNK1D; casein kinase 1, delta [EC:2.7.11.1]
+C    K08960  CSNK1E; casein kinase 1, epsilon [EC:2.7.11.1]
+C    K02218  CSNK1, CK1; casein kinase 1 [EC:2.7.11.1]
+C    K14758  HRR25; casein kinase I homolog HRR25 [EC:2.7.11.1]
+C    K03097  CSNK2A; casein kinase II subunit alpha [EC:2.7.11.1]
+B  TTBK family
+C    K08815  TTBK; tau tubulin kinase [EC:2.7.11.26]
+B  VRK family
+C    K08816  VRK; vaccinia related kinase [EC:2.7.11.1]
+#
+A<b>Serine/threonine protein kinases: CMGC group</b>
+B  CDK family
+C    K08817  CCRK; cell cycle related kinase [EC:2.7.11.22]
+C    K08818  CDC2L; cell division cycle 2-like [EC:2.7.11.22]
+C    K02087  CDK1, CDC2; cyclin-dependent kinase 1 [EC:2.7.11.22 2.7.11.23]
+C    K02206  CDK2; cyclin-dependent kinase 2 [EC:2.7.11.22]
+C    K02088  CDK3; cyclin-dependent kinase 3 [EC:2.7.11.22]
+C    K02089  CDK4; cyclin-dependent kinase 4 [EC:2.7.11.22]
+C    K02090  CDK5; cyclin-dependent kinase 5 [EC:2.7.11.22]
+C    K02091  CDK6; cyclin-dependent kinase 6 [EC:2.7.11.22]
+C    K02202  CDK7; cyclin-dependent kinase 7 [EC:2.7.11.22 2.7.11.23]
+C    K02208  CDK8_11; cyclin-dependent kinase 8/11 [EC:2.7.11.22 2.7.11.23]
+C    K02211  CDK9; cyclin-dependent kinase 9 [EC:2.7.11.22 2.7.11.23]
+C    K02449  CDK10; cyclin-dependent kinase 10 [EC:2.7.11.22]
+C    K08819  CDK12_13; cyclin-dependent kinase 12/13 [EC:2.7.11.22 2.7.11.23]
+C    K08821  CDK14, PFTK1; cyclin-dependent kinase 14 [EC:2.7.11.22]
+C    K15594  CDK15, PFTK2; cyclin-dependent kinase 15 [EC:2.7.11.22]
+C    K08820  CDK16, PCTK1; cyclin-dependent kinase 16 [EC:2.7.11.22]
+C    K15595  CDK17, PCTK2; cyclin-dependent kinase 17 [EC:2.7.11.22]
+C    K15596  CDK18, PCTK3; cyclin-dependent kinase 18 [EC:2.7.11.22]
+C    K07760  CDK; cyclin-dependent kinase [EC:2.7.11.22]
+C    K15562  BUR1, SGV1; serine/threonine-protein kinase BUR1 [EC:2.7.11.22 2.7.11.23]
+C    K00916  CTK1; CTD kinase subunit alpha [EC:2.7.11.22 2.7.11.23]
+B  MAPK family
+C    K04371  ERK1_2; extracellular signal-regulated kinase 1/2 [EC:2.7.11.24]
+C    K06855  ERK3; mitogen-activated protein kinase 4/6 [EC:2.7.11.24]
+C    K04464  MAPK7, ERK5; mitogen-activated protein kinase 7 [EC:2.7.11.24]
+C    K04440  JNK; c-Jun N-terminal kinase [EC:2.7.11.24]
+C    K04441  P38; p38 MAP kinase [EC:2.7.11.24]
+C    K04468  NLK; nemo like kinase [EC:2.7.11.24]
+C    K08293  E2.7.11.24; mitogen-activated protein kinase [EC:2.7.11.24]
+C    K14512  MPK6; mitogen-activated protein kinase 6 [EC:2.7.11.24]
+B  GSK family
+C    K08822  GSK3A; glycogen synthase kinase 3 alpha [EC:2.7.11.26]
+C    K03083  GSK3B; glycogen synthase kinase 3 beta [EC:2.7.11.26]
+C    K12766  MDS1, RIM11; serine/threonine-protein kinase MDS1/RIM11 [EC:2.7.11.1]
+C    K14502  BIN2; protein brassinosteroid insensitive 2 [EC:2.7.11.1]
+B  CLK family
+C    K08823  CLK; CDC-like kinase [EC:2.7.12.1]
+B  CDKL family
+C    K08824  CDKL; cyclin-dependent kinase-like [EC:2.7.11.22]
+B  DYRK family
+C    K08825  DYRK; dual-specificity tyrosine-(Y)-phosphorylation regulated kinase [EC:2.7.12.1]
+C    K08826  HIPK; homeodomain interacting protein kinase [EC:2.7.11.1]
+C    K08827  PRPF4B; serine/threonine-protein kinase PRP4 [EC:2.7.11.1]
+B  RCK family
+C    K08828  ICK; intestinal cell (MAK-like) kinase [EC:2.7.11.22]
+C    K08829  MAK; male germ cell-associated kinase [EC:2.7.11.22]
+C    K08830  RAGE, MOK; renal tumor antigen [EC:2.7.11.22]
+C    K12765  IME2; meiosis induction protein kinase IME2/SME1 [EC:2.7.11.1]
+B  SRPK family
+C    K15409  SRPK1; serine/threonine-protein kinase SRPK1 [EC:2.7.11.1]
+C    K08831  SRPK2; serine/threonine-protein kinase SRPK2 [EC:2.7.11.1]
+C    K08832  SRPK3, STK23; serine/threonine-protein kinase SRPK3 [EC:2.7.11.1]
+#
+A<b>Serine/threonine protein kinases: STE group</b>
+B  STE7 family
+C    K04368  MAP2K1, MEK1; mitogen-activated protein kinase kinase 1 [EC:2.7.12.2]
+C    K04369  MAP2K2, MEK2; mitogen-activated protein kinase kinase 2 [EC:2.7.12.2]
+C    K04432  MAP2K3, MKK3; mitogen-activated protein kinase kinase 3 [EC:2.7.12.2]
+C    K04430  MAP2K4, MKK4; mitogen-activated protein kinase kinase 4 [EC:2.7.12.2]
+C    K04463  MAP2K5, MEK5; mitogen-activated protein kinase kinase 5 [EC:2.7.12.2]
+C    K04433  MAP2K6, MKK6; mitogen-activated protein kinase kinase 6 [EC:2.7.12.2]
+C    K04431  MAP2K7, MKK7; mitogen-activated protein kinase kinase 7 [EC:2.7.12.2]
+C    K08294  MKK1_2; mitogen-activated protein kinase kinase [EC:2.7.12.2]
+C    K11226  STE7; mitogen-activated protein kinase kinase [EC:2.7.12.2]
+C    K11227  PBS2; mitogen-activated protein kinase kinase [EC:2.7.12.2]
+C    K13413  MKK4_5P; mitogen-activated protein kinase kinase 4/5, plant [EC:2.7.12.2]
+C    K14511  SIMKK; mitogen-activated protein kinase kinase SIMKK [EC:2.7.12.2]
+B  STE20 family
+C    K04408  MAP4K1, HPK1; mitogen-activated protein kinase kinase kinase kinase 1 [EC:2.7.11.1]
+C    K04414  MAP4K2, GCK; mitogen-activated protein kinase kinase kinase kinase 2 [EC:2.7.11.1]
+C    K04406  MAP4K3, GLK; mitogen-activated protein kinase kinase kinase kinase 3 [EC:2.7.11.1]
+C    K04407  MAP4K4, HGK; mitogen-activated protein kinase kinase kinase kinase 4 [EC:2.7.11.1]
+C    K08833  MAP4K5, KHS1; mitogen-activated protein kinase kinase kinase kinase 5 [EC:2.7.11.1]
+C    K04413  MINK; misshapen/NIK-related kinase [EC:2.7.11.1]
+C    K08840  TNIK; TRAF2 and NCK interacting kinase [EC:2.7.11.1]
+C    K16313  NRK; Nik-related protein kinase [EC:2.7.11.1]
+C    K08834  MYO3, DFNB30; myosin III [EC:2.7.11.1]
+C    K08835  OXSR1, STK39; serine/threonine-protein kinase OSR1/STK39 [EC:2.7.11.1]
+C    K04409  PAK1; p21-activated kinase 1 [EC:2.7.11.1]
+C    K04410  PAK2; p21-activated kinase 2 [EC:2.7.11.1]
+C    K05733  PAK3, MRX30; p21-activated kinase 3 [EC:2.7.11.1]
+C    K05734  PAK4; p21-activated kinase 4 [EC:2.7.11.1]
+C    K05735  PAK6; p21-activated kinase 6 [EC:2.7.11.1]
+C    K05736  PAK7; p21-activated kinase 7 [EC:2.7.11.1]
+C    K08836  SLK; STE20-like kinase [EC:2.7.11.1]
+C    K04412  STK3, MST2; serine/threonine kinase 3
+C    K04411  STK4, MST1; serine/threonine kinase 4
+C    K08837  STK10, LOK; serine/threonine kinase 10 [EC:2.7.11.1]
+C    K08838  STK24_25_MST4; serine/threonine-protein kinase 24/25/MST4 [EC:2.7.11.1]
+C    K08839  STK25, YSK1; serine/threonine kinase 25
+C    K16314  MST4, MASK; serine/threonine-protein kinase MST4 [EC:2.7.11.1]
+C    K04429  TAO; thousand and one amino acid protein kinase [EC:2.7.11.1]
+C    K12771  SPS1; sporulation-specific protein 1 [EC:2.7.11.1]
+B  STE11 family
+C    K04416  MAP3K1, MEKK1; mitogen-activated protein kinase kinase kinase 1 [EC:2.7.11.25]
+C    K04420  MAP3K2, MEKK2; mitogen-activated protein kinase kinase kinase 2 [EC:2.7.11.25]
+C    K04421  MAP3K3, MEKK3; mitogen-activated protein kinase kinase kinase 3 [EC:2.7.11.25]
+C    K04428  MAP3K4, MEKK4; mitogen-activated protein kinase kinase kinase 4 [EC:2.7.11.25]
+C    K04426  MAP3K5, ASK1; mitogen-activated protein kinase kinase kinase 5 [EC:2.7.11.25]
+C    K04425  MAP3K6, ASK2; mitogen-activated protein kinase kinase kinase 6 [EC:2.7.11.25]
+C    K13986  MAP3K15; mitogen-activated protein kinase kinase kinase 15 [EC:2.7.11.25]
+C    K11228  STE11; mitogen-activated protein kinase kinase kinase [EC:2.7.11.1]
+C    K13414  MEKK1P; mitogen-activated protein kinase kinase kinase 1, plant [EC:2.7.11.25]
+B  Other families
+C    K04415  MAP3K8, COT; mitogen-activated protein kinase kinase kinase 8 [EC:2.7.11.25]
+C    K04466  MAP3K14, NIK; mitogen-activated protein kinase kinase kinase 14 [EC:2.7.11.25]
+C    K11229  BCK1; mitogen-activated protein kinase kinase kinase [EC:2.7.11.1]
+C    K11230  SSK2; mitogen-activated protein kinase kinase kinase [EC:2.7.11.25]
+#
+A<b>Serine/threonine protein kinases: TKL group</b>
+B  IRAK family
+C    K04730  IRAK1; interleukin-1 receptor-associated kinase 1 [EC:2.7.11.1]
+C    K04731  IRAK2; interleukin-1 receptor-associated kinase 2 [EC:2.7.11.1]
+C    K04732  IRAK3; interleukin-1 receptor-associated kinase 3 [EC:2.7.11.1]
+C    K04733  IRAK4; interleukin-1 receptor-associated kinase 4 [EC:2.7.11.1]
+C    K13415  BRI1; protein brassinosteroid insensitive 1 [EC:2.7.10.1 2.7.11.1]
+C    K13416  BAK1; brassinosteroid insensitive 1-associated receptor kinase 1 [EC:2.7.10.1 2.7.11.1]
+C    K13417  SERK4, BKK1; somatic embryogenesis receptor kinase 4 [EC:2.7.10.1 2.7.11.1]
+C    K13418  SERK1; somatic embryogenesis receptor kinase 1 [EC:2.7.10.1 2.7.11.1]
+C    K13420  FLS2; LRR receptor-like serine/threonine-protein kinase FLS2 [EC:2.7.11.1]
+C    K13428  EFR; LRR receptor-like serine/threonine-protein kinase EFR [EC:2.7.11.1]
+C    K14500  BSK; BR-signaling kinase [EC:2.7.11.1]
+B  LISK family
+C    K05743  LIMK1; LIM domain kinase 1 [EC:2.7.11.1]
+C    K05744  LIMK2; LIM domain kinase 2 [EC:2.7.11.1]
+C    K08841  TESK1; testis-specific kinase 1 [EC:2.7.12.1]
+C    K08842  TESK2; testis-specific kinase 2 [EC:2.7.12.1]
+B  LRRK family
+C    K08843  LRRK1; leucine-rich repeat kinase 1 [EC:2.7.11.1]
+C    K08844  LRRK2; leucine-rich repeat kinase 2 [EC:2.7.11.1]
+B  MLK family
+C    K04427  MAP3K7, TAK1; mitogen-activated protein kinase kinase kinase 7 [EC:2.7.11.25]
+C    K04417  MAP3K9, MLK1; mitogen-activated protein kinase kinase kinase 9 [EC:2.7.11.25]
+C    K04418  MAP3K10, MLK2; mitogen-activated protein kinase kinase kinase 10 [EC:2.7.11.25]
+C    K04419  MAP3K11, MLK3; mitogen-activated protein kinase kinase kinase 11 [EC:2.7.11.25]
+C    K04423  MAP3K12, MUK; mitogen-activated protein kinase kinase kinase 12 [EC:2.7.11.25]
+C    K04422  MAP3K13, LZK; mitogen-activated protein kinase kinase kinase 13 [EC:2.7.11.25]
+C    K04424  ZAK, MLTK; sterile alpha motif and leucine zipper containing kinase AZK [EC:2.7.11.25]
+B  RAF family
+C    K08845  ARAF, ARAF1; A-Raf proto-oncogene serine/threonine-protein kinase [EC:2.7.11.1]
+C    K04365  BRAF; B-Raf proto-oncogene serine/threonine-protein kinase [EC:2.7.11.1]
+C    K04366  RAF1; RAF proto-oncogene serine/threonine-protein kinase [EC:2.7.11.1]
+C    K14510  CTR1; serine/threonine-protein kinase CTR1 [EC:2.7.11.1]
+B  RIPK family
+C    K02861  RIPK1, RIP1; receptor-interacting serine/threonine-protein kinase 1 [EC:2.7.11.1]
+C    K08846  RIPK2; receptor-interacting serine/threonine-protein kinase 2 [EC:2.7.11.1]
+C    K08847  RIPK3; receptor-interacting serine/threonine-protein kinase 3 [EC:2.7.11.1]
+C    K08848  RIPK4; receptor-interacting serine/threonine-protein kinase 4 [EC:2.7.11.1]
+C    K16288  RIPK5, DSTYK; receptor-interacting serine/threonine-protein kinase 5 [EC:2.7.11.1]
+C    K16289  ANKK1; ankyrin repeat and protein kinase domain-containing protein 1 [EC:2.7.11.1]
+C    K16279  KEG; E3 ubiquitin-protein ligase KEG [EC:2.7.11.1 6.3.2.19]
+B  TGFBR1 family
+C    K04675  ACVR1, ALK2; activin receptor type-1 [EC:2.7.11.30]
+C    K13594  ACVRL1, ALK1; activin receptor-like kinase 1 [EC:2.7.11.30]
+C    K13567  ACVR1B, ALK4; activin receptor type-1B [EC:2.7.11.30]
+C    K13568  ACVR1C, ALK7; activin receptor type-1C [EC:2.7.11.30]
+C    K04673  BMPR1A, ALK3; bone morphogenetic protein receptor type-1A [EC:2.7.11.30]
+C    K13578  BMPR1B, ALK6; bone morphogenetic protein receptor type-1B [EC:2.7.11.30]
+C    K13579  BMPR1N; bone morphogenetic protein receptor type-1, invertebrate
+C    K04674  TGFBR1, ALK5; TGF-beta receptor type-1 [EC:2.7.11.30]
+C    K13569  TGFBRN; TGF-beta receptor, invertebrate
+B  TGFBR2 family
+C    K04670  ACVR2A; activin receptor type-2A [EC:2.7.11.30]
+C    K13596  ACVR2B; activin receptor type-2B [EC:2.7.11.30]
+C    K13597  ACVR2N; activin receptor type-2, invertebrate
+C    K04672  AMHR2; anti-mullerian hormone receptor type-2 [EC:2.7.11.30]
+C    K04671  BMPR2; bone morphogenetic protein receptor type-2 [EC:2.7.11.30]
+C    K04388  TGFBR2; TGF-beta receptor type-2 [EC:2.7.11.30]
+C    K04669  TGFBRX; TGF-beta receptor, other
+B  Other families
+C    K06272  ILK; integrin-linked kinase [EC:2.7.11.1]
+C    K08849  MLKL; mixed lineage kinase domain-like [EC:2.7.11.1]
+#
+A<b>Serine/threonine protein kinases: Others</b>
+B  Aur family
+C    K11481  AURKA; aurora kinase A [EC:2.7.11.1]
+C    K11479  AURKB; aurora kinase B [EC:2.7.11.1]
+C    K11480  AURKC; aurora kinase C [EC:2.7.11.1]
+C    K08850  AURKX; aurora kinase, other [EC:2.7.11.1]
+B  BUB family
+C    K02178  BUB1; checkpoint serine/threonine-protein kinase [EC:2.7.11.1]
+C    K06637  BUB1B, BUBR1, MAD3L; mitotic checkpoint serine/threonine-protein kinase BUB1 beta [EC:2.7.11.1]
+B  Bud32 family
+C    K08851  TP53RK, PRPK, BUD32; TP53 regulating kinase [EC:2.7.11.1]
+C    K15904  K15904; bifunctional tRNA threonylcarbamoyladenosine biosynthesis protein [EC:2.7.11.1]
+B  CAMKK family
+C    K07359  CAMKK; calcium/calmodulin-dependent protein kinase kinase [EC:2.7.11.17]
+B  CDC7 family
+C    K02214  CDC7; cell division control protein 7 [EC:2.7.11.1]
+B  CK2 family
+C    K03097  CSNK2A; casein kinase II subunit alpha [EC:2.7.11.1]
+B  IKK family
+C    K04467  IKBKA, IKKA, CHUK; inhibitor of nuclear factor kappa-B kinase subunit alpha [EC:2.7.11.10]
+C    K07209  IKBKB, IKKB; inhibitor of nuclear factor kappa-B kinase subunit beta [EC:2.7.11.10]
+C    K07210  IKBKG, IKKG, NEMO; inhibitor of nuclear factor kappa-B kinase subunit gamma
+C    K07211  IKBKE, IKKE; inhibitor of nuclear factor kappa-B kinase subunit epsilon [EC:2.7.11.10]
+C    K05410  TBK1; TANK-binding kinase 1 [EC:2.7.11.10]
+B  IRE family
+C    K08852  ERN1; serine/threonine-protein kinase/endoribonuclease IRE1 [EC:2.7.11.1 3.1.26.-]
+C    K11715  ERN2; serine/threonine-protein kinase/endoribonuclease IRE2 [EC:2.7.11.1 3.1.26.-]
+B  MOS family
+C    K04367  MOS; proto-oncogene serine/threonine-protein kinase mos [EC:2.7.11.1]
+B  NAK family
+C    K08853  AAK; AP2-associated kinase [EC:2.7.11.1]
+C    K08854  BMP2K, BIKE; BMP2 inducible kinase [EC:2.7.11.1]
+C    K08855  GAK; cyclin G-associated kinase [EC:2.7.11.1]
+C    K08856  STK16; serine/threonine kinase 16 [EC:2.7.11.1]
+B  NEK family
+C    K08857  NEK; NIMA (never in mitosis gene a)-related kinase [EC:2.7.11.1]
+B  NKF1 family
+C    K08858  SBK1; SH3-binding domain kinase 1 [EC:2.7.11.1]
+B  NKF2 family
+C    K05688  PINK1; PTEN induced putative kinase 1 [EC:2.7.11.1]
+B  NKF4 family
+C    K08859  STK35, CLIK1; serine/threonine kinase 35 [EC:2.7.11.1]
+B  PEK family
+C    K16194  EIF2AK1; eukaryotic translation initiation factor 2-alpha kinase 1 [EC:2.7.11.1]
+C    K16195  EIF2AK2; eukaryotic translation initiation factor 2-alpha kinase 2 [EC:2.7.11.1]
+C    K08860  EIF2AK3; eukaryotic translation initiation factor 2-alpha kinase 3 [EC:2.7.11.1]
+C    K16196  EIF2AK4; eukaryotic translation initiation factor 2-alpha kinase 4 [EC:2.7.11.1]
+B  PLK family
+C    K06631  PLK1; polo-like kinase 1 [EC:2.7.11.21]
+C    K08861  PLK2; polo-like kinase 2 [EC:2.7.11.21]
+C    K08862  PLK3, CNK; polo-like kinase 3 [EC:2.7.11.21]
+C    K08863  PLK4; polo-like kinase 4 [EC:2.7.11.21]
+B  TLK family
+C    K08864  TLK; tousled-like kinase [EC:2.7.11.1]
+B  TOPK family
+C    K08865  PBK; PDZ-binding kinase [EC:2.7.12.2]
+B  TTK family
+C    K08866  TTK, MPS1; serine/threonine-protein kinase TTK/MPS1 [EC:2.7.12.1]
+B  ULK family
+C    K06228  FU; fused [EC:2.7.11.1]
+C    K08269  ULK, ATG1; unc51-like kinase [EC:2.7.11.1]
+B  VPS15 family
+C    K08333  PIK3R4, VPS15; phosphoinositide-3-kinase, regulatory subunit 4, p150 [EC:2.7.11.1]
+B  WEE family
+C    K06633  PKMYT; membrane-associated tyrosine- and threonine-specific cdc2-inhibitory kinase [EC:2.7.11.1]
+C    K06632  WEE1; wee1-like protein kinase [EC:2.7.11.1]
+B  Wnk family
+C    K08867  WNK, PRKWNK; WNK lysine deficient protein kinase [EC:2.7.11.1]
+C    K12132  WNK1; serine/threonine-protein kinase WNK1 [EC:2.7.11.1]
+B  PDHK family
+C    K12077  PDK1; pyruvate dehydrogenase kinase isoform 1 [EC:2.7.11.2]
+C    K00898  E2.7.11.2, PDK; pyruvate dehydrogenase kinase [EC:2.7.11.2]
+C    K00905  E2.7.11.4, BCKDK; [3-methyl-2-oxobutanoate dehydrogenase (acetyl-transferring)] kinase [EC:2.7.11.4]
+B  Alpha family
+C    K08868  ALPK; alpha-kinase
+C    K04981  TRPM6; transient receptor potential cation channel subfamily M member 6 [EC:2.7.11.1]
+C    K04982  TRPM7; transient receptor potential cation channel subfamily M member 7 [EC:2.7.11.1]
+C    K08292  E2.7.11.20; elongation factor 2 kinase [EC:2.7.11.20]
+B  ABC1 family
+C    K08869  ADCK, ABC1; aarF domain-containing kinase
+B  A6 family
+C    K08870  PTK9; PTK9 protein tyrosine kinase 9
+B  BRD family
+C    K08871  BRD2; bromodomain-containing protein 2
+B  RIO family
+C    K07178  RIOK1; RIO kinase 1 [EC:2.7.11.1]
+C    K07179  RIOK2; RIO kinase 2 [EC:2.7.11.1]
+C    K08872  RIOK3, SUDD; RIO kinase 3 [EC:2.7.11.1]
+B  PIKK family
+C    K04728  ATM, TEL1; ataxia telangiectasia mutated family protein [EC:2.7.11.1]
+C    K06640  ATR; serine/threonine-protein kinase ATR [EC:2.7.11.1]
+C    K07203  FRAP; FKBP12-rapamycin complex-associated protein
+C    K06642  PRKDC; DNA-dependent protein kinase catalytic subunit [EC:2.7.11.1]
+C    K08873  SMG1; PI-3-kinase-related kinase SMG-1
+C    K08874  TRRAP; transformation/transcription domain-associated protein
+B  Other families
+C    K08875  NRBP; nuclear receptor-binding protein
+C    K08876  SCYL; SCY1-like
+C    K08877  UHMK1, KIS; U2AF homology motif (UHM) kinase 1 [EC:2.7.11.1]
+C    K08878  BCR1, BCR; breakpoint cluster region protein [EC:2.7.11.1]
+C    K16315  GSG2; serine/threonine-protein kinase haspin [EC:2.7.11.1]
+C    K08880  STK19; serine/threonine kinase 19 [EC:2.7.11.1]
+C    K16316  STK31, TDRD8; serine/threonine-protein kinase 31 [EC:2.7.11.1]
+C    K03125  TAF1; transcription initiation factor TFIID subunit 1
+C    K13429  CERK1; chitin elicitor receptor kinase 1
+C    K13430  PBS1; serine/threonine-protein kinase PBS1 [EC:2.7.11.1]
+C    K13435  PTO; serine/threonine-protein kinase Pto
+C    K13436  PTI1; pto-interacting protein 1 [EC:2.7.11.1]
+C    K13437  XA21; receptor kinase-like protein
+C    K08290  FASTK; Fas-activated serine/threonine kinase [EC:2.7.11.8]
+B  Bacterial family
+C    K11889  impN; type VI secretion system protein ImpN [EC:2.7.11.1]
+C    K11912  ppkA; serine/threonine-protein kinase PpkA [EC:2.7.11.1]
+C    K14949  pknG; serine/threonine-protein kinase PknG [EC:2.7.11.1]
+C    K13419  pknK; serine/threonine-protein kinase PknK [EC:2.7.11.1]
+C    K07154  hipA; serine/threonine-protein kinase HipA [EC:2.7.11.1]
+C    K15486  legK1; serine/threonine-protein kinase LegK1 [EC:2.7.1.-]
+C    K08884  K08884; serine/threonine protein kinase, bacterial [EC:2.7.11.1]
+#
+A<b>Tyrosine protein kinases</b>
+B  Ack family
+C    K08885  TNK1; non-receptor tyrosine-protein kinase TNK1 [EC:2.7.10.2]
+C    K08886  TNK2, ACK1; activated CDC42 kinase 1 [EC:2.7.10.2 2.7.11.1]
+B  Abl family
+C    K06619  ABL1; abelson tyrosine-protein kinase 1 [EC:2.7.10.2]
+C    K08887  ABL2; abelson tyrosine-protein kinase 2 [EC:2.7.10.2]
+B  Csk family
+C    K05728  CSK; c-src tyrosine kinase [EC:2.7.10.2]
+C    K08888  MATK; megakaryocyte-associated tyrosine kinase [EC:2.7.10.2]
+B  FAK family
+C    K05725  PTK2, FAK; focal adhesion kinase 1 [EC:2.7.10.2]
+C    K05871  PTK2B, FAK2; focal adhesion kinase 2 [EC:2.7.10.2]
+B  Fer family
+C    K08889  FER, TYK3; tyrosine-protein kinase Fer [EC:2.7.10.2]
+C    K07527  FES, FPS; tyrosine-protein kinase Fes/Fps [EC:2.7.10.2]
+B  JAK family
+C    K11217  JAK1; Janus kinase 1 [EC:2.7.10.2]
+C    K04447  JAK2; Janus kinase 2 [EC:2.7.10.2]
+C    K11218  JAK3; Janus kinase 3 [EC:2.7.10.2]
+C    K11219  TYK2; non-receptor tyrosine-protein kinase TYK2 [EC:2.7.10.2]
+B  Src family
+C    K08890  BLK; B lymphoid tyrosine kinase [EC:2.7.10.2]
+C    K08891  FGR, SRC2; tyrosine-protein kinase Fgr [EC:2.7.10.2]
+C    K08892  FRK, PTK5; fyn-related kinase [EC:2.7.10.2]
+C    K05703  FYN; tyrosine-protein kinase Fyn [EC:2.7.10.2]
+C    K08893  HCK; hemopoietic cell kinase [EC:2.7.10.2]
+C    K05854  LYN; tyrosine-protein kinase Lyn [EC:2.7.10.2]
+C    K05856  LCK; lymphocyte cell-specific protein tyrosine kinase [EC:2.7.10.2]
+C    K08894  PTK6, BRK; protein tyrosine kinase 6 [EC:2.7.10.2]
+C    K05704  SRC; tyrosine-protein kinase Src [EC:2.7.10.2]
+C    K08895  SRMS; tyrosine-protein kinase Srms [EC:2.7.10.2]
+C    K05705  YES1; tyrosine-protein kinase Yes [EC:2.7.10.2]
+B  Syk family
+C    K05855  SYK; spleen tyrosine kinase [EC:2.7.10.2]
+C    K07360  ZAP70; tyrosine-protein kinase ZAP-70 [EC:2.7.10.2]
+B  Tec family
+C    K08896  BMX, ETK; cytoplasmic tyrosine-protein kinase BMX [EC:2.7.10.2]
+C    K07370  BTK; Bruton agammaglobulinemia tyrosine kinase [EC:2.7.10.2]
+C    K07363  ITK; IL2-inducible T-cell kinase [EC:2.7.10.2]
+C    K07364  TEC; tyrosine-protein kinase Tec [EC:2.7.10.2]
+C    K08016  TXK, RLK; tyrosine-protein kinase TXK [EC:2.7.10.2]
+B  Alk family
+C    K05118  LTK; leukocyte tyrosine kinase [EC:2.7.10.1]
+C    K05119  ALK; anaplastic lymphoma kinase [EC:2.7.10.1]
+B  Axl family
+C    K05115  AXL, UFO; AXL receptor tyrosine kinase [EC:2.7.10.1]
+C    K05116  TYRO3, RSE; TYRO3 protein tyrosine kinase 3 [EC:2.7.10.1]
+C    K05117  MERTK, MER; c-mer proto-oncogene tyrosine kinase [EC:2.7.10.1]
+B  DDR family
+C    K05124  DDR1, NEP; discoidin domain receptor family member 1 [EC:2.7.10.1]
+C    K05125  DDR2, TKT; discoidin domain receptor family member 2 [EC:2.7.10.1]
+B  EGFR family
+C    K04361  EGFR, ERBB1; epidermal growth factor receptor [EC:2.7.10.1]
+C    K05083  ERBB2, HER2; receptor tyrosine-protein kinase erbB-2 [EC:2.7.10.1]
+C    K05084  ERBB3, HER3; receptor tyrosine-protein kinase erbB-3 [EC:2.7.10.1]
+C    K05085  ERBB4, HER4; receptor tyrosine-protein kinase erbB-4 [EC:2.7.10.1]
+B  Eph family
+C    K05102  EPHA1, EPH; Eph receptor A1 [EC:2.7.10.1]
+C    K05103  EPHA2, ECK; Eph receptor A2 [EC:2.7.10.1]
+C    K05104  EPHA3, HEK, TYRO4; Eph receptor A3 [EC:2.7.10.1]
+C    K05105  EPHA4, SEK, TYRO1; Eph receptor A4 [EC:2.7.10.1]
+C    K05106  EPHA5, EHK1, TYRO4; Eph receptor A5 [EC:2.7.10.1]
+C    K05107  EPHA6, EHK2; Eph receptor A6 [EC:2.7.10.1]
+C    K05108  EPHA7, EHK3, HEK11; EphA7 [EC:2.7.10.1]
+C    K05109  EPHA8, EEK; Eph receptor A8 [EC:2.7.10.1]
+C    K08897  EPHA10; Eph receptor A10 [EC:2.7.10.1]
+C    K05110  EPHB1, ELK, NET; Eph receptor B1 [EC:2.7.10.1]
+C    K05111  EPHB2, ERK, DRT; Eph receptor B2 [EC:2.7.10.1]
+C    K05112  EPHB3, HEK2, ETK2; Eph receptor B3 [EC:2.7.10.1]
+C    K05113  EPHB4, HTK; Eph receptor B4 [EC:2.7.10.1]
+C    K05114  EPHB6; Eph receptor B6 [EC:2.7.10.1]
+B  FGFR family
+C    K04362  FGFR1; fibroblast growth factor receptor 1 [EC:2.7.10.1]
+C    K05093  FGFR2; fibroblast growth factor receptor 2 [EC:2.7.10.1]
+C    K05094  FGFR3; fibroblast growth factor receptor 3 [EC:2.7.10.1]
+C    K05095  FGFR4; fibroblast growth factor receptor 4 [EC:2.7.10.1]
+B  InsR family
+C    K05086  INSRR; insulin receptor-related receptor [EC:2.7.10.1]
+C    K04527  INSR; insulin receptor [EC:2.7.10.1]
+C    K05087  IGF1R; insulin-like growth factor 1 receptor [EC:2.7.10.1]
+C    K06564  IGF2R; insulin-like growth factor 2 receptor
+C    K05088  ROS1; proto-oncogene tyrosine-protein kinase ROS [EC:2.7.10.1]
+B  Lmr family
+C    K08898  LMTK2; lemur tyrosine kinase 2 [EC:2.7.10.1]
+C    K08899  LMTK3; lemur tyrosine kinase 3 [EC:2.7.10.1]
+B  Met family
+C    K05099  MET, HGFR; proto-oncogene tyrosine-protein kinase Met [EC:2.7.10.1]
+C    K05100  MST1R, RON; macrophage-stimulating 1 receptor [EC:2.7.10.1]
+B  Musk family
+C    K05129  MUSK; muscle, skeletal, receptor tyrosine kinase [EC:2.7.10.1]
+B  PDGFR family
+C    K04363  PDGFRA; platelet-derived growth factor receptor alpha [EC:2.7.10.1]
+C    K05089  PDGFRB; platelet-derived growth factor receptor beta [EC:2.7.10.1]
+C    K05090  CSF1R, FMS; macrophage colony-stimulating factor 1 receptor [EC:2.7.10.1]
+C    K05091  KIT, SCFR; proto-oncogene tyrosine-protein kinase Kit [EC:2.7.10.1]
+C    K05092  FLT3, FLK2; fms-related tyrosine kinase 3 [EC:2.7.10.1]
+B  PTK7 family
+C    K05127  PTK7, CCK4; PTK7 protein tyrosine kinase 7 [EC:2.7.10.1]
+B  Ret family
+C    K05126  RET; proto-oncogene tyrosine-protein kinase Ret [EC:2.7.10.1]
+B  Ror family
+C    K05122  ROR1, NTRKR1; receptor tyrosine kinase-like orphan receptor 1 [EC:2.7.10.1]
+C    K05123  ROR2, NTRKR2; receptor tyrosine kinase-like orphan receptor 2 [EC:2.7.10.1]
+B  PYK family
+C    K05128  RYK; RYK receptor-like tyrosine kinase [EC:2.7.10.1]
+B  Tie family
+C    K05120  TIE1; tyrosine kinase receptor 1 [EC:2.7.10.1]
+C    K05121  TEK, TIE2; endothelial-specific receptor tyrosine kinase [EC:2.7.10.1]
+B  Trk family
+C    K03176  NTRK1, TRKA; neurotrophic tyrosine kinase receptor type 1 [EC:2.7.10.1]
+C    K04360  NTRK2, TRKB; neurotrophic tyrosine kinase receptor type 2 [EC:2.7.10.1]
+C    K05101  NTRK3, TRKC; neurotrophic tyrosine kinase, receptor type 3 [EC:2.7.10.1]
+B  VEGFR family
+C    K05096  FLT1, VEGFR1; FMS-like tyrosine kinase 1 [EC:2.7.10.1]
+C    K05097  FLT4, VEGFR3; FMS-like tyrosine kinase 4 [EC:2.7.10.1]
+C    K05098  KDR, VEGFR2; kinase insert domain protein receptor [EC:2.7.10.1]
+B  Etk/wzc family
+C    K16692  etk-wzc; tyrosine-protein kinase Etk/Wzc [EC:2.7.10.-]
+#
+A<b>Histidine protein kinases</b>
+B  OmpR family
+C    K07636  phoR; two-component system, OmpR family, phosphate regulon sensor histidine kinase PhoR [EC:2.7.13.3]
+C    K07768  senX3; two-component system, OmpR family, sensor histidine kinase SenX3 [EC:2.7.13.3]
+C    K07637  phoQ; two-component system, OmpR family, sensor histidine kinase PhoQ [EC:2.7.13.3]
+C    K07638  envZ; two-component system, OmpR family, osmolarity sensor histidine kinase EnvZ [EC:2.7.13.3]
+C    K07639  rstB; two-component system, OmpR family, sensor histidine kinase RstB [EC:2.7.13.3]
+C    K07640  cpxA; two-component system, OmpR family, sensor histidine kinase CpxA [EC:2.7.13.3]
+C    K07650  cssS; two-component system, OmpR family, sensor histidine kinase CssS [EC:2.7.13.3]
+C    K07641  creC; two-component system, OmpR family, sensor histidine kinase CreC [EC:2.7.13.3]
+C    K07642  baeS; two-component system, OmpR family, sensor histidine kinase BaeS [EC:2.7.13.3]
+C    K07643  basS; two-component system, OmpR family, sensor histidine kinase BasS [EC:2.7.13.3]
+C    K07644  cusS, copS, silS; two-component system, OmpR family, heavy metal sensor histidine kinase CusS [EC:2.7.13.3]
+C    K07645  qseC; two-component system, OmpR family, sensor histidine kinase QseC [EC:2.7.13.3]
+C    K07646  kdpD; two-component system, OmpR family, sensor histidine kinase KdpD [EC:2.7.13.3]
+C    K07647  torS; two-component system, OmpR family, sensor histidine kinase TorS [EC:2.7.13.3]
+C    K07648  arcB; two-component system, OmpR family, aerobic respiration control sensor histidine kinase ArcB [EC:2.7.13.3]
+C    K07649  tctE; two-component system, OmpR family, sensor histidine kinase TctE [EC:2.7.13.3]
+C    K07651  resE; two-component system, OmpR family, sensor histidine kinase ResE [EC:2.7.13.3]
+C    K07652  vicK; two-component system, OmpR family, sensor histidine kinase VicK [EC:2.7.13.3]
+C    K07653  mprB; two-component system, OmpR family, sensor histidine kinase MprB [EC:2.7.13.3]
+C    K07654  mtrB; two-component system, OmpR family, sensor histidine kinase MtrB [EC:2.7.13.3]
+C    K07655  prrB; two-component system, OmpR family, sensor histidine kinase PrrB [EC:2.7.13.3]
+C    K07656  trcS; two-component system, OmpR family, sensor histidine kinase TrcS [EC:2.7.13.3]
+C    K11328  nrsS, rppB; two-component system, OmpR family, Ni(II)-sensor and/or redox sensor kinase NrsS [EC:2.7.13.3]
+C    K11520  manS; two-component system, OmpR family, manganese sensing sensor histidine kinase [EC:2.7.13.3]
+C    K07769  nblS; two-component system, OmpR family, sensor histidine kinase NblS [EC:2.7.13.3]
+C    K08479  sasA; two-component system, OmpR family, clock-associated histidine kinase SasA [EC:2.7.13.3]
+C    K10681  saeS; two-component system, OmpR family, sensor histidine kinase SaeS [EC:2.7.13.3]
+C    K11629  bceS; two-component system, OmpR family, bacitracin resistance sensor histidine kinase BceS [EC:2.7.13.3]
+C    K11633  yxdK; two-component system, OmpR family, sensor histidine kinase YxdK [EC:2.7.13.3]
+C    K14980  chvG; two-component system, OmpR family, sensor histidine kinase ChvG [EC:2.7.13.3]
+C    K14982  ciaH; two-component system, OmpR family, sensor histidine kinase CiaH [EC:2.7.13.3]
+C    K02484  K02484; two-component system, OmpR family, sensor kinase [EC:2.7.13.3]
+B  NarL family
+C    K07673  narX; two-component system, NarL family, nitrate/nitrite sensor histidine kinase NarX [EC:2.7.13.3]
+C    K07674  narQ; two-component system, NarL family, nitrate/nitrite sensor histidine kinase NarQ [EC:2.7.13.3]
+C    K07675  uhpB; two-component system, NarL family, sensor histidine kinase UhpB [EC:2.7.13.3]
+C    K07676  rcsD; two-component system, NarL family, sensor histidine kinase RcsD [EC:2.7.13.3]
+C    K07677  rcsC; two-component system, NarL family, capsular synthesis sensor histidine kinase RcsC [EC:2.7.13.3]
+C    K07678  barA; two-component system, NarL family, sensor histidine kinase BarA [EC:2.7.13.3]
+C    K07680  comP; two-component system, NarL family, sensor histidine kinase ComP [EC:2.7.13.3]
+C    K07679  evgS, bvgS; two-component system, NarL family, sensor histidine kinase EvgS [EC:2.7.13.3]
+C    K07777  degS; two-component system, NarL family, sensor histidine kinase DegS [EC:2.7.13.3]
+C    K07778  desK; two-component system, NarL family, sensor histidine kinase DesK [EC:2.7.13.3]
+C    K07681  vraS; two-component system, NarL family, vancomycin resistance sensor histidine kinase VraS [EC:2.7.13.3]
+C    K11617  liaS; two-component system, NarL family, sensor histidine kinase LiaS [EC:2.7.13.3]
+C    K07682  devS; two-component system, NarL family, sensor histidine kinase DevS [EC:2.7.13.3]
+C    K07683  nreB; two-component system, NarL family, sensor histidine kinase NreB [EC:2.7.13.3]
+C    K11623  ydfH; two-component system, NarL family, sensor histidine kinase YdfH [EC:2.7.13.3]
+C    K14988  salK; two-component system, NarL family, secretion system sensor histidine kinase SalK
+C    K02480  K02480; two-component system, NarL family, sensor kinase [EC:2.7.13.3]
+B  Spo family
+C    K02491  kinA; two-component system, sporulation sensor kinase A [EC:2.7.13.3]
+C    K07697  kinB; two-component system, sporulation sensor kinase B [EC:2.7.13.3]
+C    K07698  kinC; two-component system, sporulation sensor kinase C [EC:2.7.13.3]
+C    K13532  kinD; two-component system, sporulation sensor kinase D [EC:2.7.13.3]
+C    K13533  kinE; two-component system, sporulation sensor kinase E [EC:2.7.13.3]
+B  CitB family
+C    K07700  dpiB, citA; two-component system, CitB family, cit operon sensor histidine kinase CitA [EC:2.7.13.3]
+C    K11637  citS; two-component system, CitB family, sensor histidine kinase CitS [EC:2.7.13.3]
+C    K07701  dcuS; two-component system, CitB family, sensor histidine kinase DcuS [EC:2.7.13.3]
+C    K11691  K11691, dctS; two-component system, CitB family, sensor histidine kinase DctS [EC:2.7.13.3]
+C    K11614  yufL, malK; two-component system, CitB family, sensor histidine kinase MalK [EC:2.7.13.3]
+C    K02476  K02476; two-component system, CitB family, sensor kinase [EC:2.7.13.3]
+B  LytT family
+C    K07704  lytS; two-component system, LytT family, sensor histidine kinase LytS [EC:2.7.13.3]
+C    K08082  algZ; two-component system, LytT family, sensor histidine kinase AlgZ [EC:2.7.13.3]
+C    K11640  natK; two-component system, LytT family, sensor histidine kinase NatK [EC:2.7.13.3]
+C    K02478  K02478; two-component system, LytT family, sensor kinase [EC:2.7.13.3]
+B  AgrA family
+C    K07706  agrC; two-component system, AgrA family, sensor histidine kinase AgrC [EC:2.7.13.-]
+C    K12294  comD; two-component system, AgrA family, sensor histidine kinase ComD [EC:2.7.13.-]
+B  NtrC family
+C    K07708  glnL, ntrB; two-component system, NtrC family, nitrogen regulation sensor histidine kinase GlnL [EC:2.7.13.3]
+C    K13598  ntrY; two-component system, NtrC family, nitrogen regulation sensor histidine kinase NtrY [EC:2.7.13.3]
+C    K07709  hydH, zraS; two-component system, NtrC family, sensor histidine kinase HydH [EC:2.7.13.3]
+C    K07710  atoS; two-component system, NtrC family, sensor histidine kinase AtoS [EC:2.7.13.3]
+C    K02668  pilS; two-component system, NtrC family, sensor histidine kinase PilS [EC:2.7.13.3]
+C    K07711  glrK, qseE; two-component system, NtrC family, sensor histidine kinase GlrK [EC:2.7.13.3]
+C    K08475  pgtB; two-component system, NtrC family, phosphoglycerate transport system sensor histidine kinase PgtB [EC:2.7.13.3]
+C    K10125  dctB; two-component system, NtrC family, C4-dicarboxylate transport sensor histidine kinase DctB [EC:2.7.13.3]
+C    K11383  kinB1, kinB; two-component system, NtrC family, sensor histidine kinase KinB [EC:2.7.13.3]
+C    K02482  K02482; two-component system, NtrC family, sensor kinase [EC:2.7.13.3]
+B  CheA family
+C    K03407  cheA; two-component system, chemotaxis family, sensor kinase CheA [EC:2.7.13.3]
+C    K06596  chpA; chemosensory pili system protein ChpA (sensor histidine kinase/response regulator)
+C    K11526  pixL; two-component system, chemotaxis family, sensor histidine kinase and response regulator PixL
+C    K13490  wspE; two-component system, chemotaxis family, sensor histidine kinase and response regulator WspE
+C    K11354  cph1; two-component system, chemotaxis family, sensor kinase Cph1 [EC:2.7.13.3]
+B  Cell cycle family
+C    K07716  pleC; two-component system, cell cycle sensor histidine kinase PleC [EC:2.7.13.3]
+C    K11357  divJ; two-component system, cell cycle sensor histidine kinase DivJ [EC:2.7.13.3]
+C    K02489  pleC1; two-component system, cell cycle sensor kinase and response regulator [EC:2.7.13.3]
+C    K13587  cckA; two-component system, cell cycle sensor histidine kinase and response regulator CckA [EC:2.7.13.3]
+B  Lux family
+C    K10909  luxQ; two-component system, autoinducer 2 sensor kinase/phosphatase LuxQ [EC:2.7.13.3 3.1.3.-]
+C    K10916  cqsS; two-component system, CAI-1 autoinducer sensor kinase/phosphatase CqsS [EC:2.7.13.3 3.1.3.-]
+C    K15850  luxN; two-component system, autoinducer 1 sensor kinase/phosphatase LuxN [EC:2.7.13.3 3.1.3.-]
+B  LuxR family
+C    K11711  dctS; two-component system, LuxR family, sensor histidine kinase DctS [EC:2.7.13.3]
+C    K13040  ttrS; two-component system, LuxR family, sensor histidine kinase TtrS [EC:2.7.13.3]
+C    K14986  fixL; two-component system, LuxR family, sensor kinase FixL [EC:2.7.13.3]
+C    K14978  ssrA; two-component system, LuxR family, secretion system sensor histidine kinase SsrA
+B  Other families
+C    K10942  flrB, fleS; two-component system, sensor histidine kinase FlrB [EC:2.7.13.3]
+C    K11231  SLN1; osomolarity two-component system, sensor histidine kinase SLN1 [EC:2.7.13.3]
+C    K10715  rpfC; two-component system, sensor histidine kinase RpfC [EC:2.7.13.3]
+C    K07717  ycbA, glnK; two-component system, sensor histidine kinase YcbA [EC:2.7.13.3]
+C    K07718  yesM; two-component system, sensor histidine kinase YesM [EC:2.7.13.3]
+C    K11356  cikA; two-component system, sensor histidine kinase and response regulator [EC:2.7.13.3]
+C    K15011  regB, regS, actS; two-component system, sensor histidine kinase RegB [EC:2.7.13.3]
+C    K02486  K02486; two-component system, unclassified family, sensor kinase [EC:2.7.13.3]
+C    K11527  K11527; two-component system, unclassified family, sensor histidine kinase and response regulator [EC:2.7.13.3]
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: February 28, 2013
+#<br>Classification taken and modified from Hanks (2003)

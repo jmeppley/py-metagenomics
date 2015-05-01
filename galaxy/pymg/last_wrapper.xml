@@ -5,7 +5,7 @@
         -N $numChunks
         -f $outputFormat
         -n $hitsPerRead
-        #if $frameShiftPenalty!="" 
+        #if $frameShiftPenalty 
             -F $frameShiftPenalty
         #end if
 	$maskWithTantan
@@ -25,7 +25,7 @@
 	#end if
         -Q $format_type.format
         -o $output1
-        "${db_type.lastdb.fields.path}"
+        "${lastdb.fields.path}"
         $input_query
     </command>
     <inputs>
@@ -63,13 +63,13 @@
             <option value="-u 2">Level 2: during gapped and gapless extensions (but not final)</option>
             <option value="-u 3">Level 3: always</option>
       </param>
-      <param name="numChunks" type="integer" size="10" value="12" label="Number of threads to run (by fragmenting FASTA into chunks)"/>
+      <param name="numChunks" type="integer" size="10" value="8" label="Number of threads to run (by fragmenting FASTA into chunks)"/>
         
       <param name="hitsPerRead" type="integer" size="10" value="10" label="Limit output to this many hits per read." help="Less than or equal to 0 means unlimited."/>
 	<param name="lastdb" type="select" display="radio" label="against target database">
             <options from_data_table="lastdb" />
         </param>
-        <param name="frameShiftPenalty" type="integer" size="10" value="" label="Score penalty for frameshift when comparing nucleotide queries to a protein database. Leave blank if query adn database are the same type." help="Set to 15 for 454 data, 500 for Illumina."/>
+        <param name="frameShiftPenalty" optional="true" type="integer" size="10" value="" label="Score penalty for frameshift when comparing nucleotide queries to a protein database. Leave blank if query adn database are the same type." help="Set to 15 for 454 data, 500 for Illumina."/>
       <param name="multiplicity" type="integer" size="10" value="10" label="Initial match multiplicity (-m)" help="10 is good deafult, though 5 is faster and does a good enough job for rRNA"/> 
       <conditional name="advanced">
          <param name="show" type="select" label="Advanced Options (ignored if blank)">

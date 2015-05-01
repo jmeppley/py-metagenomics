@@ -29,9 +29,14 @@ Don't forget to install the dependencies listed in requirements.txt!
 ## Environment ##
 To use the galaxy tools, the root directory must be in the execution PATH of jobs spawned by Galaxy. In simple instalations, just add to the PATH of the process that launches Galaxy. 
 
-More complex Galaxy installations have a shell script that runs before every job. This is configured by the "environment_setup_file" parameter in the main galaxy config file. Find this shell script and add the py-metagenomics location to the PATH environemnt variable. 
+More complex Galaxy installations have a shell script that runs before every job. This is configured by the "environment_setup_file" parameter in the main galaxy config file. Find this shell script and add the py-metagenomics location to the PATH environemnt variable. NOTE: the path to the environment_setup_file should be absolute.
 
 If you installed the python requirements/dependencies in a virtual environment, you must invoke this in the environment_setup_file, too.
+
+To sum up, the following lines must be in the job execution environment (with the paths edited appropriately):
+
+	export PATH=/data/galaxy/py-metagenomics:$PATH
+	export PYMG_PATH=/data/galaxy/py-metagenomics
 
 ## Tools ##
 The tools are not yet ready to be released as toolshed repositories. In the meantime, they must be installed manually. Many files have paths that assume the galaxy root diretory (usually galaxy-dist) and this repository (py-metagenomics) are in the same parent folder. If this is not the case, you'll have to edit a few extra files.
@@ -58,9 +63,16 @@ First, copy the contents of galaxy/tool-data/tool_data_table_conf.xml (from this
         <file path="tool-data/illuminaChemistries.loc" />
     </table>
 
-Next, link or copy the .loc.sample files into the tool-data folder in galaxy and drop the .sample extension from the names. If the py-metagenomics repository is not in the same parent folder as galaxy, you'll need to edit the paths in illuminaChemistries.loc. 
+Next, link or copy the .loc.sample files into the tool-data folder in galaxy and drop the .sample extension from the names. You'll need to edit the paths in illuminaChemistries.loc to point to the absolute paths of the primer files.
 
 To use any database searching tools, you'll need to build your own last databases from some or all of the public repositories REfSeq, Silva, or KEGG. See the instructions for downloading and building these in the databases subfolder. Once built, add the locations into lastdb.loc.
+
+# from the tool shed #
+
+To run the included workflow, you'll need to install the following tools from the Galaxy toolshed:
+
+ * sortmerna
+ * fastq_to_fasta
 
 Overview
 --------
