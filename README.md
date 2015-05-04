@@ -13,6 +13,12 @@ Installation
 ### Dependencies ###
 You must have a number of python modules installed to run all the included scripts. These are listed in requirements.txt. 
 
+The following binaries must be installed for certain tools:
+
+ * pandaseq: https://github.com/neufeld/pandaseq
+ * tantan: http://cbrc3.cbrc.jp/tantan/
+ * lastal: http://last.cbrc.jp/
+
 ### Comand-line ###
 py-metagenomics is compatible with python 2.7 only. The scripts will be usable from anywhere. As long as the "edl" folder is in the same location as the scripts, they will be able to find the necessary modules.
 
@@ -37,6 +43,8 @@ To sum up, the following lines must be in the job execution environment (with th
 
 	export PATH=/data/galaxy/py-metagenomics:$PATH
 	export PYMG_PATH=/data/galaxy/py-metagenomics
+
+Also make sure the required binaries (tantan, pandaseq, lastal) are in the job execution path.
 
 ## Tools ##
 The tools are not yet ready to be released as toolshed repositories. In the meantime, they must be installed manually. Many files have paths that assume the galaxy root diretory (usually galaxy-dist) and this repository (py-metagenomics) are in the same parent folder. If this is not the case, you'll have to edit a few extra files.
