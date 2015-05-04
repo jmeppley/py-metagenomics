@@ -16,8 +16,5 @@
     <tool file="pymg/countTaxaSimple.xml" />
     <tool file="pymg/countPaths.xml" />
     <tool file="pymg/sunburstMeganCSV.xml" />
-    <!-- Uncomment the tantan tool if gnu parallel is installed
-    <tool file="pymg/tantan.xml" />
-    -->
   </section>
 </toolbox>
