@@ -118,7 +118,10 @@ def main():
                         selected=''
                     datafilename="taxa.count.table"
                     if len(rankList)>1:
-                        datafilename+="." + rank.lower()
+                        if rank.lower()=='domain':
+                            datafilename+=".superkingdom"
+                        else:
+                            datafilename+="." + rank.lower()
                     if rank in rankMap:
                         logging.debug("Copying %s to %s" % (datafilename, 
                                                             rankMap[rank]))
