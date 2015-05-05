@@ -45,3 +45,4 @@ nosetests.xml
 databases/RefSeq
 databases/KEGG
 databases/Silva
+databases/lastdb
