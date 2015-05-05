@@ -5,11 +5,12 @@ REL?=$(shell curl $(FTP_ROOT)/RELEASE_NUMBER)
 REL:=$(REL)
 
 DB_SCRIPT_DIR?=.
+SCRIPT_DIR?=..
 BUILD_ROOT?=./RefSeq
 RSDIR:=$(BUILD_ROOT)/RefSeq-$(REL)
 
-BUILD_LASTDB:=False
-LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb
+BUILD_LASTDB:=True
+LASTDB_ROOT?=./lastdb
 LASTDB_DIR:=$(LASTDB_ROOT)/RefSeq/$(REL)
 LASTDBCHUNK?=150G
 
@@ -18,8 +19,8 @@ ADDITIONS_SOURCE:=$(BUILD_ROOT)/additions
 ADDITIONS_FAA:=$(ADDITIONS_SOURCE)/additions.protein.fasta
 ADDITIONS_TAXIDS:=$(ADDITIONS_SOURCE)/acc.to.taxid.protein.additions
 # If filter file is not empty, listed taxids will be removed from additions
-ADDITIONS_FILTER:=$(ADDITIONS_SOURCE)/taxids.in.RefSeq.$(REL)
-ADDITIONS_KOMAP:=$(ADDITIONS_SOURCE)/acc.to.ko.protein.additions
+ADDITIONS_FILTER:=python $(ADDITIONS_SOURCE)/taxids.in.RefSeq.$(REL)
+ADDITIONS_KOMAP:=python $(ADDITIONS_SOURCE)/acc.to.ko.protein.additions
 
 BUILD_KO_MAP:=False
 KEGG_ROOT?=./KEGG
@@ -134,19 +135,19 @@ $(FAA): $(FAA_PREREQS)
     
 $(ADDFAA): $(ADDACCMAPP) $(ADDITIONS_FAA)
 	@echo "==Copying records from $@ that are included in $(ADDACCMAPP)"
-	screen_list.py -a -k -C 0 $(ADDITIONS_FAA) -l $(ADDACCMAPP) -o $@
+	python $(SCRIPT_DIR)/screen_list.py -a -k -C 0 $(ADDITIONS_FAA) -l $(ADDACCMAPP) -o $@
 
 $(ADDITIONS_FILTER): $(ADDITIONS_TAXIDS) $(MDDIR)/release$(REL).taxon.new
 	#touch $(ADDITIONS_FILTER)
-	cut -f 2 $(ADDITIONS_TAXIDS) | uniq | screen_table.py -l $(MDDIR)/release$(REL).taxon.new -k > $@
+	cut -f 2 $(ADDITIONS_TAXIDS) | uniq | python $.(SCRIPT_DIR)/screen_table.py -l $(MDDIR)/release$(REL).taxon.new -k > $@
 
 $(ADDACCMAPP): $(ADDITIONS_TAXIDS) $(ADDITIONS_FILTER)
 	@echo "==Importing taxid map for additions"
-	if [ -s $(ADDITIONS_FILTER) ]; then screen_table.py $(ADDITIONS_TAXIDS) -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $< $@; fi
+	if [ -s $(ADDITIONS_FILTER) ]; then python $(SCRIPT_DIR)/screen_table.py $(ADDITIONS_TAXIDS) -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $< $@; fi
     
 %.protein.fasta: %/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
-	for FILE in $(RSDIR)/$(*F)/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | getSequencesFromGbk.py -F fasta -r > $@
+	for FILE in $(RSDIR)/$(*F)/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/getSequencesFromGbk.py -F fasta -r > $@
 	#for FILE in $(RSDIR)/$(*F)/*nonredundant_protein*gpff.gz; do gunzip -c $$FILE; done | getSequencesFromGbk.py -F fasta -r > $@
 
 $(RSDIR)/complete/.download.complete.aa:
