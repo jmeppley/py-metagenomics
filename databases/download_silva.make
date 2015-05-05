@@ -8,7 +8,7 @@ DB_SCRIPT_DIR?=.
 BUILD_ROOT?=./Silva
 BUILDDIR:=$(BUILD_ROOT)/Silva-$(REL)
 
-LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb
+LASTDB_ROOT?=./lastdb
 LASTDB_DIR:=$(LASTDB_ROOT)/Silva/$(REL)
 LASTDBCHUNK?=100G
 
