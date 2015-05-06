@@ -1,15 +1,21 @@
 DATE?=$(shell date +%Y%m%d)
 KGVER:=$(DATE)
-KEGG_USER?=delong@mit.edu
-KEGG_PASSWORD?=mbari1
+KEGG_USER?=
+KEGG_PASSWORD?=
 
 DB_SCRIPT_DIR?=.
 BUILD_ROOT?=./KEGG
 KGDIR:=$(BUILD_ROOT)/$(KGVER)
 
-BUILD_LASTDB:=False
-LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb
-LASTDBCHUNK?=100G
+BUILD_LASTDB:=True
+LASTDB_ROOT?=./lastdb
+LASTDBCHUNK?=
+
+ifeq ($(LASTDBCHUNK),)
+	LASTDBCHUNK_OPTION:=
+else
+	LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+endif
 
 KOKEG=$(KGDIR)/ko00001.keg
 KOKO=$(KGDIR)/ko/ko
@@ -34,14 +40,23 @@ FTAX=ftp://ftp.bioinformatics.jp/kegg/genes/taxonomy
 FBRITE=ftp://ftp.bioinformatics.jp/kegg/brite/*.tar.gz ftp://ftp.bioinformatics.jp/kegg/brite/brite* ftp://ftp.bioinformatics.jp/kegg/brite/*brite
 
 ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX)
-ifeq ($(BUILD_LASTDB),False)
-	ALL_TARGETS:=$(ALL_TARGETS) $(KEGGGENES)
+ifeq ($(KEGG_USER),)
+	ALL_TARGETS:=nouser
 else
-	ALL_TARGETS:=$(ALL_TARGETS) $(LASTFILE) maps
+	ifeq ($(BUILD_LASTDB),False)
+		ALL_TARGETS:=$(ALL_TARGETS) $(KEGGGENES)
+	else
+		ALL_TARGETS:=$(ALL_TARGETS) $(LASTFILE) maps
+	endif
 endif
 
 all: $(ALL_TARGETS)
+
+nouser:
+	@echo You must set the KEGG_USER and KEGG_PASSWORD variables!
+
 maps: $(KOMAP) $(HITIDMAP)
+links: $(LINKS)
 
 $(KOMAP): $(LINKS)
 	cp $(LINKS)/genes_ko.list $@
@@ -51,7 +66,7 @@ $(HITIDMAP): $(KEGGGENES)
 
 $(LASTFILE): $(KEGGGENES)
 	mkdir -p $(LASTDB_DIR)
-	lastdb -v -c -p -s $(LASTDBCHUNK) $(LASTP) $(KEGGGENES)
+	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(KEGGGENES)
 
 $(KEGGGENES): $(GENES)
 	rm -f $(KEGGGENES)

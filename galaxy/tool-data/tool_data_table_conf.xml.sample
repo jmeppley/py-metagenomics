@@ -1,0 +1,12 @@
+<tables>
+    <!-- Locations of last(al) databases -->
+    <table name="lastdb" comment_char="#">
+        <columns>value, name, type, path, taxmapfile, taxkey, kofile, descfile, taxdump</columns>
+        <file path="tool-data/lastdb.loc" />
+    </table>
+    <!-- Information about the chemistries available to MiSeq -->
+    <table name="illuminaChemistries" comment_char="#">
+        <columns>value, name, primerTemplate</columns>
+        <file path="tool-data/illuminaChemistries.loc" />
+    </table>
+</tables>

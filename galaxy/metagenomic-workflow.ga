@@ -1,0 +1,1130 @@
+{
+    "a_galaxy_workflow": "true", 
+    "annotation": "", 
+    "format-version": "0.1", 
+    "name": "Illumina Read-based Metagenomic Pipeline", 
+    "steps": {
+        "0": {
+            "annotation": "", 
+            "id": 0, 
+            "input_connections": {}, 
+            "inputs": [
+                {
+                    "description": "", 
+                    "name": "Input Dataset"
+                }
+            ], 
+            "label": null, 
+            "name": "Input dataset", 
+            "outputs": [], 
+            "position": {
+                "left": 188, 
+                "top": 248
+            }, 
+            "tool_errors": null, 
+            "tool_id": null, 
+            "tool_state": "{\"name\": \"Input Dataset\"}", 
+            "tool_version": null, 
+            "type": "data_input", 
+            "user_outputs": [], 
+            "uuid": "113c8e54-ba23-48dc-8d29-d160d3b5d62e"
+        }, 
+        "1": {
+            "annotation": "", 
+            "id": 1, 
+            "input_connections": {}, 
+            "inputs": [
+                {
+                    "description": "", 
+                    "name": "Input Dataset"
+                }
+            ], 
+            "label": null, 
+            "name": "Input dataset", 
+            "outputs": [], 
+            "position": {
+                "left": 187, 
+                "top": 325
+            }, 
+            "tool_errors": null, 
+            "tool_id": null, 
+            "tool_state": "{\"name\": \"Input Dataset\"}", 
+            "tool_version": null, 
+            "type": "data_input", 
+            "user_outputs": [], 
+            "uuid": "8290306c-2d6c-4838-be8c-282053792c45"
+        }, 
+        "2": {
+            "annotation": "", 
+            "id": 2, 
+            "input_connections": {}, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool createPrimer", 
+                    "name": "chemistry"
+                }, 
+                {
+                    "description": "runtime parameter for tool createPrimer", 
+                    "name": "barcode1"
+                }, 
+                {
+                    "description": "runtime parameter for tool createPrimer", 
+                    "name": "barcode2"
+                }
+            ], 
+            "label": null, 
+            "name": "createPrimer", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "fasta"
+                }
+            ], 
+            "position": {
+                "left": 206, 
+                "top": 609
+            }, 
+            "post_job_actions": {}, 
+            "tool_errors": null, 
+            "tool_id": "CreatePrimerFile", 
+            "tool_state": "{\"__page__\": 0, \"__rerun_remap_job_id__\": null, \"chemistry\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"barcode1\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"barcode2\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "1c06c07f-b62a-4bb5-a278-b7fcca917783"
+        }, 
+        "3": {
+            "annotation": "", 
+            "id": 3, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 0, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 492, 
+                "top": 171
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} Fwd read stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "82ea5711-dd48-43ca-ac6e-d3d09579d6b1"
+        }, 
+        "4": {
+            "annotation": "", 
+            "id": 4, 
+            "input_connections": {
+                "input": {
+                    "id": 0, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 492, 
+                "top": 283
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} Fwd read lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist", 
+            "tool_state": "{\"__page__\": 0, \"format\": \"\\\"png\\\"\", \"__rerun_remap_job_id__\": null, \"input\": \"null\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"bins\": \"\\\"50\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "a45bc5c5-0393-49da-b240-3bbb19083613"
+        }, 
+        "5": {
+            "annotation": "", 
+            "id": 5, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 1, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 496, 
+                "top": 439
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} Rev read stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "72dc1ebb-9cf5-4cbb-ace2-113e9f296f61"
+        }, 
+        "6": {
+            "annotation": "", 
+            "id": 6, 
+            "input_connections": {
+                "input": {
+                    "id": 1, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 495, 
+                "top": 559
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} Rev read lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist", 
+            "tool_state": "{\"__page__\": 0, \"format\": \"\\\"png\\\"\", \"__rerun_remap_job_id__\": null, \"input\": \"null\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"bins\": \"\\\"50\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "b680993f-ae09-4207-922e-a9afe12ead20"
+        }, 
+        "7": {
+            "annotation": "", 
+            "id": 7, 
+            "input_connections": {
+                "primerFile": {
+                    "id": 2, 
+                    "output_name": "out_file1"
+                }, 
+                "read1": {
+                    "id": 0, 
+                    "output_name": "output"
+                }, 
+                "read2": {
+                    "id": 1, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "illuminaPrep", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "fastq"
+                }, 
+                {
+                    "name": "output2", 
+                    "type": "txt"
+                }, 
+                {
+                    "name": "output3", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 505, 
+                "top": 690
+            }, 
+            "post_job_actions": {
+                "ChangeDatatypeActionoutput1": {
+                    "action_arguments": {
+                        "newtype": "fastqsanger"
+                    }, 
+                    "action_type": "ChangeDatatypeAction", 
+                    "output_name": "output1"
+                }, 
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} Joined reads"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "illumina_prep", 
+            "tool_state": "{\"trim\": \"{\\\"endQuality\\\": \\\"5\\\", \\\"dotrim\\\": \\\"trim\\\", \\\"polyFrac\\\": \\\"0.9\\\", \\\"__current_case__\\\": 0, \\\"minLength\\\": \\\"40\\\"}\", \"__page__\": 0, \"outFormat\": \"\\\"-F\\\"\", \"fakeJoinGap\": \"\\\"6\\\"\", \"primerFile\": \"null\", \"__rerun_remap_job_id__\": null, \"read1\": \"null\", \"read2\": \"null\", \"pandaseqCutoff\": \"\\\"0.32\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "2ad90ad3-b0fa-4475-8e8b-caeb294edcd9"
+        }, 
+        "8": {
+            "annotation": "", 
+            "id": 8, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 7, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 798, 
+                "top": 154
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} Joined read stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "710cf68f-1916-4a87-9223-be89ba77fb0c"
+        }, 
+        "9": {
+            "annotation": "", 
+            "id": 9, 
+            "input_connections": {
+                "input": {
+                    "id": 7, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 801, 
+                "top": 273
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} Joined read lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist", 
+            "tool_state": "{\"__page__\": 0, \"format\": \"\\\"png\\\"\", \"__rerun_remap_job_id__\": null, \"input\": \"null\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"bins\": \"\\\"50\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "1601c91a-c456-40db-a178-ab90803e8d65"
+        }, 
+        "10": {
+            "annotation": "", 
+            "id": 10, 
+            "input_connections": {
+                "input": {
+                    "id": 7, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "FASTQ to FASTA", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "fasta"
+                }
+            ], 
+            "position": {
+                "left": 795, 
+                "top": 811
+            }, 
+            "post_job_actions": {}, 
+            "tool_errors": null, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_to_fasta/cshl_fastq_to_fasta/1.0.0", 
+            "tool_state": "{\"__page__\": 0, \"RENAMESEQ\": \"\\\"\\\"\", \"SKIPN\": \"\\\"-n\\\"\", \"input\": \"null\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"__rerun_remap_job_id__\": null}", 
+            "tool_version": "1.0.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "844bc7df-20d6-4226-ad25-b2c690cf2ef5"
+        }, 
+        "11": {
+            "annotation": "", 
+            "id": 11, 
+            "input_connections": {
+                "input_reads": {
+                    "id": 10, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Filter with SortMeRNA", 
+                    "name": "options"
+                }
+            ], 
+            "label": null, 
+            "name": "Filter with SortMeRNA", 
+            "outputs": [
+                {
+                    "name": "output_accept", 
+                    "type": "fasta"
+                }, 
+                {
+                    "name": "output_other", 
+                    "type": "fasta"
+                }, 
+                {
+                    "name": "output_log", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 780, 
+                "top": 666
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput_accept": {
+                    "action_arguments": {
+                        "newname": "${name} rRNA reads"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_accept"
+                }, 
+                "RenameDatasetActionoutput_other": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA reads"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_other"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bonsai/sortmerna/sortmerna_wrapper/1.0", 
+            "tool_state": "{\"__page__\": 0, \"read_family\": \"{\\\"read_family_selector\\\": \\\"--I\\\", \\\"__current_case__\\\": 2}\", \"log\": \"\\\"True\\\"\", \"input_reads\": \"null\", \"outputs_selected\": \"[\\\"accept\\\", \\\"other\\\"]\", \"sequencing_type\": \"{\\\"sequencing_type_selector\\\": \\\"not_paired\\\", \\\"__current_case__\\\": 1}\", \"databases_type\": \"{\\\"databases_selector\\\": \\\"cached\\\", \\\"input_databases\\\": [\\\"rfam-5.8s\\\", \\\"rfam-5s\\\", \\\"silva-arc-16s\\\", \\\"silva-arc-23s\\\", \\\"silva-bac-16s\\\", \\\"silva-bac-23s\\\", \\\"silva-euk-18s\\\", \\\"silva-euk-28s\\\"], \\\"__current_case__\\\": 0}\", \"__rerun_remap_job_id__\": null, \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"options\": \"{\\\"number_of_threads\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"options_type_selector\\\": \\\"more\\\", \\\"__current_case__\\\": 1}\", \"strand_search\": \"\\\"\\\"\"}", 
+            "tool_version": "1.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "fb572bbd-f5d9-4558-aab9-3aeb0d230023"
+        }, 
+        "12": {
+            "annotation": "", 
+            "id": 12, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 11, 
+                    "output_name": "output_accept"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 1053, 
+                "top": 171
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} rRNA read stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "8b474b72-cd57-4144-8332-201c97aa0e05"
+        }, 
+        "13": {
+            "annotation": "", 
+            "id": 13, 
+            "input_connections": {
+                "input": {
+                    "id": 11, 
+                    "output_name": "output_accept"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 1042, 
+                "top": 282
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} rRNA read lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist", 
+            "tool_state": "{\"__page__\": 0, \"format\": \"\\\"png\\\"\", \"__rerun_remap_job_id__\": null, \"input\": \"null\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"bins\": \"\\\"50\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "4aeb0a53-dac2-41ff-92e9-c464803d849b"
+        }, 
+        "14": {
+            "annotation": "", 
+            "id": 14, 
+            "input_connections": {
+                "input|input_query": {
+                    "id": 11, 
+                    "output_name": "output_other"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "PrinSeq-lite", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 1031, 
+                "top": 389
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA read stats"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "prinseq_lite", 
+            "tool_state": "{\"__page__\": 0, \"input\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 1, \\\"format\\\": \\\"1\\\"}\", \"__rerun_remap_job_id__\": null, \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"output\": \"{\\\"commands\\\": [\\\"-stats_info\\\", \\\"-stats_len\\\"], \\\"type\\\": \\\"stats\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.20.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "428f15bb-5551-419c-bddb-5ad9d8926b76"
+        }, 
+        "15": {
+            "annotation": "", 
+            "id": 15, 
+            "input_connections": {
+                "input": {
+                    "id": 11, 
+                    "output_name": "output_other"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "Read Length Histogram", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 1028, 
+                "top": 507
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA read lengths"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "readLengthHist", 
+            "tool_state": "{\"__page__\": 0, \"format\": \"\\\"png\\\"\", \"__rerun_remap_job_id__\": null, \"input\": \"null\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"bins\": \"\\\"50\\\"\"}", 
+            "tool_version": "0.1.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "bb7297a4-fb34-48b0-abe5-99608001d902"
+        }, 
+        "16": {
+            "annotation": "", 
+            "id": 16, 
+            "input_connections": {
+                "format_type|input_query": {
+                    "id": 11, 
+                    "output_name": "output_accept"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool LastWrapper", 
+                    "name": "numChunks"
+                }
+            ], 
+            "label": null, 
+            "name": "LastWrapper", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1270, 
+                "top": 349
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} rRNA vs Silva"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "last_wrapper", 
+            "tool_state": "{\"hitsPerRead\": \"\\\"1\\\"\", \"__page__\": 0, \"outputFormat\": \"\\\"gene\\\"\", \"numChunks\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"lastdb\": \"\\\"Silva119_SSU\\\"\", \"frameShiftPenalty\": \"\\\"\\\"\", \"__rerun_remap_job_id__\": null, \"maskWithTantan\": \"\\\" \\\"\", \"multiplicity\": \"\\\"10\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"advanced\": \"{\\\"__current_case__\\\": 1, \\\"show\\\": \\\"no\\\"}\", \"format_type\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 0, \\\"format\\\": \\\"0\\\"}\"}", 
+            "tool_version": "0.2.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "88f3b78f-801a-4b51-90b6-49bad89ebce0"
+        }, 
+        "17": {
+            "annotation": "", 
+            "id": 17, 
+            "input_connections": {
+                "format_type|input_query": {
+                    "id": 11, 
+                    "output_name": "output_other"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool LastWrapper", 
+                    "name": "numChunks"
+                }
+            ], 
+            "label": null, 
+            "name": "LastWrapper", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1258, 
+                "top": 485
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA vs RefSeq"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "last_wrapper", 
+            "tool_state": "{\"hitsPerRead\": \"\\\"8\\\"\", \"__page__\": 0, \"outputFormat\": \"\\\"gene\\\"\", \"numChunks\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"lastdb\": \"\\\"RefSeq_69_plus\\\"\", \"frameShiftPenalty\": \"\\\"500\\\"\", \"__rerun_remap_job_id__\": null, \"maskWithTantan\": \"\\\" \\\"\", \"multiplicity\": \"\\\"10\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"advanced\": \"{\\\"__current_case__\\\": 1, \\\"show\\\": \\\"no\\\"}\", \"format_type\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 0, \\\"format\\\": \\\"0\\\"}\"}", 
+            "tool_version": "0.2.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "d3ff3498-093e-4504-af6e-1e3d460eeee7"
+        }, 
+        "18": {
+            "annotation": "", 
+            "id": 18, 
+            "input_connections": {
+                "format_type|input_query": {
+                    "id": 11, 
+                    "output_name": "output_other"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool LastWrapper", 
+                    "name": "numChunks"
+                }
+            ], 
+            "label": null, 
+            "name": "LastWrapper", 
+            "outputs": [
+                {
+                    "name": "output1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1101, 
+                "top": 815
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput1": {
+                    "action_arguments": {
+                        "newname": "${name} non-rRNA vs KEGG"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "last_wrapper", 
+            "tool_state": "{\"hitsPerRead\": \"\\\"8\\\"\", \"__page__\": 0, \"outputFormat\": \"\\\"gene\\\"\", \"numChunks\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"lastdb\": \"\\\"Kegg201411\\\"\", \"frameShiftPenalty\": \"\\\"500\\\"\", \"__rerun_remap_job_id__\": null, \"maskWithTantan\": \"\\\" \\\"\", \"multiplicity\": \"\\\"10\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"advanced\": \"{\\\"__current_case__\\\": 1, \\\"show\\\": \\\"no\\\"}\", \"format_type\": \"{\\\"input_query\\\": null, \\\"__current_case__\\\": 0, \\\"format\\\": \\\"0\\\"}\"}", 
+            "tool_version": "0.2.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "dfd6ecee-cc54-48c6-8b8b-077b59d2adb4"
+        }, 
+        "19": {
+            "annotation": "", 
+            "id": 19, 
+            "input_connections": {
+                "input1": {
+                    "id": 16, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "AssignTaxa", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1480, 
+                "top": 340
+            }, 
+            "post_job_actions": {}, 
+            "tool_errors": null, 
+            "tool_id": "Assign_Taxa", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"input1\": \"null\", \"m8format\": \"\\\"gene\\\"\", \"__page__\": 0, \"lastdb\": \"{\\\"__class__\\\": \\\"UnvalidatedValue\\\", \\\"value\\\": \\\"Silva119_SSU\\\"}\", \"__rerun_remap_job_id__\": null, \"taxid\": \"\\\"-T\\\"\", \"rank\": \"\\\" \\\"\", \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"first\\\"\"}", 
+            "tool_version": "0.2.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "069b0094-04bb-4387-9241-6a9888638c82"
+        }, 
+        "20": {
+            "annotation": "", 
+            "id": 20, 
+            "input_connections": {
+                "input1": {
+                    "id": 17, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "AssignTaxa", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1480, 
+                "top": 460
+            }, 
+            "post_job_actions": {}, 
+            "tool_errors": null, 
+            "tool_id": "Assign_Taxa", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"input1\": \"null\", \"m8format\": \"\\\"gene\\\"\", \"__page__\": 0, \"lastdb\": \"{\\\"__class__\\\": \\\"UnvalidatedValue\\\", \\\"value\\\": \\\"RefSeq_69_plus\\\"}\", \"__rerun_remap_job_id__\": null, \"taxid\": \"\\\"-T\\\"\", \"rank\": \"\\\" \\\"\", \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"LCA\\\"\"}", 
+            "tool_version": "0.2.3", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "105a6118-b41f-4fb2-ba88-9a5ca663c603"
+        }, 
+        "21": {
+            "annotation": "", 
+            "id": 21, 
+            "input_connections": {
+                "input1": {
+                    "id": 18, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "AssignPaths", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1484, 
+                "top": 736
+            }, 
+            "post_job_actions": {}, 
+            "tool_errors": null, 
+            "tool_id": "Assign_Paths", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"input1\": \"null\", \"m8format\": \"\\\"gene\\\"\", \"__page__\": 0, \"lastdb\": \"{\\\"__class__\\\": \\\"UnvalidatedValue\\\", \\\"value\\\": \\\"Kegg201411\\\"}\", \"keggLevel\": \"\\\"2\\\"\", \"__rerun_remap_job_id__\": null, \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"all\\\"\"}", 
+            "tool_version": "0.1.2", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "624e2414-7ddc-499b-801e-54de4d3d70d8"
+        }, 
+        "22": {
+            "annotation": "", 
+            "id": 22, 
+            "input_connections": {
+                "input1": {
+                    "id": 18, 
+                    "output_name": "output1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "AssignPaths", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1490, 
+                "top": 846
+            }, 
+            "post_job_actions": {}, 
+            "tool_errors": null, 
+            "tool_id": "Assign_Paths", 
+            "tool_state": "{\"cutoff\": \"\\\"0.0\\\"\", \"input1\": \"null\", \"m8format\": \"\\\"gene\\\"\", \"__page__\": 0, \"lastdb\": \"{\\\"__class__\\\": \\\"UnvalidatedValue\\\", \\\"value\\\": \\\"Kegg201411\\\"}\", \"keggLevel\": \"\\\"ko\\\"\", \"__rerun_remap_job_id__\": null, \"filter\": \"{\\\"filterPct\\\": \\\"0\\\", \\\"usefilter\\\": \\\"True\\\", \\\"__current_case__\\\": 0}\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"all\\\"\"}", 
+            "tool_version": "0.1.2", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "cf5534fb-668f-40a3-913e-4841d32fb361"
+        }, 
+        "23": {
+            "annotation": "", 
+            "id": 23, 
+            "input_connections": {
+                "input1": {
+                    "id": 19, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "CountHits", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1702, 
+                "top": 351
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name}_rRNA_tax_counts_MEGAN.csv"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Hits", 
+            "tool_state": "{\"__page__\": 0, \"input1\": \"null\", \"__rerun_remap_job_id__\": null, \"hitCol\": \"\\\"1\\\"\", \"hitsep\": \"\\\",\\\"\", \"showTotal\": \"\\\"False\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"all\\\"\", \"first\": \"\\\" \\\"\"}", 
+            "tool_version": "0.2.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "d46e5e11-4b4e-444d-a2d8-131140ab387e"
+        }, 
+        "24": {
+            "annotation": "", 
+            "id": 24, 
+            "input_connections": {
+                "input1": {
+                    "id": 20, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "CountHits", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1701, 
+                "top": 464
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name}_non-rRNA_tax_counts_MEGAN.csv"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Hits", 
+            "tool_state": "{\"__page__\": 0, \"input1\": \"null\", \"__rerun_remap_job_id__\": null, \"hitCol\": \"\\\"1\\\"\", \"hitsep\": \"\\\",\\\"\", \"showTotal\": \"\\\"False\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"all\\\"\", \"first\": \"\\\" \\\"\"}", 
+            "tool_version": "0.2.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "cc41d67f-004e-445a-9499-da96a4b5590c"
+        }, 
+        "25": {
+            "annotation": "", 
+            "id": 25, 
+            "input_connections": {
+                "input1": {
+                    "id": 21, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "CountHits", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1724, 
+                "top": 749
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} KEGG level 2 counts"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Hits", 
+            "tool_state": "{\"__page__\": 0, \"input1\": \"null\", \"__rerun_remap_job_id__\": null, \"hitCol\": \"\\\"-1\\\"\", \"hitsep\": \"\\\"\\\"\", \"showTotal\": \"\\\"True\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"all\\\"\", \"first\": \"\\\" \\\"\"}", 
+            "tool_version": "0.2.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "eca597a4-c44d-410d-b417-eda33e11dd86"
+        }, 
+        "26": {
+            "annotation": "", 
+            "id": 26, 
+            "input_connections": {
+                "input1": {
+                    "id": 22, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "CountHits", 
+            "outputs": [
+                {
+                    "name": "out_file1", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1722, 
+                "top": 850
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionout_file1": {
+                    "action_arguments": {
+                        "newname": "${name} KEGG ko counts"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "Count_Hits", 
+            "tool_state": "{\"__page__\": 0, \"input1\": \"null\", \"__rerun_remap_job_id__\": null, \"hitCol\": \"\\\"-1\\\"\", \"hitsep\": \"\\\"\\\"\", \"showTotal\": \"\\\"True\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"method\": \"\\\"all\\\"\", \"first\": \"\\\" \\\"\"}", 
+            "tool_version": "0.2.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "ff86ecaa-5f82-43b8-a441-e8b18e0ab2df"
+        }, 
+        "27": {
+            "annotation": "", 
+            "id": 27, 
+            "input_connections": {
+                "datatable": {
+                    "id": 23, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "Sunburst Phylo Viz (MEGAN)", 
+            "outputs": [
+                {
+                    "name": "plotname", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 1927, 
+                "top": 346
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionplotname": {
+                    "action_arguments": {
+                        "newname": "${name}_rRNA_tax_sunburst.png"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "plotname"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "sunburstMeganCSV", 
+            "tool_state": "{\"cutoff\": \"\\\"0.025\\\"\", \"__page__\": 0, \"lastdb\": \"\\\"Silva119_SSU\\\"\", \"__rerun_remap_job_id__\": null, \"outputType\": \"{\\\"createImage\\\": \\\"True\\\", \\\"plotformat\\\": \\\"png\\\", \\\"icicle\\\": \\\"False\\\", \\\"rootNode\\\": \\\"\\\", \\\"__current_case__\\\": 0, \\\"exteriorLabels\\\": \\\"True\\\"}\", \"rankList\": \"[\\\"superkingdom\\\", \\\"phylum\\\", \\\"class\\\"]\", \"nodeColors\": \"\\\"root=gray,Viruses=orange,Bacteria=r,Eukaryota=b,Archaea=g,Proteobacteria=purple\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"datatable\": \"null\"}", 
+            "tool_version": "0.1.2", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "6ee7cd1f-ea3b-4ca6-8467-2e774d3fc086"
+        }, 
+        "28": {
+            "annotation": "", 
+            "id": 28, 
+            "input_connections": {
+                "datatable": {
+                    "id": 24, 
+                    "output_name": "out_file1"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "Sunburst Phylo Viz (MEGAN)", 
+            "outputs": [
+                {
+                    "name": "plotname", 
+                    "type": "png"
+                }
+            ], 
+            "position": {
+                "left": 1920, 
+                "top": 460
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionplotname": {
+                    "action_arguments": {
+                        "newname": "${name}_non-rRNA_tax_sunburst.png"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "plotname"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "sunburstMeganCSV", 
+            "tool_state": "{\"cutoff\": \"\\\"0.025\\\"\", \"__page__\": 0, \"lastdb\": \"\\\"RefSeq_69_plus\\\"\", \"__rerun_remap_job_id__\": null, \"outputType\": \"{\\\"createImage\\\": \\\"True\\\", \\\"plotformat\\\": \\\"png\\\", \\\"icicle\\\": \\\"False\\\", \\\"rootNode\\\": \\\"\\\", \\\"__current_case__\\\": 0, \\\"exteriorLabels\\\": \\\"True\\\"}\", \"rankList\": \"[\\\"superkingdom\\\", \\\"phylum\\\", \\\"class\\\"]\", \"nodeColors\": \"\\\"root=gray,Viruses=orange,Bacteria=r,Eukaryota=b,Archaea=g,Proteobacteria=purple\\\"\", \"chromInfo\": \"\\\"/data/galaxy/galaxy-dist/tool-data/shared/ucsc/chrom/?.len\\\"\", \"datatable\": \"null\"}", 
+            "tool_version": "0.1.2", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "14bd57e8-2a9a-4e4a-9167-2cd020056a34"
+        }
+    }, 
+    "uuid": "541ffea6-4366-457d-9583-89adf9f7a8ae"
+}

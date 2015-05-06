@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<body>
+<script src="d3.v3.min.js"></script>
+<div>
+<form>
+    Rank:
+    <select id="rankSelect" onchange="changeData()">
+        <option value="canon-all.genus.c01.tab" selected="true">Genus</option>
+        <option value="canon-all.species.c01.tab">Species</option>
+    </select>  
+    Sort: 
+    <select id="sortSelect" onchange="changeSort()">
+        <option value="none" selected="true">Original Order</option>
+        <option value="max"> biggest count</option>
+        <option value="mean"> mean count</option>
+        <option value="median"> median count</option>
+        <option value="maxpct"> biggest pct</option>
+        <option value="meanpct"> mean pct</option>
+        <option value="medianpct"> median pct</option>
+    </select> 
+    Layout:
+    <select id="layoutSelect" onchange="changeLayout()">
+        <option value="fractional" selected="true">Normalized stacks</option>
+        <option value="stacked">Stacked bars</option>
+    </select>
+    (<a id="downloadLink" href="#">downloadi data</a>)
+</form>
+</div>
+<script>
+function getDataFileFromForm() {
+    return d3.select("[id=rankSelect]").property("value");
+}
+function getLayoutFromForm() {
+    return d3.select("[id=layoutSelect]").property("value");
+}
+function getSortMethodFromForm() {
+    return d3.select("[id=sortSelect]").property("value");
+}
+function getTranspose() {
+    return true;
+}
+function getDataFileFormat() {
+    return 'tsv';
+}
+</script>
+<script src="stackedBars.js"></script>
+</body>
+</html>

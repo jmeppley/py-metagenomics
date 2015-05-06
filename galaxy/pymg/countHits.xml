@@ -1,0 +1,62 @@
+<tool id="Count_Hits" name="CountHits" version="0.2.0">
+  <description>Collect hit counts from a hit table. </description>
+  <command>
+      countHits.py -i $input1 -o $out_file1 -q 
+        $first
+        -H $hitCol
+        -a $method
+		-v
+#if str($hitsep).strip() == ",":
+		-D ,
+#end if
+#if $showTotal
+	-T
+#end if
+  </command>
+  <inputs>
+    <param format="tabular" name="input1" type="data" label="In data table" help="Data missing? See TIP below"/>
+    <param name="hitCol" type="integer" size="10" value="-1" label="Hit column (-1 for all):"/>
+    <param name="first" type="select" label="Use first line (True for blast, false for assignTaxon output):">
+            <option value=" ">False</option>
+            <option value="-F">True</option>
+    </param>
+	    <param name="method" type="select" label="How to deal with multiple hits per read:">
+              <option value="all" selected="True">All: +1 to all hits</option>	    
+              <option value="first">First: +1 to first hit for each read</option>	    
+              <option value="portion">Portion: +(1/n) for each of the n hits per each read.</option>	    
+	    </param>
+		<param name="hitsep" type="select" label="Separator for output table">
+			<option value="" selected="True">Tab</option>
+			<option value=",">Comma</option>
+		</param>
+        <param name="showTotal" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Report total reads on first line."/>
+  </inputs>
+  <outputs>
+    <data format="tabular" name="out_file1" metadata_source="input1">
+	  <change_format>
+            <when input="hitsep" value="," format="csv" />
+		</change_format>
+	</data>
+  </outputs>
+  <help>
+
+ .. class:: infomark
+
+**TIP:** If your data is not TAB delimited, use *Text Manipulation-&gt;Convert* or *Blast-&gt;Parse blast text*
+
+-----
+
+**What it does**
+
+This tool takes the output of assignTaxa, the output of assignPaths, or a blast hit table and counts the number of reads that hit each item in the hit column(s). 
+
+Use -1 as the hit column for the output of assignTaxa or assignPaths.
+
+-----
+
+**What it ACTUALLY does**
+
+This tool runs the script countHits.py (http://pyrodata.mit.edu/ddr2/scripts/show/61)
+
+</help>
+</tool>

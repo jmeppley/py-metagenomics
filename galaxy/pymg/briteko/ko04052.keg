@@ -1,0 +1,212 @@
++D	Cytokines
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Cytokines</h2>
+#<!---
+#ENTRY       ko04052
+#NAME        Cytokine
+#DEFINITION  Cytokines
+#--->
+!
+A<b>Class I cytokines (hematopoietin family)</b>
+B  IL-2 receptor family
+C    K05429  IL2; interleukin 2
+C    K05430  IL4; interleukin 4
+C    K05431  IL7; interleukin 7
+C    K05432  IL9; interleukin 9
+C    K05435  IL13; interleukin 13
+C    K05433  IL15; interleukin 15
+C    K05434  IL21; interleukin 21
+C    K05436  TSLP; thymic stromal lymphopoietin
+B  IL-3 receptor family
+C    K04736  IL3; interleukin 3
+C    K05428  IL5; interleukin 5
+C    K05427  CSF2, GMCSF; granulocyte-macrophage colony-stimulating factor
+B  IL-6 receptor family
+C    K05405  IL6; interleukin 6
+C    K05417  IL11; interleukin 11
+C    K05406  IL12A; interleukin 12A
+C    K05425  IL12B; interleukin 12B
+C    K05426  IL23A; interleukin 23, alpha subunit p19
+C    K05418  OSM; oncostatin M
+C    K05419  LIF; leukemia inhibitory factor
+C    K05420  CNTF; ciliary neurotrophic factor
+C    K05421  BSF3, CLC; B-cell stimulating factor 3
+C    K05422  CTF1, CT1; cardiotrophin 1
+C    K05423  CSF3, GCSF; granulocyte colony-stimulating factor
+C    K05424  LEP; leptin
+B  Single chain family
+C    K05437  EPO; erythropoietin
+C    K05438  GH; growth hormone
+C    K05439  PRL; prolactin
+C    K00431  TPO; thyroid peroxidase [EC:1.11.1.8]
+#
+A<b>Class II cytokines (interferon/IL-10 family)</b>
+B  Type I interferons
+C    K05414  IFNA; interferon alpha
+C    K05415  IFNB; interferon beta
+C    K05440  IFNW1; interferon, omega 1
+C    K05441  IFNK; interferon, kappa
+C    K05442  IFNT1; interferon, tau-1
+B  Type II interferons
+C    K04687  IFNG; interferon gamma
+B  Type III interferons
+C    K05447  IL28_29, IFNL; interleukin 28/29 (interferon, lambda)
+B  IL-10 family
+C    K05443  IL10, CSIF; interleukin 10
+C    K05444  IL19_20_24; interleukin 19/20/24
+C    K05445  IL22, IL-TIF; interleukin 22
+C    K05446  IL26; interleukin 26
+#
+A<b>PDGF family</b>
+B  Cysteine-knot growth factors
+C    Subclass I
+D      K05448  VEGFA; vascular endothelial growth factor A
+D      K16858  VEGFB; vascular endothelial growth factor B
+D      K16859  PGF; placenta growth factor
+D      K05449  VEGFC_D; vascular endothelial growth factor C/D
+D      K04359  PDGFA; platelet-derived growth factor subunit A
+D      K17386  PDGFB; platelet-derived growth factor subunit B
+D      K05450  PDGFC_D; platelet derived growth factor C/D
+C    Subclass II
+D      K05451  NGFA; nerve growth factor, alpha
+D      K02582  NGFB; nerve growth factor, beta
+D      K04356  NTF3; neurotrophin 3
+D      K12457  NTF4; neurotrophin 4
+D      K04355  BDNF; brain-derived neurotrophic factor
+C    Subclass III
+D      K05452  GDNF; glial cell derived neurotrophic factor
+B  4-Helix bundle growth factors
+C    K05453  CSF1, MCSF; macrophage colony-stimulating factor 1
+C    K05454  FLT3LG; fms-related tyrosine kinase 3 ligand
+B  Beta-trefoil growth factors
+C    K04358  FGF; fibroblast growth factor
+B  Other growth factors
+C    K05455  NRG1; neuregulin 1
+C    K05456  NRG2; neuregulin 2
+C    K05457  NRG3; neuregulin 3
+C    K05458  NRG4; neuregulin 4
+C    K05459  IGF1; insulin-like growth factor 1
+C    K13769  IGF2; insulin-like growth factor 2
+C    K05460  HGF; hepatocyte growth factor
+C    K04357  EGF; epidermal growth factor
+C    K05461  KITLG; KIT ligand
+C    K05462  EFNA; ephrin-A
+C    K05463  EFNB; ephrin-B
+C    K05464  GAS6; growth arrest-specific 6
+C    K05465  ANGPT1; angiopoietin 1
+C    K05466  ANGPT2; angiopoietin 2
+C    K05467  ANGPT4; angiopoietin 4
+#
+A<b>TNF family</b>
+B  K03156  TNFA; tumor necrosis factor superfamily, member 2
+B  K05468  LTA, TNFB; lymphotoxin alpha (TNF superfamily, member 1)
+B  K03157  LTB, TNFC; lymphotoxin beta (TNF superfamily, member 3)
+B  K05469  TNFSF4, OX40L; tumor necrosis factor ligand superfamily member 4
+B  K03161  TNFSF5, CD40L; tumor necrosis factor ligand superfamily member 5
+B  K04389  TNFSF6, FASL; tumor necrosis factor ligand superfamily member 6
+B  K05470  TNFSF7, CD70; tumor necrosis factor ligand superfamily member 7
+B  K05471  TNFSF8, CD153; tumor necrosis factor ligand superfamily member 8
+B  K05472  TNFSF9, CD137L; tumor necrosis factor ligand superfamily member 9
+B  K04721  TNFSF10, TRAIL; tumor necrosis factor ligand superfamily member 10
+B  K05473  TNFSF11, RANKL; tumor necrosis factor ligand superfamily member 11
+B  K05474  TNFSF12, TWEAK; tumor necrosis factor ligand superfamily member 12
+B  K05475  TNFSF13, APRIL; tumor necrosis factor ligand superfamily member 13
+B  K05476  TNFSF13B, TNFSF20; tumor necrosis factor ligand superfamily member 13B
+B  K05477  TNFSF14, LIGHT; tumor necrosis factor ligand superfamily member 14
+B  K05478  TNFSF15, VEGI; tumor necrosis factor ligand superfamily member 15
+B  K05479  TNFSF18, GITRL; tumor necrosis factor ligand superfamily member 18
+B  K05480  EDA; ectodysplasin-A
+#
+A<b>IL-1 family</b>
+B  K04383  IL1A; interleukin 1 alpha
+B  K04519  IL1B; interleukin 1 beta
+B  K05481  IL1RN, IL1F3; interleukin 1 receptor antagonist
+B  K05482  IL18, IL1F4; interleukin 18
+B  K05483  IL1F5; interleukin 1 family, member 5 (delta)
+B  K05484  IL1F6; interleukin 1 family, member 6 (epsilon)
+B  K05485  IL1F7; interleukin 1 family, member 7 (zeta)
+B  K05486  IL1F8; interleukin 1 family, member 8 (eta)
+B  K05487  IL1F9, IL1RP2; interleukin 1 family, member 9
+B  K05488  IL1F10, FKSG75; interleukin 1 family, member 10 (theta)
+#
+A<b>IL-17 family</b>
+B  K05489  IL17, CTLA8; interleukin 17
+B  K05490  IL17B, CX1; interleukin 17B
+B  K05491  IL17C, CX2; interleukin 17C
+B  K05492  IL17D, IL27; interleukin 17D
+B  K05493  IL17E, IL25; interleukin 17E
+B  K05494  IL17F, ML1; interleukin 17F
+#
+A<b>TGF-beta family</b>
+B  BMP2 subfamily
+C    K04662  BMP2_4; bone morphogenetic protein 2/4
+B  BMP5 subfamily
+C    K04663  BMP5; bone morphogenetic protein 5
+C    K16620  BMP6; bone morphogenetic protein 6
+C    K16621  BMP7; bone morphogenetic protein 7
+C    K16622  BMP8; bone morphogenetic protein 8
+B  GDF5 subfamily
+C    K04664  GDF5_6_7; growth differentiation factor 5/6/7
+B  Vg1 subfamily
+C    K05495  GDF1_3; growth differentiation factor 1/3
+B  BMP3 subfamily
+C    K05496  BMP3_3B; bone morphogenetic protein 3/3B
+B  Intermediate members
+C    K04666  NODAL; nodal
+C    K05497  GDF8_11; growth differentiation factor 8/11
+C    K05498  GDF9_9B; growth differentiation factor 9/9B
+B  Activin subfamily
+C    K04667  INHB; inhibin, beta
+B  TGF-beta subfamily
+C    K13375  TGFB1; transforming growth factor beta-1
+C    K13376  TGFB2; transforming growth factor beta-2
+C    K13377  TGFB3; transforming growth factor beta-3
+C    K04384  TGFBN; transforming growth factor beta, invertebrate
+B  Distant members
+C    K04665  AMH; anti-mullerian hormone
+C    K05500  INHA; inhibin, alpha
+C    K05502  BMP1, TLD; bone morphogenetic protein 1 [EC:3.4.24.19]
+C    K05503  BMP9_10; bone morphogenetic protein 9/10
+C    K05504  GDF15; growth differentiation factor 15
+C    K04668  LEFTY; left-right determination factor
+#
+A<b>Chemokines</b>
+B  CC chemokine family
+C    K14624  CCL2, MCP1; C-C motif chemokine 2
+C    K05408  CCL3; C-C motif chemokine 3
+C    K12964  CCL4; C-C motif chemokine 4
+C    K12499  CCL5; C-C motif chemokine 5
+C    K05510  CCL6_9; C-C motif chemokine 6/9
+C    K05509  CCL7; C-C motif chemokine 7
+C    K16596  CCL8; C-C motif chemokine 8
+C    K16597  CCL11; C-C motif chemokine 11
+C    K16595  CCL13; C-C motif chemokine 13
+C    K05511  CCL15_23; C-C motif chemokine 15/23
+C    K05512  CCL19, ELC; C-C motif chemokine 19
+C    K14625  CCL20; C-C motif chemokine 20
+C    K16062  CCL21, SLC; C-C motif chemokine 21
+C    K13072  CCL25; C-C motif chemokine 25
+C    K16598  CCL27; C-C motif chemokine 27
+C    K05513  CCL28; C-C motif chemokine 28
+C    K05514  CCLX; C-C motif chemokine, other
+B  CXC chemokine family
+C    K05505  CXCL1_2_3, GRO; C-X-C motif chemokine 1/2/3
+C    K05407  PF4, CXCL4; platelet factor 4
+C    K05506  CXCL5_6, SCYB5_6; C-X-C motif chemokine 5/6
+C    K10029  PPBP, CXCL7; platelet basic protein
+C    K10030  IL8, CXCL8; interleukin 8
+C    K05416  CXCL9; C-X-C motif chemokine 9
+C    K12671  CXCL10, IP10; C-X-C motif chemokine 10
+C    K12672  CXCL11, I-TAC; C-X-C motif chemokine 11
+C    K10031  CXCL12; C-X-C motif chemokine 12
+C    K10032  CXCL13; C-X-C motif chemokine 13
+C    K10033  CXCL14, SCYB14; C-X-C motif chemokine 14
+C    K10034  CXCL15; C-X-C motif chemokine 15
+C    K10035  CXCL16; C-X-C motif chemokine 16
+B  CX3C chemokine family
+C    K05508  CX3CL1, NTT; C-X3-C motif chemokine 1
+B  C chemokine family
+C    K05507  XCL, SCM1; C motif chemokine 1/2
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: July 25, 2013
