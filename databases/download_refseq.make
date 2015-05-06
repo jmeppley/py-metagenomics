@@ -12,7 +12,13 @@ RSDIR:=$(BUILD_ROOT)/RefSeq-$(REL)
 BUILD_LASTDB:=True
 LASTDB_ROOT?=./lastdb
 LASTDB_DIR:=$(LASTDB_ROOT)/RefSeq/$(REL)
-LASTDBCHUNK?=150G
+LASTDBCHUNK?=
+
+ifeq ($(LASTDBCHUNK),)
+	LASTDBCHUNK_OPTION:=
+else
+	LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+endif
 
 ADD_CUSTOM_SEQS:=False
 ADDITIONS_SOURCE:=$(BUILD_ROOT)/additions
@@ -127,7 +133,7 @@ $(LASTDIR):
 
 $(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
-	lastdb -v -c -p -s $(LASTDBCHUNK) $(LASTP) $(FAA)
+	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
 
 $(FAA): $(FAA_PREREQS)
 	@echo "==Masking low complexity with tantan"
@@ -160,7 +166,7 @@ $(RSDIR)/complete/.download.complete.aa:
 $(ACCMAPP).oldway: $(MDDIR) $(TAXDUMP) $(TAXMAPSCRIPT) 
 	# The catalog only has one taxid even for multispecies entries, so
 	# now we get the taxid maps from the gpff files
-	export PYTHONPATH=$(DB_SCRIPT_DIR)/..; gunzip -c $(MDDIR)/RefSeq-release$(REL).catalog.gz | $(TAXMAPSCRIPT) $(TAXDUMP) | sort > $@
+	export PYTHONPATH=$(DB_SCRIPT_DIR)/.. && gunzip -c $(MDDIR)/RefSeq-release$(REL).catalog.gz | python $(TAXMAPSCRIPT) $(TAXDUMP) | sort > $@
 
 $(ACCMAPP): $(RSDIR)/complete/.download.complete.aa
 	# For multispecies entries, you'll get multiple lines in the tax map
@@ -199,7 +205,7 @@ $(KOMAP_ADD):
 
 $(KOMAP): $(COMPLETEFAA) $(KEGGGENE_KO_MAP) $(KEGGGENE_GI_MAP) $(KOMAPSCRIPT)
 	@echo "==Building map from accessions to kos"
-	export PYTHONPATH=$(DB_SCRIPT_DIR)/..; $(KOMAPSCRIPT) -v $(COMPLETEFAA) -l $(KEGGLINKDIR) | sort > $@
+	PYTHONPATH=$(DB_SCRIPT_DIR)/.. python $(KOMAPSCRIPT) -v $(COMPLETEFAA) -l $(KEGGLINKDIR) | sort > $@
 
 $(HITIDMAP): $(FAA) | $(LASTDIR)
 	@echo "==Building map from hit ids to descriptions"

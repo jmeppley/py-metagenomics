@@ -11,6 +11,12 @@ BUILD_LASTDB:=True
 LASTDB_ROOT?=./lastdb
 LASTDBCHUNK?=
 
+ifeq ($(LASTDBCHUNK),)
+	LASTDBCHUNK_OPTION:=
+else
+	LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+endif
+
 KOKEG=$(KGDIR)/ko00001.keg
 KOKO=$(KGDIR)/ko/ko
 GENES=$(KGDIR)/fasta/genes.pep.gz
@@ -60,7 +66,7 @@ $(HITIDMAP): $(KEGGGENES)
 
 $(LASTFILE): $(KEGGGENES)
 	mkdir -p $(LASTDB_DIR)
-	lastdb -v -c -p -s $(LASTDBCHUNK) $(LASTP) $(KEGGGENES)
+	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(KEGGGENES)
 
 $(KEGGGENES): $(GENES)
 	rm -f $(KEGGGENES)

@@ -11,6 +11,9 @@ In this folder is a makefile for each database. You should be able to simply `ma
 
 If you are impatient and are working on a multi-core computer, you can add "-j N" to the command to use N threads when possible.
 
+# LASTDBCHUNK #
+Unless you have a lot of RAM available (>200GB), you should limit the size of the generated last databases so they fit into memory. To do so, set the make variable: LASTDBCHUNK=100G (or whatever is appropriate for your system).
+
 KEGG
 ----
 To download the KEGG database, you'll need a paid account. Sorry. To tell the makefile what your account is, you'll need to set the KEGG_USER and KEGG_PASSWORD variables. You can set these in the file, in your environment, or in the make call:
