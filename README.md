@@ -90,3 +90,9 @@ Overview
 --------
 
 
+
+Known Issues
+------------
+
+# tophit #
+The tophit algorithm in countTaxaFromBlast.py and countPathsFromBlasts.py will give incorrect results if the hit tables share any read names. 
