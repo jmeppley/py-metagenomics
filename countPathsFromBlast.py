@@ -156,7 +156,8 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
                                               filterParams=params,
                                               returnLines=False,
                                               winnerTakeAll=True,
-                                              parseStyle=options.parseStyle)
+                                              parseStyle=options.parseStyle,
+                                              sequenceWeights=sequenceWeights)
         # define method to turn Hits into Genes (kos, families)
         hitTranslator=hits.getHitTranslator(parseStyle=options.parseStyle,
                                        hitStringMap=valueMap)

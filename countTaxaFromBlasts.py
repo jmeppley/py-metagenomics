@@ -117,10 +117,11 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
         if options.countMethod == 'tophit':
             # don't give any taxonomy, just map to accessions for redistribution
             readHits = redistribute.pickBestHitByAbundance(multifile,
-                                                  filterParams=params,
-                                                  returnLines=False,
-                                                  winnerTakeAll=True,
-                                                  parseStyle=options.parseStyle)
+                                              filterParams=params,
+                                              returnLines=False,
+                                              winnerTakeAll=True,
+                                              parseStyle=options.parseStyle,
+                                              sequenceWeights=sequenceWeights)
             # define method to turn Hits into orgnaisms
             hitTranslator=getHitTranslator(parseStyle=options.parseStyle,
                                            taxonomy=taxonomy,
