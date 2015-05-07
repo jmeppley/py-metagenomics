@@ -72,7 +72,7 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
         else:
             # Copy to local file from download URL
             url = dataset['download_url']
-            response = requests.get(url, stream=True)
+            response = requests.get(url, stream=True, verify=False)
             logging.debug("Copying data from:\n%s" % (url))
             logging.info("Copyting to: %s" % (out_file_name))
             #with open(out_file_name, 'wb') as out_file:

@@ -8,6 +8,8 @@ from edl.hits import *
 from edl.util import addUniversalOptions, setupLogging, checkNoneOption, parseMapFile
 from edl.expressions import accessionRE, nrOrgRE
 
+ORG_RANK='organism'
+
 def main():
     usage = "usage: %prog [OPTIONS] BLAST_M8_FILE[S]"
     description = """
@@ -18,7 +20,15 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
                       metavar="OUTFILE", help="Write count table to OUTFILE")
     parser.add_option("-r", "--rank", dest="ranks", default=None,
                       metavar="RANK", action="append",
-                      help=" Rank(s) to collect counts on. Use flag multiple times to specify multiple ranks. If multiple values given, one table produced for each with rank name appended to file name. Defaults to all major ranks between phylum and species. Corresponds to rank names in nodes.dmp. To see list run: 'cut -f5 nodes.dmp | uniq | sort | uniq' in ncbi tax dir")
+                      help=""" Rank(s) to collect counts on. Use flag multiple
+                      times to specify multiple ranks. If multiple values
+                      given, one table produced for each with rank name
+                      appended to file name. Defaults to all major ranks
+                      between phylum and species. Corresponds to rank names 
+                      in nodes.dmp. To see list run: 
+                      'cut -f5 nodes.dmp | uniq | sort | uniq' 
+                      in ncbi tax dir. Will also accept 'organism' to mean 
+                      no rank (ie, just the organism name).""")
     parser.add_option("-s","--collapseToDomain", default=False, action="store_true",
                       help="Collapse all taxa below given rank down to superkingdom/domain. EG: in the genus output, anything assigned to Cyanobactia, will be lumped in with all other bacteria")
     parser.add_option("-R","--printRank",dest="printRanks",action="append",
@@ -50,7 +60,7 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
     # Set defaults and check for some conflicts
     if options.ranks is None and options.taxdir is None:
         # using hit names only
-        options.ranks=[None]
+        options.ranks=[ORG_RANK]
         if options.printRanks is not None:
             parser.error("Display ranks are not used without taxonomic info")
     else:
@@ -173,6 +183,9 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
     printCountTablesByRank(fileCounts, totals, sortedLabels, options)
 
 def cleanRanks(rankList):
+    if ORG_RANK not in ranks:
+        ranks.insert(0,ORG_RANK)
+
     # don't allow duplicates
     rankList=list(set(rankList))
 
@@ -220,7 +233,7 @@ def printCountTablesByRank(fileCounts, totals, fileNames, options):
                 # get parent taxon at the given rank
                 if taxon is None:
                     ranked=None
-                elif rank is None:
+                elif rank is None or rank == ORG_RANK:
                     ranked=taxon
                 else:
                     if options.collapseToDomain:

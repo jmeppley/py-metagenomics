@@ -1,5 +1,5 @@
 from numpy import histogram
-import os, sys, numpy, argparse, logging, re
+import os, sys, numpy, argparse, logging, re, pandas
 import edl.blastm8
 from Bio import SeqIO
 from edl.util import asciiHistogram
@@ -12,32 +12,23 @@ logger=logging.getLogger(__name__)
 # Date: 09 Feb. 2013
 # http://travispoulsen.com/blog/2013/07/basic-assembly-statistics/
 # https://gist.github.com/tpoulsen/422b1a19cbd8c0f514fe/raw/assembly_quality_stats.py
-def calc_stats(file_in, return_data=False, txt_width=0, log=False, backend=None, format='fasta', **kwargs):
+def calc_stats(file_in, return_data=False, txt_width=0, log=False, backend=None, format='fasta', minLength=0, **kwargs):
+    """
+    Given contigs in fastsa format:
+     * calculate length stats (including N50)
+     * plot histogram (use txt_width and backend to select format)
+    """
     with open(file_in, 'r') as seq:
-            sizes = [len(record) for record in SeqIO.parse(seq, format)]
+        sizes = [len(record) for record in SeqIO.parse(seq, format) if len(record)>=minLength]
 
     sizes = numpy.array(sizes)
-    data = {'min':numpy.min(sizes),
-            'max':numpy.max(sizes),
-            'mean':numpy.mean(sizes),
-            'median':numpy.median(sizes),
-            'N50':int(getN50(sizes)),
-            'N75':int(getN50(sizes,N=75)),
-            'N90':int(getN50(sizes,N=90)),
-            'count':len(sizes),
-            }
+    data = get_contig_length_stats(sizes)
 
     if not return_data:
-        report ='Number of contigs:\t%i' % data['count']
-        report += '\nN50:\t%i' % data['N50']
-        report += '\nN75:\t%i' % data['N75']
-        report += '\nN90:\t%i' % data['N90']
-        report += '\nMean contig length:\t%.2f' % data['mean']
-        report += '\nMedian contig length:\t%.2f' % data['median']
-        report += '\nMinimum contig length:\t%i' % data['min']
-        report += '\nMaximum contig length:\t%i' % data['max']
+        report = get_contig_length_report(data)
+
     if backend is not None:
-        h = plot_assembly(sizes, file_in, min_contig, max_contig, avg_contig, num_contig, log=log, backend=backend, **kwargs)
+        h = plot_assembly(sizes, file_in, data, log=log, backend=backend, **kwargs)
     if txt_width>0:
         if backend is None:
             h=histogram(sizes, **kwargs)
@@ -56,7 +47,60 @@ def calc_stats(file_in, return_data=False, txt_width=0, log=False, backend=None,
     else:
         return report
 
-def plot_assembly(sizes, file_in, min_contig, max_contig, avg_contig, num_contig, backend=None,**kwargs):
+def get_contig_length_stats(sizes):
+    """
+    return a dict of useful contig length stats
+    """
+    return {'min':numpy.min(sizes),
+            'max':numpy.max(sizes),
+            'mean':numpy.mean(sizes),
+            'median':numpy.median(sizes),
+            'N50':int(getN50(sizes)),
+            'N75':int(getN50(sizes,N=75)),
+            'N90':int(getN50(sizes,N=90)),
+            'count':len(sizes),
+            }
+
+def get_contig_length_report(data):
+    """
+    return a formatted string summarizing contig length data
+    """
+    report ='Number of contigs:\t%i' % data['count']
+    report += '\nN50:\t%i' % data['N50']
+    report += '\nN75:\t%i' % data['N75']
+    report += '\nN90:\t%i' % data['N90']
+    report += '\nMean contig length:\t%.2f' % data['mean']
+    report += '\nMedian contig length:\t%.2f' % data['median']
+    report += '\nMinimum contig length:\t%i' % data['min']
+    report += '\nMaximum contig length:\t%i' % data['max']
+    return report
+
+def mira_stats(contigStatsFile,minLength=0,bins=20,**kwargs):
+    """
+    Get length, coverage, and GC stats from mira info file
+    Returns text with N50 and histograms
+    """
+    contigStats=pandas.read_csv(contigStatsFile,index_col=0,sep='\t')
+    if minLength>0:
+        contigStats=contigStats[contigStats.length>=minLength]
+    sizes = contigStats['length']
+    data = get_contig_length_stats(sizes)
+    report = get_contig_length_report(data)
+
+    # add histograms to report
+    report += '\nHistograms:\n'
+    for key in ['length','GC%','av.cov','mx.cov.','av.qual']:
+        report += '\n'
+        report += edl.util.asciiHistogram(histogram(contigStats[key],bins=bins),label=key,**kwargs)
+    
+    return report
+
+def plot_assembly(sizes, file_in, length_data, backend=None,**kwargs):
+    min_contig = length_data['min']
+    max_contig = length_data['max']
+    avg_contig = length_data['mean']
+    num_contig = length_data['count']
+
     if backend:
         import matplotlib
         matplotlib.use(backend)

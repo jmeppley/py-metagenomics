@@ -7,7 +7,11 @@ from bioblend.galaxy import GalaxyInstance
 from httplib import IncompleteRead
 
 # For retrieving data
-def findDatasets(apiKey, patterns, dsName=None, dsNum=None, apiURL='http://localhost/api'):
+def findDatasets(apiKey, patterns, 
+                 dsName=None, 
+                 dsNum=None, 
+                 apiURL='http://localhost/api',
+                 skipDeleted=True):
     """
     Return an iterator over (history,dataset) tuples where the history name matches one of the given patterns and the dataset is identified by name or number.
     """
@@ -18,7 +22,8 @@ def findDatasets(apiKey, patterns, dsName=None, dsNum=None, apiURL='http://local
         for history in getHistories(apiKey,
                                     apiURL,
                                     re.compile(pattern),
-                                    returnDict=True):
+                                    returnDict=True,
+                                    skipDeleted=skipDeleted):
             
             historyId=history[u'id']
             if history[u'id'] in histories:
@@ -33,10 +38,12 @@ def findDatasets(apiKey, patterns, dsName=None, dsNum=None, apiURL='http://local
                                           apiURL,
                                           historyId=historyId,
                                           datasetNumber=dsNum,
-                                          datasetName=dsName):
+                                          datasetName=dsName,
+                                          skipDeleted=skipDeleted):
                 yield (history, dataset)
 
-def getDatasetFile(apiKey, apiURL, historyName, datasetNumber, returnURL=False):
+def getDatasetFile(apiKey, apiURL, historyName, datasetNumber, 
+                   skipDeleted=True, returnURL=False):
     """
     Given the URL and KEY for a Galaxy instance's API and:
         A history name
@@ -45,7 +52,10 @@ def getDatasetFile(apiKey, apiURL, historyName, datasetNumber, returnURL=False):
 
    Uses getDatasetData() to find a given file. Only takes hitoryName and datasetNumber. Can also return just the URL (instead of an open file-like-objet)
     """
-    for dataset in getDatasetData(apiKey, apiURL, historyName=historyName, datasetNumber=datasetNumber):
+    for dataset in getDatasetData(apiKey, apiURL, 
+                                  historyName=historyName, 
+                                  datasetNumber=datasetNumber,
+                                  skipDeleted=skipDeleted):
         durl=dataset['download_url']
         if returnURL:
             return durl
@@ -55,7 +65,12 @@ def getDatasetFile(apiKey, apiURL, historyName, datasetNumber, returnURL=False):
     else:
         raise Exception("No match found for item %d in history '%s'" % (datasetNumber, historyName))
 
-def getDatasetData(apiKey, apiURL, historyName=None, historyId=None, datasetNumber=None, datasetName=None):
+def getDatasetData(apiKey, apiURL, 
+                   historyName=None, 
+                   historyId=None, 
+                   datasetNumber=None, 
+                   datasetName=None, 
+                   skipDeleted=True):
     """
     Given the URL and KEY for a Galaxy instance's API and:
         A history (name or ID)
@@ -88,7 +103,7 @@ def getDatasetData(apiKey, apiURL, historyName=None, historyId=None, datasetNumb
             hurl = apiURL+"/histories/" + historyId + "/contents/" + dataset[u'id'] + "?key=" + apiKey
 
             details = json.loads(urllib2.urlopen(hurl).read())
-            if details['deleted']:
+            if (details['deleted'] or details['state']=='error') and skipDeleted:
                 continue
             if _dataset_match(details, datasetNumber, datasetName):
                 if 'download_url' not in details:
@@ -117,7 +132,10 @@ def _dataset_match(dataset, datasetNumber, datasetName):
     else:
         return datasetName.search(dataset[u'name'])!=None
 
-def getHistories(apiKey, apiURL, nameRE=None, returnDict=False):
+def getHistories(apiKey, apiURL, 
+                 nameRE=None, 
+                 returnDict=False, 
+                 skipDeleted=True):
     """
     Return an iterator over histories.
     
@@ -136,7 +154,7 @@ def getHistories(apiKey, apiURL, nameRE=None, returnDict=False):
                 if m is None:
                     continue
 
-        if u'deleted' in history and history[u'deleted']:
+        if u'deleted' in history and history[u'deleted'] and skipDeleted:
             # Skip delted histories
             continue
 
@@ -300,7 +318,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
                 laneData = lanes['001']
                 for (direction, inputid) in workflowInputs.iteritems():
                     if direction not in laneData:
-                        raise Exception("Sample %s is missing direction in input: %s" % (sampleName,direction))
+                        raise Exception("Missing direction in input: %s" % (direction))
                     dsMap[inputid] = {'src':'ld','id':laneData[direction]}
             else:
                 # NextSeq data has 4 lanes that need to be merged first
@@ -556,7 +574,7 @@ def createOrFindFolderInLibrary(folder, library, galaxyInstance):
         item[u'library']=library
         return (item,True)
 
-def uploadFileToFolder(galaxyInstance, folder, fileName, metadata=None, file_type='fastq'):
+def uploadFileToFolder(galaxyInstance, folder, fileName, metadata=None, file_type=None):
     """
     Check to see if this file has already been uploaded.
     Upload if it's new.

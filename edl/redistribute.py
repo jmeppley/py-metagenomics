@@ -9,12 +9,13 @@ from edl import blastm8
 # Pick a best hit for each read based on abundances from singular hits
 ###############
 def pickBestHitByAbundance(m8stream, 
- filterParams=None, 
- returnLines=True, 
- returnTranslations=False, 
- organismCounts=None, 
- winnerTakeAll=False, 
- **kwargs):
+                         filterParams=None, 
+                         returnLines=True, 
+                         returnTranslations=False, 
+                         organismCounts=None, 
+                         winnerTakeAll=False, 
+                         sequenceWeights=None,
+                         **kwargs):
     """
     Given a hit table with (potentially) multiple hits for each read. Select the best hit for each read. Hits are parsed from given hit table (m8stream) if given a FilterParams object, otherwise it is assumed that m8stream is an iterator over Hit objects. Remaining keyword arguments are used to translate hits to accessions, organisms, or anything else using a HitTranslator.
     Ambiguous hits (multiple 'best' hits to one read) are resolved as follows:
@@ -84,7 +85,11 @@ def pickBestHitByAbundance(m8stream,
         elif count==1 or len(hitByOrg)==1:
             unambiguousReads+=1
             for org in orgs:
-                orgCounts[org]=orgCounts.get(org,0)+1
+                if sequenceWeights is not None:
+                    increment=sequenceWeights[read]
+                else:
+                    increment=1
+                orgCounts[org]=orgCounts.get(org,0)+increment
             if returnLines:
                 yield hit.line
             elif returnTranslations:

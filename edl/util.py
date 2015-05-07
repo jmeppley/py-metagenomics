@@ -522,18 +522,22 @@ def pairwise(items, sortKey=returnSelf):
             yield itemList[i],itemList[j]
 from numpy import ceil
 from numpy import log as nplog, exp as npexp
-def asciiHistogram(histogram, log=False, width=60):
+def asciiHistogram(histogram, log=False, width=60, label='length', maxLabelWidth=10):
     (values,edges)=histogram[:2]
     
     maxValue=max(values)
     
     centers=[int(float(sum(edges[i:i+2]))/2.) for i in range(len(values))]
-    largestLabel = min(max([len(str(c)) for c in centers]),4)
+    largestLabel = max(max([len(str(c)) for c in centers]),len(label))
+    if largestLabel<6:
+        largestLabel=6
+    elif largestLabel>maxLabelWidth:
+        largestLabel=maxLabelWidth
     
     plotWidth=width-largestLabel+1
     
     midPoint = npexp((nplog(maxValue)-nplog(.5))/2) if log else maxValue/2
-    output="%s|count%s%s|%s%s|\n" % (rightPad('len',largestLabel),
+    output="%s|count%s%s|%s%s|\n" % (rightPad(label,largestLabel),
                                      "".join([" " for i in range(plotWidth/2 - len(str(int(midPoint))) - len("count"))]),
                                      str(int(midPoint)),
                                      "".join([" " for i in range(int(ceil(plotWidth/2.)) - 1 - len(str(int(maxValue))))]),
@@ -567,11 +571,12 @@ def getBarString(value, maxValue, maxWidth, log):
     return s
 
 def rightPad(name, width):
+    if width<6:
+        width=6
+        logger.warn("Can't force names to be fewer than 6 characters")
     if len(name)>width:
-        if width<8:
-            raise Exception("Can't force names to be fewer than 8 characters")
         # remove middle and insert elipsis to get to -width- characters
-        return name[:width-7]+'***'+name[-4:]
+        return name[:width-4]+'***'+name[-1:]
     while len(name)<width:
         # pad with trailing space to get to 13 characters
         name+=' '

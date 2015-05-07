@@ -25,7 +25,7 @@ Given:
 Runs:
     TrimmomaticPE to remove primers
     Pandaseq to combine
-    TrimmomaticSE to remove low qual ends
+    Simple qual based trimming
 
 Produce:
     a single fastq (or fasta) file
