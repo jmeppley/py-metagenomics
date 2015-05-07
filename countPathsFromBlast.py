@@ -36,6 +36,9 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
                       levels 1, 2, and 3 for KEGG and SEED
                       and gene and group for CAZy and COG.""")
 
+    # option for deconvoluting clusters or assemblies
+    addWeightOption(parser, multiple=True)
+
     # cutoff options
     hits.addCountOptions(parser)
 
@@ -74,6 +77,9 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
             options.levels=cleanLevels(options.levels)
         except Exception as e:
             parser.error(str(e))
+
+    # load weights file
+    sequenceWeights = loadSequenceWeights(options.weights)
 
     # only print to stdout if there is a single level
     if len(options.levels)>1 and options.outfile is None:
@@ -138,6 +144,7 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
         fileCounts[filetag]={}
         totals[filetag]=0
 
+    TODO: incorporate weights into tophit algorithm!
     if options.countMethod == 'tophit':
         # Process all files at once and use overall abundance to pick best hits
         from edl import redistribute
@@ -157,14 +164,17 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
 
         # use read->file mapping and hit translator to get file based counts
         #  from returned (read,Hit) pairs
+        increment=1
         for (read, hit) in readHits:
             filename = readFileDict[read]
             filetag = fileLabels[filename]
             gene = translateHit(hit)
             logging.debug("READ: %s\t%s\t%s\t%s" % (filetag,read,hit.hit,gene))
             genecount = fileCounts[filetag].setdefault(gene,0)
-            fileCounts[filetag][gene]=genecount+1
-            totals[filetag]+=1
+            if sequenceWeights is not None:
+                increment = sequenceWeights.get(read,1)
+            fileCounts[filetag][gene]=genecount+increment
+            totals[filetag]+=increment
         logging.debug(str(totals))
 
     else:

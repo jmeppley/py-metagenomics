@@ -75,6 +75,30 @@ def binAndMapHits(hitIter):
 
     return (hits,hitMap)
 
+def loadSequenceWeights(weightFiles):
+    """
+    Load and merge list of sequence weight maps. 
+    """
+    if len(weightFiles)>0:
+        sequenceWeights = {}
+        for weightFile in weightFiles:
+            sequenceWeights.update(parseMapFile(weightFiles,valueType=int))
+    else:
+        sequenceWeights = None
+    return sequenceWeights
+
+def addWeightOption(parser,multiple=False):
+    action='store'
+    default=None
+    helpText="File listing counting weights by sequence id. This is used for clustered or assembled data where each read (or contig) could represent any number of raw reads. The file should be a simple two-column tab-separated table with sequence-ids in the first column and integer weights in the second. "
+    if multiple:
+        action='append'
+        default=[]
+        helpText+="For multiple files, supply the flag (-w or --sequenceWeights) for each file name. Concatenating all tables into one file will have the same net result."
+
+    parser.add_option("-w","--sequenceWeights", dest='weights', 
+            action=action, default=default, help=helpText)
+
 def addCountOptions(parser,defaults={}):
     default=defaults.get('cutoff',0.01)
     parser.add_option("-c", "--cutoff", dest="cutoff", type="float", default=default,

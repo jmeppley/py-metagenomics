@@ -300,7 +300,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
                 laneData = lanes['001']
                 for (direction, inputid) in workflowInputs.iteritems():
                     if direction not in laneData:
-                        raise Exception("Missing direction in input: %s" % (direction))
+                        raise Exception("Sample %s is missing direction in input: %s" % (sampleName,direction))
                     dsMap[inputid] = {'src':'ld','id':laneData[direction]}
             else:
                 # NextSeq data has 4 lanes that need to be merged first

@@ -5,7 +5,7 @@ from optparse import OptionParser
 import sys, re
 from edl.taxon import *
 from edl.hits import *
-from edl.util import addUniversalOptions, setupLogging, checkNoneOption
+from edl.util import addUniversalOptions, setupLogging, checkNoneOption, parseMapFile
 from edl.expressions import accessionRE, nrOrgRE
 
 def main():
@@ -23,6 +23,9 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
                       help="Collapse all taxa below given rank down to superkingdom/domain. EG: in the genus output, anything assigned to Cyanobactia, will be lumped in with all other bacteria")
     parser.add_option("-R","--printRank",dest="printRanks",action="append",
                       help="Include indeicated rank(s) in lineage of printed taxa. Will be ignored if beyond the rank of the taxa (IE We can't include species if the taxon being counted is genus)")
+
+    # option for deconvoluting clusters or assemblies
+    addWeightOption(parser, multiple=True)
 
     # cutoff options
     addCountOptions(parser)
@@ -64,6 +67,9 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
                 options.printRanks=cleanRanks(options.printRanks)
         except Exception as e:
             parser.error(str(e))
+
+    # load weights file
+    sequenceWeights = loadSequenceWeights(options.weights)
 
     # only print to stdout if there is a single rank
     if len(options.ranks)>1 and options.outfile is None:
@@ -136,13 +142,16 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
 
         # use read->file mapping and hit translator to get file based counts
         #  from returned (read,Hit) pairs
+        increment=1
         for (read, hit) in readHits:
             filename = readFileDict[read]
             filetag = fileLabels[filename]
             taxon = translateHit(hit)
             taxcount = fileCounts[filetag].setdefault(taxon,0)
-            fileCounts[filetag][taxon]=taxcount+1
-            totals[filetag]+=1
+            if sequenceWeights is not None:
+                increment = sequenceWeights.get(read,1)
+            fileCounts[filetag][taxon]=taxcount+increment
+            totals[filetag]+=increment
         logging.debug(str(totals))
 
     else:
@@ -152,7 +161,7 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
 
             hitIter = parseM8FileIter(infile, hitStringMap, options.hitTableFormat, options.filterTopPct, options.parseStyle, options.countMethod, taxonomy=taxonomy, rank=rank, sortReads=options.hitTableSortReads)
 
-            (total,counts,hitMap) = countIterHits(hitIter,allMethod=options.allMethod)
+            (total,counts,hitMap) = countIterHits(hitIter,allMethod=options.allMethod, weights=sequenceWeights)
             fileCounts[filetag] = counts
             totals[filetag]=total
 
