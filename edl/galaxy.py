@@ -231,7 +231,7 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
         # look for sample sheet, too
         m = re.search(r'SampleSheet.csv$',item[u'name'])
         if m:
-            files['sampleSheeet'] = item[u'id']
+            files['sampleSheet'] = item[u'id']
     
     return files
 
@@ -241,7 +241,7 @@ def loadSampleSheetFromGalaxy(sampleSheetId, galaxyInstance):
 
     I borrowed this code from bioblend.galaxy.objects
     """
-    logging.debug("Attempting to download SampleSheet %d from galaxy" % (sampleSheetId))
+    logging.debug("Attempting to download SampleSheet %s from galaxy" % (sampleSheetId))
     base_url=galaxyInstance._make_url(galaxyInstance.libraries) + \
             "/datasets/download/uncompressed"
     kwargs = {'stream': True,
@@ -382,7 +382,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
                 # MiSeq data has only one lane, so we can just launch
                 #  the workflow directly
                 # (Also, some NextSeq runs may already have lanes merged)
-                laneData = lanes['001']
+                laneData = lanes.values()[0]
                 for (direction, inputid) in workflowInputs.iteritems():
                     if direction not in laneData:
                         raise Exception("Missing direction in input: %s" % (direction))
