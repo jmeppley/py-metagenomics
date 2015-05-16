@@ -37,6 +37,12 @@ def recordIterator(stream, separatorRE, idRE=None):
         yield (recordId, recordLines)
 
 def screenRecords(stream, separatorRE, idRE=None, keep=False, screenMap=None, screenFile=None):
+    """
+    uses recordIterator(strean, separatorRE, idRE) to parse input into records
+    uses screenMap (can be read from screenFile) to identify records 
+    identified records are kept or skipped based on the value of keep
+    """
+
     if screenMap is None:
         if screenFile is None:
             raise Exception("Please supply a hash(Python map) or file of record keys")

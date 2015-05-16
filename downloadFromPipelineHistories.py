@@ -16,7 +16,7 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
 """
     parser = OptionParser(usage, description=description)
     parser.add_option('-u', '--api_url', 
-                      default="http://localhost/api",
+                      default="https://localhost/api",
                       help="URL of Galaxy API")
     parser.add_option('-k', '--api_key', default=None,
                       help="Galaxy API key for connecting. REQUIRED!")

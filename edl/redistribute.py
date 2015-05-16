@@ -86,7 +86,7 @@ def pickBestHitByAbundance(m8stream,
             unambiguousReads+=1
             for org in orgs:
                 if sequenceWeights is not None:
-                    increment=sequenceWeights[read]
+                    increment=sequenceWeights.get(read,1)
                 else:
                     increment=1
                 orgCounts[org]=orgCounts.get(org,0)+increment

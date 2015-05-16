@@ -6,6 +6,25 @@ import urllib2, re, os, sys
 from bioblend.galaxy import GalaxyInstance
 from httplib import IncompleteRead
 
+def getApiKey(apiKeyFile = '.galaxy_api_key', apiEnvVar = 'GALAXY_API_KEY'):
+    """
+    Check the filesystem for a .galaxy_api_key file (in . and ~)
+    Then check the GALAXY_API_KEY env variable
+    """
+    #  look for .galaxy_api_key file
+    api_key=None
+    if os.path.exists(apiKeyFile):
+        with open(apiKeyFile) as f:
+            api_key = f.next().strip()
+    elif os.path.exists(os.environ.get('HOME','.') + os.path.sep + apiKeyFile):
+        with open(os.environ.get('HOME','.') + os.path.sep + apiKeyFile) as f:
+            api_key = f.next().strip()
+    elif apiEnvVar in os.environ:
+        api_key = os.environ[apiEnvVar].strip()
+
+    logging.debug("Found API key: %s" % api_key)
+    return api_key
+
 # For retrieving data
 def findDatasets(apiKey, patterns, 
                  dsName=None, 
@@ -109,17 +128,22 @@ def getDatasetData(apiKey, apiURL,
                 if 'download_url' not in details:
                     logger.warn("Can't find the download URL in %r\nHistory: %r" % (details,historyId))
                     continue
-                durl = details['download_url'][4:]
-                if "?" in durl:
-                    qstringsep="&"
-                else:
-                    qstringsep="?"
-                details['download_url'] = apiURL + durl + qstringsep + "key=" + apiKey
+                details['download_url']=fixDownloadUrl(details['download_url'],
+                                                       apiURL,
+                                                       apiKey)
                 count+=1
                 yield details
 
         if count==0:
             logger.warn("No matching dataset in history: %s" % historyId)
+
+def fixDownloadUrl(downloadUrl, apiUrl, apiKey):
+    durl = downloadUrl[4:]
+    if "?" in durl:
+        qstringsep="&"
+    else:
+        qstringsep="?"
+    return apiUrl + durl + qstringsep + "key=" + apiKey
 
 def _dataset_match(dataset, datasetNumber, datasetName):
     """
@@ -187,10 +211,11 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
             continue
         
         # Parse name into components
-        m = re.search(r'([^\/]+)_S(\d+)_L(\d+)_(R[12])_.+\.fastq', 
+        m = re.search(r'([^\/]+)_S(\d+)_(?:L(\d+)_)?(R[12])_.+\.fastq', 
                       item[u'name'])
         if m:
             (name, number, lane, direction) = m.groups()
+
             if sampleRE is not None:
                 if sampleRE.search(name) is None:
                     continue
@@ -202,9 +227,41 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
                     files[number]['lanes'][lane]={direction:fileId}
             else:
                 files[number]={'name':name,'lanes':{lane:{direction:fileId}}}
+
+        # look for sample sheet, too
+        m = re.search(r'SampleSheet.csv$',item[u'name'])
+        if m:
+            files['sampleSheeet'] = item[u'id']
+    
     return files
 
-def parseSampleSheet(runName,**kwargs):
+def loadSampleSheetFromGalaxy(sampleSheetId, galaxyInstance):
+    """
+    The old bioblend GalaxyInstance can't do this without help.
+
+    I borrowed this code from bioblend.galaxy.objects
+    """
+    logging.debug("Attempting to download SampleSheet %d from galaxy" % (sampleSheetId))
+    base_url=galaxyInstance._make_url(galaxyInstance.libraries) + \
+            "/datasets/download/uncompressed"
+    kwargs = {'stream': True,
+              'params': {'ld_ids%5B%5D': sampleSheetId},
+              }
+    r = galaxyInstance.make_get_request(base_url, **kwargs)
+    if r.status_code == 500:
+        # compatibility with older Galaxy releases
+        kwargs['params'] = {'ldda_ids%5B%5D': sampleSheetId}
+        r = galaxyInstance.make_get_request(base_url, **kwargs)
+    r.raise_for_status()
+    return (r.iter_lines(), r.close)
+
+def loadSampleSheetFromFileSystem(runName,**kwargs):
+    dataDir=kwargs.get('dataDir','/minilims/data/incoming/miseq')
+    sampleSheet=os.path.sep.join([dataDir,runName,'SampleSheet.csv'])
+    ssin = open(sampleSheet)
+    return ssin, ssin.close
+
+def parseSampleSheet(runName, sampleSheetId, galaxyInstance, **kwargs):
     """
     Parses a SampleSheet from the file system for the given run. The run name should correspond to a subdirectory of the 'dataDir' which defaults to /minilims/data/incoming/miseq. 
 
@@ -212,47 +269,52 @@ def parseSampleSheet(runName,**kwargs):
         chemistry: either 'nextera' or 'truseq'
         barcodes: dictionary from sample number (as integer) to two-element list of barcodes. Second element will be an empty string for truseq.
     """
-    dataDir=kwargs.get('dataDir','/minilims/data/incoming/miseq')
-    sampleSheet=os.path.sep.join([dataDir,runName,'SampleSheet.csv'])
     chemistry='scriptseq'
     barcodes={}
-    with open(sampleSheet) as f:
 
-        # find Assay line
-        line = ""
-        while re.match(r'Assay,',line) is None:
-            line = f.next()
+    if sampleSheetId is None:
+        f,closeStream = loadSampleSheetFromFileSystem(runName, **kwargs)
+    else:
+        f,closeStream = loadSampleSheetFromGalaxy(sampleSheetId, galaxyInstance)
 
-        # not the fastest approach, but should be clear
-        if re.search(r'[Nn]extera',line) is not None:
-            print (line)
-            chemistry='nextera'
-        elif re.search(r'[Tt]rue?[Ss]eq',line) is not None:
-            print (line)
-            chemistry='truseq'
-        elif re.search(r'[Ss]cript?[Ss]eq',line) is not None:
-            print (line)
-            chemistry='scriptseq'
+    # find Assay line
+    line = ""
+    while re.match(r'Assay,',line) is None:
+        line = f.next()
+
+    # not the fastest approach, but should be clear
+    if re.search(r'[Nn]extera',line) is not None:
+        print (line)
+        chemistry='nextera'
+    elif re.search(r'[Tt]rue?[Ss]eq',line) is not None:
+        print (line)
+        chemistry='truseq'
+    elif re.search(r'[Ss]cript?[Ss]eq',line) is not None:
+        print (line)
+        chemistry='scriptseq'
+    
+    # Skip ahead to sample table
+    line = ""
+    while re.match(r'\[Data\]',line) is None:
+        line = f.next()
         
-        # Skip ahead to sample table
-        line = ""
-        while re.match(r'\[Data\]',line) is None:
-            line = f.next()
-            
-        # parse first line as headers
-        headers = f.next().split(',')
-        indexIndex = headers.index('index')
-        if 'index2' in headers:
-            index2Index = headers.index('index2')
-            
-        # get the barcode for each sample
-        for i,line in enumerate(f):
-            cells=line.split(',')
-            if chemistry=='nextera':
-                barcodes[i+1]=[cells[indexIndex],cells[index2Index]]
-            else:
-                # put an empty string for unused barcode
-                barcodes[i+1]=[cells[indexIndex],""]
+    # parse first line as headers
+    headers = f.next().split(',')
+    indexIndex = headers.index('index')
+    if 'index2' in headers:
+        index2Index = headers.index('index2')
+        
+    # get the barcode for each sample
+    for i,line in enumerate(f):
+        cells=line.split(',')
+        if chemistry=='nextera':
+            barcodes[i+1]=[cells[indexIndex],cells[index2Index]]
+        else:
+            # put an empty string for unused barcode
+            barcodes[i+1]=[cells[indexIndex],""]
+    
+    closeStream()
+
     return (chemistry, barcodes)
 
 def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None, historyPrefix='MGP.b011', apiURL=u'http://edminilims.mit.edu/api', chemistry=None, **kwargs):
@@ -286,7 +348,11 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
     primerToolID=getPrimerToolId(galaxyInstance, workflowID)
     workflowInputs = getWorkflowInputs(galaxyInstance, workflowID)
     files = locateDatasets(runName, galaxyInstance,**kwargs)
-    (ssChemistry,barcodes) = parseSampleSheet(runName,**kwargs)
+    sampleSheetId = files.pop('sampleSheet',None)
+    (ssChemistry,barcodes) = parseSampleSheet(runName,
+                                              sampleSheetId,
+                                              galaxyInstance,
+                                              **kwargs)
     if chemistry is None:
         chemistry=ssChemistry
     else:
@@ -315,6 +381,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
             if len(lanes)==1:
                 # MiSeq data has only one lane, so we can just launch
                 #  the workflow directly
+                # (Also, some NextSeq runs may already have lanes merged)
                 laneData = lanes['001']
                 for (direction, inputid) in workflowInputs.iteritems():
                     if direction not in laneData:
