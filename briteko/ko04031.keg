@@ -1,0 +1,269 @@
++D	GTP-binding proteins
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; GTP-Binding Proteins</h2>
+#<!---
+#ENTRY       ko04031
+#NAME        G protein
+#DEFINITION  GTP-binding proteins
+#--->
+!
+A<b>Heterotrimeric G-proteins</b>
+B
+B  <b>Alpha Subunits</b>
+C    Alpha type 1 (Gi/o) [Table]
+D      K04630  GNAI; guanine nucleotide-binding protein G(i) subunit alpha
+D      K04534  GNAO, G-ALPHA-O; guanine nucleotide-binding protein G(o) subunit alpha
+D      K04631  GNAT; guanine nucleotide-binding protein G(t) subunit alpha
+D      K04535  GNAZ; guanine nucleotide-binding protein G(z) subunit alpha
+C    Alpha type 2 (Gs)
+D      K04632  GNAS; guanine nucleotide-binding protein G(s) subunit alpha
+D      K04633  GNAL; guanine nucleotide-binding protein G(olf) subunit alpha
+C    Alpha type 3 (Gq/11) [Table]
+D      K04634  GNAQ; guanine nucleotide-binding protein G(q) subunit alpha
+D      K04635  GNA11; guanine nucleotide-binding protein subunit alpha-11
+D      K04636  GNA14; guanine nucleotide-binding protein subunit alpha-14
+D      K04637  GNA15; guanine nucleotide-binding protein subunit alpha-15
+C    Alpha type 4 (G12/13)
+D      K04346  GNA12; guanine nucleotide-binding protein subunit alpha-12
+D      K04639  GNA13; guanine nucleotide-binding protein subunit alpha-13
+C    Alpha others - lower eukaryotes
+D      K04640  GNA; guanine nucleotide-binding protein subunit alpha, other
+B
+B  <b>Beta Subunits</b>
+C    Beta [Table]
+D      K04536  GNB1; guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1
+D      K04537  GNB2; guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-2
+D      K07825  GNB3; guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-3
+D      K04538  GNB4; guanine nucleotide-binding protein subunit beta-4
+D      K04539  GNB5; guanine nucleotide-binding protein subunit beta-5
+D      K07972  GNB; guanine nucleotide-binding protein subunit beta, other
+B
+B  <b>Gamma Subunits</b>
+C    Gamma [Table]
+D      K07826  GNG2; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-2
+D      K04540  GNG3; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-3
+D      K04541  GNG4; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-4
+D      K04542  GNG5; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-5
+D      K04543  GNG7; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-7
+D      K04544  GNG8; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-8
+D      K04545  GNG10; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-10
+D      K04546  GNG11; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-11
+D      K04347  GNG12; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-12
+D      K04547  GNG13; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-13
+D      K04548  GNGT1; guanine nucleotide-binding protein G(T) subunit gamma-T1
+D      K04549  GNGT2; guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-T2
+D      K07973  GNG; guanine nucleotide-binding protein subunit gamma, other
+#
+A<b>Small (Monomeric) G-proteins</b>
+B
+B  <b>Ras Family</b>
+C    Ras [Table]
+D      K02833  HRAS; GTPase HRas
+D      K07827  KRAS, KRAS2; GTPase KRas
+D      K07828  NRAS; GTPase NRas
+D      K17196  ERAS; GTPase Eras
+D      K07829  RRAS; Ras-related protein R-Ras
+D      K07830  RRAS2, TC21; Ras-related protein R-Ras2
+D      K07831  MRAS; Ras-related protein M-Ras
+C    Rit
+D      K07832  RIT1; Ras-like without CAAX 1
+D      K07833  RIT2, RIN; Ras-like without CAAX 2
+C    Ral
+D      K07834  RALA; Ras-related protein Ral-A
+D      K07835  RALB; Ras-related protein Ral-B
+C    Rap [Table]
+D      K04353  RAP1A; Ras-related protein Rap-1A
+D      K07836  RAP1B; Ras-related protein Rap-1B
+D      K07837  RAP2A; Ras-related protein Rap-2A
+D      K07838  RAP2B; Ras-related protein Rap-2B
+D      K07839  RAP2C; Ras-related protein Rap-2C
+C    Di-Ras [Table]
+D      K07840  DIRAS1; DIRAS family, GTP-binding Ras-like 1
+D      K07841  DIRAS2; DIRAS family, GTP-binding Ras-like 2
+D      K07842  DIRAS3, NOEY2; DIRAS family, GTP-binding Ras-like 3
+C    RasD
+D      K07843  RASD1; RAS, dexamethasone-induced Ras-related protein 1
+D      K07844  RASD2; RASD family, member 2
+C    Rad/Gem/Kir [Table]
+D      K07845  RRAD, RAD1; Ras-related associated with diabetes
+D      K07846  GEM; GTP binding protein overexpressed in skeletal muscle
+D      K07847  REM1; Rad and Gem related GTP binding protein 1
+D      K07848  REM2; Rad and Gem related GTP binding protein 2
+C    Rheb
+D      K07208  RHEB; Ras homolog enriched in brain
+D      K07849  RHEBL1; Ras homolog enriched in brain like 1
+C    Nki-Ras
+D      K17197  NKIRAS; NF-kappa-B inhibitor-interacting Ras-like protein
+C    Others
+D      K07850  RASL10A, RRP22; Ras-like protein family member 10A
+D      K07851  RASL10B; Ras-like protein family member 10B
+D      K07852  RASL11A; Ras-like protein family member 11A
+D      K07853  RASL11B; Ras-like protein family member 11B
+D      K07854  RASL12, RIS; Ras-like protein family member 12
+D      K07855  RERG; Ras-related and estrogen-regulated growth inhibitor
+D      K17198  RERGL; Ras-related and estrogen-regulated growth inhibitor-like protein
+B
+B  <b>Rho Family</b>
+C    RhoA/B/C [Table]
+D      K04513  RHOA; Ras homolog gene family, member A
+D      K07856  RHOB; Ras homolog gene family, member B
+D      K07857  RHOC; Ras homolog gene family, member C
+C    Rnd [Table]
+D      K07531  RND1; Rho family GTPase 1
+D      K07858  RND2; Rho family GTPase 2
+D      K07859  RND3; Rho family GTPase 3
+C    Rac/Cdc42 [Table]
+D      K04392  RAC1; Ras-related C3 botulinum toxin substrate 1
+D      K07860  RAC2; Ras-related C3 botulinum toxin substrate 2
+D      K07861  RAC3; Ras-related C3 botulinum toxin substrate 3
+D      K07863  RHOG; Ras homolog gene family, member G
+D      K04393  CDC42; cell division control protein 42
+D      K07864  RHOJ, TCL; Ras homolog gene family, member J
+D      K07194  RHOQ, TC10; Ras homolog gene family, member Q
+D      K07873  RHOH, TTF; Ras homolog gene family, member H
+D      K07865  RHOU, WRCH1; Ras homolog gene family, member U
+D      K07866  RHOV, WRCH2; Ras homolog gene family, member V
+C    RhoBTB
+D      K07868  RHOBTB1_2; Rho-related BTB domain-containing protein 1/2
+C    Miro
+D      K07870  RHOT1, ARHT1; Ras homolog gene family, member T1
+D      K07871  RHOT2, ARHT2; Ras homolog gene family, member T2
+C    Others
+D      K07530  RHOD; Ras homolog gene family, member D
+D      K07872  RHOF, RIF; Ras homolog gene family, member F
+D      K07934  IFT27, RAYL, RABL4; intraflagellar transport protein 27 homolog
+D      K07975  K07975; Rho family, other
+B
+B  <b>Rab Family</b>
+C    Rab1/35 [Table]
+D      K07874  RAB1A; Ras-related protein Rab-1A
+D      K07875  RAB1B; Ras-related protein Rab-1B
+D      K07876  RAB35, RAB1C; Ras-related protein Rab-35
+C    Rab2/4/14 [Table]
+D      K07877  RAB2A; Ras-related protein Rab-2A
+D      K07878  RAB2B; Ras-related protein Rab-2B
+D      K07879  RAB4A, RAB4; Ras-related protein Rab-4A
+D      K07880  RAB4B; Ras-related protein Rab-4B
+D      K07881  RAB14; Ras-related protein Rab-14
+C    Rab3/27 [Table]
+D      K07882  RAB3A; Ras-related protein Rab-3A
+D      K06108  RAB3B; Ras-related protein Rab-3B
+D      K07883  RAB3C; Ras-related protein Rab-3C
+D      K07884  RAB3D; Ras-related protein Rab-3D
+D      K07885  RAB27A; Ras-related protein Rab-27A
+D      K07886  RAB27B; Ras-related protein Rab-27B
+C    Rab5/17/22/31 [Table]
+D      K07887  RAB5A; Ras-related protein Rab-5A
+D      K07888  RAB5B; Ras-related protein Rab-5B
+D      K07889  RAB5C; Ras-related protein Rab-5C
+D      K07909  RAB17; Ras-related protein Rab-17
+D      K07891  RAB22; Ras-related protein Rab-22
+C    Rab6/41 [Table]
+D      K07893  RAB6A; Ras-related protein Rab-6A
+D      K07894  RAB6B; Ras-related protein Rab-6B
+D      K07895  RAB6C; Ras-related protein Rab-6C
+D      K07896  RAB41; Ras-related protein Rab-41
+C    Rab7/9 [Table]
+D      K07897  RAB7A; Ras-related protein Rab-7A
+D      K07898  RAB7B; Ras-related protein Rab-7B
+D      K07899  RAB9A, RAB9; Ras-related protein Rab-9A
+D      K07900  RAB9B; Ras-related protein Rab-9B
+C    Rab8/10/13 [Table]
+D      K07901  RAB8A, MEL; Ras-related protein Rab-8A
+D      K07902  RAB8B; Ras-related protein Rab-8B
+D      K07903  RAB10; Ras-related protein Rab-10
+D      K06109  RAB13; Ras-related protein Rab-13
+C    Rab11/25 [Table]
+D      K07904  RAB11A; Ras-related protein Rab-11A
+D      K07905  RAB11B; Ras-related protein Rab-11B
+D      K07906  RAB25; Ras-related protein Rab-25
+C    Rab12/18
+D      K07907  RAB12; Ras-related protein Rab-12
+D      K07910  RAB18; Ras-related protein Rab-18
+C    Rab15
+D      K07908  RAB15; Ras-related protein Rab-15
+C    Rab19/30/43 [Table]
+D      K17047  RAB19; Ras-related protein Rab-19
+D      K07917  RAB30; Ras-related protein Rab-30
+D      K07930  RAB43; Ras-related protein Rab-43
+C    Rab20/21/24 [Table]
+D      K07911  RAB20; Ras-related protein Rab-20
+D      K07890  RAB21; Ras-related protein Rab-21
+D      K07912  RAB24; Ras-related protein Rab-24
+C    Rab23
+D      K06234  RAB23; Ras-related protein Rab-23
+C    Rab26/37
+D      K07913  RAB26; Ras-related protein Rab-26
+D      K07914  RAB37; Ras-related protein Rab-37
+C    Rab28
+D      K07915  RAB28; Ras-related protein Rab-28
+C    Rab29/32/38 [Table]
+D      K07916  RAB7L1, RAB7L; Ras-related protein Rab-7L1
+D      K07918  RAB32; Ras-related protein Rab-32
+D      K07923  RAB38; Ras-related protein Rab-38
+C    Rab33
+D      K07919  RAB33A; Ras-related protein Rab-33A
+D      K07920  RAB33B; Ras-related protein Rab-33B
+C    Rab34/36
+D      K07921  RAB34; Ras-related protein Rab-34
+D      K07922  RAB36; Ras-related protein Rab-36
+C    Rab39/42 [Table]
+D      K07924  RAB39A; Ras-related protein Rab-39A
+D      K07925  RAB39B; Ras-related protein Rab-39B
+D      K07929  RAB42; Ras-related protein Rab-42
+C    Rab40
+D      K07928  RAB40; Ras-related protein Rab-40
+C    Rab45
+D      K17199  RASEF, RAB45; Ras and EF-hand domain-containing protein
+C    Rab-like
+D      K07931  RABL2; Rab-like protein 2
+C    Others
+D      K07976  RAB; Rab family, other
+B
+B  <b>Ran Family</b>
+C    Ran
+D      K07936  RAN; GTP-binding nuclear protein Ran
+B
+B  <b>Arf/Sar Family</b>
+C    Arf [Table]
+D      K07937  ARF1; ADP-ribosylation factor 1
+D      K07938  ARF3; ADP-ribosylation factor 3
+D      K07939  ARF4; ADP-ribosylation factor 4
+D      K07940  ARF5; ADP-ribosylation factor 5
+D      K07941  ARF6; ADP-ribosylation factor 6
+C    Arl1/Arl5 [Table]
+D      K07942  ARL1; ADP-ribosylation factor-like protein 1
+D      K07949  ARL5A; ADP-ribosylation factor-like protein 5A
+D      K07950  ARL5B; ADP-ribosylation factor-like protein 5B
+C    Arl2/Arl3
+D      K07943  ARL2; ADP-ribosylation factor-like protein 2
+D      K07944  ARL3; ADP-ribosylation factor-like protein 3
+C    Arl4/Arl7
+D      K07945  ARL4; ADP-ribosylation factor-like protein 4
+C    Arl6
+D      K07951  ARL6, BBS3; ADP-ribosylation factor-like protein 6
+C    Arp
+D      K07952  ARFRP1; ADP-ribosylation factor related protein 1
+C    Sar
+D      K07953  SAR1; GTP-binding protein SAR1 [EC:3.6.5.-]
+C    Arl8
+D      K07955  ARL8; ADP-ribosylation factor-like protein 8
+C    Others
+D      K07957  ARL9; ADP-ribosylation factor-like protein 9
+D      K07958  ARL10; ADP-ribosylation factor-like protein 10
+D      K07959  ARL11; ADP-ribosylation factor-like protein 11
+D      K07960  ARL12; ADP-ribosylation factor-like protein 12
+D      K07961  ARL13; ADP-ribosylation factor-like protein 13
+D      K07962  ARL13B, ARL2L1; ADP-ribosylation factor-like protein 13B
+D      K17200  ARL14, ARF7; ADP-ribosylation factor-like protein 14
+D      K17201  ARL15; ADP-ribosylation factor-like protein 15
+D      K07963  TRIM23, ARFD1; tripartite motif-containing protein 23 [EC:6.3.2.19]
+D      K07977  ARF; Arf/Sar family, other
+B
+B  <b>Unclassified</b>
+C    K07933  RABL3; Rab-like protein 3
+C    K07935  RABL5; Rab-like protein 5
+C    K12272  SRPRB, SRP102; signal recognition particle receptor subunit beta
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: June 11, 2013

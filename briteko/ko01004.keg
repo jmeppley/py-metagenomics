@@ -1,0 +1,182 @@
++C	Lipid biosynthesis protein
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Lipid Biosynthesis Proteins</h2>
+#<!---
+#ENTRY       ko01004
+#DEFINITION  Lipid biosynthesis proteins
+#--->
+!
+A<b>Fatty acid synthase</b>
+B  Animal type
+C    K00665  FASN; fatty acid synthase, animal type [EC:2.3.1.85]
+B  Yeast type
+C    K00668  FAS1; fatty acid synthase subunit beta, fungi type [EC:2.3.1.86]
+C    K00667  FAS2; fatty acid synthase subunit alpha, fungi type [EC:2.3.1.86]
+B  Bacteria type
+C    K11533  fas; fatty acid synthase, bacteria type [EC:2.3.1.-]
+C    K11628  mas; mycocerosic acid synthase [EC:2.3.1.111]
+B  Component type
+C    K00645  fabD; [acyl-carrier-protein] S-malonyltransferase [EC:2.3.1.39]
+C    K13935  mdcH; malonate decarboxylase epsilon subunit [EC:2.3.1.39]
+C    K00647  fabB; 3-oxoacyl-[acyl-carrier-protein] synthase I [EC:2.3.1.41]
+C    K09458  fabF; 3-oxoacyl-[acyl-carrier-protein] synthase II [EC:2.3.1.179]
+C    K00648  fabH; 3-oxoacyl-[acyl-carrier-protein] synthase III [EC:2.3.1.180]
+C    K00059  fabG; 3-oxoacyl-[acyl-carrier protein] reductase [EC:1.1.1.100]
+C    K01716  fabA; 3-hydroxyacyl-[acyl-carrier-protein] dehydratase [EC:4.2.1.59]
+C    K02372  fabZ; 3-hydroxyacyl-[acyl-carrier-protein] dehydratase [EC:4.2.1.59]
+C    K16363  lpxC-fabZ; UDP-3-O-[3-hydroxymyristoyl] N-acetylglucosamine deacetylase / 3-hydroxyacyl-[acyl-carrier-protein] dehydratase [EC:3.5.1.108 4.2.1.59]
+C    K00208  fabI; enoyl-[acyl-carrier protein] reductase I [EC:1.3.1.9 1.3.1.10]
+C    K02371  fabK; enoyl-[acyl-carrier protein] reductase II [EC:1.3.1.-]
+C    K10780  fabL; enoyl-[acyl-carrier protein] reductase III [EC:1.3.1.-]
+C    K10251  HSD17B12, KAR, IFA38; 17beta-estradiol 17-dehydrogenase / very-long-chain 3-oxoacyl-CoA reductase [EC:1.1.1.62 1.1.1.330]
+C    K10703  PHS1, PAS2; very-long-chain (3R)-3-hydroxyacyl-[acyl-carrier protein] dehydratase [EC:4.2.1.134]
+C    K07753  PECR; peroxisomal trans-2-enoyl-CoA reductase [EC:1.3.1.38]
+C    K10258  TER, TSC13, CER10; very-long-chain enoyl-CoA reductase [EC:1.3.1.93]
+C    K01071  E3.1.2.14; oleoyl-[acyl-carrier-protein] hydrolase [EC:3.1.2.14]
+C    K10782  FATA; fatty acyl-ACP thioesterase A [EC:3.1.2.14 3.1.2.-]
+C    K10781  FATB; fatty acyl-ACP thioesterase B [EC:3.1.2.14 3.1.2.-]
+C    K01074  PPT; palmitoyl-protein thioesterase [EC:3.1.2.22]
+C    K01068  ACOT1_2_4; acyl-coenzyme A thioesterase 1/2/4 [EC:3.1.2.2]
+C    K11993  ACOT6; acyl-CoA thioesterase 6 [EC:3.1.2.-]
+C    K17360  ACOT7; acyl-coenzyme A thioesterase 7 [EC:3.1.2.2]
+C    K17361  ACOT9; acyl-coenzyme A thioesterase 9 [EC:3.1.2.-]
+C    K12417  ACOT11; acyl-CoA thioesteraes 11 [EC:3.1.2.-]
+C    K17362  ACOT13; acyl-coenzyme A thioesterase 13 [EC:3.1.2.-]
+C    K10804  tesA; acyl-CoA thioesterase I [EC:3.1.2.- 3.1.1.5]
+C    K10805  tesB; acyl-CoA thioesterase II [EC:3.1.2.-]
+C    K10806  yciA; acyl-CoA thioesterase YciA [EC:3.1.2.-]
+C    K12500  tesC; thioesterase III [EC:3.1.2.-]
+C    K11608  mtfabH; beta-ketoacyl ACP synthase [EC:2.3.1.-]
+C    K11609  kas; beta-ketoacyl ACP synthase [EC:2.3.1.-]
+C    K11610  mabA; beta-ketoacyl ACP reductase [EC:1.1.1.100]
+C    K11611  inhA; enoyl ACP reductase [EC:1.3.1.9]
+#
+A<b>Desaturase</b>
+B  First
+C    K00507  SCD, desC; stearoyl-CoA desaturase (delta-9 desaturase) [EC:1.14.19.1]
+C    K03921  DESA1; acyl-[acyl-carrier-protein] desaturase [EC:1.14.19.2]
+C    K03922  DESA2; acyl-[acyl-carrier-protein] desaturase [EC:1.14.19.2]
+B  Omega
+C    K10256  FAD2; omega-6 fatty acid desaturase (delta-12 desaturase) [EC:1.14.19.-]
+C    K10255  FAD6, desA; omega-6 fatty acid desaturase (delta-12 desaturase) [EC:1.14.19.-]
+C    K10257  FAD8, desB; omega-3 fatty acid desaturase (delta-15 desaturase) [EC:1.14.19.-]
+C    K00508  E1.14.19.3; linoleoyl-CoA desaturase [EC:1.14.19.3]
+B  Front-end
+C    K10224  FADS1; fatty acid desaturase 1 (delta-5 desaturase) [EC:1.14.19.-]
+C    K10226  FADS2; fatty acid desaturase 2 (delta-6 desaturase) [EC:1.14.19.-]
+C    K10225  FADS3; fatty acid desaturase 3 (delta-6 desaturase) [EC:1.14.19.-]
+C    K12418  K12418; fatty acid desaturase (delta-4 desaturase) [EC:1.14.19.-]
+B  Sphingolipid
+C    K04712  DEGS; sphingolipid delta-4 desaturase [EC:1.14.-.-]
+B  Other
+C    K12419  FADS6; fatty acid desaturase 6 [EC:1.14.19.-]
+#
+A<b>Elongase</b>
+B  LCFA
+C    K10245  ELO2; fatty acid elongase 2 [EC:2.3.1.199]
+C    K10246  ELO3; fatty acid elongase 3 [EC:2.3.1.199]
+B  PUFA
+C    K10247  ELOVL1; elongation of very long chain fatty acids protein 1 [EC:2.3.1.199]
+C    K10205  ELOVL2; elongation of very long chain fatty acids protein 2 [EC:2.3.1.199]
+C    K10249  ELOVL4; elongation of very long chain fatty acids protein 4 [EC:2.3.1.199]
+C    K10244  ELOVL5; elongation of very long chain fatty acids protein 5 [EC:2.3.1.199]
+C    K10203  ELOVL6; elongation of very long chain fatty acids protein 6 [EC:2.3.1.199]
+C    K10250  ELOVL7; elongation of very long chain fatty acids protein 7 [EC:2.3.1.199]
+B  Unclassified
+C    K10248  ELOVL3; elongation of very long chain fatty acids protein 3 [EC:2.3.1.199]
+#
+A<b>Polyketide synthase</b>
+B  Modular PKS
+C    K10817  E2.3.1.94; erythronolide synthase [EC:2.3.1.94]
+C    K04786  irp1, HMWP1; yersiniabactin nonribosomal peptide/polyketide synthase
+C    K04784  irp2, HMWP2; yersiniabactin nonribosomal peptide synthetase
+C    K13611  pksJ; polyketide synthase PksJ
+C    K13612  pksL; polyketide synthase PksL
+C    K13613  pksM; polyketide synthase PksM
+C    K13614  pksN; polyketide synthase PksN
+C    K13615  pksR; polyketide synthase PksR
+B  Component type
+C    K05551  actI1; act minimal PKS ketosynthase (KS/KS alpha) [EC:2.3.1.-]
+C    K05552  actI2; act minimal PKS chain-length factor (CLF/KS beta) [EC:2.3.1.-]
+C    K05553  actI3; act minimal PKS acyl carrier protein
+C    K12420  actIII; ketoreductase [EC:1.1.1.-]
+C    K05554  actVII; aromatase [EC:4.2.1.-]
+C    K04790  mbtC; mycobactin polyketide synthetase MbtC
+C    K04791  mbtD; mycobactin polyketide synthetase MbtD
+#
+A<b>Acyl-CoA synthetase</b>
+B  Short/medium chain acyl-CoA synthetase
+C    K01895  ACSS, acs; acetyl-CoA synthetase [EC:6.2.1.1]
+C    K01905  E6.2.1.13; acetyl-CoA synthetase (ADP-forming) [EC:6.2.1.13]
+C    K01908  E6.2.1.17, prpE; propionyl-CoA synthetase [EC:6.2.1.17]
+C    K01907  AACS, acsA; acetoacetyl-CoA synthetase [EC:6.2.1.16]
+C    K01896  ACSM; medium-chain acyl-CoA synthetase [EC:6.2.1.2]
+C    K12507  fadK; acyl-CoA synthetase [EC:6.2.1.-]
+C    K13776  atuH; citronellyl-CoA synthetase [EC:6.2.1.-]
+B  Long/very long chain acyl-CoA synthetase
+C    K01897  ACSL, fadD; long-chain acyl-CoA synthetase [EC:6.2.1.3]
+C    K15013  ACSBG; long-chain-fatty-acid--CoA ligase ACSBG [EC:6.2.1.3]
+C    K03822  K03822; putative long chain acyl-CoA synthase [EC:6.2.1.-]
+C    K12422  fadD10; long chain fatty acid CoA ligase FadD10 [EC:6.2.1.-]
+C    K12426  fadD26; long chain fatty acid CoA FadD26
+C    K12427  fadD28; fatty acid CoA ligase FadD28
+C    K12429  fadD36; fatty acid CoA ligase FadD36
+C    K08745  SLC27A1_4, FATP1, FATP4; solute carrier family 27 (fatty acid transporter), member 1/4 [EC:6.2.1.-]
+C    K08746  SLC27A2, FACVL1, FATP2; solute carrier family 27 (fatty acid transporter), member 2 [EC:6.2.1.- 6.2.1.3]
+C    K08772  SLC27A3, FATP3; solute carrier family 27 (fatty acid transporter), member 3 [EC:6.2.1.-]
+B  Unknown
+C    K12421  fadD9; fatty acid CoA ligase FadD9
+C    K12423  fadD21; fatty acid CoA ligase FadD21
+C    K12424  fadD22; fatty acid CoA ligase FadD22
+C    K12425  fadD23; fatty acid CoA ligase FadD23
+C    K12428  fadD32; fatty acid CoA ligase FadD32
+C    K00142  AASDH; acyl-CoA synthetase [EC:6.2.1.-]
+C    K00666  K00666; fatty-acyl-CoA synthase [EC:6.2.1.-]
+#
+A<b>Phospholipid acyltransferase</b>
+B  GPAT
+C    K00629  GPAT1_2; glycerol-3-phosphate O-acyltransferase 1/2 [EC:2.3.1.15]
+C    K13506  GPAT3_4, AGPAT9, AGPAT6; glycerol-3-phosphate O-acyltransferase 3/4 [EC:2.3.1.15]
+C    K13507  GAT; glycerol-3-phosphate O-acyltransferase / dihydroxyacetone phosphate acyltransferase [EC:2.3.1.15 2.3.1.42]
+C    K00630  ATS1; glycerol-3-phosphate O-acyltransferase [EC:2.3.1.15]
+C    K13508  GPAT; glycerol-3-phosphate acyltransferase [EC:2.3.1.15]
+C    K00631  plsB; glycerol-3-phosphate O-acyltransferase [EC:2.3.1.15]
+C    K03621  plsX; glycerol-3-phosphate acyltransferase PlsX [EC:2.3.1.15]
+C    K08591  plsY; glycerol-3-phosphate acyltransferase PlsY [EC:2.3.1.15]
+B  LPAAT/LPLAT
+C    K13509  LPAAT, AGPAT1, AGPAT2; lysophosphatidate acyltransferase [EC:2.3.1.51]
+C    K13699  ABHD5, CGI-58; abhydrolase domain-containing protein 5 [EC:2.3.1.51]
+C    K13513  LCLAT1, AGPAT8; lysocardiolipin and lysophospholipid acyltransferase [EC:2.3.1.- 2.3.1.51]
+C    K13511  TAZ; monolysocardiolipin acyltransferase [EC:2.3.1.-]
+C    K13517  MBOAT1_2; lysophospholipid acyltransferase 1/2 [EC:2.3.1.51 2.3.1.-]
+C    K13519  LPT1, ALE1; lysophospholipid acyltransferase [EC:2.3.1.51 2.3.1.23 2.3.1.-]
+C    K13523  AGPAT3_4; lysophosphatidic acid acyltransferase / lysophosphatidylinositol acyltransferase [EC:2.3.1.51 2.3.1.-]
+C    K00655  plsC; 1-acyl-sn-glycerol-3-phosphate acyltransferase [EC:2.3.1.51]
+C    K13510  LPCAT1_2; lysophosphatidylcholine acyltransferase / lyso-PAF acetyltransferase [EC:2.3.1.23 2.3.1.67]
+C    K13512  LPCAT4, AGPAT7; lysophospholipid acyltransferase [EC:2.3.1.23 2.3.1.-]
+C    K13514  LPGAT1; lysophosphatidylglycerol acyltransferase 1 [EC:2.3.1.-]
+C    K13515  LPCAT3, MBOAT5; lysophospholipid acyltransferase 5 [EC:2.3.1.23 2.3.1.-]
+C    K13516  MBOAT7; lysophospholipid acyltransferase 7 [EC:2.3.1.-]
+#
+A<b>Others</b>
+B  Multifunctional type
+C    K12430  pks1_15; polyketide synthase 1/15
+C    K12431  pks2; polyketide synthase 2
+C    K12432  pks3_4; polyketide synthase 3/4
+C    K12433  pks5; polyketide synthase 5
+C    K12434  pks7; polyketide synthase 7
+C    K12435  pks8; polyketide synthase 8
+C    K12436  pks12; polyketide synthase 12
+C    K12437  pks13; polyketide synthase 13
+C    K12439  pks17; polyketide synthase 17
+C    K12440  ppsA; phenolpthiocerol synthesis type-I polyketide synthase A
+C    K12441  ppsB; phenolpthiocerol synthesis type-I polyketide synthase B
+C    K12442  ppsC; phenolpthiocerol synthesis type-I polyketide synthase C
+C    K12443  ppsD; phenolpthiocerol synthesis type-I polyketide synthase D
+C    K12444  ppsE; phenolpthiocerol synthesis type-I polyketide synthase E
+B  Component type
+C    K12445  K12445; trans enoyl reductase [EC:1.3.1.-]
+!
+#<hr>
+#<b>[ COMPOUND | BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: July 22, 2013
+#<br>Desaturase/elongase family classification based on Hashimoto et al. (2008)

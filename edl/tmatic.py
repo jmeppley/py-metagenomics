@@ -1,4 +1,4 @@
-import subprocess, logging, re
+import subprocess, logging, re, os, glob
 logger = logging.getLogger(__name__)
 
 class TMOptions():
@@ -12,7 +12,7 @@ class TMOptions():
 
         # jar is in edl dir
         edlLib = os.path.dirname(os.path.abspath(__file__))
-        return glob.glob(os.path.sep.join([edlLib,'trimmomatic.jar']))
+        return glob.glob(os.path.sep.join([edlLib,'trimmomatic.jar']))[0]
         
     def runTmatic(self):
         command=self.buildCommand()
@@ -50,7 +50,7 @@ class TMOptionsPE(TMOptions):
             self.outfiles['2p']="%s.tm.p" %(self.reverse)
 
     def buildCommand(self):
-        command=" ".join(list(self.getBaseCommand()))
+        command=" ".join(self.getBaseCommand())
         command+=" " + self.javaclass
         if logging.getLogger().level<=logging.DEBUG:
             command+=" -trimlog %s.log" % self.outfiles['1p']
@@ -95,7 +95,7 @@ class TMOptionsSE(TMOptions):
         self.jarPath = self.findJar(jarPath)
 
     def buildCommand(self):
-        command=" ".join(list(self.getBaseCommand()))
+        command=" ".join(self.getBaseCommand())
         command+=" " + self.javaclass
         command = '%s "%s"' %  (command, self.input)
         command='%s "%s"' %  (command, self.output)

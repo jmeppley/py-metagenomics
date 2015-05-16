@@ -1,0 +1,556 @@
++F	Repair protein
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; DNA Repair and Recombination Proteins</h2>
+#<!---
+#ENTRY       ko03400
+#NAME        Repair
+#DEFINITION  DNA repair and recombination proteins
+#--->
+!
+A<b>Eukaryotic Type</b>
+B  SSBR (single strand breaks repair)
+C    Direct repair
+D      K00567  E2.1.1.63, MGMT, ogt; methylated-DNA-[protein]-cysteine S-methyltransferase [EC:2.1.1.63]
+D      K10859  ALKBH2; alpha-ketoglutarate-dependent dioxygenase alkB homolog 2 [EC:1.14.11.-]
+D      K10860  ALKBH3, DEPC1; alpha-ketoglutarate-dependent dioxygenase alkB homolog 3 [EC:1.14.11.-]
+D      K02295  CRY; cryptochrome
+D      K01669  E4.1.99.3, phrB; deoxyribodipyrimidine photo-lyase [EC:4.1.99.3]
+C    BER (base exicision repair)
+D      DNA glycosylases
+E        K03648  UNG, UDG; uracil-DNA glycosylase [EC:3.2.2.27]
+E        K10861  UDG2, CCNO; uracil-DNA glycosylase 2 [EC:3.2.2.-]
+E        K03649  MUG, TDG; TDG/mug DNA glycosylase family protein [EC:3.2.2.-]
+E        K03652  MPG; DNA-3-methyladenine glycosylase [EC:3.2.2.21]
+E        K10800  SMUG1; single-strand selective monofunctional uracil DNA glycosylase [EC:3.2.2.-]
+E        K03575  mutY; A/G-specific adenine glycosylase [EC:3.2.2.-]
+E        K10801  MBD4; methyl-CpG-binding domain protein 4 [EC:3.2.2.-]
+E        K03660  OGG1; N-glycosylase/DNA lyase [EC:3.2.2.- 4.2.99.18]
+E        K10567  NEIL1; endonuclease VIII-like 1 [EC:3.2.2.- 4.2.99.18]
+E        K10568  NEIL2; endonuclease VIII-like 2 [EC:3.2.2.- 4.2.99.18]
+E        K10569  NEIL3; endonuclease VIII-like 3
+E        K10773  NTH; endonuclease III [EC:4.2.99.18]
+D      AP endonucleases
+E        K10771  APEX1; AP endonuclease 1 [EC:4.2.99.18]
+E        K10772  APEX2; AP endonuclease 2 [EC:4.2.99.18]
+D      Long Patch-BER factors
+E        DNA polymerase delta complex
+F          K02327  POLD1; DNA polymerase delta subunit 1 [EC:2.7.7.7]
+F          K02328  POLD2; DNA polymerase delta subunit 2
+F          K03504  POLD3; DNA polymerase delta subunit 3
+F          K03505  POLD4; DNA polymerase delta subunit 4
+E        DNA polymerase epsilon complex
+F          K02324  POLE1; DNA polymerase epsilon subunit 1 [EC:2.7.7.7]
+F          K02325  POLE2; DNA polymerase epsilon subunit 2 [EC:2.7.7.7]
+F          K02326  POLE3; DNA polymerase epsilon subunit 3 [EC:2.7.7.7]
+F          K03506  POLE4; DNA polymerase epsilon subunit 4 [EC:2.7.7.7]
+E        K04802  PCNA; proliferating cell nuclear antigen
+E        K04799  FEN1, RAD2; flap endonuclease-1 [EC:3.-.-.-]
+E        K10747  LIG1; DNA ligase 1 [EC:6.5.1.1]
+D      Short Patch-BER factors
+E        K02330  POLB; DNA polymerase beta [EC:2.7.7.7 4.2.99.-]
+E        K10803  XRCC1; DNA-repair protein XRCC1
+E        K10776  LIG3; DNA ligase 3 [EC:6.5.1.1]
+D      Other BER factors
+E        K10862  TDP1; tyrosyl-DNA phosphodiesterase 1 [EC:3.1.4.-]
+E        K10863  APTX; aprataxin [EC:3.-.-.-]
+E        K13295  APLF; aprataxin and PNK-like factor [EC:4.2.99.18]
+E        K08073  PNKP; bifunctional polynucleotide phosphatase/kinase [EC:3.1.3.32 2.7.1.78]
+E        K08075  E3.1.3.32; polynucleotide 3'-phosphatase [EC:3.1.3.32]
+E        K10802  HMGB1; high mobility group protein B1
+E        K03512  POLL; DNA polymerase lambda [EC:2.7.7.7 4.2.99.-]
+E        K10798  PARP; poly [ADP-ribose] polymerase [EC:2.4.2.30]
+C    NER (nucleotide excision repair)
+D      GGR (global genome repair) factors
+E        XPC-HR23B-CETN2 complex
+F          K10838  XPC; xeroderma pigmentosum group C-complementing protein
+F          K10839  RAD23, HR23; UV excision repair protein RAD23
+F          K10840  CETN2; centrin-2
+E        Cul4-DDB2 complex
+F          K03868  RBX1, ROC1; RING-box protein 1
+F          K10609  CUL4; cullin 4
+F          K10610  DDB1; DNA damage-binding protein 1
+F          K10140  DDB2; DNA damage-binding protein 2
+E        NER4 complex
+F          K15082  RAD7; DNA repair protein RAD7
+F          K15083  RAD16; DNA repair protein RAD16
+D      TCR (transcription coupled repair) factors
+E        DNA-directed RNA polymerase II complex
+F          K03006  RPB1, POLR2A; DNA-directed RNA polymerase II subunit RPB1 [EC:2.7.7.6]
+F          K03010  RPB2, POLR2B; DNA-directed RNA polymerase II subunit RPB2 [EC:2.7.7.6]
+F          K03011  RPB3, POLR2C; DNA-directed RNA polymerase II subunit RPB3
+F          K03012  RPB4, POLR2D; DNA-directed RNA polymerase II subunit RPB4
+F          K03013  RPB5, POLR2E; DNA-directed RNA polymerases I, II, and III subunit RPABC1
+F          K03014  RPB6, POLR2F; DNA-directed RNA polymerases I, II, and III subunit RPABC2
+F          K03015  RPB7, POLR2G; DNA-directed RNA polymerase II subunit RPB7
+F          K03016  RPB8, POLR2H; DNA-directed RNA polymerases I, II, and III subunit RPABC3
+F          K03017  RPB9, POLR2I; DNA-directed RNA polymerase II subunit RPB9
+F          K03007  RPB10, POLR2L; DNA-directed RNA polymerases I, II, and III subunit RPABC5
+F          K03008  RPB11, POLR2J; DNA-directed RNA polymerase II subunit RPB11
+F          K03009  RPB12, POLR2K; DNA-directed RNA polymerases I, II, and III subunit RPABC4
+E        Cul4-CSA complex
+F          K03868  RBX1, ROC1; RING-box protein 1
+F          K10609  CUL4; cullin 4
+F          K10610  DDB1; DNA damage-binding protein 1
+F          K10570  ERCC8, CKN1, CSA; DNA excision repair protein ERCC-8
+E        Other TCR factor
+F          K10841  ERCC6, CSB, RAD26; DNA excision repair protein ERCC-6
+D      TFIIH complex
+E        K10843  ERCC3, XPB; DNA excision repair protein ERCC-3 [EC:3.6.4.12]
+E        K10844  ERCC2, XPD; DNA excision repair protein ERCC-2 [EC:3.6.4.12]
+E        K03141  TFIIH1, GTF2H1, TFB1; transcription initiation factor TFIIH subunit 1
+E        K03142  TFIIH2, GTF2H2, SSL1; transcription initiation factor TFIIH subunit 2
+E        K03143  TFIIH3, GTF2H3, TFB4; transcription initiation factor TFIIH subunit 3
+E        K03144  TFIIH4, GTF2H4, TFB2; transcription initiation factor TFIIH subunit 4
+E        K10845  TTDA, GTF2H5, TFB5; TFIIH basal transcription factor complex TTD-A subunit
+E        K02202  CDK7; cyclin-dependent kinase 7 [EC:2.7.11.22 2.7.11.23]
+E        K06634  CCNH; cyclin H
+E        K10842  MNAT1; CDK-activating kinase assembly factor MAT1
+D      RPA (replication factor A)
+E        K07466  RFA1, RPA1, rpa; replication factor A1
+E        K10739  RFA2, RPA2; replication factor A2
+E        K10740  RPA3; replication factor A3
+E        K10741  RPA4; replication factor A4
+D      Other NER factors
+E        K10847  XPA; DNA-repair protein complementing XP-A cells
+E        K10849  ERCC1; DNA excision repair protein ERCC-1
+E        K10848  ERCC4, XPF; DNA excision repair protein ERCC-4 [EC:3.1.-.-]
+E        K10846  ERCC5, XPG, RAD2; DNA excision repair protein ERCC-5
+E        K10747  LIG1; DNA ligase 1 [EC:6.5.1.1]
+E        K15075  MET18, MMS19; DNA repair/transcription protein MET18/MMS19
+E        K03869  CUL3; cullin 3
+E        K10612  CUL5; cullin 5
+E        K03872  TCEB1; transcription elongation factor B, polypeptide 1
+E        K03873  TCEB2; transcription elongation factor B, polypeptide 2
+E        K15076  TCEB3, ELOA; transcription elongation factor B, polypeptide 3
+E        K15077  ELA1; elongin-A
+C    MMR (mismatch exicision repair)
+D      Mismatch and loop recognition factors
+E        K08735  MSH2; DNA mismatch repair protein MSH2
+E        K08736  MSH3; DNA mismatch repair protein MSH3
+E        K08737  MSH6; DNA mismatch repair protein MSH6
+D      MutS homologs specialized for meiosis
+E        K08740  MSH4; DNA mismatch repair protein MSH4
+E        K08741  MSH5; DNA mismatch repair protein MSH5
+D      MutL homologs
+E        K10864  PMS1; DNA mismatch repair protein PMS1
+E        K08734  MLH1; DNA mismatch repair protein MLH1
+E        K10858  PMS2; DNA mismatch repair protein PMS2
+E        K08739  MLH3; DNA mismatch repair protein MLH3
+D      DNA polymerase delta complex
+E        K02327  POLD1; DNA polymerase delta subunit 1 [EC:2.7.7.7]
+E        K02328  POLD2; DNA polymerase delta subunit 2
+E        K03504  POLD3; DNA polymerase delta subunit 3
+E        K03505  POLD4; DNA polymerase delta subunit 4
+D      RPA (replication factor A)
+E        K07466  RFA1, RPA1, rpa; replication factor A1
+E        K10739  RFA2, RPA2; replication factor A2
+E        K10740  RPA3; replication factor A3
+E        K10741  RPA4; replication factor A4
+D      RFC (replication factor C)
+E        K10754  RFC1; replication factor C subunit 1
+E        K10755  RFC2_4; replication factor C subunit 2/4
+E        K10756  RFC3_5; replication factor C subunit 3/5
+D      Other MMR factors
+E        K04802  PCNA; proliferating cell nuclear antigen
+E        K10746  EXO1; exonuclease 1 [EC:3.1.-.-]
+E        K10802  HMGB1; high mobility group protein B1
+E        K10747  LIG1; DNA ligase 1 [EC:6.5.1.1]
+B  DSBR (double strand breaks repair)
+C    HR (homologous recombination)
+D      MRN(MRX) complex
+E        K10865  MRE11; double-strand break repair protein MRE11
+E        K10866  RAD50; DNA repair protein RAD50 [EC:3.6.-.-]
+E        K10867  NBN, NBS1; nijmegen breakage syndrome protein 1
+E        K10868  XRS2; DNA repair protein XRS2
+D      RecA family proteins
+E        K04482  RAD51; DNA repair protein RAD51
+E        K10869  RAD51L1, RAD51B; RAD51-like protein 1
+E        K10870  RAD51L2, RAD51C; RAD51-like protein 2
+E        K10871  RAD51L3, RAD51D; RAD51-like protein 3
+E        K10879  XRCC2; DNA-repair protein XRCC2
+E        K10880  XRCC3; DNA-repair protein XRCC3
+E        K10872  DMC1; meiotic recombination protein DMC1
+E        K10957  RAD55; DNA repair protein RAD55
+E        K10958  RAD57; DNA repair protein RAD57
+D      Rad52 family proteins
+E        K10873  RAD52; DNA repair and recombination protein RAD52
+E        K10874  RDM1, RAD52B; RAD52 motif-containing protein 1
+E        K10959  RAD59; DNA repair protein RAD59
+D      Rad54 family proteins
+E        K10875  RAD54L, RAD54; DNA repair and recombination protein RAD54 and RAD54-like protein [EC:3.6.4.-]
+E        K10876  RAD54L2; RAD54-like protein 2 [EC:3.6.4.12]
+E        K10877  RAD54B; DNA repair and recombination protein RAD54B [EC:3.6.4.-]
+D      RecQ family DNA helicases
+E        K10899  RECQL; ATP-dependent DNA helicase Q1 [EC:3.6.4.12]
+E        K10900  WRN, RECQL2; werner syndrome ATP-dependent helicase [EC:3.6.4.12]
+E        K10901  BLM, RECQL3, SGS1; bloom syndrome protein [EC:3.6.4.12]
+E        K10730  RECQL4; ATP-dependent DNA helicase Q4 [EC:3.6.4.12]
+E        K10902  RECQL5; ATP-dependent DNA helicase Q5 [EC:3.6.4.12]
+D      Bloom's syndrome complex (BTR)
+E        K10901  BLM, RECQL3, SGS1; bloom syndrome protein [EC:3.6.4.12]
+E        K03165  TOP3; DNA topoisomerase III [EC:5.99.1.2]
+E        K10990  RMI1, BRAP75; RecQ-mediated genome instability protein 1
+E        K15364  NCE4, RMI1; RecQ-mediated genome instability protein 1
+E        K15365  RMI2; RecQ-mediated genome instability protein 2
+D      RPA (replication factor A)
+E        K07466  RFA1, RPA1, rpa; replication factor A1
+E        K10739  RFA2, RPA2; replication factor A2
+E        K10740  RPA3; replication factor A3
+E        K10741  RPA4; replication factor A4
+D      Protein phosphatase 4
+E        K15423  PPP4C; serine/threonine-protein phosphatase 4 catalytic subunit [EC:3.1.3.16]
+E        K15424  PPP4R1; serine/threonine-protein phosphatase 4 regulatory subunit 1
+E        K15425  PPP4R2; serine/threonine-protein phosphatase 4 regulatory subunit 2
+E        K17491  SMEK, PPP4R3; protein phosphatase 4 regulatory subunit 3
+E        K15426  PPP4R4; serine/threonine-protein phosphatase 4 regulatory subunit 4
+D      Other HR factors
+E        K10605  BRCA1; breast cancer type 1 susceptibility protein
+E        K08775  BRCA2, FANCD1; breast cancer 2 susceptibility protein
+E        K10882  EME1, MMS4; crossover junction endonuclease EME1 [EC:3.1.22.-]
+E        K10883  EME2; crossover junction endonuclease EME2
+E        K15271  HFM1, MER3; ATP-dependent DNA helicase HFM1/MER3 [EC:3.6.4.12]
+E        K14635  MPH1; ATP-dependent DNA helicase MPH1 [EC:3.6.4.12]
+E        K08991  MUS81; crossover junction endonuclease MUS81 [EC:3.1.22.-]
+E        K10881  SHFM1, DSS1; 26 proteasome complex subunit DSS1
+E        K10878  SPO11; meiotic recombination protein SPO11
+E        K10998  CSM3, SWI3; replication fork protection complex subunit Csm3/Swi3
+E        K10991  SAE3, SWI5; DNA repair protein Swi5/Sae3
+E        K10992  SFR1; Swi5-dependent recombination DNA repair protein 1
+E        K15078  SLX1; structure-specific endonuclease subunit SLX1 [EC:3.6.1.-]
+E        K10484  BTBD12, SLX4; structure-specific endonuclease subunit SLX4 (BTB/POZ domain-containing protein 12)
+E        K15079  SLX4; structure-specific endonuclease subunit SLX4
+E        K15080  SAW1; single-strand annealing weakened protein 1
+E        K15338  GEN1, GEN; flap endonuclease GEN [EC:3.1.-.-]
+E        K15339  YEN1; holliday junction resolvase YEN1 [EC:3.1.-.-]
+C    NHEJ (non-homologous end-joining)
+D      DNA-PK complex
+E        K10884  XRCC6, KU70, G22P1; ATP-dependent DNA helicase 2 subunit 1
+E        K10885  XRCC5, KU80, G22P2; ATP-dependent DNA helicase 2 subunit 2
+E        K06642  PRKDC; DNA-dependent protein kinase catalytic subunit [EC:2.7.11.1]
+D      MRX complex
+E        K10865  MRE11; double-strand break repair protein MRE11
+E        K10866  RAD50; DNA repair protein RAD50 [EC:3.6.-.-]
+E        K10868  XRS2; DNA repair protein XRS2
+D      DNA Ligase 4 complex
+E        K10777  LIG4, DNL4; DNA ligase 4 [EC:6.5.1.1]
+E        K10886  XRCC4; DNA-repair protein XRCC4
+E        K10980  NHEJ1, XLF; non-homologous end-joining factor 1
+E        K10982  LIF1; ligase-interacting factor 1
+E        K10983  NEJ1, LIF2; non-homologous end-joining protein 1
+D      X-family DNA polymerases
+E        K03512  POLL; DNA polymerase lambda [EC:2.7.7.7 4.2.99.-]
+E        K03513  POLM; DNA polymerase mu [EC:2.7.7.7]
+E        K00977  E2.7.7.31, DNTT; DNA nucleotidylexotransferase [EC:2.7.7.31]
+E        K02330  POLB; DNA polymerase beta [EC:2.7.7.7 4.2.99.-]
+E        K10981  POL4; DNA polymerase IV [EC:2.7.7.7]
+D      Other NHEJ factors
+E        K10863  APTX; aprataxin [EC:3.-.-.-]
+E        K13295  APLF; aprataxin and PNK-like factor [EC:4.2.99.18]
+E        K10887  DCLRE1C, ARTEMIS, SCIDA; DNA cross-link repair 1C protein [EC:3.1.-.-]
+C    FA (Fanconi anemia) pathway
+D      FA core complex
+E        K10888  FANCA; fanconi anemia group A protein
+E        K10889  FANCB; fanconi anemia group B protein
+E        K10890  FANCC; fanconi anemia group C protein
+E        K10892  FANCE; fanconi anemia group E protein
+E        K10893  FANCF; fanconi anemia group F protein
+E        K10894  FANCG; fanconi anemia group G protein
+E        K10606  FANCL, PHF9; E3 ubiquitin-protein ligase FANCL [EC:6.3.2.19]
+E        K10896  FANCM; fanconi anemia group M protein
+E        K10898  FAAP24; fanconi anemia-associated protein
+E        K10993  FAAP100; fanconi anemia core complex 100 kDa subunit
+D      FA core complex binding factors
+E        K06054  HES1; hairy and enhancer of split 1
+E        K11511  APITD1, CENPS, MHF1; centromere protein S
+E        K15360  STRA13, CENPX, MHF2; centromere protein X
+E        K13960  UBE2T, HSPC150; ubiquitin-conjugating enzyme E2 T [EC:6.3.2.19]
+D      Bloom's syndrome complex (BTR)
+E        K10901  BLM, RECQL3, SGS1; bloom syndrome protein [EC:3.6.4.12]
+E        K03165  TOP3; DNA topoisomerase III [EC:5.99.1.2]
+E        K10990  RMI1, BRAP75; RecQ-mediated genome instability protein 1
+E        K15364  NCE4, RMI1; RecQ-mediated genome instability protein 1
+E        K15365  RMI2; RecQ-mediated genome instability protein 2
+D      FANCD2-I complex
+E        K10891  FANCD2; fanconi anemia group D2 protein
+E        K10895  FANCI; fanconi anemia group I protein
+D      Downstream FA components
+E        K10605  BRCA1; breast cancer type 1 susceptibility protein
+E        K08775  BRCA2, FANCD1; breast cancer 2 susceptibility protein
+E        K15362  BRIP1, BACH1, FANCJ; fanconi anemia group J protein [EC:3.6.4.12]
+E        K10897  PALB2, FANCN; partner and localizer of BRCA2
+D      Other FA pathway factors
+E        K15363  FAN1, MTMR15; fanconi-associated nuclease 1
+E        K04482  RAD51; DNA repair protein RAD51
+E        K10870  RAD51L2, RAD51C; RAD51-like protein 2
+E        K11137  TELO2, TEL2; telomere length regulation protein
+E        K11832  USP1; ubiquitin carboxyl-terminal hydrolase 1 [EC:3.1.2.15]
+E        K15361  WDR48, UAF1; WD repeat-containing protein 48
+C    Other DSBR factors
+D      Protein phosphatase 6
+E        K15498  PPP6C; serine/threonine-protein phosphatase 6 catalytic subunit [EC:3.1.3.16]
+E        K15499  PPP6R1, SAPS1; serine/threonine-protein phosphatase 6 regulatory subunit 1
+E        K15500  PPP6R2, SAPS2; serine/threonine-protein phosphatase 6 regulatory subunit 2
+E        K15501  PPP6R3, SAPS3; serine/threonine-protein phosphatase 6 regulatory subunit 3
+E        K15502  ANKRD28; serine/threonine-protein phosphatase 6 regulatory ankyrin repeat subunit A
+E        K15503  ANKRD44; serine/threonine-protein phosphatase 6 regulatory ankyrin repeat subunit B
+E        K15504  ANKRD52; serine/threonine-protein phosphatase 6 regulatory ankyrin repeat subunit C
+B  TLS (translesion DNA synthesis) factors
+C    Y-family DNA polymerases
+D      K03509  POLH; DNA polymerase eta [EC:2.7.7.7]
+D      K03510  POLI; DNA polymerase iota [EC:2.7.7.7]
+D      K03511  POLK; DNA polymerase kappa [EC:2.7.7.7]
+D      K03515  REV1; DNA repair protein REV1 [EC:2.7.7.-]
+C    B-family DNA polymerases
+D      K02350  POLZ1, rev3; DNA polymerase zeta [EC:2.7.7.7]
+D      K03508  POLZ2, rev7; DNA polymerase zeta [EC:2.7.7.7]
+C    A-family DNA polymerase
+D      K16618  POLN; DNA polymerase nu [EC:2.7.7.7]
+C    Rad6 epistasis group
+D      K10573  UBE2A, UBC2, RAD6A; ubiquitin-conjugating enzyme E2 A [EC:6.3.2.19]
+D      K10574  UBE2B, RAD6B; ubiquitin-conjugating enzyme E2 B [EC:6.3.2.19]
+D      K10627  RAD18; E3 ubiquitin-protein ligase RAD18 [EC:6.3.2.19]
+D      K15505  RAD5; DNA repair protein RAD5 [EC:3.6.4.-]
+D      K15711  SMARCA3, HLTF; SWI/SNF-related matrix-associated actin-dependent regulator of chromatin subfamily A3 [EC:3.6.4.- 6.3.2.19]
+D      K10704  UBE2V; ubiquitin-conjugating enzyme E2 variant
+D      K10580  UBE2N, BLU, UBC13; ubiquitin-conjugating enzyme E2 N [EC:6.3.2.19]
+B  Check point factors
+C    Rad9-Hus1-Rad1 complex
+D      K10994  RAD9A; cell cycle checkpoint control protein RAD9A [EC:3.1.11.2]
+D      K10995  RAD9B; cell cycle checkpoint control protein RAD9B
+D      K10903  HUS1; HUS1 checkpoint protein
+D      K10996  HUS1B; checkpoint protein HUS1B
+D      K02830  HRAD1, RAD17; cell cycle checkpoint protein [EC:3.1.11.2]
+C    HRAD17(Rad24)-RFC complex
+D      K06662  HRAD17, RAD24; cell cycle checkpoint protein
+D      K10755  RFC2_4; replication factor C subunit 2/4
+D      K10756  RFC3_5; replication factor C subunit 3/5
+C    Rad17-Mec3-Ddc1 complex
+D      K02830  HRAD1, RAD17; cell cycle checkpoint protein [EC:3.1.11.2]
+D      K02544  MEC3; G2-specific checkpoint protein
+D      K06663  DDC1; DNA damage checkpoint protein
+C    FPC (fork protection complex)
+D      K03155  TIMELESS; timeless
+D      K10904  TIPIN; TIMELESS-interacting protein
+D      K10997  TOF1, SWI1; replication fork protection complex subunit Tof1/Swi1
+D      K10998  CSM3, SWI3; replication fork protection complex subunit Csm3/Swi3
+C    Other check point factors
+D      K06640  ATR; serine/threonine-protein kinase ATR [EC:2.7.11.1]
+D      K10905  ATRIP; ATR interacting protein
+D      K04728  ATM, TEL1; ataxia telangiectasia mutated family protein [EC:2.7.11.1]
+D      K04451  TP53, P53; tumor protein p53
+D      K02216  CHK1; serine/threonine-protein kinase Chk1 [EC:2.7.11.1]
+D      K06641  CHK2; serine/threonine-protein kinase Chk2 [EC:2.7.11.1]
+D      K02831  RAD53; ser/thr/tyr protein kinase RAD53 [EC:2.7.11.-]
+D      K02633  PER; period circadian protein
+D      K06661  RAD9; DNA repair protein RAD9
+D      K02543  MEC1; cell cycle checkpoint protein MEC1
+D      K15081  AMN1; antagonist of mitotic exit network protein 1
+D      K17336  PLS3; plastin-3
+B  Other factors with a suspected DNA repair function
+C    DNA polymerases
+D      K02349  POLQ; DNA polymerase theta [EC:2.7.7.7]
+D      K03514  POLS, TRF4; DNA polymerase sigma [EC:2.7.7.7]
+D      K02331  POL5, MYBBP1A; DNA polymerase phi [EC:2.7.7.7]
+C    Nucleases
+D      K10790  TREX1; three prime repair exonuclease 1 [EC:3.1.11.2]
+D      K10791  TREX2; three prime repair exonuclease 2 [EC:3.1.11.2]
+D      K15340  DCLRE1A, SNM1A, PSO2; DNA cross-link repair 1A protein
+D      K15341  DCLRE1B, SNM1B; DNA cross-link repair 1B protein [EC:3.1.-.-]
+C    PSO4 complex
+D      K10599  PRPF19, PRP19; pre-mRNA-processing factor 19 [EC:6.3.2.19]
+D      K12860  CDC5L, CDC5, CEF1; pre-mRNA-splicing factor CDC5/CEF1
+D      K12861  BCAS2; pre-mRNA-splicing factor SPF27
+D      K12862  PLRG1, PRL1, PRP46; pleiotropic regulator 1
+C    Modulation of nucleotide pools
+D      K03574  MUTT, NUDT1, MTH1; 7,8-dihydro-8-oxoguanine triphosphatase [EC:3.6.1.-]
+D      K01520  dut, DUT; dUTP pyrophosphatase [EC:3.6.1.23]
+D      K10807  RRM1; ribonucleoside-diphosphate reductase subunit M1 [EC:1.17.4.1]
+D      K10808  RRM2; ribonucleoside-diphosphate reductase subunit M2 [EC:1.17.4.1]
+#
+A<b>Prokaryotic Type</b>
+B  SSBR (single strand breaks repair)
+C    Direct repair
+D      K00567  E2.1.1.63, MGMT, ogt; methylated-DNA-[protein]-cysteine S-methyltransferase [EC:2.1.1.63]
+D      K10778  ada; AraC family transcriptional regulator, regulatory protein of adaptative response / methylated-DNA-[protein]-cysteine methyltransferase [EC:2.1.1.63]
+D      K13530  adaA; AraC family transcriptional regulator, regulatory protein of adaptative response / methylphosphotriester-DNA alkyltransferase methyltransferase [EC:2.1.1.-]
+D      K13531  adaB; methylated-DNA-[protein]-cysteine S-methyltransferase [EC:2.1.1.63]
+D      K01669  E4.1.99.3, phrB; deoxyribodipyrimidine photo-lyase [EC:4.1.99.3]
+D      K03919  alkB; alkylated DNA repair protein [EC:1.14.11.-]
+C    BER (base exicision repair)
+D      DNA glycosylases
+E        K03648  UNG, UDG; uracil-DNA glycosylase [EC:3.2.2.27]
+E        K03649  MUG, TDG; TDG/mug DNA glycosylase family protein [EC:3.2.2.-]
+E        K01247  alkA; DNA-3-methyladenine glycosylase II [EC:3.2.2.21]
+E        K13529  ada-alkA; AraC family transcriptional regulator, regulatory protein of adaptative response / DNA-3-methyladenine glycosylase II [EC:3.2.2.21]
+E        K03652  MPG; DNA-3-methyladenine glycosylase [EC:3.2.2.21]
+E        K03575  mutY; A/G-specific adenine glycosylase [EC:3.2.2.-]
+E        K01246  tag; DNA-3-methyladenine glycosylase I [EC:3.2.2.20]
+E        K10563  mutM, fpg; formamidopyrimidine-DNA glycosylase [EC:3.2.2.23 4.2.99.18]
+E        K05522  nei; endonuclease VIII [EC:3.2.2.- 4.2.99.18]
+E        K10773  NTH; endonuclease III [EC:4.2.99.18]
+D      AP endonucleases
+E        K01142  E3.1.11.2, xthA; exodeoxyribonuclease III [EC:3.1.11.2]
+E        K01151  nfo; deoxyribonuclease IV [EC:3.1.21.2]
+E        K05982  E3.1.21.7, nfi; deoxyribonuclease V [EC:3.1.21.7]
+D      RecJ
+E        K07462  recJ; single-stranded-DNA-specific exonuclease [EC:3.1.-.-]
+D      DNA ligase
+E        K01971  E6.5.1.1, lig; DNA ligase (ATP) [EC:6.5.1.1]
+E        K01972  E6.5.1.2, ligA, ligB; DNA ligase (NAD+) [EC:6.5.1.2]
+D      DNA polymerase I
+E        K02335  DPO1, polA; DNA polymerase I [EC:2.7.7.7]
+C    NER (nucleotide excision repair)
+D      GGR (global genome repair) factors
+E        K03701  uvrA; excinuclease ABC subunit A
+E        K03702  uvrB; excinuclease ABC subunit B
+E        K03703  uvrC; excinuclease ABC subunit C
+E        K05984  cho; excinuclease Cho [EC:3.1.25.-]
+E        K03657  uvrD, pcrA; DNA helicase II / ATP-dependent DNA helicase PcrA [EC:3.6.4.12]
+E        K02335  DPO1, polA; DNA polymerase I [EC:2.7.7.7]
+E        K01971  E6.5.1.1, lig; DNA ligase (ATP) [EC:6.5.1.1]
+E        K01972  E6.5.1.2, ligA, ligB; DNA ligase (NAD+) [EC:6.5.1.2]
+D      TCR (transcription coupled repair) factors
+E        DNA-directed RNA polymerase complex (RNAP)
+F          K03043  rpoB; DNA-directed RNA polymerase subunit beta [EC:2.7.7.6]
+F          K03046  rpoC; DNA-directed RNA polymerase subunit beta' [EC:2.7.7.6]
+F          K13797  rpoBC; DNA-directed RNA polymerase subunit beta-beta' [EC:2.7.7.6]
+F          K03040  rpoA; DNA-directed RNA polymerase subunit alpha [EC:2.7.7.6]
+F          K03048  rpoE; DNA-directed RNA polymerase subunit delta
+F          K03060  rpoZ; DNA-directed RNA polymerase subunit omega [EC:2.7.7.6]
+E        TRCF (transcription-repair coupling factor)
+F          K03723  mfd; transcription-repair coupling factor (superfamily II helicase) [EC:3.6.4.-]
+C    MMR (mismatch exicision repair)
+D      Mismatch and loop recognition factors
+E        K03555  mutS; DNA mismatch repair protein MutS
+E        K07456  mutS2; DNA mismatch repair protein MutS2
+D      Molecular matchmaker
+E        K03572  mutL; DNA mismatch repair protein MutL
+D      Strand discrimination factor
+E        K03573  mutH; DNA mismatch repair protein MutH
+D      DNA exonucleases
+E        K01141  E3.1.11.1, sbcB; exodeoxyribonuclease I [EC:3.1.11.1]
+E        K03601  xseA; exodeoxyribonuclease VII large subunit [EC:3.1.11.6]
+E        K03602  xseB; exodeoxyribonuclease VII small subunit [EC:3.1.11.6]
+E        K10857  exoX; exodeoxyribonuclease X [EC:3.1.11.-]
+D      DNA polymerase III holoenzyme
+E        K02337  DPO3A1, dnaE; DNA polymerase III subunit alpha [EC:2.7.7.7]
+E        K03763  DPO3A2, polC; DNA polymerase III subunit alpha, Gram-positive type [EC:2.7.7.7]
+E        K02338  DPO3B, dnaN; DNA polymerase III subunit beta [EC:2.7.7.7]
+E        K02339  DPO3C, holC; DNA polymerase III subunit chi [EC:2.7.7.7]
+E        K02340  DPO3D1, holA; DNA polymerase III subunit delta [EC:2.7.7.7]
+E        K02341  DPO3D2, holB; DNA polymerase III subunit delta' [EC:2.7.7.7]
+E        K02342  DPO3E, dnaQ; DNA polymerase III subunit epsilon [EC:2.7.7.7]
+E        K14159  rnhA-dnaQ; ribonuclease HI / DNA polymerase III subunit epsilon [EC:3.1.26.4 2.7.7.7]
+E        K02343  DPO3G, dnaX; DNA polymerase III subunit gamma/tau [EC:2.7.7.7]
+E        K02344  DPO3P, holD; DNA polymerase III subunit psi [EC:2.7.7.7]
+E        K02345  DPO3T, holE; DNA polymerase III subunit theta [EC:2.7.7.7]
+D      DNA ligase
+E        K01971  E6.5.1.1, lig; DNA ligase (ATP) [EC:6.5.1.1]
+E        K01972  E6.5.1.2, ligA, ligB; DNA ligase (NAD+) [EC:6.5.1.2]
+D      Other MMR factors
+E        K03657  uvrD, pcrA; DNA helicase II / ATP-dependent DNA helicase PcrA [EC:3.6.4.12]
+E        K03111  ssb; single-strand DNA-binding protein
+E        K06223  dam; DNA adenine methylase [EC:2.1.1.72]
+E        K07458  vsr; DNA mismatch endonuclease, patch repair protein [EC:3.1.-.-]
+B  DSBR (double strand breaks repair)
+C    HR (homologous recombination)
+D      RecBC pathway proteins
+E        K03582  recB; exodeoxyribonuclease V beta subunit [EC:3.1.11.5]
+E        K03583  recC; exodeoxyribonuclease V gamma subunit [EC:3.1.11.5]
+E        K03581  recD; exodeoxyribonuclease V alpha subunit [EC:3.1.11.5]
+E        K03553  recA; recombination protein RecA
+E        K03550  ruvA; holliday junction DNA helicase RuvA [EC:3.6.4.12]
+E        K03551  ruvB; holliday junction DNA helicase RuvB [EC:3.6.4.12]
+E        K01159  ruvC; crossover junction endodeoxyribonuclease RuvC [EC:3.1.22.4]
+E        K01160  rusA; crossover junction endodeoxyribonuclease RusA [EC:3.1.22.4]
+E        K04066  priA; primosomal protein N' (replication factor Y) (superfamily II helicase) [EC:3.6.4.-]
+E        K02686  priB; primosomal replication protein N
+E        K04067  priC; primosomal replication protein N''
+E        K02317  dnaT; DNA replication protein DnaT
+E        K01141  E3.1.11.1, sbcB; exodeoxyribonuclease I [EC:3.1.11.1]
+E        K03546  sbcC; exonuclease SbcC
+E        K03547  sbcD; exonuclease SbcD
+D      RecFOR pathway proteins
+E        K03553  recA; recombination protein RecA
+E        K04485  sms, radA; DNA repair protein RadA/Sms
+E        K03629  recF; DNA replication and repair protein RecF
+E        K03655  recG; ATP-dependent DNA helicase RecG [EC:3.6.4.12]
+E        K07462  recJ; single-stranded-DNA-specific exonuclease [EC:3.1.-.-]
+E        K03584  recO; DNA repair protein RecO (recombination protein O)
+E        K06187  recR; recombination protein RecR
+E        K03631  recN; DNA repair protein RecN (Recombination protein N)
+E        K03700  recU; recombination protein U
+E        K03554  rdgC; recombination associated protein RdgC
+E        K03550  ruvA; holliday junction DNA helicase RuvA [EC:3.6.4.12]
+E        K03551  ruvB; holliday junction DNA helicase RuvB [EC:3.6.4.12]
+E        K01159  ruvC; crossover junction endodeoxyribonuclease RuvC [EC:3.1.22.4]
+D      AddAB pathway proteins
+E        K16898 addA; ATP-dependent helicase/nuclease subunit A [EC:3.1.-.- 3.6.4.12]
+E        K16899 addB; ATP-dependent helicase/nuclease subunit B [EC:3.1.-.- 3.6.4.12]
+D      Other HR factor
+E        K15342  cas1; CRISP-associated protein Cas1
+D      Archaeal homologous recombinant proteins
+E        K04483  radA; DNA repair protein RadA
+E        K04484  radB; DNA repair protein RadB
+E        K03552  hjr; holliday junction resolvase, archaea type
+C    NHEJ (non-homologous end-joining)
+D      Two-component NHEJ DNA repair complex
+E        K10979  ku; DNA end-binding protein Ku
+E        K01971  E6.5.1.1, lig; DNA ligase (ATP) [EC:6.5.1.1]
+D      SHIIR (short-homology-independent illegitimate recombination)
+E        Facilitator
+F          K02469  gyrA; DNA gyrase subunit A [EC:5.99.1.3]
+F          K02470  gyrB; DNA gyrase subunit B [EC:5.99.1.3]
+F          K03168  topA; DNA topoisomerase I [EC:5.99.1.2]
+E        Supressor
+F          K05787  hupA; DNA-binding protein HU-alpha
+F          K03530  hupB; DNA-binding protein HU-beta
+D      SHDIR (short-homology-dependent illegitimate recombination)
+E        RecET pathway
+F          K10906  recE; exodeoxyribonuclease VIII [EC:3.1.11.-]
+F          K07455  recT; recombination protein RecT
+F          K07462  recJ; single-stranded-DNA-specific exonuclease [EC:3.1.-.-]
+F          K03584  recO; DNA repair protein RecO (recombination protein O)
+F          K06187  recR; recombination protein RecR
+F          K01971  E6.5.1.1, lig; DNA ligase (ATP) [EC:6.5.1.1]
+E        Facilitator
+F          K03557  fis; Fis family transcriptional regulator, factor for inversion stimulation protein
+F          K04764  ihfA, himA; integration host factor subunit alpha
+F          K05788  ihfB, himD; integration host factor subunit beta
+E        Supressor
+F          K01141  E3.1.11.1, sbcB; exodeoxyribonuclease I [EC:3.1.11.1]
+F          K03654  recQ; ATP-dependent DNA helicase RecQ [EC:3.6.4.12]
+F          K03701  uvrA; excinuclease ABC subunit A
+F          K03702  uvrB; excinuclease ABC subunit B
+F          K03746  hns; DNA-binding protein H-NS
+B  TLS (translesion DNA synthesis) factors
+C    Y-family DNA polymerases
+D      K02346  DPO4, dinB; DNA polymerase IV [EC:2.7.7.7]
+D      K03502  DPO5C, umuC; DNA polymerase V
+D      K03503  DPO5D, umuD; DNA polymerase V [EC:3.4.21.-]
+D      K04479  K04479; DNA polymerase IV (archaeal DinB-like DNA polymerase) [EC:2.7.7.7]
+C    Other SOS response factors
+D      K03553  recA; recombination protein RecA
+D      K01356  lexA; repressor LexA [EC:3.4.21.88]
+D      K03631  recN; DNA repair protein RecN (Recombination protein N)
+D      K02336  DPO2, polB; DNA polymerase II [EC:2.7.7.7]
+D      K14160  imuA; protein ImuA
+D      K14161  imuB; protein ImuB
+D      K14162  dnaE2; error-prone DNA polymerase [EC:2.7.7.7]
+D      K03111  ssb; single-strand DNA-binding protein
+B  Other factors with a suspected DNA repair function
+C    DNA polymerase
+D      K02347  dpx; DNA polymerase (family X)
+C    DNA helicases
+D      K03656  rep; ATP-dependent DNA helicase Rep [EC:3.6.4.12]
+D      K03658  helD; DNA helicase IV [EC:3.6.4.12]
+D      K03722  dinG; ATP-dependent DNA helicase DinG [EC:3.6.4.12]
+D      K03724  lhr; ATP-dependent helicase Lhr and Lhr-like helicase [EC:3.6.4.-]
+C    Modulation of nucleotide pools
+D      K03574  MUTT, NUDT1, MTH1; 7,8-dihydro-8-oxoguanine triphosphatase [EC:3.6.1.-]
+D      K01520  dut, DUT; dUTP pyrophosphatase [EC:3.6.1.23]
+D      K00525  E1.17.4.1A, nrdA, nrdE; ribonucleoside-diphosphate reductase alpha chain [EC:1.17.4.1]
+D      K00526  E1.17.4.1B, nrdB, nrdF; ribonucleoside-diphosphate reductase beta chain [EC:1.17.4.1]
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: September 10, 2013

@@ -1,88 +1,128 @@
-DATE?=$(shell date +%Y%m%d)
-KGVER:=$(DATE)
-KEGG_USER?=delong@mit.edu
-KEGG_PASSWORD?=mbari1
+#DATE?=$(shell date +%Y%m%d)
+#KGVER:=$(DATE)
+FTP_ROOT:=ftp://ftp.bioinformatics.jp/kegg
+KGVER:=$(shell curl --user $(KEGG_USER):$(KEGG_PASSWORD) $(FTP_ROOT)/RELEASE | head -1 | perl -pe 's/[^0-9]//g')
+KEGG_USER?=
+KEGG_PASSWORD?=
 
 DB_SCRIPT_DIR?=.
 BUILD_ROOT?=./KEGG
 KGDIR:=$(BUILD_ROOT)/$(KGVER)
 
-BUILD_LASTDB:=False
-LASTDB_ROOT?=/minilims/galaxy-data/tool-data/sequencedbs/lastdb
-LASTDBCHUNK?=100G
+BUILD_LASTDB:=True
+LASTDB_ROOT?=./lastdb
+LASTDBCHUNK?=
+
+ifeq ($(LASTDBCHUNK),)
+	LASTDBCHUNK_OPTION:=
+else
+	LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+endif
 
 KOKEG=$(KGDIR)/ko00001.keg
 KOKO=$(KGDIR)/ko/ko
-GENES=$(KGDIR)/fasta/genes.pep.gz
-KEGGGENES=$(KGDIR)/KeggGene.pep.$(DATE).faa
-LASTDB_DIR:=$(LASTDB_ROOT)/KEGG/KeggGene.pep.$(DATE)
-LASTP:=$(LASTDB_DIR)/lastdb
-LASTFILE=$(LASTP).prj
-KOMAP=$(LASTP).kos
-HITIDMAP:=$(LASTP).ids
+PRKGENES=$(KGDIR)/fasta/prokaryotes.pep.gz
+EUKGENES=$(KGDIR)/fasta/eukaryotes.pep.gz
+GENESMETA=README.genes
+KEGGGENES=$(KGDIR)/KeggGene.pep.$(KGVER).faa
 LINKS=$(KGDIR)/links
 GENOME=$(KGDIR)/genome
 BRITE=$(KGDIR)/brite
 TAX=$(KGDIR)/taxonomy
 
-WGET:=wget -c --user=$(KEGG_USER) --password=$(KEGG_PASSWORD)
-FGENES=ftp://ftp.bioinformatics.jp/kegg/genes/MD5.genes ftp://ftp.bioinformatics.jp/kegg/genes/fasta/genes.pep.gz ftp://ftp.bioinformatics.jp/kegg/genes/README.genes
-FLINKS=ftp://ftp.bioinformatics.jp/kegg/genes/links/*gz
-FGENOME=ftp://ftp.bioinformatics.jp/kegg/genes/genome.tar.gz
-FKO=ftp://ftp.bioinformatics.jp/kegg/genes/ko.tar.gz
-FTAX=ftp://ftp.bioinformatics.jp/kegg/genes/taxonomy
-FBRITE=ftp://ftp.bioinformatics.jp/kegg/brite/*.tar.gz ftp://ftp.bioinformatics.jp/kegg/brite/brite* ftp://ftp.bioinformatics.jp/kegg/brite/*brite
-
-ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX)
 ifeq ($(BUILD_LASTDB),False)
-	ALL_TARGETS:=$(ALL_TARGETS) $(KEGGGENES)
+	LASTDB_DIR:=$(KGDIR)
+	KOMAP:=$(LASTDB_DIR)/KeggGene.pep.$(KGVER).kos
+	HITIDMAP:=$(LASTDB_DIR)/KeggGene.pep.$(KGVER).ids
 else
-	ALL_TARGETS:=$(ALL_TARGETS) $(LASTFILE) maps
+	LASTDB_DIR:=$(LASTDB_ROOT)/KEGG/KeggGene.pep.$(KGVER)
+	LASTP:=$(LASTDB_DIR)/lastdb
+	LASTFILE=$(LASTP).prj
+	KOMAP=$(LASTP).kos
+	HITIDMAP:=$(LASTP).ids
 endif
 
-all: $(ALL_TARGETS)
-maps: $(KOMAP) $(HITIDMAP)
+WGET:=wget -c --user=$(KEGG_USER) --password=$(KEGG_PASSWORD)
+FGENESPRK=$(FTP_ROOT)/genes/fasta/prokaryotes.pep.gz
+FGENESEUK=$(FTP_ROOT)/genes/fasta/eukaryotes.pep.gz
+FGENESMETA=$(FTP_ROOT)/genes/MD5.genes $(FTP_ROOT)/genes/README.genes $(FTP_ROOT)/RELEASE
+FLINKS=$(FTP_ROOT)/genes/links/*gz
+FGENOME=$(FTP_ROOT)/genes/genome.tar.gz
+FKO=$(FTP_ROOT)/genes/ko.tar.gz
+FTAX=$(FTP_ROOT)/genes/taxonomy
+FBRITE=$(FTP_ROOT)/brite/*.tar.gz $(FTP_ROOT)/brite/brite* $(FTP_ROOT)/brite/*brite
 
-$(KOMAP): $(LINKS)
+ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX)
+ifeq ($(KEGG_USER),)
+	ALL_TARGETS:=nouser
+else
+	ifeq ($(BUILD_LASTDB),False)
+		ALL_TARGETS:=$(ALL_TARGETS) $(KEGGGENES)
+	else
+		ALL_TARGETS:=$(ALL_TARGETS) $(LASTFILE) maps
+	endif
+endif
+
+all: version $(ALL_TARGETS)
+
+nouser:
+	@echo You must set the KEGG_USER and KEGG_PASSWORD variables!
+
+version:
+	@echo KEGG version is $(KGVER)
+	@echo KOMAP is $(KOMAP)
+	@echo $(ALL_TARGETS)
+
+maps: $(KOMAP) $(HITIDMAP)
+links: $(LINKS)
+
+$(KOMAP): $(LINKS) | $(LASTDB_DIR)
 	cp $(LINKS)/genes_ko.list $@
 
-$(HITIDMAP): $(KEGGGENES)
+$(HITIDMAP): $(KEGGGENES) | $(LASTDB_DIR)
 	grep ">" $< | perl -pe 's/^>(\S+)\s+(\S.*)/\1\t\2/' > $@
 
-$(LASTFILE): $(KEGGGENES)
+$(LASTFILE): $(KEGGGENES) | $(LASTDB_DIR)
+	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(KEGGGENES)
+
+$(LASTDB_DIR):
 	mkdir -p $(LASTDB_DIR)
-	lastdb -v -c -p -s $(LASTDBCHUNK) $(LASTP) $(KEGGGENES)
 
-$(KEGGGENES): $(GENES)
+$(KEGGGENES): $(GENESMETA) $(PRKGENES) $(EUKGENES)
 	rm -f $(KEGGGENES)
-	gunzip -c $(GENES) | tantan -p > $(KEGGGENES)
+	gunzip -c $(PRKGENES) $(EUKGENES) | tantan -p > $(KEGGGENES)
 
-$(GENES):
+$(KGDIR):
 	mkdir -p $(KGDIR)
-	cd $(KGDIR) && $(WGET) $(FGENES)
+
+$(KGDIR)/fasta:
 	mkdir -p $(KGDIR)/fasta
-	mv $(KGDIR)/genes.pep.gz $(GENES)
+
+$(GENESMETA): | $(KGDIR)
+	cd $(KGDIR) && $(WGET) $(FGENESMETA)
+
+$(PRKGENES): | $(KGDIR)/fasta
+	cd $(KGDIR)/fasta && $(WGET) $(FGENESPRK)
+
+$(EUKGENES): | $(KGDIR)/fasta
+	cd $(KGDIR)/fasta && $(WGET) $(FGENESEUK)
 	
-$(KOKO):
-	mkdir -p $(KGDIR)
+$(KOKO): | $(KGDIR)
 	cd $(KGDIR) && $(WGET) $(FKO)
 	cd $(KGDIR) && tar -zxvf ko.tar.gz
 	rm $(KGDIR)/ko.tar.gz
 
-$(LINKS):
-	mkdir -p $(KGDIR)
+$(LINKS): | $(KGDIR)
 	mkdir -p $(LINKS)
 	cd $(LINKS) && $(WGET) $(FLINKS)
 	cd $(LINKS) && gunzip *gz
 
-$(GENOME):
-	mkdir -p $(KGDIR)
+$(GENOME): | $(KGDIR)
 	cd $(KGDIR) && $(WGET) $(FGENOME)
 	cd $(KGDIR) && tar -zxvf genome.tar.gz
 	rm $(KGDIR)/genome.tar.gz
 
-$(TAX):
-	mkdir -p $(KGDIR)
+$(TAX): | $(KGDIR)
 	cd $(KGDIR) && $(WGET) $(FTAX)
 
 $(KOKEG): $(BRITE)

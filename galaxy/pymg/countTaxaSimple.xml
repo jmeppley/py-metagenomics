@@ -1,0 +1,109 @@
+<tool id="Count_Taxa_Single" name="CountTaxaSingleRank" version="0.1.1">
+  <description>Generate a table of counts of taxa accross a number of samples at a single rank. </description>
+  <command>
+    countTaxaFromBlasts.py
+#for $s in $samples
+"${s.name}=${s.file_name}"
+#end for
+      -o $out_file  
+      -f $m8format
+
+        -p ${lastdb.fields.taxkey}
+        -m "${lastdb.fields.taxmapfile}"
+	#if $taxids.usetaxmap:
+        -n "${lastdb.fields.taxdump}"
+	#end if
+        -c $cutoff
+#if $taxids.usetaxmap:
+        -C $taxids.method
+        $taxids.rank
+        $taxids.taxid
+#else:
+        -C $taxids.method
+#end if
+#if $filter.usefilter:
+        -F $filter.filterPct
+#end if
+
+
+  </command>
+  <inputs>
+      <param format="tabular" name="samples" type="data" label="Hit tables" help="Data missing? See TIP below" multiple="true"/>
+ <param name="m8format" type="select" label="Hit table format">
+            <option value="last">Lastal tabular</option>
+            <option value="blast">Blast-like </option>
+            <option value="gene" selected="True">Gene: Blast-like plus read and hit description columns</option> 
+            <option value="liz">Liz: Blast-like plus hit description column</option>
+     </param>
+     <param name="lastdb" type="select" display="radio" label="Which database was used:">
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="taxmapfile" index="4"/>
+		<column name="taxkey" index="5"/>
+		<column name="taxdump" index="8"/>
+		<filter type="static_value" value="None" column="8"
+			   keep="False"/>
+	     </options>
+     </param>
+    <param name="cutoff" type="float" size="10" value="0.01" label="Hide counts below this fraction of total:"/>
+    <conditional name="taxids">
+        <param name="usetaxmap" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Translate taxids into named Taxon objects" help="WARNING: if you map Silva IDs to something other than taxids, you MUST uncheck this box!"/>
+        <when value="True">
+         <param name="rank" type="select" label="Rank to collect counts on:">
+            <option value=" " selected="True">None</option>
+            <option value="-r domain">domain</option>
+            <option value="-r phylum">phylum</option>
+            <option value="-r class">class</option>
+            <option value="-r order">order</option>
+            <option value="-r family">family</option>
+            <option value="-r genus">genus</option>
+            <option value="-r species">species</option>
+         </param>
+         <param name="taxid" type="select" label="Output NCBI txids instead of names">
+            <option value=" ">False</option>
+            <option value="-T">True</option>
+         </param>
+	     <param name="method" type="select" label="How to deal with multiple hits per read:">
+              <option value="tophit">TopHit: resolve ambiguous hits using hit counts</option>
+              <option value="toporg">TopOrg: resolve ambiguous hits using organism counts</option>
+              <option value="LCA">LCA: Use least common ancestor of all hits</option>
+              <option value="first">Take first hit</option>	    
+              <option value="all">Keep all hits</option>	    
+              <option value="consensus">Consensus: None unless all hits are to same org</option>	    
+              <option value="most">Take most common hit</option>	    
+	     </param>
+        </when>
+        <when value="False">
+	     <param name="method" type="select" label="How to deal with multiple hits per read:">
+              <option value="first">Take first hit</option>	    
+              <option value="all">Keep all hits</option>	    
+              <option value="consensus">Consensus: None unless all hits are to same org</option>	    
+              <option value="most">Take most common hit</option>	    
+	     </param>
+        </when>
+       </conditional>
+    <conditional name="filter">
+        <param name="usefilter" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Filter input table on hit quality"/>
+        <when value="True">
+             <param name="filterPct" type="integer" size="10" value="10" label="Keep only hits within this percentage of the best hit for each read. 0-> only the top score for each read."/>
+        </when>
+    </conditional>
+   </inputs>
+  <outputs>
+      <data format="tabular" name="out_file"/>
+  </outputs>
+  <help>
+
+ .. class:: infomark
+
+**TIP:** If your data is not TAB delimited, use *Text Manipulation-&gt;Convert* or *Blast-&gt;Parse blast text*
+
+-----
+
+**What it does**
+
+This tool takes multiple (b)last hit tables (against Silva or RefSeq), assigns a taxon to each read based on what it hit, and returns a table of hits by sample and taxon.
+
+</help>
+</tool>

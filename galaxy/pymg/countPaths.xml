@@ -1,0 +1,109 @@
+<tool id="Count_Paths" name="CountPaths" version="0.1.2">
+    <description>Generate a table of counts of genes ond/r pathways accross a number of samples. Display graphs. </description>
+    <command interpreter='python'>
+    countPathsPlotWrapper.py
+    --htmlFile $html_file
+    --outputDir $html_file.files_path
+    --supportFileLoc \$PYMG_PATH/galaxy/countTaxaWebFiles
+    #if $level_ko
+    --koFile $ko_counts
+    #end if
+    #if $level_3
+    --ko3File $ko3_counts
+    #end if
+    #if $level_2
+    --ko2File $ko2_counts
+    #end if
+    #if $level_1
+    --ko1File $ko1_counts
+    #end if
+    -H \$PYMG_PATH/briteko/ko00001.keg
+    countPathsFromBlast.py
+    #for $f in $inputs
+    "${f.name}=${f.file_name}"
+    #end for
+      -f $m8format
+        -p ${lastdb.fields.kokey}
+        -m "${lastdb.fields.komap}"
+      -M kegg
+        -c $cutoff
+        -C tophit
+#if $filter.usefilter:
+        -F $filter.filterPct
+#end if
+  </command>
+  <inputs>
+      <param format="tabular" name="inputs" type="data" label="Hit table" help="Data missing? See TIP below" multiple="true"/>
+ <param name="m8format" type="select" label="Hit table format">
+            <option value="last">Lastal tabular</option>
+            <option value="blast">Blast-like </option>
+            <option value="gene" selected="True">Gene: Blast-like plus read and hit description columns</option> 
+            <option value="liz">Liz: Blast-like plus hit description column</option>
+     </param>
+     <param name="lastdb" type="select" display="radio" label="Which target database was used?">
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="komap" index="6"/>
+		<column name="kokey" index="5"/>
+		<filter type="static_value" value="None" column="6"
+				   keep="False"/>
+	    </options>
+         </param>
+    <param name="cutoff" type="float" size="10" value="0.01" label="Hide counts below this fraction of total:"/>
+    <param name="level_ko" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Collect counts at level: ortholog (ko)"/>
+    <param name="level_3" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Collect counts at level: 3 (Pathway)"/>
+    <param name="level_2" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Collect counts at level: 2"/>
+    <param name="level_1" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Collect counts at level: 1"/>
+    <!--<param name="levels" type="select" label="Levels to collect counts on:" multiple="true">
+             <option value="ko">KEGG Ortholog</option>
+            <option value="1">KEGG Level 1</option>
+            <option value="2">KEGG Level 2</option>
+            <option value="3">KEGG Level 3</option>
+        </param> -->
+    <conditional name="filter">
+        <param name="usefilter" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Filter input table on hit quality"/>
+        <when value="True">
+             <param name="filterPct" type="integer" size="10" value="10" label="Keep only hits within this percentage of the best hit for each read. 0-> only the top score for each read."/>
+        </when>
+    </conditional>
+   </inputs>
+  <outputs>
+      <data format="html" name="html_file" label="KEGG Bar Charts"/>
+      <data format="tabular" name="ko_counts" label="Counts by ortholog (ko)">
+          <filter>level_ko</filter>
+      </data>
+      <data format="tabular" name="ko1_counts" label="Counts by KEGG level 1">
+          <filter>level_1</filter>
+      </data>
+      <data format="tabular" name="ko2_counts" label="Counts by KEGG level 2">
+          <filter>level_2</filter>
+      </data>
+      <data format="tabular" name="ko3_counts" label="Counts by KEGG Pathway">
+          <filter>level_3</filter>
+      </data>
+  </outputs>
+  <help>
+
+ .. class:: infomark
+
+**TIP:** If your data is not TAB delimited, use *Text Manipulation-&gt;Convert* or *Blast-&gt;Parse blast text*
+
+-----
+
+**What it does**
+
+Plots hits by sample and KEGG ortholog or pathway.
+
+This tool takes multiple (b)last hit tables (against KEGG or RefSeq), assigns a KEGG ortholog to each read based on what it hit, and returns a table of hits by sample and each level selected (pathways or ortholog)
+
+These tables are plotted as stacked bar graphs and the underlying data can be downloaded as a tab separated text table.
+
+-----
+
+**What it ACTUALLY does**
+
+This tool runs the script countPathsFromBlast.py (http://pyrodata.mit.edu/trac/delong/browser/projects/scripts/countPathsFromBlast.py) and generates plots using the D3 javascript library.
+
+</help>
+</tool>

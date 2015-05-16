@@ -1,0 +1,1781 @@
++G	Cell adhesion molecules
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0> &nbsp; Cell Adhesion Molecules (CAMs)</h2>
+#<!---
+#ENTRY       ko04515
+#NAME        CAM
+#DEFINITION  Cell adhesion molecules (CAMs)
+#--->
+!
+A<b>1. Cell adhesion molecules (CAMs)</b>
+B
+B  <b>Immunoglobulin Superfamily</b>
+C
+C    <b>Immune system</b>
+D
+D      <b>B7-CD28 family</b>
+E        CD28; CD28 antigen [KO:K06470]
+F          K05412 CD80; CD80 antigen
+F          K05413 CD86; CD86 antigen
+E        CD80; CD80 antigen [KO:K05412]
+F          K06470 CD28; CD28 antigen
+F          K06538 CTLA4, CD152; cytotoxic T-lymphocyte-associated protein 4
+E        CD86; CD86 antigen [KO:K05413]
+F          K06470 CD28; CD28 antigen
+F          K06538 CTLA4, CD152; cytotoxic T-lymphocyte-associated protein 4
+E        CTLA4, CD152; cytotoxic T-lymphocyte-associated protein 4 [KO:K06538]
+F          K05412 CD80; CD80 antigen
+F          K05413 CD86; CD86 antigen
+E        PDCD1, PD1; programmed cell death 1 [KO:K06744]
+F          K06745 PDCD1LG1, CD274; programmed cell death 1 ligand 1
+F          K06708 PDCD1LG2, CD273; programmed cell death 1 ligand 2
+E        BTLA; B and T lymphocyte associated [KO:K06707]
+F          K06747 B7H4, VTCN1; immune costimulatory protein B7-H4
+E        PDCD1LG1; programmed cell death 1 ligand 1 [KO:K06745]
+F          K06744 PDCD1, PD1; programmed cell death protein 1
+E        PDCD1LG2; programmed cell death 1 ligand 2 [KO:K06708]
+F          K06744 PDCD1, PD1; programmed cell death protein 1
+E        B7H3; B7 homolog 3 [KO:K06746]
+E        B7H4; immune costimulatory protein B7-H4 [KO:K06747]
+F          K06707 BTLA; B- and T-lymphocyte attenuator
+E        ICOS, AILIM; inducible T-cell co-stimulator [KO:K06713]
+F          K06710 ICOSLG, ICOSL; inducible T-cell co-stimulator ligand
+E        ICOSLG, ICOSL; inducible T-cell co-stimulator ligand [KO:K06710]
+F          K06713 ICOS, AILIM; inducible T-cell co-stimulator
+D
+D      <b>CD2 family</b>
+E        CD2; CD2 antigen [KO:K06449]
+F          K06492 CD58, LFA3; CD58 antigen
+F          K06479 CD48, BCM1; CD48 antigen
+E        CD48, BCM1; CD48 antigen [KO:K06479]
+F          K06449 CD2; CD2 antigen
+E        CD58, LFA3; CD58 antigen [KO:K06492]
+F          K06449 CD2; CD2 antigen
+E        CD84; CD84 antigen [KO:K06511]
+F          K06511 CD84; CD84 antigen
+D
+D      <b>ICAM family</b>
+E        ICAM1; intercellular adhesion molecule 1 [KO:K06490]
+F          LFA-1
+G            K05718 ITGAL; integrin alpha L
+G            K06464 ITGB2; integrin beta 2
+F          CR3, Mac-1
+G            K06461 ITGAM; integrin alpha M
+G            K06464 ITGB2; integrin beta 2
+F          K06477 SPN, CD43; sialophorin
+E        ICAM2; intercellular adhesion molecule 2 [KO:K06523]
+F          LFA-1
+G            K05718 ITGAL; integrin alpha L
+G            K06464 ITGB2; integrin beta 2
+F          CR3, Mac-1
+G            K06461 ITGAM; integrin alpha M
+G            K06464 ITGB2; integrin beta 2
+E        ICAM3; intercellular adhesion molecule 3 [KO:K06486]
+F          LFA-1
+G            K05718 ITGAL; integrin alpha L
+G            K06464 ITGB2; integrin beta 2
+F          alpha D beta 2
+G            K06594 ITGAD; integrin alpha D
+G            K06464 ITGB2; integrin beta 2
+D
+D      <b>SIGLEC family</b>
+E        SN, SIGLEC1; sialoadhesin [KO:K06548]
+F          K06477 SPN, CD43; sialophorin
+E        CD22, SIGLEC2; CD22 antigen [KO:K06467]
+E        CD33, SIGLEC3; CD33 antigen [KO:K06473]
+E        SIGLEC5; sialic acid binding Ig-like lectin 5 [KO:K06549]
+E        SIGLEC6; sialic acid binding Ig-like lectin 6 [KO:K06738]
+E        SIGLEC7; sialic acid binding Ig-like lectin 7 [KO:K06739]
+E        SIGLEC8; sialic acid binding Ig-like lectin 8 [KO:K06748]
+E        SIGLEC9; sialic acid binding Ig-like lectin 9 [KO:K06740]
+E        SIGLEC10; sialic acid binding Ig-like lectin 10 [KO:K06749]
+E        SIGLEC11; sialic acid binding Ig-like lectin 11 [KO:K06750]
+D
+D      <b>MHC</b>
+E        MHC1; major histocompatibility complex, class I [KO:K06751]
+F          K06458 CD8A; CD8A antigen, alpha polypeptide
+F          K06459 CD8B; CD8B antigen, beta polypeptide
+E        MHC2; major histocompatibility complex, class II [KO:K06752]
+F          K06454 CD4; CD4 antigen
+D
+D      <b>Others</b>
+E        ALCAM; activated leukocyte cell adhesion molecule [KO:K06547]
+F          K06547 ALCAM; activated leukocyte cell adhesion molecule
+E        CD4; CD4 antigen [KO:K06454]
+F          K06752 MHC2; major histocompatibility complex, class II
+E        CD8A; CD8A antigen, alpha polypeptide [KO:K06458]
+F          K06751 MHC1; major histocompatibility complex, class I
+E        CD8B; CD8B antigen, beta polypeptide 1 [KO:K06459]
+F          K06751 MHC1; major histocompatibility complex, class I
+E        CD226, DNAM1; CD226 antigen [KO:K06567]
+F          K06539 PVR, NECL5; poliovirus receptor
+F          K06531 PVRL2; poliovirus receptor-related protein 2
+F          LFA-1
+G            K05718 ITGAL; integrin alpha L
+G            K06464 ITGB2; integrin beta 2
+C
+C    <b>Neural system</b>
+D      (Classes depending on the number of Ig-like domains and fibronectin repeats)
+D
+D      <b>5/2 subfamily</b>
+E        NCAM; neural cell adhesion molecule [KO:K06491]
+F          K06491 NCAM; neural cell adhesion molecule
+F          K06550 L1CAM; L1 cell adhesion molecule
+F          K06794 NCAN, CSPG3; neurocan core protein
+F          K06760 CNTN2; contactin 2
+F          K04362 FGFR1; fibroblast growth factor receptor 1 [EC:2.7.10.1]
+F          K05095 FGFR4; fibroblast growth factor receptor 4 [EC:2.7.10.1]
+D
+D      <b>5/3 subfamily</b>
+E        ROBO1; roundabout, axon guidance receptor, homolog 1 (Drosophila) [KO:K06753]
+F          K06753 ROBO1; roundabout, axon guidance receptor 1
+E        ROBO2; roundabout, axon guidance receptor, homolog 2 (Drosophila) [KO:K06754]
+F          K06754 ROBO2; roundabout, axon guidance receptor 2
+E        ROBO3; roundabout, axon guidance receptor, homolog 3 (Drosophila) [KO:K06755]
+D
+D      <b>6/5 subfamily</b>
+E        NRCAM; neuronal cell adhesion molecule [KO:K06756]
+F          K06756 NRCAM; neuronal cell adhesion molecule
+F          K06759 CNTN1; contactin 1
+F          K06760 CNTN2; contactin 2
+E        NFASC; neurofascin [KO:K06757]
+F          K06550 L1CAM; L1 cell adhesion molecule
+F          K06759 CNTN1; contactin 1
+E        CHL1; cell adhesion molecule with homology to L1CAM [KO:K06758]
+E        L1CAM; L1 cell adhesion molecule [KO:K06550]
+F          K06550 L1CAM; L1 cell adhesion molecule
+F          K06760 CNTN2; contactin 2
+F          K06491 NCAM; neural cell adhesion molecule
+F          K06757 NFASC; neurofascin
+F          VLA-5
+G            K06484 ITGA5; integrin alpha 5
+G            K05719 ITGB1; integrin beta 1
+F          VNR
+G            K06487 ITGAV; integrin alpha V
+G            K06493 ITGB3; integrin beta 3
+F          K06759 CNTN1; contactin 1
+F          K06760 CNTN2; contactin 2
+F          K06794 NCAN, CSPG3; neurocan core protein
+F          K04362 FGFR1; fibroblast growth factor receptor 1 [EC:2.7.10.1]
+D
+D      <b>6/4 subfamily</b>
+E        CNTN1; contactin 1 [KO:K06759]
+F          K06550 L1CAM; L1 cell adhesion molecule
+F          K06756 NRCAM; neuronal cell adhesion molecule
+F          K06757 NFASC; neurofascin
+E        CNTN2; contactin 2 [KO:K06760]
+F          K06491 NCAM; neural cell adhesion molecule
+F          K06756 NRCAM; neuronal cell adhesion molecule
+F          K06550 L1CAM; L1 cell adhesion molecule
+F          K06760 CNTN2; contactin 2
+E        CNTN3; contactin 3 [KO:K06761]
+E        CNTN4; contactin 4 [KO:K06762]
+E        CNTN5; contactin 5 [KO:K06763]
+E        CNTN6; contactin 6 [KO:K06764]
+D
+D      <b>4/6 subfamily</b>
+E        DCC; deleted in colorectal carcinoma  [KO:K06765]
+E        NEO1; neogenin [KO:K06766]
+D
+D      <b>10/6 subfamily</b>
+E        DSCAM; Down syndrome cell adhesion molecule [KO:K06767]
+F          K06767 DSCAM; Down syndrome cell adhesion molecule
+E        DSCAML1; Down syndrome cell adhesion molecule like 1 [KO:K06768]
+F          K06768 DSCAML1; Down syndrome cell adhesion molecule-like protein 1
+D
+D      <b>N/0 subfamily</b>
+E        ICAM5, TLCN; intercellular adhesion molecule 5 [KO:K06769]
+F          LFA-1
+G            K05718 ITGAL; integrin alpha L
+G            K06464 ITGB2; integrin beta 2
+E        THY1, CD90; Thy-1 cell surface antigen [KO:K06514]
+E        MPZ; myelin protein zero [KO:K06770]
+F          K06770 MPZ; myelin protein zero
+E        MAG, GMA, SIGLEC4; myelin associated glycoprotein [KO:K06771]
+F          K06771 MAG, GMA, SIGLEC4; myelin associated glycoprotein
+E        LSAMP, LAMP; limbic system-associated membrane protein [KO:K06772]
+F          K06772 LSAMP, LAMP; limbic system-associated membrane protein
+F          K06773 OPCML, OBCAM; opioid binding protein/cell adhesion molecule-like
+F          K06774 HNT; neurotrimin
+E        OPCML, OBCAM; opioid binding protein/cell adhesion molecule-like [KO:K06773]
+F          K06773 OPCML, OBCAM; opioid binding protein/cell adhesion molecule-like
+F          K06772 LSAMP, LAMP; limbic system-associated membrane protein
+F          K06775 NEGR1; neuronal growth regulator 1
+E        HNT; neurotrimin [KO:K06774]
+F          K06774 HNT; neurotrimin
+F          K06772 LSAMP, LAMP; limbic system-associated membrane protein
+E        NEGR1; neuronal growth regulator 1 [KO:K06775]
+F          K06775 NEGR1; neuronal growth regulator 1
+F          K06773 OPCML, OBCAM; opioid binding protein/cell adhesion molecule-like
+D
+D      <b>Enzymatic CD</b>
+E        FGFR1; fibroblast growth factor receptor 1 [KO:K04362] [EC:2.7.1.112]
+F          K06491 NCAM; neural cell adhesion molecule
+F          K06550 L1CAM; L1 cell adhesion molecule
+F          K06736 CDH2, NCAD; cadherin 2, type 1, N-cadherin
+E        FGFR2; fibroblast growth factor receptor 2 [KO:K05093] [EC:2.7.1.112]
+E        FGFR3; fibroblast growth factor receptor [KO:K05094] [EC:2.7.1.112]
+E        FGFR4; fibroblast growth factor receptor 4 [KO:K05095] [EC:2.7.1.112]
+F          K06491 NCAM; neural cell adhesion molecule
+F          K06736 CDH2, NCAD; cadherin 2, type 1, N-cadherin
+E        PDGFRA; platelet-derived growth factor receptor, alpha polypeptide [KO:K04363] [EC:2.7.1.112]
+E        PDGFRB; platelet-derived growth factor receptor, beta polypeptide [KO:K05089] [EC:2.7.1.112]
+E        PTPRF, LAR; protein tyrosine phosphatase, receptor type, F [KO:K05695] [EC:3.1.3.48]
+F          K05695 PTPRF, LAR; receptor-type tyrosine-protein phosphatase F [EC:3.1.3.48]
+E        PTPRK; protein tyrosine phosphatase, receptor type, K [KO:K06776] [EC:3.1.3.48]
+F          K06776 PTPRK; receptor-type tyrosine-protein phosphatase kappa [EC:3.1.3.48]
+E        PTPRD; protein tyrosine phosphatase, receptor type, D [KO:K06777] [EC:3.1.3.48]
+F          K06777 PTPRD; receptor-type tyrosine-protein phosphatase delta [EC:3.1.3.48]
+E        PTPRM; protein tyrosine phosphatase, receptor type, M [KO:K05693] [EC:3.1.3.48]
+F          K05693 PTPRM; receptor-type tyrosine-protein phosphatase mu [EC:3.1.3.48]
+E        PTPRS; protein tyrosine phosphatase, receptor type, S [KO:K06778] [EC:3.1.3.48]
+F          K06778 PTPRS; receptor-type tyrosine-protein phosphatase S [EC:3.1.3.48]
+E        PTPRT; protein tyrosine phosphatase, receptor type, T [KO:K13297] [EC:3.1.3.48]
+F          K13297 PTPRT; receptor-type tyrosine-protein phosphatase T [EC:3.1.3.48]
+C
+C    <b>Others</b>
+D      VCAM1; vascular cell adhesion molecule 1 [KO:K06527]
+E        VLA-4
+F          K06483 ITGA4; integrin alpha 4
+F          K05719 ITGB1; integrin beta 1
+E        VLA-9
+F          K06485 ITGA6; integrin alpha 6
+F          K05719 ITGB1; integrin beta 1
+E        CR3, Mac-1
+F          K06461 ITGAM; integrin alpha M
+F          K06464 ITGB2; integrin beta 2
+E        alpha D beta 2
+F          K06594 ITGAD; integrin alpha D
+F          K06464 ITGB2; integrin beta 2
+E        alpha 4 beta7
+F          K06483 ITGA4; integrin alpha 4
+F          K06590 ITGB7; integrin beta 7
+D      PECAM1, CD31; platelet/endothelial cell adhesion molecule [KO:K06471]
+E        K06471 PECAM1, CD31; platelet/endothelial cell adhesion molecule
+E        VNR
+F          K06487 ITGAV; integrin alpha V
+F          K06493 ITGB3; integrin beta 3
+D      MADCAM1; mucosal vascular addressin cell adhesion molecule 1 [KO:K06779]
+E        K06495 SELL; selectin, lymphocyte
+E        alpha 4 beta7
+F          K06483 ITGA4; integrin alpha 4
+F          K06590 ITGB7; integrin beta 7
+D      PVRL1; poliovirus receptor-related 1 [KO:K06081]
+E        K06081 PVRL1; poliovirus receptor-related protein 1
+E        K06592 PVRL3; poliovirus receptor-related protein 3
+E        K06593 PVRL4; poliovirus receptor-related 4
+E        K06780 CADM3, IGSF4B, NECL1, TSLL1; cell adhesion molecule 3
+D      PVRL2; poliovirus receptor-related 2 [KO:K06531]
+E        K06531 PVRL2; poliovirus receptor-related protein 2
+E        K06592 PVRL3; poliovirus receptor-related protein 3
+E        K06567 CD226, DNAM1; CD226 antigen
+D      PVRL3; poliovirus receptor-related 3 [KO:K06592]
+E        K06592 PVRL3; poliovirus receptor-related protein 3
+E        K06081 PVRL1; poliovirus receptor-related protein 1
+E        K06531 PVRL2; poliovirus receptor-related protein 2
+E        K06781 CADM1, IGSF4, NECL2, TSLC1; cell adhesion molecule 1
+E        K06780 CADM3, IGSF4B, NECL1, TSLL1; cell adhesion molecule 3
+E        K06539 PVR, NECL5; poliovirus receptor
+D      PVRL4; poliovirus receptor-related 4 [KO:K06593]
+E        K06593 PVRL4; poliovirus receptor-related 4
+E        K06081 PVRL1; poliovirus receptor-related protein 1
+D      IGSF4B, NECL1, TSLL1; immunoglobulin superfamily, member 4B [KO:K06780]
+E        K06780 CADM3, IGSF4B, NECL1, TSLL1; cell adhesion molecule 3
+E        K06781 CADM1, IGSF4, NECL2, TSLC1; cell adhesion molecule 1
+E        K06081 PVRL1; poliovirus receptor-related protein 1
+E        K06592 PVRL3; poliovirus receptor-related protein 3
+D      IGSF4, NECL2, TSLC1; immunoglobulin superfamily, member 4 [KO:K06781]
+E        K06780 CADM3, IGSF4B, NECL1, TSLL1; cell adhesion molecule 3
+E        K06781 CADM1, IGSF4, NECL2, TSLC1; cell adhesion molecule 1
+E        K06592 PVRL3; poliovirus receptor-related protein 3
+D      IGSF4D, NECL3; immunoglobulin superfamily, member 4D [KO:K06782]
+D      IGSF4C, TSLL2; immunoglobulin superfamily, member 4C [KO:K06783]
+D      PVR, NECL5; poliovirus receptor [KO:K06539]
+E        K06567 CD226, DNAM1; CD226 antigen
+E        K06592 PVRL3; poliovirus receptor-related protein 3
+E        K06517 CD96; CD96 antigen
+D      ICAM4; intercellular adhesion molecule 4, Landsteiner-Wiener blood group [KO:K06581]
+E        VNR
+F          K06487 ITGAV; integrin alpha V
+F          K06493 ITGB3; integrin beta 3
+E        LFA-1
+F          K05718 ITGAL; integrin alpha L
+F          K06464 ITGB2; integrin beta 2
+E        CR3, Mac-1
+F          K06461 ITGAM; integrin alpha M
+F          K06464 ITGB2; integrin beta 2
+E        alpha IIb beta 3
+F          K06476 ITGA2B; integrin alpha 2B
+F          K06493 ITGB3; integrin beta 3
+E        alpha V beta 1
+F          K06487 ITGAV; integrin alpha V
+F          K05719 ITGB1; integrin beta 1
+E        alpha V beta 5
+F          K06487 ITGAV; integrin alpha V
+F          K06588 ITGB5; integrin beta 5
+D      CEACAM; carcinoembryonic antigen-related cell adhesion molecule [KO:K06499]
+E        K06499 CEACAM; carcinoembryonic antigen-related cell adhesion molecule
+E        K06494 SELE; selectin, endothelial cell
+D      ROBO4; roundabout, axon guidance receptor, homolog 4 (Drosophila) [KO:K06784]
+D      LU; Lutheran blood group (Auberger b antigen included) [KO:K06578]
+D      MCAM, CD146; melanoma cell adhesion molecule [KO:K06534]
+E        K06534 MCAM, CD146; melanoma cell adhesion molecule
+D      F11R, JAM1; junctional adhesion molecule 1 [KO:K06089]
+E        K06089 F11R, JAM1; junctional adhesion molecule 1
+E        LFA-1
+F          K05718 ITGAL; integrin alpha L
+F          K06464 ITGB2; integrin beta 2
+D      JAM2; junction adhesion molecule 2 [KO:K06735]
+E        K06735 JAM2; junctional adhesion molecule 2
+E        K06785 JAM3; junctional adhesion molecule 3
+E        VLA-4
+F          K06483 ITGA4; integrin alpha 4
+F          K05719 ITGB1; integrin beta 1
+D      JAM3; junction adhesion molecule 3 [KO:K06785]
+E        K06735 JAM2; junctional adhesion molecule 2
+E        K06785 JAM3; junctional adhesion molecule 3
+E        CR3, Mac-1
+F          K06461 ITGAM; integrin alpha M
+F          K06464 ITGB2; integrin beta 2
+D      JAM4, JCAM; junction adhesion molecule 4 [KO:K06786]
+E        K06786 JAM4, JCAM; junctional adhesion molecule 4
+D      ESAM; endothelial cell adhesion molecule [KO:K06787]
+E        K06787 ESAM; endothelial cell adhesion molecule
+D      CXADR, CAR; coxsackievirus and adenovirus receptor [KO:K06788]
+E        K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+D      ASAM, CLMP; adipocyte-specific adhesion molecule [KO:K06789]
+D      GPA33; glycoprotein A33 (transmembrane) [KO:K06790]
+D      IGSF11; immunoglobulin superfamily, member 11 [KO:K06791]
+E        K06791 IGSF11; immunoglobulin superfamily, member 11
+B
+B  <b>Integrin Family</b>
+C
+C    <b>Beta1 integrins</b>
+D      VLA-1
+E        ITGA1; integrin alpha 1 [KO:K06480]
+E        ITGB1; integrin beta 1 [KO:K05719]
+D      VLA-2
+E        ITGA2; integrin alpha 2 [KO:K06481]
+E        ITGB1; integrin beta 1 [KO:K05719]
+F          VLA-3
+G            K06482 ITGA3; integrin alpha 3
+G            K05719 ITGB1; integrin beta 1
+D      VLA-3
+E        ITGA3; integrin alpha 3 [KO:K06482]
+E        ITGB1; integrin beta 1 [KO:K05719]
+F          VLA-2
+G            K06481 ITGA2; integrin alpha 2
+G            K05719 ITGB1; integrin beta 1
+F          VLA-3
+G            K06482 ITGA3; integrin alpha 3
+G            K05719 ITGB1; integrin beta 1
+D      VLA-4
+E        ITGA4; integrin alpha 4 [KO:K06483]
+E        ITGB1; integrin beta 1 [KO:K05719]
+F          K06527 VCAM1; vascular cell adhesion molecule 1
+F          K06735 JAM2; junctional adhesion molecule 2
+D      VLA-5
+E        ITGA5; integrin alpha 5 [KO:K06484]
+E        ITGB1; integrin beta 1 [KO:K05719]
+F          K06550 L1CAM; L1 cell adhesion molecule
+D      VLA-6
+E        ITGA6; integrin alpha 6 [KO:K06485]
+E        ITGB1; integrin beta 1 [KO:K05719]
+D      VLA-7
+E        ITGA7; integrin alpha 7 [KO:K06583]
+E        ITGB1; integrin beta 1 [KO:K05719]
+D      VLA-8
+E        ITGA8; integrin alpha 8 [KO:K06584]
+E        ITGB1; integrin beta 1 [KO:K05719]
+D      VLA-9
+E        ITGA9; integrin alpha 9 [KO:K06585]
+E        ITGB1; integrin beta 1 [KO:K05719]
+F          K06527 VCAM1; vascular cell adhesion molecule 1
+D      alpha 10 beta 1
+E        ITGA10; integrin alpha 10 [KO:K06586]
+E        ITGB1; integrin beta 1 [KO:K05719]
+D      alpha 11 beta 1
+E        ITGA11; integrin alpha 11 [KO:K06587]
+E        ITGB1; integrin beta 1 [KO:K05719]
+D      alpha V beta 1
+E        ITGAV; integrin alpha V [KO:K06487]
+E        ITGB1; integrin beta 1 [KO:K05719]
+F          K06581 ICAM4; intercellular adhesion molecule 4
+C
+C    <b>Beta2 integrins</b>
+D      LFA-1
+E        ITGAL; integrin alpha L [KO:K05718]
+E        ITGB2; integrin beta 2 [KO:K06464]
+F          K06490 ICAM1; intercellular adhesion molecule 1
+F          K06523 ICAM2; intercellular adhesion molecule 2
+F          K06486 ICAM3; intercellular adhesion molecule 3
+F          K06581 ICAM4; intercellular adhesion molecule 4
+F          K06769 ICAM5, TLCN; intercellular adhesion molecule 5
+F          K06567 CD226, DNAM1; CD226 antigen
+F          K06089 F11R, JAM1; junctional adhesion molecule 1
+D      CR3, Mac-1
+E        ITGAM; integrin alpha M [KO:K06461]
+E        ITGB2; integrin beta 2 [KO:K06464]
+F          K06490 ICAM1; intercellular adhesion molecule 1
+F          K06523 ICAM2; intercellular adhesion molecule 2
+F          K06581 ICAM4; intercellular adhesion molecule 4
+F          K06785 JAM3; junctional adhesion molecule 3
+F          K06527 VCAM1; vascular cell adhesion molecule 1
+D      p150/95
+E        ITGAX; integrin alpha X [KO:K06462]
+E        ITGB2; integrin beta 2 [KO:K06464]
+D      alpha D beta 2
+E        ITGAD; integrin alpha D [KO:K06594]
+E        ITGB2; integrin beta 2 [KO:K06464]
+F          K06486 ICAM3; intercellular adhesion molecule 3
+F          K06527 VCAM1; vascular cell adhesion molecule 1
+C
+C    <b>Beta3 integrins</b>
+D      alpha IIb  beta 3
+E        ITGA2B; integrin alpha 2B [KO:K06476]
+E        ITGB3; integrin beta 3 [KO:K06493]
+F          K06581 ICAM4; intercellular adhesion molecule 4
+D      VNR
+E        ITGAV; integrin alpha V [KO:K06487]
+E        ITGB3; integrin beta 3 [KO:K06493]
+F          K06550 L1CAM; L1 cell adhesion molecule
+F          K06471 PECAM1, CD31; platelet/endothelial cell adhesion molecule
+F          K06581 ICAM4; intercellular adhesion molecule 4
+C
+C    <b>Beta4 integrins</b>
+D      alpha 6 beta 4
+E        ITGA6; integrin alpha 6 [KO:K06485]
+E        ITGB4; integrin beta 4 [KO:K06525]
+C
+C    <b>Beta5 integrins</b>
+D      alpha V beta 5
+E        ITGAV; integrin alpha V [KO:K06487]
+E        ITGB5; integrin beta 5 [KO:K06588]
+F          K06581 ICAM4; intercellular adhesion molecule 4
+C
+C    <b>Beta6 integrins</b>
+D      alpha V beta 6
+E        ITGAV; integrin alpha V [KO:K06487]
+E        ITGB6; integrin beta 6 [KO:K06589]
+C
+C    <b>Beta7 integrins</b>
+D      alpha 4 beta 7
+E        ITGA4; integrin alpha 4 [KO:K06483]
+E        ITGB7; integrin beta 7 [KO:K06590]
+F          K06527 VCAM1; vascular cell adhesion molecule 1
+F          K06779 MADCAM1; mucosal vascular addressin cell adhesion molecule 1
+D      alpha E beta 7
+E        ITGAE; integrin alpha E [KO:K06524]
+E        ITGB7; integrin beta 7 [KO:K06590]
+F          K05689 CDHE, CDH1; cadherin 1, type 1, E-cadherin
+C
+C    <b>Beta8 integrins</b>
+D      alpha V beta 8
+E        ITGAV; integrin alpha V [KO:K06487]
+E        ITGB8; integrin beta 8 [KO:K06591]
+B
+B  <b>Selectin Family</b>
+C    SELL; selectin, lymphocyte [KO:K06495]
+D      K06815 GLYCAM1; glycosylation dependent cell adhesion molecule 1
+D      K06474 CD34; CD34 antigen
+D      K06817 PODXL; podocalyxin-like
+D      K06818 PODXL2; podocalyxin-like 2
+D      K06779 MADCAM1; mucosal vascular addressin cell adhesion molecule 1
+D      K06544 SELPLG; selectin P ligand
+D      K06793 VCAN, CSPG2; versican core protein
+C    SELE; selectin, endothelial cell [KO:K06494]
+D      K06499 CEACAM; carcinoembryonic antigen-related cell adhesion molecule
+D      K06256 CD44; CD44 antigen
+D      K06816 GLG1, ESL1; golgi apparatus protein 1
+D      K06544 SELPLG; selectin P ligand
+C    SELP; selectin, platelet [KO:K06496]
+D      K06544 SELPLG; selectin P ligand
+B
+B  <b>Link Protein Family</b>
+C    CD44; CD44 antigen [KO:K06256]
+D      K06494 SELE; selectin, endothelial cell
+D      K06793 VCAN, CSPG2; versican core protein
+C    AGC1, CSPG1; aggrecan 1 [KO:K06792]
+C    CSPG2; chondroitin sulfate proteoglycan 2 (versican) [KO:K06793]
+D      K06495 SELL; selectin, lymphocyte
+D      K06256 CD44; CD44 antigen
+C    CSPG3; chondroitin sulfate proteoglycan 3 (neurocan) [KO:K06794]
+D      K06491 NCAM; neural cell adhesion molecule
+D      K06550 L1CAM; L1 cell adhesion molecule
+C    BCAN; brevican [KO:K06795]
+B
+B  <b>Cadherin Family</b>
+C
+C    <b>Vertebrate Type I classic cadherins</b>
+D      CDHE, CDH1; cadherin 1, type 1, E-cadherin [KO:K05689]
+E        K05689 CDHE, CDH1; cadherin 1, type 1, E-cadherin
+E        alpha E beta 7
+F          K06524 ITGAE; integrin alpha E
+F          K06590 ITGB7; integrin beta 7
+D      CDH2; cadherin 2, type 1, N-cadherin [KO:K06736]
+E        K06736 CDH2, NCAD; cadherin 2, type 1, N-cadherin
+E        K04362 FGFR1; fibroblast growth factor receptor 1 [EC:2.7.10.1]
+E        K05095 FGFR4; fibroblast growth factor receptor 4 [EC:2.7.10.1]
+D      CDH3; cadherin 3, type 1, P-cadherin [KO:K06796]
+E        K06796 CDH3; cadherin 3, type 1, P-cadherin
+D      CDH4; cadherin 4, type 1, R-cadherin [KO:K06797]
+E        K06797 CDH4; cadherin 4, type 1, R-cadherin
+C
+C    <b>Vertebrate Type II classic cadherins</b>
+D      CDH5; cadherin 5, type 2, VE-cadherin [KO:K06533]
+E        K06533 CDH5; cadherin 5, type 2, VE-cadherin
+D      CDH6; cadherin 6, type 2, K-cadherin [KO:K06798]
+E        K06798 CDH6; cadherin 6, type 2, K-cadherin
+E        K06799 CDH7; cadherin 7, type 2
+E        K06801 CDH9; cadherin 9, type 2, T1-cadherin
+E        K06802 CDH10; cadherin 10, type 2, T2-cadherin
+E        K06809 CDH15, CDH3, CDH14; cadherin 15, M-cadherin
+D      CDH7; cadherin 7, type 2 [KO:K06799]
+E        K06798 CDH6; cadherin 6, type 2, K-cadherin
+E        K06799 CDH7; cadherin 7, type 2
+E        K06801 CDH9; cadherin 9, type 2, T1-cadherin
+E        K06804 CDH12; cadherin 12, type 2, N-cadherin 2
+E        K06809 CDH15, CDH3, CDH14; cadherin 15, M-cadherin
+D      CDH8; cadherin 8, type 2 [KO:K06800]
+E        K06800 CDH8; cadherin 8, type 2
+E        K06803 CDH11; cadherin 11, type 2, OB-cadherin
+D      CDH9; cadherin 9, type 2, T1-cadherin [KO:K06801]
+E        K06798 CDH6; cadherin 6, type 2, K-cadherin
+E        K06799 CDH7; cadherin 7, type 2
+E        K06801 CDH9; cadherin 9, type 2, T1-cadherin
+E        K06802 CDH10; cadherin 10, type 2, T2-cadherin
+E        K06809 CDH15, CDH3, CDH14; cadherin 15, M-cadherin
+D      CDH10; cadherin 10, type 2, T2-cadherin [KO:K06802]
+E        K06798 CDH6; cadherin 6, type 2, K-cadherin
+E        K06801 CDH9; cadherin 9, type 2, T1-cadherin
+E        K06802 CDH10; cadherin 10, type 2, T2-cadherin
+D      CDH11; cadherin 11, type 2, OB-cadherin [KO:K06803]
+E        K06800 CDH8; cadherin 8, type 2
+E        K06803 CDH11; cadherin 11, type 2, OB-cadherin
+D      CDH12; cadherin 12, type 2, N-cadherin 2 [KO:K06804]
+E        K06799 CDH7; cadherin 7, type 2
+E        K06804 CDH12; cadherin 12, type 2, N-cadherin 2
+E        K06809 CDH15, CDH3, CDH14; cadherin 15, M-cadherin
+D      CDH18; cadherin 18, type 2 [KO:K06805]
+E        K06805 CDH18; cadherin 18, type 2
+D      CDH19; cadherin 19, type 2 [KO:K06806]
+E        K06806 CDH19; cadherin 19, type 2
+D      CDH20; cadherin 20, type 2 [KO:K06807]
+E        K06807 CDH20; cadherin 20, type 2
+C
+C    <b>Other classic cadherins</b>
+D      CDH13; cadherin 13, H-cadherin [KO:K06808]
+E        K06808 CDH13; cadherin 13, H-cadherin
+D      CDH15, CDH3, CDH14; cadherin 15, M-cadherin [KO:K06809]
+E        K06798 CDH6; cadherin 6, type 2, K-cadherin
+E        K06799 CDH7; cadherin 7, type 2
+E        K06801 CDH9; cadherin 9, type 2, T1-cadherin
+E        K06804 CDH12; cadherin 12, type 2, N-cadherin 2
+E        K06809 CDH15, CDH3, CDH14; cadherin 15, M-cadherin
+D      CDH16; cadherin 16, KSP-cadherin [KO:K06810]
+E        K06810 CDH16; cadherin 16, KSP-cadherin
+D      CDH17; cadherin 17, LI cadherin [KO:K06811]
+E        K06811 CDH17; cadherin 17, LI cadherin
+D      CDH22; cadherin 22 [KO:K06812]
+E        K06812 CDH22; cadherin 22
+D      CDH23; cadherin 23 [KO:K06813]
+E        K06813 CDH23; cadherin 23
+D      CDH24; cadherin-like 24 [KO:K06814]
+E        K06814 CDH24; cadherin-like 24
+B
+B  <b>Sialomucin Family</b>
+C    GLYCAM1; glycosylation dependent cell adhesion molecule 1 [KO:K06815]
+D      K06495 SELL; selectin, lymphocyte
+C    CD34; CD34 antigen [KO:K06474]
+D      K06495 SELL; selectin, lymphocyte
+C    GLG1, ESL1; golgi apparatus protein 1 [KO:K06816]
+D      K06494 SELE; selectin, endothelial cell
+C    SPN, CD43; sialophorin [KO:K06477]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06548 SN, SIGLEC1; sialoadhesin
+C    CD68; CD68 antigen [KO:K06501]
+C    CD96; CD96 antigen [KO:K06517]
+D      K06539 PVR, NECL5; poliovirus receptor
+C    SELPLG; selectin P ligand [KO:K06544]
+D      K06496 SELP; selectin, platele
+D      K06494 SELE; selectin, endothelial cell
+D      K06495 SELL; selectin, lymphocyte
+C    PODXL; podocalyxin-like [KO:K06817]
+D      K06495 SELL; selectin, lymphocyte
+C    PODXL2; podocalyxin-like 2 [KO:K06818]
+D      K06495 SELL; selectin, lymphocyte
+C    CD164, MGC24; CD164 antigen [KO:K06546]
+B
+B  <b>Others</b>
+C    TNFRSF5, CD40; tumor necrosis factor receptor superfamily, member 5 [KO:K03160]
+D      K03161 TNFSF5, CD40L; tumor necrosis factor ligand superfamily member 5
+C    TNFSF5; tumor necrosis factor (ligand) superfamily, member 5 [KO:K03161]
+D      K03160 TNFRSF5, CD40; tumor necrosis factor receptor superfamily member 5
+C    NRP1; neuropilin 1 [KO:K06724]
+C    NRP2; neuropilin 2 [KO:K06819]
+C    PLXNA; plexin A [KO:K06820]
+C    PLXNB; plexin B [KO:K06821]
+C    PLXNC; plexin C [KO:K06572]
+C    PLXND; plexin D [KO:K06822]
+C    SDC; syndecan [KO:K06257]
+C    CLDN; claudin [KO:K06087]
+D      K06087 CLDN; claudin
+C    OCLN; occludin [KO:K06088]
+D      K06088 OCLN; occludin
+C    CD99, MIC2; CD99 antigen [KO:K06520]
+D      K06520 CD99, MIC2; CD99 antigen
+C    NRXN; neurexin [KO:K07377]
+D      K07378 NLGN; neuroligin
+C    NLGN; neuroligin [KO:K07378]
+D      K07377 NRXN; neurexin
+#
+A<b>2. Extracellular matrix (ECM) components</b>
+B
+B  <b>Collagens</b>
+C    COL1AS; collagen, type I/II/III/V/XI, alpha [KO:K06236]
+D      VLA-1
+E        K06480 ITGA1; integrin alpha 1
+E        K05719 ITGB1; integrin beta 1
+D      VLA-2
+E        K06481 ITGA2; integrin alpha 2
+E        K05719 ITGB1; integrin beta 1
+D      alpha 11 beta 1
+E        K06587 ITGA11; integrin alpha 11
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      K06256 CD44; CD44 antigen
+D      K06257 SDC1; syndecan 1
+C    COL4A; collagen, type IV, alpha [KO:K06237]
+D      VLA-1
+E        K06480 ITGA1; integrin alpha 1
+E        K05719 ITGB1; integrin beta 1
+D      VLA-2
+E        K06481 ITGA2; integrin alpha 2
+E        K05719 ITGB1; integrin beta 1
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+D      alpha 10 beta 1
+E        K06586 ITGA10; integrin alpha 10
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 8
+E        K06487 ITGAV; integrin alpha V
+E        K06591 ITGB8; integrin beta 8
+D      K06256 CD44; CD44 antigen
+C    COL6A; collagen, type VI, alpha [KO:K06238]
+D      VLA-1
+E        K06480 ITGA1; integrin alpha 1
+E        K05719 ITGB1; integrin beta 1
+D      alpha 10 beta 1
+E        K06586 ITGA10; integrin alpha 10
+E        K05719 ITGB1; integrin beta 1
+C    COL18A; collagen, type XVIII, alpha [KO:K06823]
+D      K06778 PTPRS; receptor-type tyrosine-protein phosphatase S [EC:3.1.3.48]
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 5
+E        K06487 ITGAV; integrin alpha V
+E        K06588 ITGB5; integrin beta 5
+B
+B  <b>Noncollagenous glycoproteins</b>
+C    Laminin-1
+D      LAMA1; laminin, alpha 1 [KO:K05637]
+D      LAMB1; laminin, beta 1 [KO:K05636]
+D      LAMC1; laminin, gamma 1 [KO:K05635]
+E        VLA-1
+F          K06480 ITGA1; integrin alpha 1
+F          K05719 ITGB1; integrin beta 1
+E        VLA-2
+F          K06481 ITGA2; integrin alpha 2
+F          K05719 ITGB1; integrin beta 1
+E        VLA-6
+F          K06485 ITGA6; integrin alpha 6
+F          K05719 ITGB1; integrin beta 1
+E        VLA-7
+F          K06483 ITGA4; integrin alpha 4
+F          K05719 ITGB1; integrin beta 1
+E        alpha 6 beta 4
+F          K06485 ITGA6; integrin alpha 6
+F          K06525 ITGB4; integrin beta 4
+E        K05695 PTPRF, LAR; receptor-type tyrosine-protein phosphatase F [EC:3.1.3.48]
+C    Laminin-2
+D      LAMA2; laminin, alpha 2 [KO:K05637]
+D      LAMB1; laminin, beta 1 [KO:K05636]
+D      LAMC1; laminin, gamma 1 [KO:K05635]
+E        VLA-1
+F          K06480 ITGA1; integrin alpha 1
+F          K05719 ITGB1; integrin beta 1
+E        VLA-2
+F          K06481 ITGA2; integrin alpha 2
+F          K05719 ITGB1; integrin beta 1
+E        VLA-3
+F          K06482 ITGA3; integrin alpha 3
+F          K05719 ITGB1; integrin beta 1
+E        VLA-6
+F          K06485 ITGA6; integrin alpha 6
+F          K05719 ITGB1; integrin beta 1
+E        VLA-7
+F          K06483 ITGA4; integrin alpha 4
+F          K05719 ITGB1; integrin beta 1
+E        alpha 6 beta 4
+F          K06485 ITGA6; integrin alpha 6
+F          K06525 ITGB4; integrin beta 4
+C    Laminin-5
+D      LAMA3; laminin, alpha 3 [KO:K06240]
+D      LAMB3; laminin, beta 3 [KO:K06244]
+D      LAMC2; laminin, gamma 2 [KO:K06246]
+E        VLA-3
+F          K06482 ITGA3; integrin alpha 3
+F          K05719 ITGB1; integrin beta 1
+E        VLA-6
+F          K06485 ITGA6; integrin alpha 6
+F          K05719 ITGB1; integrin beta 1
+E        alpha 6 beta 4
+F          K06485 ITGA6; integrin alpha 6
+F          K06525 ITGB4; integrin beta 4
+C    Laminin-8
+D      LAMA4; laminin, alpha 4 [KO:K06241]
+D      LAMB1; laminin, beta 1 [KO:K05636]
+D      LAMC1; laminin, gamma 1 [KO:K05635]
+E        VLA-6
+F          K06485 ITGA6; integrin alpha 6
+F          K05719 ITGB1; integrin beta 1
+C    Laminin-10
+D      LAMA5; laminin, alpha 5 [KO:K06240]
+D      LAMB1; laminin, beta 1 [KO:K05636]
+D      LAMC1; laminin, gamma 1 [KO:K05635]
+E        K06578 LU; Lutheran blood group glycoprotein
+E        VLA-3
+F          K06482 ITGA3; integrin alpha 3
+F          K05719 ITGB1; integrin beta 1
+E        VLA-6
+F          K06485 ITGA6; integrin alpha 6
+F          K05719 ITGB1; integrin beta 1
+C    Laminin-11
+D      LAMA5; laminin, alpha 5 [KO:K06240]
+D      LAMB2; laminin, beta 2 [KO:K06243]
+D      LAMC1; laminin, gamma 1 [KO:K05635]
+E        K06578 LU; Lutheran blood group glycoprotein
+E        VLA-3
+F          K06482 ITGA3; integrin alpha 3
+F          K05719 ITGB1; integrin beta 1
+E        VLA-6
+F          K06485 ITGA6; integrin alpha 6
+F          K05719 ITGB1; integrin beta 1
+C    THBS; thrombospondin [KO:K04659]
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    FN1; fibronectin 1 [KO:K05717]
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      VLA-8
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+D      alpha 4 beta 7
+E        K06483 ITGA4; integrin alpha 4
+E        K06590 ITGB7; integrin beta 7
+D      alpha V beta 8
+E        K06487 ITGAV; integrin alpha V
+E        K06591 ITGB8; integrin beta 8
+E        K06256 CD44; CD44 antigen
+D      K06257 SDC1; syndecan 1
+C    TN; tenascin [KO:K06252]
+D      K06550 L1CAM; L1 cell adhesion molecule
+D      VLA-8
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+D      K06257 SDC1; syndecan 1
+C    VTN; vitronectin [KO:K06251]
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 5
+E        K06487 ITGAV; integrin alpha V
+E        K06588 ITGB5; integrin beta 5
+C    NPNT; nephronectin [KO:K06824]
+D      VLA-8
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+C    RELN; reelin [EC:3.4.21.-] [KO:K06249]
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+C    SPP1, BNSP, OPN; secreted phosphoprotein 1 [KO:K06250]
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-8
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    VWF; von Willebrand factor [KO:K03900]
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    IBSP; integrin binding sialoprotein [KO:K06253]
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 5
+E        K06487 ITGAV; integrin alpha V
+E        K06588 ITGB5; integrin beta 5
+C    FBN1; fibrillin 1 [KO:K06825]
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    NID; nidogen (entactin) [KO:K06826]
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+C    Hyaluronan [GL:G02170]
+D      K06256 CD44; CD44 antigen
+D      K06792 AGC1, CSPG1; aggrecan 1
+D      K06793 VCAN, CSPG2; versican core protein
+D      K06794 NCAN, CSPG3; neurocan core protein
+D      K06795 BCAN; brevican
+B
+B  <b>Proteoglycans</b>
+C    AGRN; agrin [KO:K06254]
+D      K06491 NCAM; neural cell adhesion molecule
+D      K06778 PTPRS; receptor-type tyrosine-protein phosphatase S [EC:3.1.3.48]
+C    HSPG2; heparan sulfate proteoglycan 2 (perlecan) [KO:K06255]
+C    CHAD; chondroadherin [KO:K06248]
+D      VLA-2
+E        K06481 ITGA2; integrin alpha 2
+E        K05719 ITGB1; integrin beta 1
+#
+A<b>3. Soluble ligands</b>
+B
+B  <b>Blood-coagulation factors</b>
+C    FGA; fibrinogen, A alpha polypeptide [KO:K03903]
+D      CR3, Mac-1
+E        K06461 ITGAM; integrin alpha M
+E        K06464 ITGB2; integrin beta 2
+D      p150/95
+E        K06462 ITGAX; integrin alpha X
+E        K06464 ITGB2; integrin beta 2
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    FGB; fibrinogen, B alpha polypeptide [KO:K03904]
+D      CR3, Mac-1
+E        K06461 ITGAM; integrin alpha M
+E        K06464 ITGB2; integrin beta 2
+D      p150/95
+E        K06462 ITGAX; integrin alpha X
+E        K06464 ITGB2; integrin beta 2
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    FGG; fibrinogen, gamma alpha polypeptide [KO:K03905]
+D      CR3, Mac-1
+E        K06461 ITGAM; integrin alpha M
+E        K06464 ITGB2; integrin beta 2
+D      p150/95
+E        K06462 ITGAX; integrin alpha X
+E        K06464 ITGB2; integrin beta 2
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    E3.4.21.6, F10; coagulation factor X [KO:K01314] [EC:3.4.21.6]
+D      CR3, Mac-1
+E        K06461 ITGAM; integrin alpha M
+E        K06464 ITGB2; integrin beta 2
+C    F13A1; coagulation factor XIII A1 polypeptide [KO:K03917] [EC:2.3.2.13]
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+C    F13B; coagulation factor XIII B polypeptide [KO:K03906]
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+C    E3.4.21.5, F2; coagulation factor II (thrombin) [KO:K01313] [EC:3.4.21.5]
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+B
+B  <b>Growth factors</b>
+C    CTGF; connective tissue growth factor [KO:K06827]
+D      VLA-6
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    TGFB1; transforming growth factoer beta-1 [KO:K13375]
+C    TGFB2; transforming growth factoer beta-2 [KO:K13376]
+C    TGFB3; transforming growth factoer beta-3 [KO:K13377]
+C    TGFBN; transforming growth factor beta, invertebrate [KO:K04384]
+D      VLA-8
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 5
+E        K06487 ITGAV; integrin alpha V
+E        K06588 ITGB5; integrin beta 5
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+D      alpha V beta 8
+E        K06487 ITGAV; integrin alpha V
+E        K06591 ITGB8; integrin beta 8
+C    FGF; fibroblast growth factor [KO:K04358]
+D      K04362 FGFR1; fibroblast growth factor receptor 1 [EC:2.7.10.1]
+D      K05093 FGFR2; fibroblast growth factor receptor 2 [EC:2.7.10.1]
+D      K05094 FGFR3; fibroblast growth factor receptor 3 [EC:2.7.10.1]
+D      K05095 FGFR4; fibroblast growth factor receptor 4 [EC:2.7.10.1]
+D      K06257 SDC1; syndecan 1
+C    HGF; hepatocyte growth factor [KO:K05460]
+D      K06257 SDC1; syndecan 1
+C    VEGFA_B; vascular endothelial growth factor A/B, PGF [KO:K05448]
+D      K06724 NRP1; neuropilin 1
+D      K06819 NRP2; neuropilin 2
+C    VEGFC_D; vascular endothelial growth factor C/D [KO:K05449]
+D      K06724 NRP1; neuropilin 1
+D      K06819 NRP2; neuropilin 2
+C    PDGFA_B; platelet derived growth factor A/B [KO:K04359]
+D      K04363 PDGFRA; platelet-derived growth factor receptor alpha [EC:2.7.10.1]
+D      K05089 PDGFRB; platelet-derived growth factor receptor beta [EC:2.7.10.1]
+C    MDK; midkine [KO:K06828]
+D      K06534 MCAM, CD146; melanoma cell adhesion molecule
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-6
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+B
+B  <b>Enzymes</b>
+C    MMP1, CLG; matrix metalloproteinase 1 (interstitial collagenase) [KO:K01338] [EC:3.4.24.7]
+D      VLA-2
+E        K06481 ITGA2; integrin alpha 2
+E        K05719 ITGB1; integrin beta 1
+C    MMP2; matrix metalloproteinase 2 [KO:K01398] [EC:3.4.24.24]
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    E3.2.2.5; NAD+ nucleosidase [KO:K01242] [EC:3.2.2.5]
+D      K06471 PECAM1, CD31; platelet/endothelial cell adhesion molecule
+C    TGM2; transglutaminase 2 [KO:K05625] [EC:2.3.2.13]
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+C    LCK; lymphocyte-specific protein tyrosine kinase [KO:K05856] [EC:2.7.1.112]
+D      K06449 CD2; CD2 antigen
+C    FYN; FYN proto-oncogene [KO:K05703] [EC:2.7.1.112]
+D      K06449 CD2; CD2 antigen
+B
+B  <b>Others</b>
+C    C3; complement component 3 [KO:K03990]
+D      CR3, Mac-1
+E        K06461 ITGAM; integrin alpha M
+E        K06464 ITGB2; integrin beta 2
+D      p150/95
+E        K06462 ITGAX; integrin alpha X
+E        K06464 ITGB2; integrin beta 2
+C    CYR61; cysteine rich protein 61 [KO:K06829]
+D      VLA-6
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 5
+E        K06487 ITGAV; integrin alpha V
+E        K06588 ITGB5; integrin beta 5
+C    E3.4.21.7, PLG; plasminogen [KO:K01315] [EC:3.4.21.7]
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+#
+A<b>4. Other cell surface / pericellular molecules</b>
+B
+B  <b>Galectins</b>
+C    LGALS1; lectin, galactoside-binding, soluble, 1 (galectin 1) [KO:K06830]
+D      K06514 THY1, CD90; Thy-1 cell surface antigen
+D      VLA-7
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      CR3, Mac-1
+E        K06461 ITGAM; integrin alpha M
+E        K06464 ITGB2; integrin beta 2
+C    LGALS3; lectin, galactoside-binding, soluble, 3 (galectin 3) [KO:K06831]
+D      K06491 NCAM; neural cell adhesion molecule
+D      K06550 L1CAM; L1 cell adhesion molecule
+D      K06499 CEACAM; carcinoembryonic antigen-related cell adhesion molecule
+D      K06771 MAG, GMA, SIGLEC4; myelin associated glycoprotein
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+D      CR3, Mac-1
+E        K06461 ITGAM; integrin alpha M
+E        K06464 ITGB2; integrin beta 2
+C    LGALS8; lectin, galactoside-binding, soluble, 8 (galectin 8) [KO:K06832]
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+B
+B  <b>ADAM s</b>
+C    ADAM2; a disintegrin and metalloprotease domain 2 [KO:K06833]
+D      VLA-6
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+C    ADAM9; a disintegrin and metalloprotease domain 9 [KO:K06834]
+D      VLA-6
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+C    ADAM12; a disintegrin and metalloprotease domain 12 [KO:K06835]
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+C    ADAM15; a disintegrin and metalloprotease domain 15 [KO:K06836]
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      VLA-9
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    ADAM17, TACE; a disintegrin and metalloproteinase domain 17 [KO:K06059]
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+C    ADAM23; a disintegrin and metalloprotease domain 23 [KO:K06837]
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+B
+B  <b>SLITs</b>
+C    SLIT1; slit homolog 1 (Drosophila) [KO:K06838]
+D      K06753 ROBO1; roundabout, axon guidance receptor 1
+D      K06754 ROBO2; roundabout, axon guidance receptor 2
+C    SLIT2; slit homolog 2 (Drosophila) [KO:K06839]
+D      K06753 ROBO1; roundabout, axon guidance receptor 1
+D      K06754 ROBO2; roundabout, axon guidance receptor 2
+B
+B  <b>Semaphorins</b>
+C    SEMA3; semaphorin 3 [KO:K06840]
+D      K06550 L1CAM; L1 cell adhesion molecule
+D      K06724 NRP1; neuropilin 1
+D      K06819 NRP2; neuropilin 2
+D      K06820 PLXNA; plexin A
+D      K06822 PLXND; plexin D
+C    SEMA4; semaphorin 4 [KO:K06521]
+D      K06820 PLXNA; plexin A
+D      K06821 PLXNB; plexin B
+C    SEMA5; semaphorin 5 [KO:K06841]
+D      K06821 PLXNB; plexin B
+C    SEMA6; semaphorin 6 [KO:K06842]
+D      K06820 PLXNA; plexin A
+C    SEMA7; semaphorin 7 [KO:K06529]
+D      K06572 PLXNC; plexin C
+B
+B  <b>Netrins</b>
+C    NTN1; netrin 1 [KO:K06843]
+D      K06765 DCC; deleted in colorectal carcinoma
+C    NTN3; netrin 3 [KO:K06844]
+C    NTN4; netrin 4 [KO:K06845]
+B
+B  <b>Others</b>
+C    CD6; CD6 antigen [KO:K06456]
+D      K06547 ALCAM; activated leukocyte cell adhesion molecule
+C    CD24; CD24 antigen [KO:K06469]
+D      K06496 SELP; selectin, platele
+C    CD59; CD59 antigen [KO:K04008]
+D      K06449 CD2; CD2 antigen
+C    PTPRC, CD45; protein tyrosine phosphatase, receptor type, C [KO:K06478] [EC:3.1.3.48]
+D      K06467 CD22, SIGLEC2; CD22 antigen
+C    LY6; lymphocyte antigen 6 complex [KO:K06846]
+C    RGM; RGM domain family [KO:K06847]
+D      K06766 NEO1; neogenin
+C    AIP3, WWP3, BAIAP1; atrophin-1 interacting protein 3 (BAI1-associated protein 1) [KO:K05631]
+C    HAPLN1, CRTL1; hyaluronan and proteoglycan link protein 1 [KO:K06848]
+D      K06793 VCAN, CSPG2; versican core protein
+C    PGSG; proteoglycan peptide core protein [KO:K06849]
+C    6'-Sialyllactose [GL:G00265]
+D      K06548 SN, SIGLEC1; sialoadhesin
+D      K06467 CD22, SIGLEC2; CD22 antigen
+D      K06473 CD33, SIGLEC3; CD33 antigen
+D      K06549 SIGLEC5_14; sialic acid binding Ig-like lectin 5/14
+D      K06739 SIGLEC7; sialic acid binding Ig-like lectin 7
+D      K06748 SIGLEC8; sialic acid binding Ig-like lectin 8
+D      K06740 SIGLEC9; sialic acid binding Ig-like lectin 9
+D      K06749 SIGLEC10; sialic acid binding Ig-like lectin 10
+C    GM3; Hematoside [GL:G00108]
+D      K06548 SN, SIGLEC1; sialoadhesin
+D      K06473 CD33, SIGLEC3; CD33 antigen
+D      K06771 MAG, GMA, SIGLEC4; myelin associated glycoprotein
+D      K06549 SIGLEC5_14; sialic acid binding Ig-like lectin 5/14
+D      K06739 SIGLEC7; sialic acid binding Ig-like lectin 7
+D      K06748 SIGLEC8; sialic acid binding Ig-like lectin 8
+D      K06740 SIGLEC9; sialic acid binding Ig-like lectin 9
+D      K06749 SIGLEC10; sialic acid binding Ig-like lectin 10
+C    sialyl Lewis x antigen [GL:G00242]
+D      K06740 SIGLEC9; sialic acid binding Ig-like lectin 9
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+C    sialyl Lewis a antigen [GL:G00257]
+D      K06494 SELE; selectin, endothelial cell
+C    Sialyl-Tn antigen [GL:G00035]
+D      K06467 CD22, SIGLEC2; CD22 antigen
+D      K06473 CD33, SIGLEC3; CD33 antigen
+D      K06549 SIGLEC5_14; sialic acid binding Ig-like lectin 5/14
+D      K06738 SIGLEC6; sialic acid binding Ig-like lectin 6
+C    Sialyl-Tn (Gc) [GL:G00225]
+D      K06548 SN, SIGLEC1; sialoadhesin
+D      K06467 CD22, SIGLEC2; CD22 antigen
+D      K06473 CD33, SIGLEC3; CD33 antigen
+D      K06549 SIGLEC5_14; sialic acid binding Ig-like lectin 5/14
+D      K06738 SIGLEC6; sialic acid binding Ig-like lectin 6
+C    PSGP; Polysialoglycoprotein [GL:G00642]
+D      K06548 SN, SIGLEC1; sialoadhesin
+D      K06467 CD22, SIGLEC2; CD22 antigen
+D      K06473 CD33, SIGLEC3; CD33 antigen
+D      K06549 SIGLEC5_14; sialic acid binding Ig-like lectin 5/14
+D      K06738 SIGLEC6; sialic acid binding Ig-like lectin 6
+C    Core 3-sialyl-Tn [GL:G00901]
+D      K06548 SN, SIGLEC1; sialoadhesin
+D      K06467 CD22, SIGLEC2; CD22 antigen
+D      K06473 CD33, SIGLEC3; CD33 antigen
+D      K06549 SIGLEC5_14; sialic acid binding Ig-like lectin 5/14
+D      K06738 SIGLEC6; sialic acid binding Ig-like lectin 6
+C    GD3; CD60a [GL:G00113]
+D      K06549 SIGLEC5_14; sialic acid binding Ig-like lectin 5/14
+D      K06739 SIGLEC7; sialic acid binding Ig-like lectin 7
+D      K06750 SIGLEC11; sialic acid binding Ig-like lectin 11
+#
+A<b>5. Bacterial pathogens</b>
+B  <i>Staphylococcus aureus subsp. aureus COL</i> [TAX:93062] [GN:sac]
+C    enterotoxin type A, putative [SAC:SACOL1657]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+C    seb; staphylococcal enterotoxin B [SAC:SACOL0907]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+B  <i>Staphylococcus aureus subsp. aureus MRSA252</i> [TAX:282458] [GN:sar]
+C    enterotoxin type A precursor [SAR:SAR2043]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+B  <i>Staphylococcus aureus subsp. aureus MSSA476</i> [TAX:282459] [GN:sas]
+C    enterotoxin type A precursor [SAS:SAS1872]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+B  <i>Staphylococcus aureus subsp. aureus MW2</i> [TAX:196620] [GN:sam]
+C    sea; staphylococcal enterotoxin A precursor [SAM:MW1889]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+C    sec4; enterotoxin type C precursor [SAM:MW0759]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+B  <i>Staphylococcus aureus subsp. aureus Mu50</i> [TAX:158878] [GN:sav]
+C    tst; toxic shock syndrome toxin-1 [SAV:SAV2011]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+C    sec3; enterotoxin typeC3 [SAV:SAV2009]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+B  <i>Staphylococcus aureus subsp. aureus N315</i> [TAX:158879] [GN:sau]
+C    tst; toxic shock syndrome toxin-1 [SAU:SA1819]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+C    sec3; enterotoxin typeC3 [SAU:SA1817]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+B  <i>Streptococcus pyogenes MGAS315</i> [TAX:198466] [GN:spg]
+C    speA3; exotoxin type A precursor - phage associated [SPG:SpyM3_1301]
+D      K06490 ICAM1; intercellular adhesion molecule 1
+D      K06523 ICAM2; intercellular adhesion molecule 2
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+D      K06483 ITGA4; integrin alpha 4
+D      K05719 ITGB1; integrin beta 1
+D      K06464 ITGB2; integrin beta 2
+D      K06495 SELL; selectin, lymphocyte
+D      K06494 SELE; selectin, endothelial cell
+D      K06496 SELP; selectin, platele
+C    speB; pyrogenic exotoxin B [EC:3.4.22.10] [SPG:SpyM3_1742]
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+B  <i>Mycobacterium tuberculosis H37Rv</i> [TAX:83332] [GN:mtu]
+C    CR3, Mac-1
+D      K06461 ITGAM; integrin alpha M
+D      K06464 ITGB2; integrin beta 2
+C    p150/95
+D      K06462 ITGAX; integrin alpha X
+D      K06464 ITGB2; integrin beta 2
+B  <i>Listeria monocytogenes EGD-e</i> [TAX:169963] [GN:lmo]
+C    inlA; internalin A [LMO:lmo0433]
+D      K05689 CDHE, CDH1; cadherin 1, type 1, E-cadherin
+B  <i>Escherichia coli O157:H7</i> [TAX:83334] [GN:ecs]
+C    hlyA; hemolysin A [ECS:pO157p18]
+D      LFA-1
+E        K05718 ITGAL; integrin alpha L
+E        K06464 ITGB2; integrin beta 2
+B  <i>Escherichia coli CFT073</i> [TAX:199310] [GN:ecc]
+C    hlyA; hemolysin A [ECC:c3570]
+D      LFA-1
+E        K05718 ITGAL; integrin alpha L
+E        K06464 ITGB2; integrin beta 2
+B  <i>Shigella flexneri 2a str. 301</i> [TAX:198214] [GN:sfl]
+C    ipaB; IpaB, secreted by the Mxi-Spa secretion machinery, required for entry into epithelial cells [SFL:CP0128]
+C    ipaC; IpaC, secreted by the Mxi-Spa secretion machinery, required for entry into epithelial cells [SFL:CP0127]
+C    ipaD; IpaD, secreted by the Mxi-Spa machinery, required for entry of bacteria into epithelial cells [SFL:CP0126]
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+B  <i>Yersinia pseudotuberculosis IP 32953</i> [TAX:273123] [GN:yps]
+C    putative invasin  [YPS:YPTB1572]
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      VLA-6
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+C    putative invasin [YPS:YPTB1668]
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      VLA-6
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+B  <i>Legionella pneumophila str. Lens</i> [TAX:297245] [GN:lpf]
+C    CR3, Mac-1
+D      K06461 ITGAM; integrin alpha M
+D      K06464 ITGB2; integrin beta 2
+B  <i>Legionella pneumophila str. Paris</i> [TAX:297246] [GN:lpp]
+C    CR3, Mac-1
+D      K06461 ITGAM; integrin alpha M
+D      K06464 ITGB2; integrin beta 2
+B  <i>Legionella pneumophila subsp. pneumophila str. Philadelphia 1</i> [TAX:272624] [GN:lpn]
+C    CR3, Mac-1
+D      K06461 ITGAM; integrin alpha M
+D      K06464 ITGB2; integrin beta 2
+B  <i>Neisseria gonorrhoeae FA 1090</i> [TAX:242231] [GN:ngo]
+C    opaD; OpaD [NGO:NGO1513]
+D      K06499 CEACAM; carcinoembryonic antigen-related cell adhesion molecule
+B  <i>Bordetella pertussis Tohama I</i> [TAX:257313] [GN:bpe]
+C    fimD, fhaE; fimbrial adhesin [BPE:BP1883]
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+C    Pertussis toxin
+D      ptxA; pertussis toxin subunit 1 precursor [EC:2.4.2.-] [BPE:BP3783]
+D      ptxB; pertussis toxin subunit 2 precursor [BPE:BP3784]
+D      ptxC; pertussis toxin subunit 3 precursor [BPE:BP3787]
+D      ptxD; pertussis toxin subunit 4 precursor [BPE:BP3785]
+D      ptxE; pertussis toxin subunit 5 precursor [BPE:BP3786]
+E        CR3, Mac-1
+F          K06461 ITGAM; integrin alpha M
+F          K06464 ITGB2; integrin beta 2
+D      fhaC; hemolysin activator-like protein [BPE:BP1884]
+E        VLA-5
+F          K06484 ITGA5; integrin alpha 5
+F          K05719 ITGB1; integrin beta 1
+E        CR3, Mac-1
+F          K06461 ITGAM; integrin alpha M
+F          K06464 ITGB2; integrin beta 2
+D      fhaS; adhesin [BPE:BP2667]
+E        VLA-5
+F          K06484 ITGA5; integrin alpha 5
+F          K05719 ITGB1; integrin beta 1
+E        CR3, Mac-1
+F          K06461 ITGAM; integrin alpha M
+F          K06464 ITGB2; integrin beta 2
+D      fhaL; adhesin [BPE:BP2907]
+E        VLA-5
+F          K06484 ITGA5; integrin alpha 5
+F          K05719 ITGB1; integrin beta 1
+E        CR3, Mac-1
+F          K06461 ITGAM; integrin alpha M
+F          K06464 ITGB2; integrin beta 2
+D      fhaB; filamentous hemagglutinin/adhesin [BPE:BP1879]
+E        VLA-5
+F          K06484 ITGA5; integrin alpha 5
+F          K05719 ITGB1; integrin beta 1
+E        CR3, Mac-1
+F          K06461 ITGAM; integrin alpha M
+F          K06464 ITGB2; integrin beta 2
+B  <i>Borrelia burgdorferi B31</i> [TAX:224326] [GN:bbu]
+C    membrane-associated protein P66 [BBU:BB0603]
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+#
+A<b>6. Viruses</b>
+B
+B  <b>Double-stranded DNA viruses</b>
+C    Human adenovirus type 12 [TAX:28282], fiber protein
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Human adenovirus type 12 [TAX:28282], penton base protein
+D      alpha V beta 5
+E        K06487 ITGAV; integrin alpha V
+E        K06588 ITGB5; integrin beta 5
+C    Human adenovirus type 2 [TAX:10515], penton base protein
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 5
+E        K06487 ITGAV; integrin alpha V
+E        K06588 ITGB5; integrin beta 5
+C    Human adenovirus type 5 [TAX:28285], fiber protein
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+D      K06751 MHC1; major histocompatibility complex, class I
+C    Human adenovirus type 5 [TAX:28285], penton base protein
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+C    Human adenovirus type 9 [TAX:10527], fiber protein
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Human adenovirus type 41 [TAX:10524], fiber protein
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Canine adenovirus [TAX:10537] [RS:NC_001734]
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Fowl adenovirus A [TAX:190061] [RS:NC_001720]
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Human herpesvirus 1 [TAX:10298] [RS:NC_001806], gD
+D      K06081 PVRL1; poliovirus receptor-related protein 1
+D      K06531 PVRL2; poliovirus receptor-related protein 2
+C    Human herpesvirus 1 [TAX:10298] [RS:NC_001806], gH
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    Human herpesvirus 2 [TAX:10310] [RS:NC_001798], gD
+D      K06081 PVRL1; poliovirus receptor-related protein 1
+D      K06531 PVRL2; poliovirus receptor-related protein 2
+C    Human herpesvirus 7 [TAX:10372] [RS:NC_001716], gB
+D      K06454 CD4; CD4 antigen
+C    Human herpesvirus 8 [TAX:37296] [RS:NC_003409], gB
+D      VLA-3
+E        K06482 ITGA3; integrin alpha 3
+E        K05719 ITGB1; integrin beta 1
+C    Human papillomavirus type 16 [TAX:10581] [RS:NC_001526], L1
+D      VLA-6
+E        K06485 ITGA6; integrin alpha 6
+E        K05719 ITGB1; integrin beta 1
+D      alpha 6 beta 4
+E        K06485 ITGA6; integrin alpha 6
+E        K06525 ITGB4; integrin beta 4
+C    Murine polyomavirus [TAX:10634] [RS:NC_001515], VP1, 2
+D      VLA-4
+E        K06483 ITGA4; integrin alpha 4
+E        K05719 ITGB1; integrin beta 1
+C    Simian virus 40 [TAX:10633] [RS:NC_001669]
+D      MHC1; major histocompatibility complex, class I [KO:K06751]
+B
+B  <b>Single-stranded DNA viruses</b>
+C    Adeno-associated virus 2 [TAX:10804] [RS:NC_001401], VP1, 2, 3
+D      K04362 FGFR1; fibroblast growth factor receptor 1 [EC:2.7.10.1]
+D      alpha V beta 5
+E        K06487 ITGAV; integrin alpha V
+E        K06588 ITGB5; integrin beta 5
+C    Human T-lymphotropic virus 1 [TAX:11908] [RS:NC_001436], p12I
+D      K06751 MHC1; major histocompatibility complex, class I
+B
+B  <b>DNA and RNA reverse transcribing viruses</b>
+C    Bovine leukemia virus [TAX:11901] [RS:NC_001414]
+D      p150/95
+E        K06462 ITGAX; integrin alpha X
+E        K06464 ITGB2; integrin beta 2
+C    Human immunodeficiency virus 1 [TAX:11676] [RS:NC_001802], gp120, 41
+D      K06454 CD4; CD4 antigen
+D      K06458 CD8A; CD8A antigen, alpha polypeptide
+D      K06459 CD8B; CD8B antigen, beta polypeptide
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    Human immunodeficiency virus 2 [TAX:11709] [RS:NC_001722], env
+D      K06454 CD4; CD4 antigen
+C    Simian immunodeficiency virus [TAX:11723] [RS:NC_001549], env
+D      K06454 CD4; CD4 antigen
+C    Simian immunodeficiency virus 2 [TAX:159122] [RS:NC_004455], env
+D      K06454 CD4; CD4 antigen
+B
+B  <b>Double-stranded RNA viruses</b>
+C    Mammalian orthoreovirus 1 [TAX:10884] [RS:NC_004255], sigma1
+D      K06089 F11R, JAM1; junctional adhesion molecule 1
+C    Mammalian orthoreovirus 3 [TAX:10886] [RS:NC_004274], sigma1
+D      K06089 F11R, JAM1; junctional adhesion molecule 1
+C    Sin Nombre virus [TAX:37705] [RS:NC_005215], G1, G2
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha IIb  beta 3
+E        K06476 ITGA2B; integrin alpha 2B
+E        K06493 ITGB3; integrin beta 3
+C    Rabies virus [TAX:11292] [RS:NC_001542], G
+D      K06491 NCAM; neural cell adhesion molecule
+B
+B  <b>Positive-sense, single-stranded RNA viruses</b>
+C    Murine hepatitis virus [TAX:11138] [RS:NC_001846], spike protein
+D      K06499 CEACAM; carcinoembryonic antigen-related cell adhesion molecule
+C    Foot-and-mouth disease virus A [TAX:12111] [RS:NC_011450], VP1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Foot-and-mouth disease virus Asia 1 [TAX:110195] [RS:NC_004915], VP1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Foot-and-mouth disease virus C [TAX:12116] [RS:NC_002554], VP1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Foot-and-mouth disease virus O [TAX:12118] [RS:NC_004004], VP1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Foot-and-mouth disease virus SAT 1 [TAX:12122] [RS:NC_011451], VP1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Foot-and-mouth disease virus SAT 2 [TAX:35292] [RS:NC_003992], VP1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Foot-and-mouth disease virus SAT 3 [TAX:12123] [RS:NC_011452], VP1
+D      VLA-5
+E        K06484 ITGA5; integrin alpha 5
+E        K05719 ITGB1; integrin beta 1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Encephalomyocarditis virus [TAX:12104] [RS:NC_001479]
+D      K06527 VCAM1; vascular cell adhesion molecule 1
+C    Human coxsackievirus A9 (strain Griggs) [TAX:12068], VP1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Human coxsackievirus A9B [TAX:145389], VP1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Coxsackievirus B1 (strain Japan) [TAX:103902], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Coxsackievirus B2 (strain Ohio-1) [TAX:231473], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Coxsackievirus B3 (strain Nancy) [TAX:103903], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Coxsackievirus B3 (strain Woodruff) [TAX:103904], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Coxsackievirus B4 (strain E2) [TAX:103905], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Coxsackievirus B4 (strain JVB / Benschoten / New York/51) [TAX:103906], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Coxsackievirus B5 (strain Peterborough / 1954/UK/85) [TAX:103907], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+D      alpha V beta 6
+E        K06487 ITGAV; integrin alpha V
+E        K06589 ITGB6; integrin beta 6
+C    Coxsackievirus B6 (strain Schmitt) [TAX:231474], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Echovirus 1 (strain Farouk / ATCC VR-1038) [TAX:103908], VP1, 2, 3, 4
+D      VLA-2
+E        K06481 ITGA2; integrin alpha 2
+E        K05719 ITGB1; integrin beta 1
+C    Echovirus 9 (strain Barty) [TAX:103914], VP1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+C    Swine vesicular disease virus (STRAIN H/3 '76) [TAX:12076], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Swine vesicular disease virus (STRAIN UKG/27/72) [TAX:12077], VP1, 2, 3
+D      K06788 CXADR, CAR; coxsackievirus and adenovirus receptor
+C    Human coxsackievirus A21 (strain Coe) [TAX:12070], VP1, 2, 3
+D      K06490 ICAM1; intercellular adhesion molecule 1
+C    Human poliovirus 1 Mahoney [TAX:12081], VP1, 2, 3
+D      K06539 PVR, NECL5; poliovirus receptor
+C    Human poliovirus 1 strain Sabin [TAX:12082], VP1, 2, 3
+D      K06539 PVR, NECL5; poliovirus receptor
+C    Poliovirus type 2 (strain Lansing) [TAX:12084], VP1, 2, 3
+D      K06539 PVR, NECL5; poliovirus receptor
+C    Poliovirus type 2 (strain W-2) [TAX:12085], VP1, 2, 3
+D      K06539 PVR, NECL5; poliovirus receptor
+C    Poliovirus type 3 (strain 23127) [TAX:12087], VP1, 2, 3
+D      K06539 PVR, NECL5; poliovirus receptor
+C    Poliovirus type 3 (strains P3/LEON/37 AND P3/LEON 12A[1]B) [TAX:12088], VP1, 2, 3
+D      K06539 PVR, NECL5; poliovirus receptor
+C    Human rhinovirus A [TAX:147711] [RS:NC_001617], VP1, 2, 3
+D      K06490 ICAM1; intercellular adhesion molecule 1
+C    Echovirus 22 (strain Harris) [TAX:103911], VP1
+D      alpha V beta 1
+E        K06487 ITGAV; integrin alpha V
+E        K05719 ITGB1; integrin beta 1
+D      VNR
+E        K06487 ITGAV; integrin alpha V
+E        K06493 ITGB3; integrin beta 3
+!
+#<hr>
+#<b>[ BRITE | PATHWAY | KEGG2 | KEGG ]</b><br>
+#Last updated: October 21, 2010

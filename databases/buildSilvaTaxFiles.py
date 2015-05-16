@@ -54,7 +54,7 @@ def main():
     else:
         if options.taxfile is None:
             parser.error("You must provide the tax file for Silva (-t)")
-        rootNode, taxmap = buildSilvaTree(options.taxfile, fastafile)
+        rootNode, taxmap = buildSilvaTree(options.taxfile, fastafile, logger)
 
     nodesFile = os.path.sep.join((dumpDir, 'nodes.dmp'))
     namesFile = os.path.sep.join((dumpDir, 'names.dmp'))
@@ -68,7 +68,7 @@ def main():
     logger.info("Writing taxid table to %s" % (taxFile))
     with open(taxFile,'w') as taxMapFile:
         for (hitid, taxid) in taxmap.iteritems():
-            taxMapFile.write("%s\t%d\n" % (hitid, taxid))
+            taxMapFile.write("%s\t%s\n" % (hitid, taxid))
 
 def treeGenerator(node, kidsFirst=False, **kwargs):
     if not kidsFirst:
@@ -172,7 +172,7 @@ def buildPR2Tree(fastaFile, fastaout=None, nextId=0):
     return (rootNode, taxMap)
 
 
-def buildSilvaTree(taxFile, fastaFile):
+def buildSilvaTree(taxFile, fastaFile, logger):
     """
     Given a text taxonomy file (lineage <tab> id <tab> rank) and a fasta file with full lineages as the description:
     Return the root node from a taxonomy of edl.taxon.Node objects and a mapping from fasta record IDs to taxids.

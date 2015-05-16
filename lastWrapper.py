@@ -1,4 +1,6 @@
+#!/usr/bin/python
 #$ -cwd
+#$ -V
 #$ -S /usr/bin/python
 
 import sys, threading, logging, tempfile, subprocess, shutil, os
@@ -169,10 +171,11 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
         elif options.format in ('blast','gene','liz'):
             cmd.append(inFrag)
             # convert to m8 (and sort)
-            cmd = "%s | %s" % (getCommandString(cmd), getConvertCommand(options.format,
-                                                                        options.sort,
-                                                                        options.maxHits)i,
-                                                                        options.tmpDirRoot)
+            cmd = "%s | %s" % (getCommandString(cmd), 
+			       getConvertCommand(options.format,
+                                                 options.sort,
+                                                 options.maxHits,
+                                                 options.tmpDirRoot))
             useShell=True
         else:
             cmd.insert(-1,'-o')
@@ -423,7 +426,7 @@ def getConvertCommand(format, sort, maxHits, tmpDirRoot):
         command += " | sort -T %s -t %s -k 1,1 -k %drn,%d" % (tmpDirRoot,sorttab, scoreCol,scoreCol)
 
         if maxHits >= 0:
-            command += " | %s/filter_blast_m8.py -H %s -f %s" % (scriptDir, maxHits, format)
+            command += " | python %s/filter_blast_m8.py -H %s -f %s" % (scriptDir, maxHits, format)
 
     return command
 
@@ -436,7 +439,7 @@ def getSortCommand(sort, maxHits, tmpDirRoot):
         if not sort:
             raise Exception("Code shouldn't get here if sort is False and maxHits<0")
     else:
-        maxHits="| %s/filter_blast_m8.py -f last -H %s" % (scriptDir,maxHits)
+        maxHits="| python %s/filter_blast_m8.py -f last -H %s" % (scriptDir,maxHits)
 
     if sort:
         return "grep -v '^#' | sort -T %s -t %s -k 7,7 -k 1rn,1 %s" % (tmpDirRoot,sorttab,maxHits)
