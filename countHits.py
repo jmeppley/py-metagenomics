@@ -37,7 +37,7 @@ usage: %prog [options]
 
 from optparse import OptionParser
 import sys, re, logging
-from edl.hits import addCountOptions, getAllMethod
+from edl.hits import addCountOptions, getAllMethod, addWeightOption
 from edl.util import addUniversalOptions, setupLogging
 
 # a habit that stuck in Perl
