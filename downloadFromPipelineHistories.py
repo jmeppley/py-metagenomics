@@ -60,7 +60,8 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
                                                   options.dataset_index))
 
     # Are we on the same machine as galaxy?
-    filesAreLocal = re.search(r'://localhost',options.api_url) is not None
+    filesAreLocal = re.search(r'://(localhost|127\.0\.0\.1)',options.api_url) is not None
+    logging.debug("URL seems local, will attempt to link")
 
     for (history,dataset) in edl.galaxy.findDatasets(options.api_key, args,
                                                      dsName=dsName,
@@ -75,13 +76,15 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
                 hdir, dataset)
 
         # Create symlink if we can find the file locally
-        if filesAreLocal and 'file_name' in dataset and not options.force_copy:
-            originalFile=dataset['file_name']
+        if filesAreLocal and 'file_path' in dataset and not options.force_copy:
+            logging.debug("Linking dataset")
+            originalFile=dataset['file_path']
             os.symlink(originalFile, out_file_name)
         else:
             # Copy to local file from download URL
             url = dataset['download_url']
             response = requests.get(url, stream=True, verify=False)
+            logging.debug(repr(dataset))
             logging.debug("Copying data from:\n%s" % (url))
             logging.info("Copyting to: %s" % (out_file_name))
             #with open(out_file_name, 'wb') as out_file:
