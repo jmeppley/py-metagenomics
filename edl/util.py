@@ -582,3 +582,41 @@ def rightPad(name, width):
         name+=' '
     return name
 
+def reservoirSample(iterator, N=100, returnCount=False):
+    """
+    Randomly sample N items from an iterator of unknown size. Returns a list of the
+    selected items. 
+    
+    If the iterator returns fewer than N items, all will be in the sample, but the sample will not have N elements.
+    
+    IF returnCount set to true, return value is tuple: (sample, totalItemsFromIterator)
+    """
+    
+    sample = []
+    i=0
+    
+    # Fill up sample with first N elements, return if stream ends before Nth
+    for item in iterator:
+        sample.append(item)
+        i+=1
+        if i==N:
+            break
+    else:
+        if returnCount:
+            return (sample, len(sample))
+        else:
+            return sample
+    
+    # Replace random item in sample with next element with probabliity N/i
+    numerator = float(N)
+    for item in iterator:        
+        i+=1
+        val = numpy.random.rand()
+        if val < numerator/i:
+            # replace random element from current sample
+            sample[numpy.random.random_integers(0,N-1)]=item
+            
+    if returnCount:
+        return (sample, i)
+    else:
+        return sample
