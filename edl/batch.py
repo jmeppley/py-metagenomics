@@ -260,7 +260,7 @@ def regexRecordGenerator(fileType, stream):
         if fileType.sepRE.match(line):
             if len(lastRecord)>0:
                 yield lastRecord
-                del lastRecord[:]
+                lastRecord=[]
         lastRecord.append(line)
 
     if len(lastRecord)>0:
@@ -275,7 +275,7 @@ def linedRecordGenerator(fileType, stream):
         if index%fileType.numLines==0:
             if len(lastRecord)>0:
                 yield lastRecord
-                del lastRecord[:]
+                lastRecord=[]
         lastRecord.append(line)
 
     if len(lastRecord)>0:

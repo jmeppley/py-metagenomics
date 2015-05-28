@@ -5,6 +5,7 @@ def test_reservoir_sampling_simple():
                                                         N=10, 
                                                         returnCount=True)
     assert len(ten_numbers) == 10
+    assert len(set(ten_numbers)) == 10
     assert one_hundred == 100
 
     five_numbers = edl.util.reservoirSample(xrange(1000),
