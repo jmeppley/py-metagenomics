@@ -24,6 +24,8 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
                       help="which dataset to get in each history")
     parser.add_option('-D', '--dataset_regex', default=None,
                       help="Expression for matching dataset names. If set, overrides the dataset_index (-d)")
+    parser.add_option("-S","--sameDir", default=False, action='store_true',
+            help="Save all datasets to same directory, don't created subdirs for each history")
     parser.add_option("-O",'--saveDir', default=".",
             help="Direcotry in which to save files. A subdirectory will be created for each matchin history. Defaults to the current directory")
     parser.add_option("-o", "--outfileName", default=None,
@@ -100,9 +102,12 @@ def _get_output_dir(options, history):
     """
 
     # Create history dir, add id if necessary
-    hname=_sanitize(history[u'name'])
-    hname = hname + "_" + history[u'id']
-    hdir=os.path.sep.join((options.saveDir,hname))
+    if options.sameDir:
+        hdir = options.saveDir
+    else:
+        hname=_sanitize(history[u'name'])
+        hname = hname + "_" + history[u'id']
+        hdir=os.path.sep.join((options.saveDir,hname))
     if not os.path.exists(hdir):
         os.makedirs(hdir)
     return hdir
