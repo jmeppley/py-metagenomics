@@ -1,0 +1,63 @@
+{
+  "color": "r",
+  "children": [
+    {
+      "color": "r",
+      "children": [
+        {
+          "color": "g",
+          "children": [
+            {
+              "color": "g",
+              "children": [],
+              "name": "Rhodobacteraceae",
+              "size": 14882
+            },
+            {
+              "color": "g",
+              "children": [],
+              "name": "Pseudomonadaceae",
+              "size": 3369
+            },
+            {
+              "color": "g",
+              "children": [],
+              "name": "gamma proteobacterium HTCC2207",
+              "size": 8133
+            },
+            {
+              "color": "g",
+              "size": 193651,
+              "name": "Others",
+              "children": []
+            }
+          ],
+          "name": "Proteobacteria",
+          "size": 193651
+        },
+        {
+          "color": "r",
+          "children": [],
+          "name": "Bacteroidetes",
+          "size": 3296
+        },
+        {
+          "color": "r",
+          "size": 20195,
+          "name": "Others",
+          "children": []
+        }
+      ],
+      "name": "Bacteria",
+      "size": 20195
+    },
+    {
+      "color": "r",
+      "size": 3589,
+      "name": "Others",
+      "children": []
+    }
+  ],
+  "name": "root",
+  "size": 3589
+}
