@@ -5,6 +5,7 @@ from optparse import OptionParser
 import sys, re, logging
 from edl import redistribute, kegg, hits
 from edl.util import addUniversalOptions, setupLogging, parseMapFile
+from edl.hits import addWeightOption, loadSequenceWeights
 from edl.expressions import accessionRE, nrOrgRE
 
 def main():
@@ -144,7 +145,7 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
         fileCounts[filetag]={}
         totals[filetag]=0
 
-    TODO: incorporate weights into tophit algorithm!
+    #TODO: incorporate weights into tophit algorithm!
     if options.countMethod == 'tophit':
         # Process all files at once and use overall abundance to pick best hits
         from edl import redistribute
