@@ -121,9 +121,15 @@ def getN50_old(sizes):
         for i in range(read):
             bases.append(read)
     return numpy.median(bases)
+
 def getN50(sizes, N=50):
-    if N==50:
-        compare=getN50_old(sizes)
+
+    #if N==50:
+    #    # This adds a significant chunk of time and has yet to find an error...should we drop it?
+    #    try:
+    #        compare=getN50_old(sizes)
+    #    except:
+    #        compare=None
 
     totalLength = sum(sizes)
     targetLength = float(totalLength) * N/100.
@@ -131,9 +137,9 @@ def getN50(sizes, N=50):
     for size in sorted(sizes,reverse=True):
         totalLength+=size
         if totalLength>=targetLength:
-            if N==50:
-                if size != compare:
-                    raise Exception("N50s don't match: %s != %s" % (size,compare))
+            #if N==50 and compare is not None:
+            #    if size != compare:
+            #        raise Exception("N50s don't match: %s != %s" % (size,compare))
             return size
     else:
         raise Exception("Target length never reached!\nN=%d, target=%d, total=%d" % (N, targetLength, totalLength))
