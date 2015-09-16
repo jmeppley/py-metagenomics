@@ -110,8 +110,6 @@ foreach my $input (@ARGV) {
 
 	my $m = 0;
 	my $total = 0;
-	my $reads = 0;
-	my $last;
 	my $recognized;
 	my $pass;
 
@@ -130,7 +128,7 @@ foreach my $input (@ARGV) {
 		next unless $splits[0] =~ m/score=(\d+)/;
 		my $score = $1;
 		my $bit = ($lambda * $score - log($k)) / log(2);		
-        
+
         # check the bit score cutoff
 		next if ($bit < $bit_cut);
 
@@ -196,11 +194,6 @@ foreach my $input (@ARGV) {
 
         # count number of reads passing cutoffs
 		$pass++;
-
-		unless ($query eq $last) {
-			$reads++;
-			$last = $query;
-		}
 	
 		my $desc = "NA";
 		if (defined $db_fasta) {

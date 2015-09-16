@@ -415,6 +415,9 @@ def getConvertCommand(format, sort, maxHits, tmpDirRoot):
     """
 
     command = "%s/LAST_output_converter.pl -q -pipe -f %s" % (scriptDir, format)
+    if maxHits >= 0:
+        command += " -n %s" % (maxHits)
+
     if sort:
         if format=='liz':
             scoreCol=10
@@ -424,9 +427,6 @@ def getConvertCommand(format, sort, maxHits, tmpDirRoot):
             scoreCol=11
 
         command += " | sort -T %s -t %s -k 1,1 -k %drn,%d" % (tmpDirRoot,sorttab, scoreCol,scoreCol)
-
-        if maxHits >= 0:
-            command += " | python %s/filter_blast_m8.py -H %s -f %s" % (scriptDir, maxHits, format)
 
     return command
 
