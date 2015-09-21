@@ -394,12 +394,13 @@ class Hit:
         self.qstart=int(cells[3])
         self.qend=int(cells[4])
         self.evalue = float(cells[5])
+        self.strand = cells[6]
         hit_data = cells[8].split(';',1)
         self.hit = hit_data[0]
         self.hitDesc = hit_data[1]
         self.score=1
         self.pctid=1
-        self.mlen=self.qend + 1- self.qstart
+        self.mlen=self.qend+1- self.qstart
 
     def getAln(self):
         if 'aln' in dir(self):
