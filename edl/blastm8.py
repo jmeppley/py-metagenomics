@@ -740,6 +740,7 @@ For example, flags=['format','bits','filterPct'] would enable filtering on bit s
                                    LAST0,
                                    BLASTPLUS,
                                    SAM,
+				   GFF,
                                    HMMSCANDOM,
                                    HMMSCAN,
                                    HMMSEARCHDOM,
