@@ -11,6 +11,14 @@ In this folder is a makefile for each database. You should be able to simply `ma
 
 If you are impatient and are working on a multi-core computer, you can add "-j N" to the command to use N threads when possible.
 
+You need to have a number of things installed for this to work properly, including:
+ 
+ * gnu make
+ * perl
+ * lastal/lastdb
+ * tantan
+ * python with modules: biopython, numpy
+
 # LASTDBCHUNK #
 Unless you have a lot of RAM available (>200GB), you should limit the size of the generated last databases so they fit into memory. To do so, set the make variable: LASTDBCHUNK=100G (or whatever is appropriate for your system).
 
