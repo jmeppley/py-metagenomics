@@ -66,7 +66,7 @@ SSU_TAXIDMAP=$(SSU_LASTP).tax
 SSU_HITIDMAP:=$(SSU_LASTP).ids
 SSU_DBTAX:=$(SSU_LASTDB_DIR)/names.dmp
 
-TAXSCRIPT:=$(DB_SCRIPT_DIR)/buildSilvaTaxFiles.py
+TAXSCRIPT:=$(DB_SCRIPT_DIR)/buildSilvaTaxFiles.py -t
 
 ifeq ($(PARSE_TAXONOMY),True)
 	ALL_TARGETS:=$(ALL_TARGETS) taxonomy

@@ -196,7 +196,7 @@ def buildSilvaTree(taxFile, fastaFile, logger):
     taxmap={}
     for (hitid,lineage) in getOrgsFromSilvaFasta(fastaFile):
         node = edl.silva.SilvaTaxNode.addToTreeFromString(lineage, silvaTree)
-        taxmap[hitid]=node.id
+        taxmap[hitid]=node
 
     logger.info("Added nodes from fasta file for a total of %d" % (len(silvaTree)))
 
@@ -209,6 +209,12 @@ def buildSilvaTree(taxFile, fastaFile, logger):
             else:
                 maxTaxid+=1
                 node.id=maxTaxid
+
+    logger.info("Cleaning up taxmap")
+
+    # change nodes in taxmap to IDs
+    for hitid in taxmap:
+        taxmap[hitid]=taxmap[hitid].id
 
     return (rootNode, taxmap)
 
