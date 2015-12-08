@@ -3,13 +3,13 @@
 #$ -V
 #$ -S /usr/bin/python
 
-import sys, threading, logging, tempfile, subprocess, shutil, os
+import sys, threading, logging, tempfile, subprocess, shutil, os, re
 from edl.batch import fileTypeMap, getSizePerChunk, fragmentInputBySize, formatCommand, getFragmentPath
 from edl.util import addUniversalOptions, setupLogging, parseMapFile
 from edl.blastm8 import getHitCol
 
-lastal_bin='lastal'
-tantanBin='tantan'
+lastal_bin='/slipstream/opt/bin/lastal'
+tantanBin='/usr/local/bin/tantan'
 scriptDir=os.path.dirname(os.path.abspath(__file__))
 tmpDirRoot='/localtmp'
 # this may have to change based on the system. I haven't figured the cases yet
@@ -315,6 +315,7 @@ class Options():
 ##############
 # Methods
 ##############
+version_re = re.compile(r'last\S+\s+(\d\S+)')
 def get_lastal_version(lastal_bin=lastal_bin):
     """
     Try to get the lastal version from the binary.
@@ -480,7 +481,7 @@ def getSortCommand(sort, maxHits, tmpDirRoot):
     if sort:
         return "grep -v '^#' | sort -T %s -t %s -k 7,7 -k 1rn,1 %s" % (tmpDirRoot,sorttab,maxHits)
     else:
-        return maxhits[2:]
+        return maxHits[2:]
 
 def sortOutput(raw,out,tmpDirRoot,sort=True,maxHits=-1):
     """

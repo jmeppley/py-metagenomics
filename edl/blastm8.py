@@ -337,7 +337,7 @@ class Hit:
         self.aln=qmlen/float(qlen)
 
         # some versions have evalues in the last few spots (eg: E=2.1e-09)
-        self.evalue=float(cells[3][2:].strip()) if len(cells)>13 else None
+        self.evalue=float(cells[13][2:].strip()) if len(cells)>13 else None
         self.pctid=None
         self.mlen=computeLastHitValues(cells[11])
         self.hitDesc=None
