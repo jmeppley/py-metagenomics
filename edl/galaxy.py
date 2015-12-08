@@ -216,8 +216,11 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
         if m:
             (name, number, lane, direction) = m.groups()
 
+            logger.debug("Matched %s:%s" % (number, name))
             if sampleRE is not None:
                 if sampleRE.search(name) is None:
+                    logger.debug("%s not found in %s" % (sampleRE.pattern, 
+                                                         name))
                     continue
             fileId=item[u'id']
             if number in files:
@@ -232,6 +235,8 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
         m = re.search(r'SampleSheet.csv$',item[u'name'])
         if m:
             files['sampleSheet'] = item[u'id']
+
+        logger.debug("Found %d files" % (len(files)))
     
     return files
 
@@ -277,43 +282,47 @@ def parseSampleSheet(runName, sampleSheetId, galaxyInstance, **kwargs):
     else:
         f,closeStream = loadSampleSheetFromGalaxy(sampleSheetId, galaxyInstance)
 
-    # find Assay line
-    line = ""
-    while re.match(r'Assay,',line) is None:
-        line = f.next()
+    try:
+        # find Assay line
+        line = ""
+        while re.match(r'\[Reads\]',line) is None:
+            line = f.next()
 
-    # not the fastest approach, but should be clear
-    if re.search(r'[Nn]extera',line) is not None:
-        print (line)
-        chemistry='nextera'
-    elif re.search(r'[Tt]rue?[Ss]eq',line) is not None:
-        print (line)
-        chemistry='truseq'
-    elif re.search(r'[Ss]cript?[Ss]eq',line) is not None:
-        print (line)
-        chemistry='scriptseq'
-    
-    # Skip ahead to sample table
-    line = ""
-    while re.match(r'\[Data\]',line) is None:
-        line = f.next()
+            # not the fastest approach, but should be clear
+            if re.match(r'Assay,', line) is not None:
+                if re.search(r'[Nn]extera',line) is not None:
+                    print (line)
+                    chemistry='nextera'
+                elif re.search(r'[Tt]rue?[Ss]eq',line) is not None:
+                    print (line)
+                    chemistry='truseq'
+                elif re.search(r'[Ss]cript?[Ss]eq',line) is not None:
+                    print (line)
+                    chemistry='scriptseq'
         
-    # parse first line as headers
-    headers = f.next().split(',')
-    indexIndex = headers.index('index')
-    if 'index2' in headers:
-        index2Index = headers.index('index2')
-        
-    # get the barcode for each sample
-    for i,line in enumerate(f):
-        cells=line.split(',')
-        if chemistry=='nextera':
-            barcodes[i+1]=[cells[indexIndex],cells[index2Index]]
-        else:
-            # put an empty string for unused barcode
-            barcodes[i+1]=[cells[indexIndex],""]
-    
-    closeStream()
+        # Skip ahead to sample table
+        line = ""
+        while re.match(r'\[Data\]',line) is None:
+            line = f.next()
+            
+        # parse first line as headers
+        headers = f.next().split(',')
+        indexIndex = headers.index('index')
+        if 'index2' in headers:
+            index2Index = headers.index('index2')
+            
+        # get the barcode for each sample
+        for i,line in enumerate(f):
+            cells=line.split(',')
+            if chemistry=='nextera':
+                barcodes[i+1]=[cells[indexIndex],cells[index2Index]]
+            else:
+                # put an empty string for unused barcode
+                barcodes[i+1]=[cells[indexIndex],""]
+        closeStream()
+    except StopIteration:
+        closeStream()
+        raise Exception("Unexpected end of SampleSheet!")
 
     return (chemistry, barcodes)
 
@@ -335,6 +344,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
 
     Runs the given workflow on each sample in the MiSeq run. The results are put into a new history with the name: "historyPrefix: runName: sampleName".
     """
+
     historyTemplate='%s: %s: %s'
     galaxyInstance = GalaxyInstance(apiURL, apiKey)
     logger.debug("workflowId: %s" % workflowID)
@@ -348,11 +358,16 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
     primerToolID=getPrimerToolId(galaxyInstance, workflowID)
     workflowInputs = getWorkflowInputs(galaxyInstance, workflowID)
     files = locateDatasets(runName, galaxyInstance,**kwargs)
+    logger.info("Found %d files in %s" % (len(files), runName))
     sampleSheetId = files.pop('sampleSheet',None)
+    if sampleSheetId is None:
+        logger.warn("No sample sheet!")
     (ssChemistry,barcodes) = parseSampleSheet(runName,
                                               sampleSheetId,
                                               galaxyInstance,
                                               **kwargs)
+    logger.debug("Chemistry is %s for %d samples" % (ssChemistry,
+                                                     len(barcodes)))
     if chemistry is None:
         chemistry=ssChemistry
     else:
@@ -360,6 +375,7 @@ def launchWorkflowOnSamples(apiKey, runName, workflowID=None, workflowName=None,
     responses=[]
     for (sample, sampleData) in files.iteritems():
         response={'sample':sample}
+        logger.debug("Checking sample %s" % (sample))
         try:
         #if True:
             sample = int(sample)
