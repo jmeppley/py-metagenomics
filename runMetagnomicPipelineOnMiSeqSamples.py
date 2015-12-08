@@ -7,6 +7,7 @@ import sys, logging, re, os
 import edl.galaxy
 from edl.util import addUniversalOptions,setupLogging
 from optparse import OptionParser
+logger=logging.getLogger(__name__)
 
 def main():
     usage = "usage: %prog [OPTIONS] RUN_NAME [RUN_NAME ...]"
@@ -46,9 +47,15 @@ run the samples through the Metagenomic pipeline in Galaxy
     wfName=options.pipelineName + options.pipelineVersion
     hpref=re.sub(r'[^A-Z0-9]','',options.pipelineName)
     if options.pipelineVersion != "":
-        hprep += + '.' + re.sub(r'[^A-Z0-9]','',options.pipelineVersion)
+        hpref += '.' + re.sub(r'[^A-Z0-9]','',options.pipelineVersion)
 
-    logging.debug("SampleRE:\t%r\nworkflow:\t%s\nhistPref:\t%s" % (sampleRE, wfName, hpref))
+    logger.debug("SampleRE:\t%r\nworkflow:\t%s\nhistPref:\t%s" % (sampleRE, wfName, hpref))
+
+    # attempt to stifle security warnings
+    try:
+        logging.captureWarnings(True)
+    except:
+        pass
 
     if options.api_key is None:
         key = edl.galaxy.getApiKey()
@@ -66,16 +73,16 @@ run the samples through the Metagenomic pipeline in Galaxy
                                                     apiURL=options.api_url,
                                                     historyPrefix=hpref,
                                                     chemistry=options.chem):
-            logging.debug(repr(r))
+            logger.debug(repr(r))
             if 'error' in r:
-                logging.warn(r['error'])
+                logger.warn(r['error'])
             else:
                 wfcount+=1
 
-        logging.info("Launched workflow on %d samples in %s" % (wfcount,runName))
+        logger.info("Launched workflow on %d samples in %s" % (wfcount,runName))
         total+=wfcount
 
-    logging.info("Launched workflow %s on %d samples from %s runs" % (wfName, total, len(args)))
+    logger.info("Launched workflow %s on %d samples from %s runs" % (wfName, total, len(args)))
 
 if __name__ == '__main__':
     main()
