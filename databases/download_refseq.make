@@ -25,8 +25,8 @@ ADDITIONS_SOURCE:=$(BUILD_ROOT)/additions
 ADDITIONS_FAA:=$(ADDITIONS_SOURCE)/additions.protein.fasta
 ADDITIONS_TAXIDS:=$(ADDITIONS_SOURCE)/acc.to.taxid.protein.additions
 # If filter file is not empty, listed taxids will be removed from additions
-ADDITIONS_FILTER:=python $(ADDITIONS_SOURCE)/taxids.in.RefSeq.$(REL)
-ADDITIONS_KOMAP:=python $(ADDITIONS_SOURCE)/acc.to.ko.protein.additions
+ADDITIONS_FILTER:=$(ADDITIONS_SOURCE)/taxids.in.RefSeq.$(REL)
+ADDITIONS_KOMAP:=$(ADDITIONS_SOURCE)/acc.to.ko.protein.additions
 
 BUILD_KO_MAP:=False
 KEGG_ROOT?=./KEGG
@@ -145,7 +145,7 @@ $(ADDFAA): $(ADDACCMAPP) $(ADDITIONS_FAA)
 
 $(ADDITIONS_FILTER): $(ADDITIONS_TAXIDS) $(MDDIR)/release$(REL).taxon.new
 	#touch $(ADDITIONS_FILTER)
-	cut -f 2 $(ADDITIONS_TAXIDS) | uniq | python $.(SCRIPT_DIR)/screen_table.py -l $(MDDIR)/release$(REL).taxon.new -k > $@
+	cut -f 2 $(ADDITIONS_TAXIDS) | uniq | python $(SCRIPT_DIR)/screen_table.py -l $(MDDIR)/release$(REL).taxon.new -k > $@
 
 $(ADDACCMAPP): $(ADDITIONS_TAXIDS) $(ADDITIONS_FILTER)
 	@echo "==Importing taxid map for additions"
