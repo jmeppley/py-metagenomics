@@ -202,6 +202,7 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
     files={}
     libName=libraryNameTemplate % (runName)
     libs=galaxyInstance.libraries.get_libraries(name=libName)
+    libs=[l for l in libs if not l[u'deleted']]
     if len(libs)==0:
         raise Exception("No library named %s" % (libName))
     libID=libs[0][u'id']
