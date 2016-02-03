@@ -357,6 +357,8 @@ class Hit:
         self.hend=int(cells[10])
 
     def parseBlastPlusLine(self, line):
+        if line[0]=='#':
+            raise EmptyHitException("Comment line")
         cells=line.rstrip('\n\r').split('\t')
         self.read=cells[0]
         self.hit=cells[1]
