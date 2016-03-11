@@ -28,7 +28,7 @@ def getApiKey(apiKeyFile = '.galaxy_api_key', apiEnvVar = 'GALAXY_API_KEY'):
 # For retrieving data
 def findDatasets(apiKey, patterns, 
                  dsName=None, 
-                 dsNum=None, 
+                 dsNums=[], 
                  apiURL='http://localhost/api',
                  skipDeleted=True):
     """
@@ -56,7 +56,7 @@ def findDatasets(apiKey, patterns,
             for dataset in getDatasetData(apiKey,
                                           apiURL,
                                           historyId=historyId,
-                                          datasetNumber=dsNum,
+                                          datasetNumbers=dsNums,
                                           datasetName=dsName,
                                           skipDeleted=skipDeleted):
                 yield (history, dataset)
@@ -87,7 +87,7 @@ def getDatasetFile(apiKey, apiURL, historyName, datasetNumber,
 def getDatasetData(apiKey, apiURL, 
                    historyName=None, 
                    historyId=None, 
-                   datasetNumber=None, 
+                   datasetNumbers=None, 
                    datasetName=None, 
                    skipDeleted=True):
     """
@@ -98,7 +98,9 @@ def getDatasetData(apiKey, apiURL,
 
     Under the hood, this is an HTTP connection using urllib2. 
 
-    HistoryName can be a string or compiled re object. It will be ignored if historyId is not None. The same is true for datasetNumber and datasetName.
+    HistoryName can be a string or compiled re object. It will be ignored if historyId is not None. 
+    
+    The same is not true for datasetNumbers and datasetName. All datasets mathing either will be returned.
     """
 
     # Collate history IDs
@@ -124,7 +126,7 @@ def getDatasetData(apiKey, apiURL,
             details = json.loads(urllib2.urlopen(hurl).read())
             if (details['deleted'] or details['state']=='error') and skipDeleted:
                 continue
-            if _dataset_match(details, datasetNumber, datasetName):
+            if _dataset_match(details, datasetNumbers, datasetName):
                 if 'download_url' not in details:
                     logger.warn("Can't find the download URL in %r\nHistory: %r" % (details,historyId))
                     continue
@@ -145,12 +147,14 @@ def fixDownloadUrl(downloadUrl, apiUrl, apiKey):
         qstringsep="?"
     return apiUrl + durl + qstringsep + "key=" + apiKey
 
-def _dataset_match(dataset, datasetNumber, datasetName):
+def _dataset_match(dataset, datasetNumbers, datasetName):
     """
     helper method to check for dataset number or name in dataset details
     """
-    if datasetNumber is not None:
-        return dataset[u'hid']==datasetNumber
+    if dataset[u'hid'] in datasetNumbers:
+        return True
+    elif datasetName is None:
+        return False
     elif isinstance(datasetName,str):
         return dataset[u'name']==datasetName
     else:

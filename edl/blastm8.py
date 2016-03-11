@@ -307,7 +307,7 @@ class Hit:
 
     # score name1   start1  alnSize1        strand1 seqSize1        name2   start2  alnSize2   strand2 seqSize2        blocks
     def parseLastalLine(self, line):
-        logger.debug(line)
+        #logger.debug(line)
         if line[0]=='#':
             raise EmptyHitException("Comment line")
         cells=line.rstrip('\n\r').split('\t')
@@ -357,6 +357,8 @@ class Hit:
         self.hend=int(cells[10])
 
     def parseBlastPlusLine(self, line):
+        if line[0]=='#':
+            raise EmptyHitException("Comment")
         cells=line.rstrip('\n\r').split('\t')
         self.read=cells[0]
         self.hit=cells[1]
