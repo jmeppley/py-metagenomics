@@ -12,15 +12,21 @@ from edl.blastm8 import M8Stream
 def main():
     usage = "usage: %prog [OPTIONS] HIT_TABLE(S)"
     description = """
-Takes an m8 blast and picks the best hit for each. First, only the best scores are used, but if there is a tie (aka ambiguous hit), than a winner is assigned so that the proportion reads assigned to each organism matches the proportion of unambiguos hits.
+Takes an m8 blast and picks the best hit for each. 
 
-    FilterPct defaults to 0, but can be altered, but I don't recommend it.
-    ParseStyle and countMethod are ignored.
+There are two count methods available, and these are not listed in the options below: 'tophit' and 'toporg'. The other count methods (first, most, etc) are unavailable.
+
+First, only the best scores are used, but if there is a tie (aka ambiguous hit), than a winner is assigned using the abundances found from unambiguous hits. When 'tophit' is selected, the hit with the highest overal abundance (from unambigous reads) is used. When 'toporg' is used, the hit which belongs to the most abundant taxon is used.
+
+If the -P or --proportinal flag is given, then ambiguous hits are resolved so that the overall proportion of hit (when using tophit) or taxon (for toporg) abundance is changed the least.
+
+FilterPct defaults to 0, but can be altered, but I don't recommend it.
     """
     parser = OptionParser(usage, description=description)
     addIOOptions(parser)
     addTaxonOptions(parser,defaults={'filterPct':0,'parseStyle':ACCS,'countMethod':'tophit'},choices={'countMethod':('tophit','toporg')})
     addUniversalOptions(parser)
+    parser.add_option("-P","--proportional", dest="proportional", default=False, action="store_true", help="Assign reads that have multiple equal top hits to taxa such that the overal proportion of taxa is consistent with the unambiguious hits. This is meant for use with the 'toporg' count method.")
     parser.add_option("-i","--individualFiles", dest="individual", default=False, action="store_true", help="Use this flag to process files independently. Normally, counts from all files are pooled for making choices.")
 
     (options, args) = parser.parse_args()
@@ -31,6 +37,8 @@ Takes an m8 blast and picks the best hit for each. First, only the best scores a
     params = FilterParams.createFromOptions(options)
     if options.countMethod=='toporg':
         (taxonomy,hitStringMap)=readMaps(options)
+
+    wta = not(options.proportional)
 
     if len(args)<=1 or options.individual:
         # loop over input
@@ -43,14 +51,14 @@ Takes an m8 blast and picks the best hit for each. First, only the best scores a
                 readHits = redistribute.pickBestHitByAbundance(m8stream,
                                                       filterParams=params,
                                                       returnLines=True,
-                                                      winnerTakeAll=True,
+                                                      winnerTakeAll=wta,
                                                       parseStyle=options.parseStyle)
             else:
                 # translate to organism before finding most abundant
                 readHits = redistribute.pickBestHitByAbundance(m8stream,
                                                           filterParams=params,
                                                           returnLines=True,
-                                                          winnerTakeAll=True,
+                                                          winnerTakeAll=wta,
                                                           taxonomy=taxonomy,
                                                           hitStringMap=hitStringMap,
                                                           parseStyle=options.parseStyle)
@@ -85,14 +93,14 @@ Takes an m8 blast and picks the best hit for each. First, only the best scores a
             readHits = redistribute.pickBestHitByAbundance(multifile,
                                                   filterParams=params,
                                                   returnLines=False,
-                                                  winnerTakeAll=True,
+                                                  winnerTakeAll=wta,
                                                   parseStyle=options.parseStyle)
         else:
             # translate to organism before finding most abundant
             readHits = redistribute.pickBestHitByAbundance(multifile,
                                                       filterParams=params,
                                                       returnLines=False,
-                                                      winnerTakeAll=True,
+                                                      winnerTakeAll=wta,
                                                       taxonomy=taxonomy,
                                                       hitStringMap=hitStringMap,
                                                       parseStyle=options.parseStyle)
