@@ -27,5 +27,18 @@
     [ "$status" = 0 ]
 }
 
+@test "Testing assignTopHit on multiple inputs" {
+    run ./assignTopHit.py test/data/sample.?.blastx.b50.m8 -C tophit -o .tophit
+    [ "$status" = 0 ]
+    run for F in sample.?.blastx.b50.m8.tophit; do mv $F $F.tmp; sort $F.tmp > $F; rm $F.tmp; done
+    [ "$status" = 0 ]
+    run diff test/data/sample.1.blastx.b50.m8 test/data/.tst.sample.1.blastx.b50.m8
+    [ "$status" = 0 ]
+    run diff test/data/sample.2.blastx.b50.m8 test/data/.tst.sample.2.blastx.b50.m8
+    [ "$status" = 0 ]
+    run diff test/data/sample.3.blastx.b50.m8 test/data/.tst.sample.3.blastx.b50.m8
+    [ "$status" = 0 ]
+}
+
 
 
