@@ -1,0 +1,262 @@
++E	Polyketide biosynthesis proteins
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Polyketide Biosynthesis Proteins</h2>
+#<!---
+#ENTRY       ko01008
+#DEFINITION  Polyketide biosynthesis proteins
+#--->
+!
+A<b>Polyketide synthase (PKS)</b>
+B  Modular type I PKS
+C    cis-AT PKS
+D      Erythronolide synthase
+E        K10817  E2.3.1.94; erythronolide synthase [EC:2.3.1.94]
+D      Avermectin PKS
+E        K14371  aveA; type I polyketide synthase AVES
+D      Rifamycin PKS
+E        K15670  rifA; rifamycin polyketide synthase modules 1, 2 and 3
+E        K15671  rifB; rifamycin polyketide synthase modules 4, 5 and 6
+E        K15672  rifC_D; rifamycin polyketide synthase modules 7 and 8
+E        K15673  rifE; rifamycin polyketide synthase modules 9 and 10
+E        K15466  rifF, asm9; amide synthase
+D      Mycolactone PKS
+E        K16418  mlsA1; mycolactone core lactone polyketide synthase MlsA1
+E        K16450  mlsA2; mycolactone core lactone polyketide synthase MlsA2
+E        K16419  mlsB; mycolactone side chain polyketide synthase
+C    trans-AT PKS
+D      Bacillaene PksX synthase
+E        K15329  pksE; trans-AT polyketide synthase, acyltransferase and oxidoreductase domains
+E        K15328  pksD; bacillaene synthase trans-acting acyltransferase
+E        K13611  pksJ; polyketide synthase PksJ
+E        K13612  pksL; polyketide synthase PksL
+E        K13613  pksM; polyketide synthase PksM
+E        K13614  pksN; polyketide synthase PksN
+E        K13615  pksR; polyketide synthase PksR
+D      Chivosazol hybrid PKS-NRPS
+E        K15329  pksE; trans-AT polyketide synthase, acyltransferase and oxidoreductase domains
+E        ------  chiPKS; chivosazol hybrid polyketide synthase / nonribosomal peptide synthetase [SCL:sce4137 sce4136 sce4135 sce4134 sce4133]
+D      Macrolactin PKS
+E        K15329  pksE; trans-AT polyketide synthase, acyltransferase and oxidoreductase domains
+E        ------  mlnPKS; macrolactin polyketide synthase [BAY:RBAM_014340 RBAM_014350 RBAM_014360 RBAM_014370 RBAM_014380 RBAM_014390 RBAM_014400]
+D      Difficidin PKS
+E        K15329  pksE; trans-AT polyketide synthase, acyltransferase and oxidoreductase domains
+E        ------  dfnPKS; difficidin polyketide synthase [BAY:RBAM_022030 RBAM_022020 RBAM_022010 RBAM_022000 RBAM_021990 RBAM_021980 RBAM_021970]
+D      Rhizoxin hybrid PKS-NRPS
+E        K15469  rhiG; rhizoxin biosynthesis acyltransferase
+E        K15674  rhiA; rhizoxin biosynthesis, polyketide synthase / nonribosomal peptide synthetase RhiA
+E        K15675  rhiB; rhizoxin biosynthesis, polyketide synthase / nonribosomal peptide synthetase RhiB
+E        K15676  rhiC; rhizoxin biosynthesis, polyketide synthase RhiC
+E        K15677  rhiD; rhizoxin biosynthesis, polyketide synthase RhiD
+E        K15678  rhiE; rhizoxin biosynthesis, polyketide synthase RhiE
+E        K15679  rhiF; rhizoxin biosynthesis, polyketide synthase RhiF
+D      Myxovirescin hybrid PKS-NRPS
+E        K15469  rhiG; rhizoxin biosynthesis acyltransferase
+E        ------  taPKS; myxovirescin biosynthesis, hybrid polyketide synthase / nonribosomal peptide synthetase [MXA:MXAN_3935 MXAN_3933 MXAN_3932]
+D      Albicidin synthase, hybrid PKS-NRPS
+E        ------  albXIII; albicidin synthase trans-acting acyltransferase AlbXIII [XAL:XALc_1516]
+E        ------  albPKS; albicidin synthase, hybrid polyketide synthase / nonribosomal peptide synthetase [XAL:XALc_1529 XALc_1532 XALc_1523]
+D      Etnangien PKS
+E        K15469  rhiG; rhizoxin biosynthesis acyltransferase
+E        ------  etnPKS; etnangien polyketide synthase [SCL:sce3188 sce3189 sce3190 sce3191 sce3192 sce3193]
+B  Iterative type I PKS
+C    Fungal nonreducing PKS (NR-PKS)
+D      K15316  STCA; sterigmatocystin polyketide synthase
+D      K15321  WA; naphtho-gamma-pyrone polyketide synthase
+D      K15317  APTA; asperthecin polyketide synthase
+D      K15415  MDPG; monodictyphenone polyketide synthase
+D      K15416  ORSA; orsellinic acid synthase
+C    Fungal partially reducing PKS (PR-PKS)
+D      K15320  ATX; 6-methylsalicylic acid synthase [EC:2.3.1.165]
+C    Fungal highly reducing PKS (HR-PKS)
+D      K15419  EASB; emericellamide biosynthesis, highly reducing iterative type I polyketide synthase
+C    Fungal hybrid type
+D      Zearalenone synthase
+E        K15417  ZEA1; zearalenone synthase, nonreducing iterative type I polyketide synthase
+E        K15418  ZEA2; zearalenone synthase, highly reducing iterative type I polyketide synthase
+D      Asperfuranone NR/HR-PKS
+E        ------  AFOE; asperfuranone biosynthesis, nonreducing iterative type I polyketide synthase AfoE [ANI:AN1034.2]
+E        ------  AFOG; asperfuranone biosynthesis, highly reducing iterative type I polyketide synthase AfoG [ANI:AN1036.2]
+C    Bacterial type
+D      K15314  mdpE, pksE; enediyne polyketide synthase
+D      ------  pksO; orsellinic acid synthase [SAQ:Sare_2029]
+B  Type II PKS
+C    C9-C14 cyclized polyketide type
+D      Spore pigment PKS
+E        K14667  whiEIII; minimal PKS ketosynthase (KS/KS alpha) [EC:2.3.1.-]
+E        K14668  whiEIV; minimal PKS chain-length factor (CLF/KS beta) [EC:2.3.1.-]
+E        K14669  whiEV; minimal PKS acyl carrier protein
+E        K14670  whiEVI; aromatase
+E        K14671  whiEVII; cyclase
+C    C7-C12 cyclized polyketide type
+D      Octaketide PKS
+E        K05551  actI1; act minimal PKS ketosynthase (KS/KS alpha) [EC:2.3.1.-]
+E        K05552  actI2; act minimal PKS chain-length factor (CLF/KS beta) [EC:2.3.1.-]
+E        K05553  actI3; act minimal PKS acyl carrier protein
+E        K12420  actIII; ketoreductase [EC:1.1.1.-]
+E        K05554  actVII; aromatase [EC:4.2.1.-]
+E        K05555  actIV; cyclase [EC:4.-.-.-]
+B  Type III PKS
+C    Plant type
+D      K00660  CHS; chalcone synthase [EC:2.3.1.74]
+D      K13232  ST; stilbene synthase [EC:2.3.1.95]
+C    Fungal type
+D      K16231  csyA; fungal type III polyketide synthase
+C    Bacterial type
+D      K15431  phlD, rppA; bacterial type III polyketide synthase
+D      K16232  gcs; germicidin synthase
+D      K16233  pks18; alpha-pyrone synthase
+D      ------  arsB; alkylresorcinol synthase [AVN:Avin_29550]
+D      ------  arsC; alkylpyrone synthase [AVN:Avin_29530]
+D      K16167  bpsA, srsA, pks11, pks10; alkylresorcinol/alkylpyrone synthase
+B  PKS-NRPS hybrid
+C    Bacterial type (modular)
+D      Myxalamid hybrid PKS-NRPS
+E        K15641  mxaF; myxalamid-type polyketide synthase MxaF
+E        K15642  mxaE_D; myxalamid-type polyketide synthase MxaE and MxaD, KS-AT-DH-KR-ACP domains
+E        K16417  K16417, mxaC; myxalamid-type polyketide synthase MxaC
+E        K15643  mxaB; myxalamid-type polyketide synthase MxaB
+E        K16416  K16416, mxaA; myxalamid-type nonribosomal peptide synthetase MxaA
+D      Myxothiazol hybrid PKS-NRPS
+E        ------ mtaPKS; myxothiazol hybrid polyketide synthase / nonribosomal peptide synthetase [SUR:STAUR_4014 STAUR_4015 STAUR_4016 STAUR_4017 STAUR_4018 STAUR_4019]
+D      Coronatine hybrid PKS-NRPS
+E        K15644  cfa6; coronafacic acid polyketide synthase Cfa6
+E        K15645  cfa7; coronafacic acid polyketide synthase Cfa7
+E        K15646  cmaA; coronamic acid synthetase CmaA, adenylation and thiolation didomain protein
+E        K15647  cmaE; coronamic acid synthetase CmaE, aminoacyltransferase
+E        K15648  cmaD; coronamic acid synthetase CmaD, carrier protein
+E        K15649  cmaT; coronamic acid synthetase CmaT, thioesterase component
+D      Microcystin synthetase
+E        ------  mcyPKS; microcystin synthetase, hybrid polyketide nonribosomal synthase / nonribosomal peptide synthetase [MAR:MAE_38630 MAE_38600 MAE_38610 MAR:MAE_38570 MAE_38560 MAE_38550]
+C    Fungal type (trans-ER, iterative)
+D      Aspyridone synthetase
+E        K15384  APDA; aspyridone synthetase, hybrid polyketide synthase / nonribosomal peptide synthetase
+E        K15385  APDC; aspyridone synthetase trans-acting enoyl reductase
+C    Fungal type (iterative)
+D      K15390  PSOA; pseurotin A synthetase, hybrid polyketide synthase / nonribosomal peptide synthetase
+D      K15391  CPAA; cyclopiazonic acid synthetase, hybrid polyketide synthase / nonribosomal peptide synthetase
+D      K15394  ACE1; hybrid polyketide synthase / nonribosomal peptide synthetase ACE1
+D      K15395  ftdB; hybrid polyketide synthase / nonribosomal peptide synthetase FtdB
+#
+A<b>Nonribosomal peptide synthetase (NRPS)</b>
+B  Linear NRPS
+C    K12743  PCBAB; N-(5-amino-5-carboxypentanoyl)-L-cysteinyl-D-valine synthase [EC:6.3.2.26]
+C    ------  EASA; emericellamide biosynthesis, nonribosomal peptide synthetase EasA [ANI:AN2545.2]
+C    ------  lgrABCD; linear pentadecapeptide gramicidin synthetase [BBE:BBR47_28920 BBR47_28930 BBR47_28940 BBR47_29500]
+C    ------  tycABC; tyrocidine synthetase [BBE:BBR47_27890 BBR47_27880 BBR47_27870]
+C    ------  mcnABCE; cyanopeptolin synthetase [MAR:MAE_60030 MAE_60020 MAE_60010 MAE_60000]
+C    Surfactin family lipopeptide synthetase
+D      K15654  srfAA, lchAA; surfactin family lipopeptide synthetase A
+D      K15655  srfAB, lchAB; surfactin family lipopeptide synthetase B
+D      K15656  srfAC, lchAC; surfactin family lipopeptide synthetase C
+C    Iturin family lipopeptide synthetase
+D      K15661  ituA, mycA, bmyA; iturin family lipopeptide synthetase A
+D      K15662  ituB, mycB, bmyB; iturin family lipopeptide synthetase B
+D      K15663  ituC, mycC, bmyC; iturin family lipopeptide synthetase C
+C    Fengycin family lipopeptide synthetase
+D      K15664  K15664, ppsA, fenC; fengycin family lipopeptide synthetase A
+D      K15665  K15665, ppsB, fenD; fengycin family lipopeptide synthetase B
+D      K15666  K15666, ppsC, fenE; fengycin family lipopeptide synthetase C
+D      K15667  K15667, ppsD, fenA; fengycin family lipopeptide synthetase D
+D      K15668  K15668, ppsE, fenB; fengycin family lipopeptide synthetase E
+C    Arthrofactin type cyclic lipopeptide synthetase
+D      K15658  ofaA, arfA; arthrofactin-type cyclic lipopeptide synthetase A
+D      K15659  ofaB, arfB; arthrofactin-type cyclic lipopeptide synthetase B
+D      K15660  ofaC, arfC; arthrofactin-type cyclic lipopeptide synthetase C
+B  Iterative NRPS
+C    Enterobactin synthetase
+D      K02363  entE, dhbE, vibE, mxcE; 2,3-dihydroxybenzoate-AMP ligase [EC:2.7.7.58]
+D      K01252  entB, dhbB, vibB, mxcF; bifunctional isochorismate lyase / aryl carrier protein [EC:3.3.2.1]
+D      K02364  entF; enterobactin synthetase component F [EC:2.7.7.-]
+C    Bacillibactin synthetase
+D      K02363  entE, dhbE, vibE, mxcE; 2,3-dihydroxybenzoate-AMP ligase [EC:2.7.7.58]
+D      K01252  entB, dhbB, vibB, mxcF; bifunctional isochorismate lyase / aryl carrier protein [EC:3.3.2.1]
+D      K04780  dhbF; nonribosomal peptide synthetase DhbF
+B  Nonlinear NRPS
+C    Yersiniabactin synthetase
+D      K04783  irp5, ybtE; yersiniabactin salicyl-AMP ligase [EC:6.3.2.-]
+D      K04786  irp1, HMWP1; yersiniabactin nonribosomal peptide/polyketide synthase
+D      K04784  irp2, HMWP2; yersiniabactin nonribosomal peptide synthetase
+C    Pyochelin synthetase
+D      K12238  pchD; pyochelin biosynthesis protein PchD
+D      K12239  pchE; dihydroaeruginoic acid synthetase
+D      K12240  pchF; pyochelin synthetase
+C    Mycobactin synthetase
+D      K04787  mbtA; mycobactin salicyl-AMP ligase [EC:6.3.2.-]
+D      K04788  mbtB; mycobactin phenyloxazoline synthetase
+D      K04789  mbtE; mycobactin peptide synthetase MbtE
+D      K04790  mbtC; mycobactin polyketide synthetase MbtC
+D      K04791  mbtD; mycobactin polyketide synthetase MbtD
+D      K04792  mbtF; mycobactin peptide synthetase MbtF
+C    Vibriobactin synthetase
+D      K02363  entE, dhbE, vibE, mxcE; 2,3-dihydroxybenzoate-AMP ligase [EC:2.7.7.58]
+D      K01252  entB, dhbB, vibB, mxcF; bifunctional isochorismate lyase / aryl carrier protein [EC:3.3.2.1]
+D      K04778  vibH; vibriobactin synthetase
+D      K12237  vibF; nonribosomal peptide synthetase VibF
+C    Myxochelin synthetase
+D      K02363  entE, dhbE, vibE, mxcE; 2,3-dihydroxybenzoate-AMP ligase [EC:2.7.7.58]
+D      K01252  entB, dhbB, vibB, mxcF; bifunctional isochorismate lyase / aryl carrier protein [EC:3.3.2.1]
+D      K15653  mxcG; nonribosomal peptide synthetase MxcG
+#
+A<b>Polyketide tailoring proteins</b>
+B  Hydrolase
+C    K15318  APTB; hydrolase
+C    K15315  pksE10; enediyne biosynthesis thioesterase
+B  Ketoreductase
+C    K14373  aveF; C-5 ketoreductase
+C    K05556  actVI1, RED1; ketoreductase RED1 [EC:1.1.1.-]
+B  Oxygenase
+C    K14366  eryF; 6-deoxyerythronolide B-6-hydroxylase [EC:1.14.-.-]
+C    K14370  eryK; erythromycin 12 hydroxylase [EC:1.14.13.154]
+C    K14372  aveE; cytochrome P450 hydroxylase [EC:1.14.-.-]
+C    K14630  actVA5; two-component flavin-dependent monooxygenase [EC:1.14.14.-]
+C    K14632  actVA6; C-6 monooxygenase
+C    K14673  whiEII; putative monooxygenase
+C    K14672  whiEVIII; putative polyketide hydroxylase
+C    K15468  pksS; cytochrome P450 PksS
+C    K15470  rhiH; cytochrome P450 monooxygenase
+C    K15319  APTC; monooxygenase
+C    K15386  APDB; cytochrome P450 monooxygenase
+C    K15387  APDD; FAD-dependent monooxygenase
+C    K15388  APDE; cytochrome P450 monooxygenase
+B  Methylase
+C    K14369  eryG; erythromycin 3''-O-methyltransferase [EC:2.1.1.254]
+C    K14374  aveD; avermectin B 5-O-methyltransferase [EC:2.1.1.-]
+C    K15467  rif14; 27-O-demethylrifamycin SV methyltransferase [EC:2.1.1.-]
+C    K15471  rhiI; O-methyltransferase [EC:2.1.1.-]
+C    K16168  bpsB, srsB; methyltransferase
+B  Glycosyltransferase
+C    K14367  eryBV; erythronolide B dTDP-mycarose O-glycosyltransferase [EC2.4.1.-]
+C    K14368  eryCIII; L-desosaminyltransferase [EC:2.4.1.278]
+C    K14375  aveBI; dTDP-L-oleandrosyltransferase [EC:2.4.1.-]
+B  beta-Branched incorporating proteins
+C    K15327  pksC; polyketide biosynthesis malonyl-CoA-[acyl-carrier-protein] transacylase
+C    K00646  pksF; malonyl-ACP decarboxylase
+C    K15337  acpK; polyketide biosynthesis acyl carrier protein
+C    K15311  pksG; polyketide biosynthesis 3-hydroxy-3-methylglutaryl-CoA synthase-like enzyme PksG
+C    K15312  pksH; polyketide biosynthesis enoyl-CoA hydratase PksH
+C    K15313  pksI; polyketide biosynthesis enoyl-CoA hydratase PksI
+B  Others
+C    K14627  actVI3; dehydratase [EC:4.2.1.-]
+C    K14628  actVI2; enoyl reductase
+C    K14629  actVI4; enoyl reductase
+C    K15389  APDG; acyl-CoA dehydrogenase
+C    K15392  CPAD; cyclo-acetoacetyl-L-tryptophan dimethylallyltransferase [EC:2.5.1.-]
+C    K15393  CPAO; FAD-dependent oxidoreductase
+C    K15650  cmaB; non-haem Fe2+, alpha-ketoglutarate-dependent halogenase
+C    K15651  cmaC; aminocarboxycyclopropane-forming enzyme
+#
+A<b>Nonribosomal peptide tailoring proteins</b>
+B  Reductase
+C    K04785  irp3, ybtU; yersiniabactin synthetase, thiazolinyl reductase component
+C    K12241  pchG; pyochelin biosynthetic protein PchG
+B  Thioesterase
+C    K05374  irp4, ybtT; yersiniabactin synthetase, thioesterase component
+C    K12242  pchC; pyochelin biosynthetic protein PchC
+C    K15657  srfATE, srfAD, lchAD; external thioesterase TEII
+B  Oxygenase
+C    K04793  mbtG; mycobactin lysine-N-oxygenase
+B  Aminotransferase
+C    K15681  mxcL; aminotransferase MxcL
+!
+#<hr>
+#<b>[ COMPOUND | BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: October 25, 2012

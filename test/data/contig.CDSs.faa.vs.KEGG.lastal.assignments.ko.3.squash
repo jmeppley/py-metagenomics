@@ -1,0 +1,60 @@
+Read	ko	3
+Aaustralica_c1505_PROKKA_00001	K02031	['02000 Transporters']
+Aaustralica_c1505_PROKKA_00002	K02032	['02000 Transporters']
+Aaustralica_c1505_PROKKA_00003	K18459	K18459
+Aaustralica_c1505_PROKKA_00004	None	None
+Aaustralica_c1508_PROKKA_00005	K13051	['01000 Enzymes', '01002 Peptidases']
+Aaustralica_c1508_PROKKA_00006	K03745	K03745
+Aaustralica_c1508_PROKKA_00007	None	None
+Aaustralica_c1512_PROKKA_00008	K02770	['02000 Transporters', '02060 Phosphotransferase system (PTS)', '00051 Fructose and mannose metabolism']
+Aaustralica_c1514_PROKKA_00009	None	None
+Aaustralica_c1516_PROKKA_00010	K01669	['01000 Enzymes', '03400 DNA repair and recombination proteins']
+Aaustralica_c1521_PROKKA_00013	K02408	['02040 Flagellar assembly', '02035 Bacterial motility proteins']
+Aaustralica_c1521_PROKKA_00014	K02388	['02040 Flagellar assembly', '02035 Bacterial motility proteins']
+Aaustralica_c1521_PROKKA_00015	K02387	['02040 Flagellar assembly', '02035 Bacterial motility proteins']
+Aaustralica_c1547_PROKKA_00018	K02433	['00970 Aminoacyl-tRNA biosynthesis', '01000 Enzymes']
+Aaustralica_c1553_PROKKA_00019	None	None
+Aaustralica_c1553_PROKKA_00020	K06997	K06997
+Aaustralica_c1553_PROKKA_00021	None	None
+Aaustralica_c1558_PROKKA_00027	K01875	['03016 Transfer RNA biogenesis', '00970 Aminoacyl-tRNA biosynthesis', '01000 Enzymes', '01007 Amino acid related enzymes']
+Aaustralica_c1558_PROKKA_00028	K07109	K07109
+Aaustralica_c1558_PROKKA_00029	K03469	['03030 DNA replication', '03032 DNA replication proteins', '01000 Enzymes']
+Aaustralica_c1560_PROKKA_00030	None	None
+Aaustralica_c1560_PROKKA_00031	K03561	['02000 Transporters']
+Aaustralica_c1570_PROKKA_00040	None	None
+Aaustralica_c1570_PROKKA_00041	K01153	['01000 Enzymes']
+Aaustralica_c1572_PROKKA_00042	None	None
+Aaustralica_c1575_PROKKA_00043	K03310	K03310
+Aaustralica_c1587_PROKKA_00045	K07007	K07007
+Aaustralica_c1590_PROKKA_00046	K02406	['02040 Flagellar assembly', '05132 Salmonella infection', '02020 Two-component system', '02035 Bacterial motility proteins', '04626 Plant-pathogen interaction', '05134 Legionellosis']
+Aaustralica_c1597_PROKKA_00047	None	None
+Aaustralica_c1598_PROKKA_00048	K03223	['03070 Bacterial secretion system', '02044 Secretion system']
+Aaustralica_c1598_PROKKA_00049	None	None
+Aaustralica_c1611_PROKKA_00050	K00758	['00983 Drug metabolism - other enzymes', '00240 Pyrimidine metabolism', '01000 Enzymes', '05219 Bladder cancer']
+Aaustralica_c1621_PROKKA_00052	None	None
+Aaustralica_c1623_PROKKA_00053	None	None
+Aaustralica_c1623_PROKKA_00054	K07126	K07126
+Aaustralica_c1623_PROKKA_00055	None	None
+Aaustralica_c251_PROKKA_00001	K07091	['02010 ABC transporters', '02000 Transporters']
+Aaustralica_c251_PROKKA_00002	K11720	['02010 ABC transporters', '02000 Transporters']
+Aaustralica_c251_PROKKA_00003	None	None
+Aaustralica_c251_PROKKA_00004	None	None
+Aaustralica_c251_PROKKA_00006	K18454	K18454
+Aaustralica_c251_PROKKA_00007	K02760	['02000 Transporters', '01000 Enzymes', '02060 Phosphotransferase system (PTS)']
+Aaustralica_c251_PROKKA_00008	K02761	['02000 Transporters', '02060 Phosphotransferase system (PTS)']
+Aaustralica_c251_PROKKA_00009	K02759	['02000 Transporters', '01000 Enzymes', '02060 Phosphotransferase system (PTS)']
+Aaustralica_c251_PROKKA_00010	K01222	['00010 Glycolysis / Gluconeogenesis', '01000 Enzymes']
+Aaustralica_c251_PROKKA_00011	K03478	K03478
+Aaustralica_c251_PROKKA_00012	None	None
+Aaustralica_c251_PROKKA_00013	None	None
+Aaustralica_c252_PROKKA_00015	None	None
+Aaustralica_c252_PROKKA_00024	None	None
+Aaustralica_c253_PROKKA_00028	None	None
+Aaustralica_c253_PROKKA_00029	K06177	['03016 Transfer RNA biogenesis', '01000 Enzymes', '03009 Ribosome biogenesis']
+Aaustralica_c253_PROKKA_00030	K07024	K07024
+Aaustralica_c253_PROKKA_00031	None	None
+Aaustralica_c253_PROKKA_00032	None	None
+Aaustralica_c253_PROKKA_00033	None	None
+Aaustralica_c253_PROKKA_00034	None	None
+Aaustralica_c253_PROKKA_00035	K01070	['01200 Carbon metabolism', '00680 Methane metabolism', '01000 Enzymes']
+Aaustralica_c253_PROKKA_00036	K00121	['05204 Chemical carcinogenesis', '00980 Metabolism of xenobiotics by cytochrome P450', '00625 Chloroalkane and chloroalkene degradation', '00350 Tyrosine metabolism', '00680 Methane metabolism', '00830 Retinol metabolism', '00626 Naphthalene degradation', '01200 Carbon metabolism', '00982 Drug metabolism - cytochrome P450', '01000 Enzymes', '00071 Fatty acid degradation', '00010 Glycolysis / Gluconeogenesis', '01220 Degradation of aromatic compounds']
