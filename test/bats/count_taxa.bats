@@ -3,7 +3,7 @@
 @test "Testing countTaxa: simplehit id counts" {
     run ./countTaxaFromBlasts.py S1=test/data/sample.1.kegg.blastx.b50.m8 S2=sample.2.kegg.blastx.b50.m8 S3=sample.3.kegg.blastx.b50.m8 -p hitid -F 0 -o test/data/.tst.sample.kegg.hitid.counts
     [ "$status" = 0 ]
-    diff test/data/sample.kegg.hitid.counts test/data/.tst.sample.kegg.hitid.counts
+    run diff test/data/sample.kegg.hitid.counts test/data/.tst.sample.kegg.hitid.counts
     [ "$status" = 0 ]
 }
 
