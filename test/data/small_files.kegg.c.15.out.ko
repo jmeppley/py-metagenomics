@@ -1,4 +1,4 @@
-Gene	Description	dataset_10543.dat	dataset_10575.dat	dataset_10671.dat
+Gene	Description	test/data/sample.1.kegg.blastx.b50.m8	test/data/sample.2.kegg.blastx.b50.m8	test/data/sample.3.kegg.blastx.b50.m8
 K00615	['E2.2.1.1, tktA, tktB; transketolase [EC:2.2.1.1]']	0	1	0
 K01601	['rbcL; ribulose-bisphosphate carboxylase large chain [EC:4.1.1.39]']	1	1	0
 K02689	['psaA; photosystem I P700 chlorophyll a apoprotein A1']	0	1	0
