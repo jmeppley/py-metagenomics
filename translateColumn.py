@@ -46,6 +46,7 @@ def main():
         total_lines = 0
         skipped_lines = 0
         lines_kept = 0
+        first_invalid_line = 0
         invalid_line = None
 
         # loop over lines
@@ -54,9 +55,6 @@ def main():
             line = line.rstrip( '\r\n' )
             if not line or line.startswith( '#' ):
                 skipped_lines += 1
-                if not invalid_line:
-                    # save as example
-                    invalid_line = line
                 continue
             try:
                 cells = line.split( '\t' )

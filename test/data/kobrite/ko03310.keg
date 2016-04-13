@@ -1,0 +1,109 @@
++C	Receptor
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0> &nbsp; Nuclear Receptors</h2>
+#<!---
+#ENTRY       ko03310
+#DEFINITION  Nuclear receptors
+#--->
+!
+A<b>1. Thyroid hormone like</b>
+B  1A. Thyroid hormone receptor (THR)
+C    K05547  NR1A1, THRA; thyroid hormone receptor alpha
+C    K08362  NR1A2, THRB; thyroid hormone receptor beta
+B  1B. Retinoic acid receptor (RAR)
+C    K08527  NR1B1, RARA; retinoic acid receptor alpha
+C    K08528  NR1B2, RARB; retinoic acid receptor beta
+C    K08529  NR1B3, RARG; retinoic acid receptor gamma
+B  1C. Peroxisome proliferator-activated receptor (PPAR)
+C    K07294  NR1C1, PPARA; peroxisome proliferator-activated receptor alpha
+C    K04504  NR1C2, PPARD; peroxisome proliferator-activated receptor delta
+C    K08530  NR1C3, PPARG; peroxisome proliferator-activated receptor gamma
+B  1D. Rev-Erb
+C    K03728  NR1D1; nuclear receptor subfamily 1 group D member 1
+C    K08531  NR1D2; nuclear receptor subfamily 1 group D member 2
+C    K08701  NR1D3; nuclear receptor subfamily 1 group D member 3
+B  1F. RAR-related orphan receptor
+C    K08532  NR1F1, RORA; RAR-related orphan receptor alpha
+C    K08533  NR1F2, RORB; RAR-related orphan receptor beta
+C    K08534  NR1F3, RORC; RAR-related orphan receptor gamma
+C    K14033  NR1F4; nuclear receptor subfamily 1 group F member 4
+B  1H. Liver X receptor like receptor
+C    K08536  NR1H3, LXRA; liver X receptor alpha
+C    K08535  NR1H2, LXRB; liver X receptor beta
+C    K08537  NR1H4, FXR; farnesoid X receptor
+C    K08538  NR1H5, FXRB; farnesoid X receptor beta
+C    K14034  NR1H1, EcR; ecdysone receptor
+B  1I. Vitamin D3 like receptor
+C    K08539  NR1I1, VDR; vitamin D3 receptor
+C    K08540  NR1I2, PXR; pregnane X receptor
+C    K08541  NR1I3, CAR; constitutive androstane receptor
+C    K14035  NR1IN; nuclear receptor subfamily 1 group I
+#
+A<b>2. Hepatocyte nuclear factor 4 like</b>
+B  2A. Hepatocyte nuclear factor 4 receptor
+C    K07292  NR2A1, HNF4A; hepatocyte nuclear factor 4-alpha
+C    K08037  NR2A2, HNF4G; hepatocyte nuclear factor 4-gamma
+C    K08542  NR2A3, HNF4B; hepatocyte nuclear factor 4-beta
+C    K08704  NR2A4, Hnf4; hepatocyte nuclear factor 4
+C    K07295  NR2AN, dsf; nuclear receptor subfamily 2 group A
+B  2B. Retinoid X receptor (RXR)
+C    K08524  NR2B1, RXRA; retinoid X receptor alpha
+C    K08525  NR2B2, RXRB; retinoid X receptor beta
+C    K08526  NR2B3, RXRG; retinoid X receptor gamma
+C    K14030  NR2B4, usp; nuclear receptor subfamily 2 group B member 4
+B  2C. Testicular receptor
+C    K08543  NR2C1, TR2; testicular receptor 2
+C    K08544  NR2C2, TR4; testicular receptor 4
+C    K14031  NR2CN; nuclear receptor subfamily 2 group C
+B  2E. Tailless like receptor
+C    K08545  NR2E1, TLX, tll; nuclear receptor subfamily 2 group E member 1
+C    K08546  NR2E3, PNR; nuclear receptor subfamily 2 group E member 3
+B  2F. COUP-TF like receptor
+C    K08547  NR2F1, TFCOUP1; COUP transcription factor 1
+C    K08548  NR2F2, TFCOUP2; COUP transcription factor 2
+C    K14032  NR2F3, svp; nuclear receptor subfamily 2 group F member 3
+C    K08702  NR2F5, SVP46; nuclear receptor subfamily 2 group F member 5
+C    K08549  NR2F6, EAR2; nuclear receptor subfamily 2 group F member 6
+#
+A<b>3. Estrogen like</b>
+B  3A. Estrogen receptor
+C    K08550  NR3A1, ESR1; estrogen receptor alpha
+C    K08551  NR3A2, ESR2; estrogen receptor beta
+B  3B. Estrogen-related receptor
+C    K08552  NR3B1, ESRRA; estrogen-related receptor alpha
+C    K08553  NR3B2, ESRRB; estrogen-related receptor beta
+C    K08554  NR3B3, ESRRG; estrogen-related receptor gamma
+C    K08703  NR3BN, ERR; estrogen-related receptor ERR
+B  3C. 3-Ketosteroid receptor
+C    K05771  NR3C1, GR; glucocorticoid receptor
+C    K08555  NR3C2, MR; mineralocorticoid receptor
+C    K08556  NR3C3, PGR; progesterone receptor
+C    K08557  NR3C4, AR; androgen receptor
+#
+A<b>4. Nerve growth factor IB like</b>
+B  4A. Nerve growth factor IB like receptor
+C    K04465  NR4A1, HMR; nuclear receptor subfamily 4 group A member 1
+C    K08558  NR4A2, NURR1; nuclear receptor subfamily 4 group A member 2
+C    K08559  NR4A3, NOR1; nuclear receptor subfamily 4 group A member 3
+#
+A<b>5. Fushi tarazu-F1 like</b>
+B  5A. Fushi tarazu-F1 like receptor
+C    K08560  NR5A1, SF1; steroidogenic factor 1
+C    K08027  NR5A2, FTF; nuclear receptor subfamily 5 group A member 2
+C    K08705  NR5A3, ftz-f1; nuclear receptor subfamily 5 group A member 3
+#
+A<b>6. Germ cell nuclear factor</b>
+B  6A. Germ cell nuclear factor receptor
+C    K08561  NR6A1, GCNF; germ cell nuclear factor
+C    K09185  NR6AN; nuclear receptor subfamily 6 group A
+#
+A<b>0. Knirps / DAX like</b>
+B  0A. Knirps like receptor
+C    K08706  NR0AN, kni; nuclear receptor subfamily 0 group A
+B  0B. DAX like receptor
+C    K08562  NR0B1, DAX1; nuclear receptor subfamily 0 group B member 1
+C    K08563  NR0B2, SHP; nuclear receptor subfamily 0 group B member 2
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: August 31, 2010
+#<br>Classification taken and modified from Nuclear Receptor Nomenclature
