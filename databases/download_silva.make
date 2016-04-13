@@ -47,7 +47,7 @@ LSUREF_URL:=$(FTP_BASE)/$(LSUREF_FILE)
 
 # The taxonomy files were new in 115 and changed locations in 119
 # For now, I'm just going to support the new way in this makefile
-SSU_TAXFILE_URL:=$(FTP_BASE)/taxonomy/tax_slv_ssu_nr_$(SSU_REL).txt
+SSU_TAXFILE_URL:=$(FTP_BASE)/taxonomy/tax_slv_ssu_$(SSU_REL).txt
 SSU_TAXFILE=$(BUILDDIR)/Silva_$(SSU_REL)_SSURef_NR99_tax_silva_trunc.tax
 LSU_TAXFILE_URL:=$(FTP_BASE)/taxonomy/tax_slv_lsu_$(LSU_REL).txt
 LSU_TAXFILE=$(BUILDDIR)/Silva_$(LSU_REL)_LSURef_tax_silva_trunc.tax
@@ -66,7 +66,7 @@ SSU_TAXIDMAP=$(SSU_LASTP).tax
 SSU_HITIDMAP:=$(SSU_LASTP).ids
 SSU_DBTAX:=$(SSU_LASTDB_DIR)/names.dmp
 
-TAXSCRIPT:=$(DB_SCRIPT_DIR)/buildSilvaTaxFiles.py
+TAXSCRIPT:=$(DB_SCRIPT_DIR)/buildSilvaTaxFiles.py -t
 
 ifeq ($(PARSE_TAXONOMY),True)
 	ALL_TARGETS:=$(ALL_TARGETS) taxonomy

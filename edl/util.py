@@ -1,4 +1,4 @@
-import re, logging, sys, os
+import re, logging, sys, os, numpy
 from edl.expressions import accessionRE
 logger=logging.getLogger(__name__)
 
@@ -350,7 +350,7 @@ def tupleIteratorToMap(iterator):
 
 def addIOOptions(parser, defaults={}):
     parser.add_option("-o", "--outfile", dest="outfile",
-                      metavar="OUTFILE", help="Write count table to OUTFILE. Interpreted as a suffix if multiple input files given. Defaults to STDOUT.")
+                      metavar="OUTFILE", help="Write output to OUTFILE. Interpreted as a suffix if multiple input files given. Defaults to STDOUT.")
     parser.add_option("--cwd", default=False, action='store_true', help="If creating multiple output files from multiple inputs, create output files in current directory, not in directory with input files. (By default, a suffix is appended to the full path of the input file)")
 
 #def inputIterator(infileNames, outfileName, infileName=None, cwd=True):
@@ -361,6 +361,8 @@ def inputIterator(infileNames, options):
     if outfile is not given, pritn to stdout
     if multiple infiles, treat outfile as suffix
     if cwd set to False (for multipleinpus) create output files in same dir as inputs. Otherwise, create files in current dir withinput names plus suffix
+
+    yields pairs of input and output streams as 2-element tuples
     """
     outfileName=options.outfile
     if 'infile' in dir(options) and options.infile is not None:
@@ -582,3 +584,32 @@ def rightPad(name, width):
         name+=' '
     return name
 
+def reservoirSample(iterator, N=100, returnCount=False):
+    """
+    Randomly sample N items from an iterator of unknown size. Returns a list of the
+    selected items. 
+    
+    If the iterator returns fewer than N items, all will be in the sample, but the sample will not have N elements.
+    
+    IF returnCount set to true, return value is tuple: (sample, totalItemsFromIterator)
+    """
+    
+    sample = []
+    i=0
+
+    numerator = float(N)
+    for item in iterator:        
+        i+=1
+        val = numpy.random.rand()
+        if i <= N:
+            # Fill up sample with first N elements
+            sample.append(item)
+        elif val < numerator/i:
+            # Replace random item in sample 
+            # with next element with probabliity N/i
+            sample[numpy.random.random_integers(0,N-1)]=item
+            
+    if returnCount:
+        return (sample, i)
+    else:
+        return sample

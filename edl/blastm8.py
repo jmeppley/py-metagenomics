@@ -18,6 +18,7 @@ HMMSEARCHDOM='hmmsearchdom'
 HMMSCAN='hmmscan'
 HMMSEARCH='hmmsearch'
 SAM='sam'
+GFF='gff'
 formatsWithNoDescription=[LAST0, FRHIT, BLASTPLUS, SAM]
 cigarRE=re.compile(r'\d+[^\d]')
 
@@ -145,6 +146,8 @@ class Hit:
             self.parseLine = self.parseHmmScanLine
         elif self.format == SAM:
             self.parseLine = self.parseSamLine
+        elif self.format == GFF:
+            self.parseLine = self.parseGFFLine
         else:
             sys.exit("Unknown format: %s" % (self.format))
 
@@ -183,6 +186,33 @@ class Hit:
         self.aln=float(cells[11])
 
     def parseSamLine(self, line):
+        if line[0]=='@':
+            raise EmptyHitException("reference sequence line")
+        cells=line.rstrip('\n\r').split('\t')
+        self.read=cells[0]
+        self.hit=cells[2]
+        if self.hit=='*':
+            raise EmptyHitException("No match")
+        (alen,alenh,alenq,qstart,qend,pctid)=parseCigarString(cells[5])
+        self.mlen=alen
+        self.qstart=qstart
+        self.qend=qend
+        self.astart=int(cells[3])
+        self.aend=self.astart+alenh-1
+        self.qlen=len(cells[9])
+        if pctid is not None:
+            self.pctid=pctid
+        else:
+            self.pctid=0
+        for tagstr in cells[11:]:
+            if len(tagstr)>2 and tagstr[:2]=='AS':
+                self.score = float(tagstr.split(":")[2])
+                # for now, we only carea bout the score tag
+                break
+        else:
+            raise Exception("No score (AS tag) found in line:\n%s" % (line))
+
+    def parseGFFLine(self, line):
         if line[0]=='@':
             raise EmptyHitException("reference sequence line")
         cells=line.rstrip('\n\r').split('\t')
@@ -306,7 +336,8 @@ class Hit:
             self.qend = self.qstart - qmlen + 1
         self.aln=qmlen/float(qlen)
 
-        self.evalue=None
+        # some versions have evalues in the last few spots (eg: E=2.1e-09)
+        self.evalue=float(cells[13][2:].strip()) if len(cells)>13 else None
         self.pctid=None
         self.mlen=computeLastHitValues(cells[11])
         self.hitDesc=None
@@ -326,6 +357,8 @@ class Hit:
         self.hend=int(cells[10])
 
     def parseBlastPlusLine(self, line):
+        if line[0]=='#':
+            raise EmptyHitException("Comment line")
         cells=line.rstrip('\n\r').split('\t')
         self.read=cells[0]
         self.hit=cells[1]
@@ -355,6 +388,22 @@ class Hit:
         self.evalue=parseExp(cells[10])
         self.score=float(cells[11])
         self.hitDesc=cells[12]
+
+    def parseGFFLine(self, line):
+        if line[0]=='#':
+            raise EmptyHitException("Comment")
+        cells=line.rstrip('\n\r').split('\t')
+        self.read = cells[0]
+        self.qstart=int(cells[3])
+        self.qend=int(cells[4])
+        self.evalue = float(cells[5])
+        self.strand = cells[6]
+        hit_data = cells[8].split(';',1)
+        self.hit = hit_data[0]
+        self.hitDesc = hit_data[1]
+        self.score=1
+        self.pctid=1
+        self.mlen=self.qend+1- self.qstart
 
     def getAln(self):
         if 'aln' in dir(self):
@@ -694,6 +743,7 @@ For example, flags=['format','bits','filterPct'] would enable filtering on bit s
                                    LAST0,
                                    BLASTPLUS,
                                    SAM,
+				   GFF,
                                    HMMSCANDOM,
                                    HMMSCAN,
                                    HMMSEARCHDOM,

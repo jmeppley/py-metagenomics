@@ -28,9 +28,9 @@ def main():
 
     setupLogging(options,description)
 
-    if options.hitTableFormat=='last':
-        if options.hitTableSort=='evalue':
-            parser.error("The last format has no evalue to sort by, sorry")
+    #if options.hitTableFormat=='last':
+    #    if options.hitTableSort=='evalue':
+    #        parser.error("The last format has no evalue to sort by, sorry")
 
     # check that we have blast file as argument
     if len(args) <= 1:

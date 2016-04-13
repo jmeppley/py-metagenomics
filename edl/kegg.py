@@ -498,8 +498,6 @@ def addPathwaysOption(parser, defaults={}):
 ############
 def test():
     import sys
-    global myAssertEq, myAssertIs
-    from test import myAssertEq, myAssertIs
 
     if len(sys.argv)>3:
         loglevel=logging.DEBUG
@@ -508,18 +506,25 @@ def test():
     logging.basicConfig(stream=sys.stderr, level=loglevel)
     logger.setLevel(logging.INFO)
 
-    testReadKeggFile(sys.argv[2])
-    testParseGeneKOMap(sys.argv[1])
-    testReadKoFile(sys.argv[1])
+    kegg_nosetest(sys.argv[1],sys.argv[2])
 
-def testParseGeneKOMap(koFile):
-    gkmap=parseGeneKOMap(koFile)
-    myAssertEq(gkmap['dpe:Dper_GL25993'],['K00001'])
-    myAssertEq(gkmap['rpc:RPC_2974'],['K00001'])
-    myAssertEq(gkmap['pic:PICST_59568'],['K00100'])
-    myAssertEq(gkmap['bbp:BBPR_1508'], ['K02755', 'K02756', 'K02757'])
-    myAssertEq(gkmap['sfv:SFV_2242'], ['K02769', 'K02770'])
-    myAssertEq(gkmap['fma:FMG_0161'],['K02982'])
+def kegg_nosetest(ko_map, kegg_file):
+    global myAssertEq, myAssertIs
+    from test import myAssertEq, myAssertIs
+    testReadKeggFile(kegg_file)
+    testParseGeneLink(ko_map)
+    #testParseGeneKOMap(ko_map)
+    #testReadKoFile(ko_map)
+
+def testParseGeneLink(koFile):
+    gkmap=parseLinkFile(koFile)
+    myAssertEq(gkmap['ggo:101148121'],['K16534'])
+    myAssertEq(gkmap['olu:OSTLU_15108'],['K11126'])
+    myAssertEq(gkmap['ebt:EBL_c03070'],['K02879'])
+    myAssertEq(gkmap['pec:W5S_4205'],['K00363'])
+    myAssertEq(gkmap['buc:BU148'],['K03101'])
+    myAssertEq(gkmap['smaf:D781_0330'],['K06925'])
+    myAssertEq(gkmap['nkr:NKOR_05565'],['K03524']) 
 
 def testReadKeggFile(keggFile):
     kDmap=readKeggFile(keggFile,'DESCRIPTION')

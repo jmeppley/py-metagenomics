@@ -440,15 +440,10 @@ def cutoffTree(tree, cutoff, **kwargs):
     tree[kidsKey]=childrenToKeep
     return treeSum
 
-def test(moduleDir=None):
+def test(projectDir='.'):
     logging.basicConfig(logLevel=logging.DEBUG)
     import os,sys
-    if moduleDir is None:
-        moduleDir = os.path.dirname(os.path.realpath(sys.argv[0]))
-    scriptDir = os.path.sep.join([moduleDir,".."])
-    import sys
-    sys.path[0]=scriptDir
-    taxDir = os.path.sep.join([scriptDir,"..","test","resources"])
+    taxDir = os.path.sep.join([projectDir,"test","data"])
     import edl.taxon
     global taxonomy
     taxonomy=edl.taxon.readTaxonomy(taxDir)

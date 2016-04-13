@@ -6,6 +6,7 @@
     <tool file="pymg/screen_list.xml" />
     <tool file="pymg/createPrimerFile.xml" />
     <tool file="pymg/illuminaPrep.xml" />
+    <tool file="pymg/sample_records.xml" />
     <tool file="pymg/last_wrapper.xml" />
     <tool file="pymg/filter_blast.xml" />
     <tool file="pymg/translate_column.xml" />

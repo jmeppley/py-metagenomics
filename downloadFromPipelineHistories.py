@@ -20,10 +20,12 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
                       help="URL of Galaxy API")
     parser.add_option('-k', '--api_key', default=None,
                       help="Galaxy API key for connecting. REQUIRED!")
-    parser.add_option('-d', '--dataset_index', default=24, type='int',
+    parser.add_option('-d', '--dataset_index', default=-1, type='int',
                       help="which dataset to get in each history")
     parser.add_option('-D', '--dataset_regex', default=None,
                       help="Expression for matching dataset names. If set, overrides the dataset_index (-d)")
+    parser.add_option("-S","--sameDir", default=False, action='store_true',
+            help="Save all datasets to same directory, don't created subdirs for each history")
     parser.add_option("-O",'--saveDir', default=".",
             help="Direcotry in which to save files. A subdirectory will be created for each matchin history. Defaults to the current directory")
     parser.add_option("-o", "--outfileName", default=None,
@@ -40,18 +42,28 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
     setupLogging(options, description)
 
     if options.api_key is None:
-        parser.error("You must speicfy an API key with the -k flag!")
+        key = edl.galaxy.getApiKey()
+        if key is None:
+            parser.error("You must speicfy an API key with the -k flag!")
+        else:
+            options.api_key = key
 
     # set up dataset search values
     if options.dataset_regex is None:
+        if options.dataset_index == -1:
+            parser.error('Please supply a dataset number or dataset string with -d or -D!')
         dsNum=options.dataset_index
         dsName=None
     else:
         dsNum=None
         dsName=re.compile(options.dataset_regex)
 
+    logging.debug("Looking for dataset: %r/%r" % (options.dataset_regex, 
+                                                  options.dataset_index))
+
     # Are we on the same machine as galaxy?
-    filesAreLocal = re.search(r'://localhost',options.api_url) is not None
+    filesAreLocal = re.search(r'://(localhost|127\.0\.0\.1)',options.api_url) is not None
+    logging.debug("URL seems local, will attempt to link")
 
     for (history,dataset) in edl.galaxy.findDatasets(options.api_key, args,
                                                      dsName=dsName,
@@ -66,13 +78,15 @@ Given a list of regular expressions pulls the Nth (default is 24th) dataset from
                 hdir, dataset)
 
         # Create symlink if we can find the file locally
-        if filesAreLocal and 'file_name' in dataset:
-            originalFile=dataset['file_name']
+        if filesAreLocal and 'file_path' in dataset and not options.force_copy:
+            logging.debug("Linking dataset")
+            originalFile=dataset['file_path']
             os.symlink(originalFile, out_file_name)
         else:
             # Copy to local file from download URL
             url = dataset['download_url']
             response = requests.get(url, stream=True, verify=False)
+            logging.debug(repr(dataset))
             logging.debug("Copying data from:\n%s" % (url))
             logging.info("Copyting to: %s" % (out_file_name))
             #with open(out_file_name, 'wb') as out_file:
@@ -88,9 +102,12 @@ def _get_output_dir(options, history):
     """
 
     # Create history dir, add id if necessary
-    hname=_sanitize(history[u'name'])
-    hname = hname + "_" + history[u'id']
-    hdir=os.path.sep.join((options.saveDir,hname))
+    if options.sameDir:
+        hdir = options.saveDir
+    else:
+        hname=_sanitize(history[u'name'])
+        hname = hname + "_" + history[u'id']
+        hdir=os.path.sep.join((options.saveDir,hname))
     if not os.path.exists(hdir):
         os.makedirs(hdir)
     return hdir

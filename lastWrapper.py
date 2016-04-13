@@ -3,13 +3,13 @@
 #$ -V
 #$ -S /usr/bin/python
 
-import sys, threading, logging, tempfile, subprocess, shutil, os
+import sys, threading, logging, tempfile, subprocess, shutil, os, re
 from edl.batch import fileTypeMap, getSizePerChunk, fragmentInputBySize, formatCommand, getFragmentPath
 from edl.util import addUniversalOptions, setupLogging, parseMapFile
 from edl.blastm8 import getHitCol
 
-lastBin='lastal'
-tantanBin='tantan'
+lastal_bin='/slipstream/opt/bin/lastal'
+tantanBin='/usr/local/bin/tantan'
 scriptDir=os.path.dirname(os.path.abspath(__file__))
 tmpDirRoot='/localtmp'
 # this may have to change based on the system. I haven't figured the cases yet
@@ -40,9 +40,12 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
     Post Processing:
     -f FORMAT                   'gene' (the default), 'blast', or 'liz' for blast-like m8.
                                 '0' or '1' for lastal formats
-    -O                          Original order. By default, the tabular formats
-                                (ie '0','gene','blast','liz') are grouped by read and
-                                sorted by score within reads.
+    -O                          Original order. By default, for older versions 
+                                of lastal (pre 671),
+                                the tabular formats
+                                (ie '0','gene','blast','liz') are 
+                                grouped by read and
+                                sorted by score within reads. 
     -n HITS_PER_READ            Maximim number of hits per read to keep
                                 Defaults to 10. Set to -1 to turn off.
 
@@ -77,14 +80,27 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
     outfile=options.outfile
     logging.info("Writing output to: %s " % outfile)
 
-    #if options.verbose>1:
-    #    args.insert(-1,'-v')
-    if options.format=='1':
-        if options.sort or options.maxHits > 0:
+    version = int(get_lastal_version())
+    old_last = version<671
+    if not old_last and options.format == 'blast':
+        # let lastal do the conversion
+        options.format = 'BlastTab'
+        logging.info("Using lastal to genreate BlastTab format")
+
+    needs_sort = old_last
+    if options.format=='1' or options.format=='MAF':
+        if (needs_sort and options.sort) or options.maxHits > 0:
             logging.warn("Cannot sort or filter raw last output. Leaving untouched.")
     elif options.maxHits > 0:
-        if not options.sort and options.format == '0':
+        if (needs_sort and not options.sort) and options.format in ['0','TAB']:
             sys.exit("Cannot limit hits unless sorting or converting to M8 ('blast', 'gene', or 'liz')")
+    
+    # Override sort option if version is new enough
+    if not needs_sort:
+        if not options.sort:
+            logging.warn("Newer versions of lastal sort the output, so the -O flag has no effect")
+        else:
+            options.sort=False
 
     # Apply any defaults not set by user
     if "-F" in options.userFlags:
@@ -162,7 +178,7 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
         cmd=list(args)
         # if post processing is needed, change command to string and pipe
         logging.debug("Sort check: %r %r" % (options.sort,options.format))
-        if options.format=='0' and (options.sort or options.maxHits>0):
+        if options.format in ['TAB','0','BlastTab'] and (options.sort or options.maxHits>0):
             cmd.append(inFrag)
             # sort (and possibly filter) last-formatted hit table
             cmd = "%s | %s" % (getCommandString(cmd),
@@ -299,6 +315,27 @@ class Options():
 ##############
 # Methods
 ##############
+version_re = re.compile(r'last\S+\s+(\d\S+)')
+def get_lastal_version(lastal_bin=lastal_bin):
+    """
+    Try to get the lastal version from the binary.
+    Return -1 if the -V option fails
+    Return 0 if the returned string cannot be parsed
+    Otherwise return teh version.
+    """
+    try:
+        version_line = subprocess.check_output([lastal_bin,'-V'])
+    except subprocess.CalledProcessError:
+        logging.info("Unknown lastal version: the -V flag seems to be unrecognied.")
+        return -1
+
+    m = version_re.search(version_line)
+    if m is None:
+        logging.info("Unknown lastal version: the versino line cannot be parsed:\n%s." % (version_line))
+        return 0
+    else:
+        return m.group(1)
+
 def getOutfile(args):
     """
     Find the '-o' in the command string and get the output file name. Remove and return name.
@@ -313,7 +350,7 @@ def getOutfile(args):
 def parseArgs():
     options=Options()
     args=sys.argv
-    args[0]=lastBin
+    args[0]=lastal_bin
 
     index=1
     while index < len(args):
@@ -368,7 +405,7 @@ def parseArgs():
             continue
         elif arg=='-h' or arg=='--help':
             #options.help=True
-            #printHelp([lastBin,'-h'])
+            #printHelp([lastal_bin,'-h'])
             options.about=True
             break
         elif len(arg)>1 and arg[0]=='-':
@@ -415,6 +452,9 @@ def getConvertCommand(format, sort, maxHits, tmpDirRoot):
     """
 
     command = "%s/LAST_output_converter.pl -q -pipe -f %s" % (scriptDir, format)
+    if maxHits >= 0:
+        command += " -n %s" % (maxHits)
+
     if sort:
         if format=='liz':
             scoreCol=10
@@ -424,9 +464,6 @@ def getConvertCommand(format, sort, maxHits, tmpDirRoot):
             scoreCol=11
 
         command += " | sort -T %s -t %s -k 1,1 -k %drn,%d" % (tmpDirRoot,sorttab, scoreCol,scoreCol)
-
-        if maxHits >= 0:
-            command += " | python %s/filter_blast_m8.py -H %s -f %s" % (scriptDir, maxHits, format)
 
     return command
 
@@ -439,12 +476,12 @@ def getSortCommand(sort, maxHits, tmpDirRoot):
         if not sort:
             raise Exception("Code shouldn't get here if sort is False and maxHits<0")
     else:
-        maxHits="| python %s/filter_blast_m8.py -f last -H %s" % (scriptDir,maxHits)
+        maxHits="| python %s/filter_blast_m8.py -s evalue -f last -H %s" % (scriptDir,maxHits)
 
     if sort:
         return "grep -v '^#' | sort -T %s -t %s -k 7,7 -k 1rn,1 %s" % (tmpDirRoot,sorttab,maxHits)
     else:
-        return maxhits[2:]
+        return maxHits[2:]
 
 def sortOutput(raw,out,tmpDirRoot,sort=True,maxHits=-1):
     """

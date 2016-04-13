@@ -145,7 +145,7 @@ def inputIterator(infileNames, options):
         inhandle=sys.stdin
         if outfileName==None:
             outfileName="sunburst." + options.format
-            logger.info("IO: STDIN -> %s" % outFileName)
+            logger.info("IO: STDIN -> %s" % outfileName)
             yield (inhandle,outfileName)
         else:
             logger.info("IO: STDIN -> %s" % outfileName)

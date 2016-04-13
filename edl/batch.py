@@ -260,7 +260,7 @@ def regexRecordGenerator(fileType, stream):
         if fileType.sepRE.match(line):
             if len(lastRecord)>0:
                 yield lastRecord
-                del lastRecord[:]
+                lastRecord=[]
         lastRecord.append(line)
 
     if len(lastRecord)>0:
@@ -275,13 +275,13 @@ def linedRecordGenerator(fileType, stream):
         if index%fileType.numLines==0:
             if len(lastRecord)>0:
                 yield lastRecord
-                del lastRecord[:]
+                lastRecord=[]
         lastRecord.append(line)
 
     if len(lastRecord)>0:
         yield lastRecord
 
-def addFragmentingOptions(parser,defaults={"splits":400}):
+def addRecordParsingOptions(parser):
     parser.add_option("-L", "--recordLines", metavar="NUMLINES", dest='numLines', default=None, type="int",
                        help="Number of lines per record")
     parser.add_option("-P", "--pattern", metavar="PATTERN", dest='pattern', default=None,
@@ -289,6 +289,9 @@ def addFragmentingOptions(parser,defaults={"splits":400}):
     parser.add_option("-T","--infileType", dest='infileType', default=None,
                       choices=fileTypeMap.keys(),
                       help='Type of input file. Otherwise, choose by extension. Known types are: %choices')
+
+def addFragmentingOptions(parser,defaults={"splits":400}):
+    addRecordParsingOptions(parser)
     parser.add_option("-C", "--chunkSize", type="int", dest='chunk',  metavar="FRAG_SIZE",
                       help="The number of records per fragment. Overrides NUM_FRAGS")
     default=defaults.get("splits",None)

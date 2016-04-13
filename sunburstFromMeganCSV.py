@@ -29,6 +29,10 @@ def main():
     parser.add_option('-i', '--icicle', default=False, action='store_true',
                       help="Print stacked bars in rectangular coordinates, not polar.")
     parser.add_option('-e', '--exterior_labels', default=False, action='store_true', help="Print labels for outermost nodes outside image")
+    parser.add_option('-s', '--sortKey', default=[], action='append',
+            choices=[NAME,COLOR,VALUE],
+            help='how to sort nodes. Defaults to "color" and "name"')
+
     parser.add_option('-S', '--figsize', default=None,
                       help="Comma separated pair of numbers (in inches) for figure size")
 
@@ -61,9 +65,15 @@ def main():
     if options.JSON:
         # STandard iterator that returns handles
         inputIterator = inputIteratorNormal
+
+        if len(options.sortKey)>0:
+            logger.warn("the SORT option has no effect on JSON output")
     else:
         # version that defaults to adding format as suffix and returns name
         inputIterator = inputIteratorFig
+
+    # proecss user selected options
+    kwargs=processOptions(options)
 
     # process input files
     for (inhandle, outfile) in inputIterator(args, options):
@@ -81,9 +91,6 @@ def main():
         # convert to JSON
         (nxtree,root) = convertToNx(counts, leaves=True, ranks=ranks)
         tree=convertToJSON(nxtree,root)
-
-        # proecss user selected options
-        kwargs=processOptions(options)
 
         # process JSON
         if options.colors is not None:
@@ -136,7 +143,12 @@ def processOptions(options):
     """
     kwargs={}
     kwargs[ID]=NAME
-    kwargs['sort']="color,size"
+    #kwargs['sort']="color,size"
+    logging.debug("Sort keys are %s" % options.sortKey)
+    if len(options.sortKey)>0:
+        kwargs['sort']=','.join(options.sortKey)
+    else:
+        kwargs['sort']="color,name"
     if options.figsize is not None:
         figsize = [ int(bit) for bit in options.figsize.split(",") ]
         kwargs['figsize']=tuple(figsize[:2])
