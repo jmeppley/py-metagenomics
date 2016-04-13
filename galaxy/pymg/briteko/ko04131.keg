@@ -1,0 +1,88 @@
++C	SNARE
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0> &nbsp; SNAREs</h2>
+#<!---
+#ENTRY       ko04131
+#NAME        SNARE
+#DEFINITION  SNAREs
+#--->
+!
+A<b>Syntaxin (Qa)</b>
+B  Stx-PM
+C    K04560  STX1A; syntaxin 1A
+C    K08486  STX1B_2_3; syntaxin 1B/2/3
+C    K13502  STX4; syntaxin 4
+C    K08487  STX11; syntaxin 11
+B  Stx-Endo
+C    K08488  STX7; syntaxin 7
+C    K13813  STX12, STX13; syntaxin 12/13
+C    K13814  TSNARE1; t-SNARE domain-containing protein 1
+B  Stx-TGN / EE
+C    K08489  STX16; syntaxin 16
+B  Stx-cisGolgi
+C    K08490  STX5; syntaxin 5
+B  Stx-sER
+C    K08491  STX17; syntaxin 17
+B  Stx-rER
+C    K08492  STX18; syntaxin 18
+#
+A<b>SNAP-25[N] (Qb)</b>
+B  Vti1
+C    K08493  VTI1; vesicle transport through interaction with t-SNAREs 1
+B  NPSN
+C    K08494  NSPN; novel plant SNARE
+B  Gos1 (Gos28)
+C    K08495  GOSR1, GOS1; golgi SNAP receptor complex member 1
+B  Bos1 / Membrin
+C    K08496  GOSR2, BOS1; golgi SNAP receptor complex member 2
+B  Sec20
+C    K08497  SEC20; protein transport protein SEC20
+#
+A<b>SNAP-25[C] (Qc)</b>
+B  STX6
+C    K08498  STX6; syntaxin 6
+C    K08499  TLG1; member of the syntaxin family of t-SNAREs
+C    K08500  SYP6; syntaxin of plants SYP6
+B  STX8
+C    K08501  STX8; syntaxin 8
+C    K08502  VAM7; regulator of vacuolar morphogenesis
+C    K08503  SYP5; syntaxin of plants SYP5
+B  Bet1
+C    K08504  BET1; blocked early in transport 1
+B  Sft1
+C    K08505  SFT1; protein transport protein SFT1
+B  Syp7
+C    K08506  SYP7; syntaxin of plants SYP7
+B  Use1
+C    K08507  USE1; unconventional SNARE in the endoplasmic reticulum protein 1
+#
+A<b>SNAP-25 (Qb,c)</b>
+B  SNAP-23
+C    K08508  SNAP23; synaptosomal-associated protein, 23kDa
+B  SNAP-29
+C    K08509  SNAP29; synaptosomal-associated protein, 29kDa
+#
+A<b>VAMP, Ykt6, Sec22 (R)</b>
+B  VAMP
+C    K08510  VAMP1; vesicle-associated membrane protein 1
+C    K13504  VAMP2; vesicle-associated membrane protein 2
+C    K13505  VAMP3; vesicle-associated membrane protein 3
+C    K08511  ATVAMP72; vesicle-associated membrane protein 72
+C    K08512  VAMP8; vesicle-associated membrane protein 8
+C    K08513  VAMP4; vesicle-associated membrane protein 4
+C    K08514  VAMP5; vesicle-associated membrane protein 5
+C    K08515  VAMP7; vesicle-associated membrane protein 7
+C    K08564  NYV1; vacuolar v-SNARE NYV1
+B  Ykt6
+C    K08516  YKT6; synaptobrevin homolog YKT6
+B  Sec22
+C    K08517  SEC22; vesicle transport protein SEC22
+B  Tomosyn
+C    K08518  STXBP5; syntaxin-binding protein 5
+C    K08519  STXBP6; syntaxin-binding protein 6
+B  Putative SNAREs
+C    K08520  SEC22A_C; SEC22 vesicle trafficking protein A/C
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: June 22, 2010
+#<br>Classification based on Yoshizawa et al. (2006)

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """
 Take in a csv of taxids and counts and generate a sunburst plot.
 """
@@ -24,8 +24,8 @@ def main():
 
     parser.add_option("-R", "--ranks", default='superkingdom,phylum,family',
                       help="Ranks to inclued in sunburst, default: %default")
-    parser.add_option("-n", "--ncbiTaxDir", dest="taxdir", metavar="PATH", default='/common/FASTA/NCBI/RefSeq/LATEST/taxdump',
-                      help="Directory with unpacked ncbi tax dump (specifically names.dmp and nodes.dmp) and use to translate taxids into taxa. Default is %default")
+    parser.add_option("-n", "--ncbiTaxDir", dest="taxdir", metavar="PATH", default=None,
+                      help="Directory with unpacked ncbi tax dump (specifically names.dmp and nodes.dmp) and use to translate taxids into taxa. ")
     parser.add_option('-i', '--icicle', default=False, action='store_true',
                       help="Print stacked bars in rectangular coordinates, not polar.")
     parser.add_option('-e', '--exterior_labels', default=False, action='store_true', help="Print labels for outermost nodes outside image")
@@ -51,6 +51,8 @@ def main():
         import matplotlib.pyplot as plt
 
     # load taxonomy
+    if options.taxdir is None:
+        parser.error("You must supply the location of the NCBI tax dump files")
     taxonomy = readTaxonomy(options.taxdir)
 
     # build rank list

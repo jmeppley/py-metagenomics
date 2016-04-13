@@ -1,0 +1,1718 @@
++E
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Transporters</h2>
+#<!---
+#ENTRY       ko02000
+#NAME        Transporter
+#DEFINITION  Transporters
+#--->
+!
+A<b>ABC Transporters, Eukaryotic Type</b>
+B  ABCA (ABC1) subfamily
+C    ABCA1, 2, 3, 4, 7, 12, 13 subgroups
+D      K05641  ABCA1; ATP-binding cassette, subfamily A (ABC1), member 1
+D      K05642  ABCA2; ATP-binding cassette, subfamily A (ABC1), member 2
+D      K05643  ABCA3; ATP-binding cassette, subfamily A (ABC1), member 3
+D      K05644  ABCA4; ATP-binding cassette, subfamily A (ABC1), member 4
+D      K05645  ABCA7; ATP-binding cassette, subfamily A (ABC1), member 7
+D      K05646  ABCA12; ATP-binding cassette, subfamily A (ABC1), member 12
+D      K05647  ABCA13; ATP binding cassette, subfamily A (ABC1), member 13
+C    ABCA5, 6, 8, 9, 10 subgroups
+D      K05648  ABCA5; ATP-binding cassette, subfamily A (ABC1), member 5
+D      K05649  ABCA6; ATP-binding cassette, subfamily A (ABC1), member 6
+D      K05650  ABCA8; ATP-binding cassette, subfamily A (ABC1), member 8
+D      K05651  ABCA9; ATP-binding cassette, subfamily A (ABC1), member 9
+D      K05652  ABCA10; ATP-binding cassette, subfamily A (ABC1), member 10
+B  ABCB (MDR/TAP) subfamily
+C    ABCB2, 3, 8, 9, 10 subgroups
+D      K05653  ABCB2, TAP1; ATP-binding cassette, subfamily B (MDR/TAP), member 2
+D      K05654  ABCB3, TAP2; ATP-binding cassette, subfamily B (MDR/TAP), member 3
+D      K05655  ABCB8; ATP-binding cassette, subfamily B (MDR/TAP), member 8
+D      K05656  ABCB9, TAPL; ATP-binding cassette, subfamily B (MDR/TAP), member 9
+D      K05657  ABCB10; ATP-binding cassette, subfamily B (MDR/TAP), member 10
+C    ABCB1, 4, 5, 11 subgroups
+D      K05658  ABCB1; ATP-binding cassette, subfamily B (MDR/TAP), member 1
+D      K05659  ABCB4; ATP-binding cassette, subfamily B (MDR/TAP), member 4
+D      K05660  ABCB5; ATP-binding cassette, subfamily B (MDR/TAP), member 5
+C    ABCB6, 7 subgroups (half transporters)
+D      K05661  ABCB6; ATP-binding cassette, subfamily B (MDR/TAP), member 6
+D      K05662  ABCB7; ATP-binding cassette, subfamily B (MDR/TAP), member 7
+D      K05663  ABC.ATM; mitochondrial ABC transporter ATM
+C    ABCB11 subgroup
+D      K05664  ABCB11; ATP-binding cassette, subfamily B (MDR/TAP), member 11
+C    ABCB-BAC subgroup
+D      K11085  msbA; ATP-binding cassette, subfamily B, bacterial MsbA [EC:3.6.3.-]
+D      K11004  hlyB, cyaB; ATP-binding cassette, subfamily B, bacterial HlyB/CyaB
+D      K13409  raxB, cvaB; ATP-binding cassette, subfamily B, bacterial RaxB
+D      K14698  irtA; ATP-binding cassette, subfamily B, bacterial IrtA [EC:3.6.3.-]
+D      K14699  irtB; ATP-binding cassette, subfamily B, bacterial IrtB [EC:3.6.3.-]
+D      K06147  ABCB-BAC; ATP-binding cassette, subfamily B, bacterial
+B  ABCC (CFTR/MRP) subfamily
+C    ABCC1, 2, 3, 5, 6, 13 subgroups
+D      K05665  ABCC1; ATP-binding cassette, subfamily C (CFTR/MRP), member 1
+D      K05666  ABCC2; ATP-binding cassette, subfamily C (CFTR/MRP), member 2
+D      K05667  ABCC3; ATP-binding cassette, subfamily C (CFTR/MRP), member 3
+D      K05668  ABCC5; ATP-binding cassette, subfamily C (CFTR/MRP), member 5
+D      K05669  ABCC6; ATP-binding cassette, subfamily C (CFTR/MRP), member 6
+D      K05670  ABCC13; ATP-binding cassette, subfamily C (CFTR/MRP), member 13
+C    ABCC8, 9 subgroups
+D      K05032  ABCC8, SUR1; ATP-binding cassette subfamily C (CFTR/MRP) member 8
+D      K05033  ABCC9, SUR2; ATP-binding cassette subfamily C (CFTR/MRP) member 9
+D      K05671  ABCC11; ATP-binding cassette, subfamily C (CFTR/MRP), member 11
+D      K05672  ABCC12; ATP-binding cassette, subfamily C (CFTR/MRP), member 12
+C    ABCC-BAC subgroup
+D      K12536  hasD, prtD, aprD; ATP-binding cassette, subfamily C, bacterial exporter for protease/lipase
+D      K12539  prsD; ATP-binding cassette, subfamily C, bacterial PrsD
+D      K12533  rsaD; ATP-binding cassette, subfamily C, bacterial RsaD
+D      K16299  eexD; ATP-binding cassette, subfamily C, bacterial EexD
+D      K12541  lapB; ATP-binding cassette, subfamily C, bacterial LapB
+D      K16012  cydC; ATP-binding cassette, subfamily C, bacterial CydC
+D      K16013  cydD; ATP-binding cassette, subfamily C, bacterial CydD
+D      K16014  cydCD; ATP-binding cassette, subfamily C, bacterial CydCD
+D      K06148  ABCC-BAC; ATP-binding cassette, subfamily C, bacterial
+C    Others
+D      K05673  ABCC4; ATP-binding cassette, subfamily C (CFTR/MRP), member 4
+D      K05031  CFTR; cystic fibrosis transmembrane conductance regulator [EC:3.6.3.49]
+D      K05674  ABCC10; ATP-binding cassette, subfamily C (CFTR/MRP), member 10
+B  ABCD (ALD) subfamily
+C    ABCD1 subgroup
+D      K05675  ABCD1, ALD; ATP-binding cassette, subfamily D (ALD), member 1
+C    ABCD2 subgroup
+D      K05676  ABCD2, ALDL1; ATP-binding cassette, subfamily D (ALD), member 2
+C    ABCD3 subgroup
+D      K05677  ABCD3, PMP70; ATP-binding cassette, subfamily D (ALD), member 3
+C    ABCD4 subgroup
+D      K05678  ABCD4, PXMP1L; ATP-binding cassette, subfamily D (ALD), member 4
+C    Others
+D      K15628  PXA; ATP-binding cassette, subfamily D (ALD), peroxisomal long-chain fatty acid import protein
+B  ABCG (White) subfamily
+C    ABCG1, 4 subgroups
+D      K05679  ABCG1; ATP-binding cassette, subfamily G (WHITE), member 1
+D      K05680  ABCG4; ATP-binding cassette, subfamily G (WHITE), member 4
+C    ABCG2, 3 subgroups
+D      K05681  ABCG2; ATP-binding cassette, subfamily G (WHITE), member 2
+D      K08711  ABCG2.PDR; ATP-binding cassette, subfamily G (WHITE), member 2, PDR
+D      K08712  ABCG2.SNQ2; ATP-binding cassette, subfamily G (WHITE), member 2, SNQ2
+D      K05682  ABCG3, Mxr2, Abcp2; ATP-binding cassette, subfamily G (WHITE), member 3
+C    ABCG5, 8 subgroups
+D      K05683  ABCG5; ATP-binding cassette, subfamily G (WHITE), member 5 (sterolin 1)
+D      K05684  ABCG8; ATP-binding cassette, subfamily G (WHITE), member 8 (sterolin 2)
+B  Other subfamilies
+C    Macrolide exporter
+D      K05685  macB; macrolide transport system ATP-binding/permease protein [EC:3.6.3.-]
+C    Other putative ABC transporters
+D      K06159  yojI; putative ATP-binding cassette transporter
+D      K06160  pvdE; putative ATP-binding cassette transporter
+D      K06161  syrD; putative ATP-binding cassette transporter
+D      K02471  yddA; putative ATP-binding cassette transporter
+D      K15738  uup; ATP-binding cassette, subfamily F, uup
+D      K02021  ABC.MR; putative ABC transport system ATP-binding protein
+#
+A<b>ABC Transporters, Prokaryotic Type</b>
+B  Mineral and organic ion transporters
+C    Sulfate transporter [MD:M00185] [Table]
+D      K02048  cysP, sbp; sulfate transport system substrate-binding protein
+D      K02046  cysU; sulfate transport system permease protein
+D      K02047  cysW; sulfate transport system permease protein
+D      K02045  cysA; sulfate transport system ATP-binding protein [EC:3.6.3.25]
+C    Molybdate transporter [MD:M00189] [Table]
+D      K02020  modA; molybdate transport system substrate-binding protein
+D      K02018  modB; molybdate transport system permease protein
+D      K02017  modC; molybdate transport system ATP-binding protein [EC:3.6.3.29]
+D      K05776  modF; molybdate transport system ATP-binding protein
+C    Molybdate/tungstate transporter [MD:M00423]
+D      K15495  wtpA; molybdate/tungstate transport system substrate-binding protein
+D      K15496  wtpB; molybdate/tungstate transport system permease protein
+D      K15497  wtpC; molybdate/tungstate transport system ATP-binding protein [EC:3.6.3.-]
+C    Tungstate transporter [MD:M00186] [Table]
+D      K05772  tupA, vupA; tungstate transport system substrate-binding protein
+D      K05773  tupB, vupB; tungstate transport system permease protein
+D      K06857  tupC, vupC; tungstate transport system ATP-binding protein
+C    Nitrate/nitrite transporter [MD:M00438] [Table]
+D      K15576  nrtA, nasF, cynA; nitrate/nitrite transport system substrate-binding protein
+D      K15577  nrtB, nasE, cynB; nitrate/nitrite transport system permease protein
+D      K15578  nrtC, nasD; nitrate/nitrite transport system ATP-binding protein [EC:3.6.3.-]
+D      K15579  nrtD, cynD; nitrate/nitrite transport system ATP-binding protein
+C    Bicarbonate transporter [MD:M00321] [Table]
+D      K11950  cmpA; bicarbonate transport system substrate-binding protein
+D      K11951  cmpB; bicarbonate transport system permease protein
+D      K11952  cmpC; bicarbonate transport system ATP-binding protein [EC:3.6.3.-]
+D      K11953  cmpD; bicarbonate transport system ATP-binding protein [EC:3.6.3.-]
+C    NitT/TauT family transporter [MD:M00188]
+D      K02051  ABC.SN.S; NitT/TauT family transport system substrate-binding protein
+D      K02050  ABC.SN.P; NitT/TauT family transport system permease protein
+D      K02049  ABC.SN.A; NitT/TauT family transport system ATP-binding protein
+C    Taurine transporter [MD:M00435] [Table]
+D      K15551  tauA; taurine transport system substrate-binding protein
+D      K15552  tauC; taurine transport system permease protein
+D      K10831  tauB; taurine transport system ATP-binding protein [EC:3.6.3.36]
+C    Sulfonate transporter [MD:M00436]
+D      K15553  ssuA; sulfonate transport system substrate-binding protein
+D      K15554  ssuC; sulfonate transport system permease protein
+D      K15555  ssuB; sulfonate transport system ATP-binding protein [EC:3.6.3.-]
+C    Phthalate transporter [MD:M00437] [Table]
+D      K15556  ophF; phthalate transport system substrate-binding protein
+D      K15557  ophG; phthalate transport system permease protein
+D      K15558  ophH; phthalate transport system ATP-binding protein
+C    Iron(III) transporter [MD:M00190] [Table]
+D      K02012  afuA, fbpA; iron(III) transport system substrate-binding protein
+D      K02011  afuB, fbpB; iron(III) transport system permease protein
+D      K02010  afuC, fbpC; iron(III) transport system ATP-binding protein [EC:3.6.3.30]
+C    Thiamine transporter [MD:M00191] [Table]
+D      K02064  thiB, tbpA; thiamine transport system substrate-binding protein
+D      K02063  thiP; thiamine transport system permease protein
+D      K02062  thiQ; thiamine transport system ATP-binding protein
+C    Spermidine/putrescine transporter [MD:M00299] [Table]
+D      K11069  potD; spermidine/putrescine transport system substrate-binding protein
+D      K11070  potC; spermidine/putrescine transport system permease protein
+D      K11071  potB; spermidine/putrescine transport system permease protein
+D      K11072  potA; spermidine/putrescine transport system ATP-binding protein [EC:3.6.3.31]
+C    Putrescine transporter [MD:M00300] [Table]
+D      K11073  potF; putrescine transport system substrate-binding protein
+D      K11074  potI; putrescine transport system permease protein
+D      K11075  potH; putrescine transport system permease protein
+D      K11076  potG; putrescine transport system ATP-binding protein
+C    Putative spermidine/putrescine transporter [MD:M00193]
+D      K02055  ABC.SP.S; putative spermidine/putrescine transport system substrate-binding protein
+D      K02053  ABC.SP.P; putative spermidine/putrescine transport system permease protein
+D      K02054  ABC.SP.P1; putative spermidine/putrescine transport system permease protein
+D      K02052  ABC.SP.A; putative spermidine/putrescine transport system ATP-binding protein
+C    Mannopine transporter [MD:M00301] [Table]
+D      K11077  attC; mannopine transport system substrate-binding protein
+D      K11078  attB; mannopine transport system permease protein
+D      K11079  attA2; mannopine transport system permease protein
+D      K11080  attA1; mannopine transport system ATP-binding protein
+C    2-Aminoethylphosphonate transporter [MD:M00302] [Table]
+D      K11081  phnS; 2-aminoethylphosphonate transport system substrate-binding protein
+D      K11082  phnV; 2-aminoethylphosphonate transport system permease protein
+D      K11083  phnU; 2-aminoethylphosphonate transport system permease protein
+D      K11084  phnT; 2-aminoethylphosphonate transport system ATP-binding protein
+C    Glycine betaine/proline transporter [MD:M00208] [Table]
+D      K02002  proX; glycine betaine/proline transport system substrate-binding protein
+D      K02001  proW; glycine betaine/proline transport system permease protein
+D      K02000  proV; glycine betaine/proline transport system ATP-binding protein [EC:3.6.3.32]
+C    Osmoprotectant transporter [MD:M00209]
+D      K05845  opuC; osmoprotectant transport system substrate-binding protein
+D      K05846  opuBD; osmoprotectant transport system permease protein
+D      K05847  opuA; osmoprotectant transport system ATP-binding protein
+C    Putative hydroxymethylpyrimidine transporter [MD:M00442]
+D      K15598  thiY; putative hydroxymethylpyrimidine transport system substrate-binding protein
+D      K15599  thiX; putative hydroxymethylpyrimidine transport system permease protein
+D      K15600  thiZ; putative hydroxymethylpyrimidine transport system ATP-binding protein
+C    Putative thiamine transporter [MD:M00192] [Table]
+D      K05777  ABC.VB1X.S; putative thiamine transport system substrate-binding protein
+D      K05778  ABC.VB1X.P; putative thiamine transport system permease protein
+D      K05779  ABC.VB1X.A; putative thiamine transport system ATP-binding protein
+B  Saccharide and polyol transporters
+C    Maltose/maltodextrin transporter [MD:M00194] [Table]
+D      K10108  malE; maltose/maltodextrin transport system substrate-binding protein
+D      K10109  malF; maltose/maltodextrin transport system permease protein
+D      K10110  malG; maltose/maltodextrin transport system permease protein
+D      K10111  malK, mtlK, thuK; multiple sugar transport system ATP-binding protein [EC:3.6.3.-]
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    Arabinogalactan oligomer/maltooligosaccharide transport system [MD:M00491] [Table]
+D      K15770  cycB, ganO; arabinogalactan oligomer / maltooligosaccharide transport system substrate-binding protein
+D      K15771  ganP; arabinogalactan oligomer / maltooligosaccharide transport system permease protein
+D      K15772  ganQ; arabinogalactan oligomer / maltooligosaccharide transport system permease protein
+D      K10111  malK, mtlK, thuK; multiple sugar transport system ATP-binding protein [EC:3.6.3.-]
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    Multiple sugar transporter [MD:M00196] [Table]
+D      K10117  msmE; multiple sugar transport system substrate-binding protein
+D      K10118  msmF; multiple sugar transport system permease protein
+D      K10119  msmG; multiple sugar transport system permease protein
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    alpha-Glucoside transporter [MD:M00201] [Table]
+D      K10232  aglE; alpha-glucoside transport system substrate-binding protein
+D      K10233  aglF; alpha-glucoside transport system permease protein
+D      K10234  aglG; alpha-glucoside transport system permease protein
+D      K10235  aglK; alpha-glucoside transport system ATP-binding protein
+C    Glucose/arabinose transporter [MD:M00203] [Table]
+D      K10196  ABC.GLC.S; glucose/arabinose transport system substrate-binding protein
+D      K10197  ABC.GLC.P; glucose/arabinose transport system permease protein
+D      K10198  ABC.GLC.P1; glucose/arabinose transport system permease protein
+D      K10199  ABC.GLC.A; glucose/arabinose transport system ATP-binding protein
+C    Glucose/mannose transporter [MD:M00605] [Table]
+D      K17315  gtsA, glcE; glucose/mannose transport system substrate-binding protein
+D      K17316  gtsB, glcF; glucose/mannose transport system permease protein
+D      K17317  gtsC, glcG; glucose/mannose transport system permease protein
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    Trehalose/maltose transporter [MD:M00204] [Table]
+D      K10236  thuE; trehalose/maltose transport system substrate-binding protein
+D      K10237  thuF, sugA; trehalose/maltose transport system permease protein
+D      K10238  thuG, sugB; trehalose/maltose transport system permease protein
+D      K10111  malK, mtlK, thuK; multiple sugar transport system ATP-binding protein [EC:3.6.3.-]
+C    Trehalose transporter [MD:M00604] [Table]
+D      K17311  K17311, treS; trehalose transport system substrate-binding protein
+D      K17312  K17312, treT; trehalose transport system permease protein
+D      K17313  treU; trehalose transport system permease protein
+D      K17314  treV; trehalose transport system ATP-binding protein
+C    N-Acetylglucosamine transporter [MD:M00205] [Table]
+D      K10200  ABC.NGC.S; N-acetylglucosamine transport system substrate-binding protein
+D      K10201  ABC.NGC.P; N-acetylglucosamine transport system permease protein
+D      K10202  ABC.NGC.P1; N-acetylglucosamine transport system permease protein
+C    Cellobiose transporter [MD:M00206] [Table]
+D      K10240  cebE; cellobiose transport system substrate-binding protein
+D      K10241  cebF; cellobiose transport system permease protein
+D      K10242  cebG; cellobiose transport system permease protein
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    N,N'-Diacetylchitobiose transporter [MD:M00606] [Table]
+D      K17329  dasA; N,N'-diacetylchitobiose transport system substrate-binding protein
+D      K17330  dasB; N,N'-diacetylchitobiose transport system permease protein
+D      K17331  dasC; N,N'-diacetylchitobiose transport system permease protein
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    Putative chitobiose transporter [MD:M00601] [Table]
+D      K17244  chiE; putative chitobiose transport system substrate-binding protein
+D      K17245  chiF; putative chitobiose transport system permease protein
+D      K17246  chiG; putative chitobiose transport system permease protein
+C    L-Arabinose transporter [MD:M00213] [Table]
+D      K10537  araF; L-arabinose transport system substrate-binding protein
+D      K10538  araH; L-arabinose transport system permease protein
+D      K10539  araG; L-arabinose transport system ATP-binding protein [EC:3.6.3.17]
+C    Lactose/L-arabinose transporter [MD:M00199] [Table]
+D      K10188  lacE, araN; lactose/L-arabinose transport system substrate-binding protein
+D      K10189  lacF, araP; lactose/L-arabinose transport system permease protein
+D      K10190  lacG, araQ; lactose/L-arabinose transport system permease protein
+D      K10191  lacK; lactose/L-arabinose transport system ATP-binding protein
+C    Oligogalacturonide transporter [MD:M00202] [Table]
+D      K10192  togB; oligogalacturonide transport system substrate-binding protein
+D      K10193  togM; oligogalacturonide transport system permease protein
+D      K10194  togN; oligogalacturonide transport system permease protein
+D      K10195  togA; oligogalacturonide transport system ATP-binding protein
+C    alpha-1,4-Digalacturonate transporter [MD:M00600] [Table]
+D      K17241  aguE; alpha-1,4-digalacturonate transport system substrate-binding protein
+D      K17242  aguF; alpha-1,4-digalacturonate transport system permease protein
+D      K17243  aguG; alpha-1,4-digalacturonate transport system permease protein
+C    Putative aldouronate transporter [MD:M00603] [Table]
+D      K17318  K17318, lplA; putative aldouronate transport system substrate-binding protein
+D      K17319  lplB; putative aldouronate transport system permease protein
+D      K17320  lplC; putative aldouronate transport system permease protein
+C    Methyl-galactoside transporter [MD:M00214] [Table]
+D      K10540  mglB; methyl-galactoside transport system substrate-binding protein
+D      K10541  mglC; methyl-galactoside transport system permease protein
+D      K10542  mglA; methyl-galactoside transport system ATP-binding protein [EC:3.6.3.17]
+C    D-Xylose transporter [MD:M00215] [Table]
+D      K10543  xylF; D-xylose transport system substrate-binding protein
+D      K10544  xylH; D-xylose transport system permease protein
+D      K10545  xylG; D-xylose transport system ATP-binding protein [EC:3.6.3.17]
+C    Multiple sugar transporter [MD:M00216] [Table]
+D      K10546  ABC.GGU.S, chvE; putative multiple sugar transport system substrate-binding protein
+D      K10547  ABC.GGU.P, gguB; putative multiple sugar transport system permease protein
+D      K10548  ABC.GGU.A, gguA; putative multiple sugar transport system ATP-binding protein
+C    D-Allose transporter [MD:M00217] [Table]
+D      K10549  alsB; D-allose transport system substrate-binding protein
+D      K10550  alsC; D-allose transport system permease protein
+D      K10551  alsA; D-allose transport system ATP-binding protein [EC:3.6.3.17]
+C    Fructose transporter [MD:M00218] [Table]
+D      K10552  frcB; fructose transport system substrate-binding protein
+D      K10553  frcC; fructose transport system permease protein
+D      K10554  frcA; fructose transport system ATP-binding protein
+C    AI-2 transporter [MD:M00219] [Table]
+D      K10555  lsrB; AI-2 transport system substrate-binding protein
+D      K10556  lsrC; AI-2 transport system permease protein
+D      K10557  lsrD; AI-2 transport system permease protein
+D      K10558  lsrA, ego; AI-2 transport system ATP-binding protein
+C    Rhamnose transporter [MD:M00220] [Table]
+D      K10559  rhaS1; rhamnose transport system substrate-binding protein
+D      K10560  rhaP; rhamnose transport system permease protein
+D      K10561  rhaQ; rhamnose transport system permease protein
+D      K10562  rhaT; rhamnose transport system ATP-binding protein [EC:3.6.3.17]
+C    Ribose transporter [MD:M00212] [Table]
+D      K10439  rbsB; ribose transport system substrate-binding protein
+D      K10440  rbsC; ribose transport system permease protein
+D      K10441  rbsA; ribose transport system ATP-binding protein [EC:3.6.3.17]
+C    Erythritol transporter [MD:M00590] [Table]
+D      K17202  K17202, eryG; erythritol transport system substrate-binding protein
+D      K17203  K17203, eryF; erythritol transport system permease protein
+D      K17204  eryE; erythritol transport system ATP-binding protein
+C    Putative xylitol transporter [MD:M00591] [Table]
+D      K17205  xltC; putative xylitol transport system substrate-binding protein
+D      K17206  xltB; putative xylitol transport system permease protein
+D      K17207  xltA; putative xylitol transport system ATP-binding protein
+C    Inositol transporter [MD:M00592] [Table]
+D      K17208  K17208, ibpA; inositol transport system substrate-binding protein
+D      K17209  iatP; inositol transport system permease protein
+D      K17210  iatA; inositol transport system ATP-binding protein
+C    Inositol transporter [MD:M00593] [Table]
+D      K17213  K17213; inositol transport system substrate-binding protein
+D      K17214  K17214; inositol transport system permease protein
+D      K17215  K17215; inositol transport system ATP-binding protein
+C    Inositol-phosphate transporter [MD:M00599] [Table]
+D      K17237  inoE; inositol-phosphate transport system substrate-binding protein
+D      K17238  inoF; inositol-phosphate transport system permease protein
+D      K17239  inoG; inositol-phosphate transport system permease protein
+D      K17240  inoK; inositol-phosphate transport system ATP-binding protein
+C    Putative fructooligosaccharide  transporter [MD:M00197] [Table]
+D      K10120  K10120, msmE; fructooligosaccharide transport system substrate-binding protein
+D      K10121  K10121, msmF; fructooligosaccharide transport system permease protein
+D      K10122  K10122, msmG; fructooligosaccharide transport system permease protein
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    Glycerol transporter [MD:M00607] [Table]
+D      K17321  glpV; glycerol transport system substrate-binding protein
+D      K17322  K17322, glpP; glycerol transport system permease protein
+D      K17323  glpQ; glycerol transport system permease protein
+D      K17324  glpS; glycerol transport system ATP-binding protein
+D      K17325  K17325, glpT; glycerol transport system ATP-binding protein
+C    Putative sn-Glycerol 3-phosphate transporter [MD:M00198] [Table]
+D      K05813  ugpB; sn-glycerol 3-phosphate transport system substrate-binding protein
+D      K05814  ugpA; sn-glycerol 3-phosphate transport system permease protein
+D      K05815  ugpE; sn-glycerol 3-phosphate transport system permease protein
+D      K05816  ugpC; sn-glycerol 3-phosphate transport system ATP-binding protein [EC:3.6.3.20]
+C    Putative sorbitol/mannitol transporter [MD:M00200] [Table]
+D      K10227  smoE, mtlE; sorbitol/mannitol transport system substrate-binding protein
+D      K10228  smoF, mtlF; sorbitol/mannitol transport system permease protein
+D      K10229  smoG, mtlG; sorbitol/mannitol transport system permease protein
+D      K10111  malK, mtlK, thuK; multiple sugar transport system ATP-binding protein [EC:3.6.3.-]
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    Arabinosaccharide transport system [MD:M00602] [Table]
+D      K17234  araN; arabinosaccharide transport system substrate-binding protein
+D      K17235  araP; arabinosaccharide transport system permease protein
+D      K17236  araQ; arabinosaccharide transport system permease protein
+D      K10112  msmX, msmK, malK, sugC, ggtA, msiK; multiple sugar transport system ATP-binding protein
+C    Putative multiple sugar transporter [MD:M00207]
+D      K02027  ABC.MS.S; multiple sugar transport system substrate-binding protein
+D      K02025  ABC.MS.P; multiple sugar transport system permease protein
+D      K02026  ABC.MS.P1; multiple sugar transport system permease protein
+D      K02023  ABC.MS.A; multiple sugar transport system ATP-binding protein
+C    Putative simple sugar transporter [MD:M00221]
+D      K02058  ABC.SS.S; simple sugar transport system substrate-binding protein
+D      K02057  ABC.SS.P; simple sugar transport system permease protein
+D      K02056  ABC.SS.A; simple sugar transport system ATP-binding protein [EC:3.6.3.17]
+C    Putative ABC transporter [MD:M00210]
+D      K02067  ABC.X1.S; putative ABC transport system substrate-binding protein
+D      K02066  ABC.X1.P; putative ABC transport system permease protein
+D      K02065  ABC.X1.A; putative ABC transport system ATP-binding protein
+C    Putative ABC transporter [MD:M00211] [Table]
+D      K02069  ABC.X2.P; putative ABC transport system permease protein
+D      K02068  ABC.X2.A; putative ABC transport system ATP-binding protein
+B  Phosphate and amino acid transporters
+C    Phosphate transporter [MD:M00222] [Table]
+D      K02040  pstS; phosphate transport system substrate-binding protein
+D      K02037  pstC; phosphate transport system permease protein
+D      K02038  pstA; phosphate transport system permease protein
+D      K02036  pstB; phosphate transport system ATP-binding protein [EC:3.6.3.27]
+C    Phosphonate transporter [MD:M00223] [Table]
+D      K02044  phnD; phosphonate transport system substrate-binding protein
+D      K02042  phnE; phosphonate transport system permease protein
+D      K02041  phnC; phosphonate transport system ATP-binding protein [EC:3.6.3.28]
+C    Lysine/arginine/ornithine transporter [MD:M00225]
+D      K10013  ABC.ARG.S, argT; lysine/arginine/ornithine transport system substrate-binding protein
+D      K10015  hisM; histidine transport system permease protein
+D      K10016  hisQ; histidine transport system permease protein
+D      K10017  hisP; histidine transport system ATP-binding protein [EC:3.6.3.21]
+C    Histidine transporter [MD:M00226] [Table]
+D      K10014  hisJ; histidine transport system substrate-binding protein
+D      K10015  hisM; histidine transport system permease protein
+D      K10016  hisQ; histidine transport system permease protein
+D      K10017  hisP; histidine transport system ATP-binding protein [EC:3.6.3.21]
+C    Glutamine transporter [MD:M00227] [Table]
+D      K10036  glnH; glutamine transport system substrate-binding protein
+D      K10037  glnP; glutamine transport system permease protein
+D      K10038  glnQ; glutamine transport system ATP-binding protein [EC:3.6.3.-]
+C    Arginine transporter [MD:M00229] [Table]
+D      K09996  artJ; arginine transport system substrate-binding protein
+D      K09997  artI; arginine transport system substrate-binding protein
+D      K09998  artM; arginine transport system permease protein
+D      K09999  artQ; arginine transport system permease protein
+D      K10000  artP; arginine transport system ATP-binding protein [EC:3.6.3.-]
+C    Glutamate/aspartate transporter [MD:M00230] [Table]
+D      K10001  gltI, aatJ; glutamate/aspartate transport system substrate-binding protein
+D      K10002  gltK, aatM; glutamate/aspartate transport system permease protein
+D      K10003  gltJ, aatQ; glutamate/aspartate transport system permease protein
+D      K10004  gltL, aatP; glutamate/aspartate transport system ATP-binding protein [EC:3.6.3.-]
+C    Octopine/nopaline transporter [MD:M00231]
+D      K10018  occT, nocT; octopine/nopaline transport system substrate-binding protein
+D      K10019  occM, nocM; octopine/nopaline transport system permease protein
+D      K10020  occQ, nocQ; octopine/nopaline transport system permease protein
+D      K10021  occP, nocP; octopine/nopaline transport system ATP-binding protein [EC:3.6.3.-]
+C    General L-amino acid transporter [MD:M00232] [Table]
+D      K09969  aapJ, bztA; general L-amino acid transport system substrate-binding protein
+D      K09970  aapQ, bztB; general L-amino acid transport system permease protein
+D      K09971  aapM, bztC; general L-amino acid transport system permease protein
+D      K09972  aapP, bztD; general L-amino acid transport system ATP-binding protein [EC:3.6.3.-]
+C    Glutamate transporter [MD:M00233] [Table]
+D      K10005  gluB; glutamate transport system substrate-binding protein
+D      K10006  gluC; glutamate transport system permease protein
+D      K10007  gluD; glutamate transport system permease protein
+D      K10008  gluA; glutamate transport system ATP-binding protein [EC:3.6.3.-]
+C    Cystine transporter [MD:M00234] [Table]
+D      K02424  fliY; cystine transport system substrate-binding protein
+D      K10009  ABC.CYST.P; cystine transport system permease protein
+D      K10010  ABC.CYST.A; cystine transport system ATP-binding protein [EC:3.6.3.-]
+C    L-Cystine transporter [MD:M00585] [Table]
+D      K16956  tcyJ; L-cystine transport system substrate-binding protein
+D      K16957  tcyK; L-cystine transport system substrate-binding protein
+D      K16958  tcyL; L-cystine transport system permease protein
+D      K16959  tcyM; L-cystine transport system permease protein
+D      K16960  tcyN; L-cystine transport system ATP-binding protein [EC:3.6.3.-]
+C    Arginine/ornithine transporter [MD:M00235]
+D      K10022  aotJ; arginine/ornithine transport system substrate-binding protein
+D      K10023  aotM; arginine/ornithine transport system permease protein
+D      K10024  aotQ; arginine/ornithine transport system permease protein
+D      K10025  aotP; arginine/ornithine transport system ATP-binding protein [EC:3.6.3.-]
+C    Arginine/lysine/histidine/glutamine transporter [MD:M00587] [Table]
+D      K17062  bgtB; arginine/lysine/histidine/glutamine transport system substrate-binding and permease protein
+D      K17063  bgtA; arginine/lysine/histidine/glutamine transport system ATP-binding protein [EC:3.6.3.-]
+C    Putative lysine transporter [MD:M00589] [Table]
+D      K17073  lysX1; putative lysine transport system substrate-binding protein
+D      K17074  lysX2; putative lysine transport system permease protein
+D      K17076  K17076, lysY; putative lysine transport system ATP-binding protein [EC:3.6.3.-]
+C    Branched-chain amino acid transporter [MD:M00237] [Table]
+D      K01999  livK; branched-chain amino acid transport system substrate-binding protein
+D      K01997  livH; branched-chain amino acid transport system permease protein
+D      K01998  livM; branched-chain amino acid transport system permease protein
+D      K01995  livG; branched-chain amino acid transport system ATP-binding protein
+D      K01996  livF; branched-chain amino acid transport system ATP-binding protein
+C    Neutral amino acid transporter [MD:M00322] [Table]
+D      K11954  K11954, natB; neutral amino acid transport system substrate-binding protein
+D      K11955  natC; neutral amino acid transport system permease protein
+D      K11956  natD; neutral amino acid transport system permease protein
+D      K11957  K11957, natA; neutral amino acid transport system ATP-binding protein
+D      K11958  natE; neutral amino acid transport system ATP-binding protein
+C    Urea transporter [MD:M00323] [Table]
+D      K11959  urtA; urea transport system substrate-binding protein
+D      K11960  urtB; urea transport system permease protein
+D      K11961  urtC; urea transport system permease protein
+D      K11962  urtD; urea transport system ATP-binding protein
+D      K11963  urtE; urea transport system ATP-binding protein
+C    D-Methionine transporter [MD:M00238] [Table]
+D      K02073  metQ; D-methionine transport system substrate-binding protein
+D      K02072  metI; D-methionine transport system permease protein
+D      K02071  metN; D-methionine transport system ATP-binding protein
+C    Putative glutamine transporter [MD:M00228] [Table]
+D      K10039  ABC.GLN1.S; putative glutamine transport system substrate-binding protein
+D      K10040  ABC.GLN1.P; putative glutamine transport system permease protein
+D      K10041  ABC.GLN1.A; putative glutamine transport system ATP-binding protein [EC:3.6.3.-]
+C    Putative amino-acid transporter [MD:M00586] [Table]
+D      K16961  yxeM; putative amino-acid transport system substrate-binding protein
+D      K16962  yxeN; putative amino-acid transport system permease protein
+D      K16963  yxeO; putative amino-acid transport system ATP-binding protein [EC:3.6.3.-]
+C    Putative polar amino acid transporter [MD:M00236]
+D      K02030  ABC.PA.S; polar amino acid transport system substrate-binding protein
+D      K02029  ABC.PA.P; polar amino acid transport system permease protein
+D      K02028  ABC.PA.A; polar amino acid transport system ATP-binding protein [EC:3.6.3.21]
+B  Peptide and nickel transporters
+C    Oligopeptide transporter [MD:M00439]
+D      K15580  oppA, mppA; oligopeptide transport system substrate-binding protein
+D      K15581  oppB; oligopeptide transport system permease protein
+D      K15582  oppC; oligopeptide transport system permease protein
+D      K15583  oppD; oligopeptide transport system ATP-binding protein
+D      K10823  oppF; oligopeptide transport system ATP-binding protein
+C    Dipeptide transporter [MD:M00324] [Table]
+D      K12368  dppA; dipeptide transport system substrate-binding protein
+D      K12369  dppB; dipeptide transport system permease protein
+D      K12370  dppC; dipeptide transport system permease protein
+D      K12371  dppD; dipeptide transport system ATP-binding protein
+D      K12372  dppF; dipeptide transport system ATP-binding protein
+C    Dipeptide transporter [MD:M00566] [Table]
+D      K16199  dppE; dipeptide transport system substrate-binding protein
+D      K16200  dppB1; dipeptide transport system permease protein
+D      K16201  dppC1; dipeptide transport system permease protein
+D      K16202  dppD1; dipeptide transport system ATP-binding protein
+C    Nickel transporter [MD:M00440] [Table]
+D      K15584  nikA; nickel transport system substrate-binding protein
+D      K15585  nikB; nickel transport system permease protein
+D      K15586  nikC; nickel transport system permease protein
+D      K15587  nikD; nickel transport system ATP-binding protein [EC:3.6.3.24]
+D      K10824  nikE; nickel transport system ATP-binding protein [EC:3.6.3.24]
+C    Glutathione transporter [MD:M00348] [Table]
+D      K13889  gsiB; glutathione transport system substrate-binding protein
+D      K13890  gsiC; glutathione transport system permease protein
+D      K13891  gsiD; glutathione transport system permease protein
+D      K13892  gsiA; glutathione transport system ATP-binding protein
+C    Peptides/nickel transporter [MD:M00239]
+D      K02035  ABC.PE.S; peptide/nickel transport system substrate-binding protein
+D      K02033  ABC.PE.P; peptide/nickel transport system permease protein
+D      K02034  ABC.PE.P1; peptide/nickel transport system permease protein
+D      K02031  ABC.PE.A; peptide/nickel transport system ATP-binding protein
+D      K02032  ABC.PE.A1; peptide/nickel transport system ATP-binding protein
+C    Microcin C transporter [MD:M00349] [Table]
+D      K13893  yejA; microcin C transport system substrate-binding protein
+D      K13894  yejB; microcin C transport system permease protein
+D      K13895  yejE; microcin C transport system permease protein
+D      K13896  yejF; microcin C transport system ATP-binding protein
+B  Metallic cation, iron-siderophore and vitamin B12 transporters
+C    Iron complex transporter [MD:M00240]
+D      K02016  ABC.FEV.S; iron complex transport system substrate-binding protein
+D      K02015  ABC.FEV.P; iron complex transport system permease protein
+D      K02013  ABC.FEV.A; iron complex transport system ATP-binding protein [EC:3.6.3.34]
+C    Vitamin B12 transporter [MD:M00241] [Table]
+D      K06858  ABC.VB12.S1, btuF; vitamin B12 transport system substrate-binding protein
+D      K06073  ABC.VB12.P, btuC; vitamin B12 transport system permease protein
+D      K06074  ABC.VB12.A, btuD; vitamin B12 transport system ATP-binding protein [EC:3.6.3.33]
+C    Manganese transporter [MD:M00316] [Table]
+D      K11601  mntC; manganese transport system substrate-binding protein
+D      K11602  mntB; manganese transport system permease protein
+D      K11603  mntA; manganese transport system ATP-binding protein
+C    Zinc transporter [MD:M00242] [Table]
+D      K09815  znuA; zinc transport system substrate-binding protein
+D      K09816  znuB; zinc transport system permease protein
+D      K09817  znuC; zinc transport system ATP-binding protein [EC:3.6.3.-]
+C    Iron/zinc/copper transporter [MD:M00318] [Table]
+D      K11704  mtsA; iron/zinc/copper transport system substrate-binding protein
+D      K11705  mtsB; iron/zinc/copper transport system permease protein
+D      K11706  mtsC; iron/zinc/copper transport system ATP-binding protein
+C    Manganese/iron transporter [MD:M00317] [Table]
+D      K11604  sitA; manganese/iron transport system substrate-binding protein
+D      K11605  sitC; manganese/iron transport system permease protein
+D      K11606  sitD; manganese/iron transport system permease protein
+D      K11607  sitB; manganese/iron transport system ATP-binding protein
+C    Manganese/zinc/iron transporter [MD:M00319] [Table]
+D      K11707  troA, mntA, znuA; manganese/zinc/iron transport system substrate-binding protein
+D      K11708  troC, mntC, znuB; manganese/zinc/iron transport system permease protein
+D      K11709  troD, mntD, znuB; manganese/zinc/iron transport system permease protein
+D      K11710  troB, mntB, znuC; manganese/zinc/iron transport system ATP- binding protein
+C    Manganese/iron transporter [MD:M00243]
+D      K09818  ABC.MN.S; manganese/iron transport system substrate-binding protein
+D      K09819  ABC.MN.P; manganese/iron transport system permease protein
+D      K09820  ABC.MN.A; manganese/iron transport system ATP-binding protein
+C    Cobalt transporter [MD:M00245] [Table]
+D      K02009  cbiN; cobalt/nickel transport protein
+D      K02008  cbiQ; cobalt/nickel transport system permease protein
+D      K02007  cbiM; cobalt/nickel transport system permease protein
+D      K02006  cbiO; cobalt/nickel transport system ATP-binding protein
+C    Nickel transporter [MD:M00246] [Table]
+D      K10094  K10094, cbiK; nickel transport protein
+D      K16915  cbiL; nickel transport protein
+D      K02009  cbiN; cobalt/nickel transport protein
+D      K02008  cbiQ; cobalt/nickel transport system permease protein
+D      K02007  cbiM; cobalt/nickel transport system permease protein
+D      K02006  cbiO; cobalt/nickel transport system ATP-binding protein
+C    Biotin transporter [MD:M00581] [Table]
+D      K03523  bioY; biotin transport system substrate-specific component
+D      K16783  bioN; biotin transport system permease protein
+D      K16784  bioM; biotin transport system ATP-binding protein [EC:3.6.3.-]
+C    Energy-coupling factor transporter [MD:M00582] [Table]
+D      Substrate-specific components
+E        K03523  bioY; biotin transport system substrate-specific component
+E        K16923  qrtT; energy-coupling factor transport system substrate-specific component
+E        K16924  mtsT; energy-coupling factor transport system substrate-specific component
+E        K16925  ykoE; energy-coupling factor transport system substrate-specific component
+E        K16926  htsT; energy-coupling factor transport system substrate-specific component
+E        K16927  cbrT; energy-coupling factor transport system substrate-specific component
+E        K16928  mtaT; energy-coupling factor transport system substrate-specific component
+E        K16929  K16929; energy-coupling factor transport system substrate-specific component
+D      Shared module
+E        K16785  ecfT; energy-coupling factor transport system permease protein
+E        K16786  ecfA1; energy-coupling factor transport system ATP-binding protein [EC:3.6.3.-]
+E        K16787  ecfA2; energy-coupling factor transport system ATP-binding protein [EC:3.6.3.-]
+C    Putative zinc/manganese transporter [MD:M00244]
+D      K02077  ABC.ZM.S; zinc/manganese transport system substrate-binding protein
+D      K02075  ABC.ZM.P; zinc/manganese transport system permease protein
+D      K02074  ABC.ZM.A; zinc/manganese transport system ATP-binding protein
+C    Putative ABC transporter [MD:M00247] [Table]
+D      K01989  ABC.X4.S; putative ABC transport system substrate-binding protein
+D      K05832  ABC.X4.P; putative ABC transport system permease protein
+D      K05833  ABC.X4.A; putative ABC transport system ATP-binding protein
+B  ABC-2 type and other transporters
+C    Multidrug/hemolysin transporter [MD:M00298] [Table]
+D      K11051  ABC-2.CYL.P, cylB; multidrug/hemolysin transport system permease protein
+D      K11050  ABC-2.CYL.A, cylA; multidrug/hemolysin transport system ATP-binding protein
+C    Capsular polysaccharide transporter [MD:M00249] [Table]
+D      K09688  ABC-2.CPSE.P; capsular polysaccharide transport system permease protein
+D      K10107  ABC-2.CPSE.P1; capsular polysaccharide transport system permease protein
+D      K09689  ABC-2.CPSE.A; capsular polysaccharide transport system ATP-binding protein
+C    Lipopolysaccharide transporter [MD:M00250] [Table]
+D      K09690  ABC-2.LPSE.P; lipopolysaccharide transport system permease protein
+D      K09691  ABC-2.LPSE.A; lipopolysaccharide transport system ATP-binding protein
+C    Lipopolysaccharide transporter [MD:M00320]
+D      K07091  lptF; lipopolysaccharide export system permease protein
+D      K11720  lptG; lipopolysaccharide export system permease protein
+D      K06861  lptB; lipopolysaccharide export system ATP-binding protein [EC:3.6.3.-]
+C    Teichoic acid transporter [MD:M00251]
+D      K09692  tagG; teichoic acid transport system permease protein
+D      K09693  tagH; teichoic acid transport system ATP-binding protein [EC:3.6.3.40]
+C    Lipooligosaccharide transporter [MD:M00252] [Table]
+D      K09694  nodJ; lipooligosaccharide transport system permease protein
+D      K09695  nodI; lipooligosaccharide transport system ATP-binding protein
+C    Sodium transporter [MD:M00253] [Table]
+D      K09696  natB; sodium transport system permease protein
+D      K09697  natA; sodium transport system ATP-binding protein
+C    Putative peptide transporter [MD:M00583] [Table]
+D      K16916  yydJ; putative peptide transport system permease protein
+D      K16917  yydI; putative peptide transport system ATP-binding protein
+C    Hemin transporter [MD:M00257] [Table]
+D      K09813  hrtB; hemin transport system permease protein
+D      K09814  hrtA; hemin transport system ATP-binding protein [EC:3.6.3.-]
+C    Bacitracin transporter [MD:M00314] [Table]
+D      K11632  bceB; bacitracin transport system permease protein
+D      K11631  bceA; bacitracin transport system ATP-binding protein
+C    Fluoroquinolones transporter [MD:M00224] [Table]
+D      K16905  K16905; fluoroquinolones transport system permease protein
+D      K16906  K16906; fluoroquinolones transport system permease protein
+D      K16907  K16907; fluoroquinolones transport system ATP-binding protein [EC:3.6.3.-]
+C    Lipoprotein-releasing transporter [MD:M00255] [Table]
+D      K09808  ABC.LPT.P, lolC, lolE; lipoprotein-releasing system permease protein
+D      K09810  ABC.LPT.A, lolD; lipoprotein-releasing system ATP-binding protein [EC:3.6.3.-]
+C    Acetoin utilization transporter [MD:M00584] [Table]
+D      K16918  ytrF; acetoin utilization transport system permease protein
+D      K16919  ytrC_D; acetoin utilization transport system permease protein
+D      K16920  ytrE; acetoin utilization transport system ATP-binding protein
+D      K16921  ytrB; acetoin utilization transport system ATP-binding protein
+C    Heme transporter [MD:M00259] [Table]
+D      K02196  ccmD; heme exporter protein D
+D      K02195  ccmC; heme exporter protein C
+D      K02194  ccmB; heme exporter protein B
+D      K02193  ccmA; heme exporter protein A [EC:3.6.3.41]
+C    Cell division transporter [MD:M00256] [Table]
+D      K09811  ftsX; cell division transport system permease protein
+D      K09812  ftsE; cell division transport system ATP-binding protein
+C    Uncharacterized ABC transporter [MD:M00315] [Table]
+D      K11636  yxdM; putative ABC transport system permease protein
+D      K11635  yxdL; putative ABC transport system ATP-binding protein
+C    Putative ABC transporter [MD:M00258]
+D      K02004  ABC.CD.P; putative ABC transport system permease protein
+D      K02003  ABC.CD.A; putative ABC transport system ATP-binding protein
+C    ABC-2 type transporter [MD:M00254] [Table]
+D      K01992  ABC-2.P; ABC-2 type transport system permease protein
+D      K01990  ABC-2.A; ABC-2 type transport system ATP-binding protein
+C    Orphan ABC ATPase
+D      K09013  sufC; Fe-S cluster assembly ATP-binding protein
+#
+A<b>Solute Carrier Family (SLC)</b>
+B  SLC1: High-affinity glutamate and neutral amino acid transporter
+C    K05612  SLC1A1, EAAT3; solute carrier family 1 (neuronal/epithelial high affinity glutamate transporter), member 1
+C    K05613  SLC1A2, EAAT2; solute carrier family 1 (glial high affinity glutamate transporter), member 2
+C    K05614  SLC1A3, EAAT1; solute carrier family 1 (glial high affinity glutamate transporter), member 3
+C    K05615  SLC1A4, SATT; solute carrier family 1 (glutamate/neutral amino acid transporter), member 4
+C    K05616  SLC1A5; solute carrier family 1 (neutral amino acid transporter), member 5
+C    K05617  SLC1A6, EAAT4; solute carrier family 1 (high affinity aspartate/glutamate transporter), member 6
+C    K05618  SLC1A7, EAAT5; solute carrier family 1 (glutamate transporter), member 7
+B  SLC2: Facilitative GLUT transporter
+C    K07299  SLC2A1, GLUT1; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 1
+C    K07593  SLC2A2, GLUT2; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 2
+C    K08142  SLC2A3, GLUT3; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 3
+C    K07191  SLC2A4, GLUT4; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 4
+C    K08143  SLC2A5, GLUT5; MFS transporter, SP family, solute carrier family 2 (facilitated glucose/fructose transporter), member 5
+C    K08144  SLC2A6, GLUT6; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 6
+C    K12201  SLC2A7, GLUT7; MFS transporter, SP family, solute carrier family 2 (facilitated glucose/fructose transporter), member 7
+C    K08146  SLC2A9, GLUT9; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 9
+C    K08147  SLC2A10, GLUT10; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 10
+C    K08148  SLC2A11, GLUT11; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 11
+C    K08149  SLC2A12, GLUT12; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 12
+C    K08150  SLC2A13, ITR; MFS transporter, SP family, solute carrier family 2 (myo-inositol transporter), member 13
+B  SLC3: Heavy subunits of the heteromeric amino acid transporters
+C    K14210  SLC3A1, RBAT; solute carrier family 3 (neutral and basic amino acid transporter), member 1
+C    K06519  SLC3A2, MDU1; solute carrier family 3, member 2
+B  SLC4: Bicarbonate transporter
+C    K06573  SLC4A1, AE1; solute carrier family 4 (anion exchanger), member 1
+C    K13855  SLC4A2, AE2; solute carrier family 4 (anion exchanger), member 2
+C    K13856  SLC4A3, AE3; solute carrier family 4 (anion exchanger), member 3
+C    K13575  SLC4A4, NBC1; solute carrier family 4 (sodium bicarbonate cotransporter), member 4
+C    K13857  SLC4A5, NBC4; solute carrier family 4 (sodium bicarbonate cotransporter), member 5
+C    K13858  SLC4A7; solute carrier family 4 (sodium bicarbonate cotransporter), member 7
+C    K13859  SLC4A8; solute carrier family 4 (sodium bicarbonate cotransporter), member 8
+C    K13860  SLC4A9, AE4; solute carrier family 4 (sodium bicarbonate cotransporter), member 9
+C    K13861  SLC4A10, NCBE; solute carrier family 4 (sodium bicarbonate transporter), member 10
+C    K13862  SLC4A11, BTR1; solute carrier family 4 (sodium borate transporter), member 11
+B  SLC5: Sodium glucose cotransporter
+C    K14158  SLC5A1, SGLT1; solute carrier family 5 (sodium/glucose cotransporter), member 1
+C    K14382  SLC5A2, SGLT2; solute carrier family 5 (sodium/glucose cotransporter), member 2
+C    K14383  SLC5A3, SMIT; solute carrier family 5 (sodium/myo-inositol cotransporter), member 3
+C    K14384  SLC5A4, SGLT3; solute carrier family 5 (low affinity sodium-glucose cotransporter), member 4
+C    K14385  SLC5A5, NIS; solute carrier family 5 (sodium/iodide cotransporter), member 5
+C    K14386  SLC5A6, SMVT; solute carrier family 5 (sodium-dependent multivitamin transporter), member 6
+C    K14387  SLC5A7, CHT1; solute carrier family 5 (high affinity choline transporter), member 7
+C    K14388  SLC5A8_12, SMCT; solute carrier family 5 (sodium-coupled monocarboxylate transporter), member 8/12
+C    K14389  SLC5A9, SGLT4; solute carrier family 5 (sodium/glucose cotransporter), member 9
+C    K14390  SLC5A10, SGLT5; solute carrier family 5 (sodium/glucose cotransporter), member 10
+C    K14391  SLC5A11, SMIT2, SGLT6; solute carrier family 5 (sodium/myo-inositol cotransporter), member 11
+B  SLC6: Sodium- and chloride-dependent neurotransmitter transporter
+C    K05034  SLC6A1; solute carrier family 6 (neurotransmitter transporter, GABA) member 1
+C    K05035  SLC6A2; solute carrier family 6 (neurotransmitter transporter, noradrenalin) member 2
+C    K05036  SLC6A3; solute carrier family 6 (neurotransmitter transporter, dopamine) member 3
+C    K05037  SLC6A4; solute carrier family 6 (neurotransmitter transporter, serotonin) member 4
+C    K05038  SLC6A5S; solute carrier family 6 (neurotransmitter transporter, amino acid) member 5/7/9/14
+C    K05039  SLC6A6S; solute carrier family 6 (neurotransmitter transporter, GABA) member 6/8/11/12/13
+C    K05048  SLC6A15S; solute carrier family 6 (neurotransmitter transporter, amino acid/orphan) member 15/16/17/18/20
+C    K05334  SLC6A19; solute carrier family 6 (neurotransmitter transporter) member 19
+C    K05336  SLC6AN; solute carrier family 6 (neurotransmitter transporter), invertebrate
+B  SLC7: Cationic amino acid transporter/glycoprotein-associated
+C    K13863  SLC7A1, ATRC1; solute carrier family 7 (cationic amino acid transporter), member 1
+C    K13864  SLC7A2, ATRC2; solute carrier family 7 (cationic amino acid transporter), member 2
+C    K13865  SLC7A3, ATRC3; solute carrier family 7 (cationic amino acid transporter), member 3
+C    K13866  SLC7A4; solute carrier family 7 (cationic amino acid transporter), member 4
+C    K13780  SLC7A5, LAT1; solute carrier family 7 (L-type amino acid transporter), member 5
+C    K13872  SLC7A6; solute carrier family 7 (L-type amino acid transporter), member 6
+C    K13867  SLC7A7; solute carrier family 7 (L-type amino acid transporter), member 7
+C    K13781  SLC7A8, LAT2; solute carrier family 7 (L-type amino acid transporter), member 8
+C    K13868  SLC7A9, BAT1; solute carrier family 7 (L-type amino acid transporter), member 9
+C    K13782  SLC7A10, ASC1; solute carrier family 7 (L-type amino acid transporter), member 10
+C    K13869  SLC7A11; solute carrier family 7 (L-type amino acid transporter), member 11
+C    K13870  SLC7A13, AGT1; solute carrier family 7 (L-type amino acid transporter), member 13
+C    K13871  SLC7A14; solute carrier family 7 (cationic amino acid transporter), member 14
+C    K03450  SLC7A; solute carrier family 7 (L-type amino acid transporter), other
+B  SLC8: Na+/Ca2+ exchanger
+C    K05849  SLC8A, NCX; solute carrier family 8 (sodium/calcium exchanger)
+B  SLC9: Na+/H+ exchanger
+C    K05742  SLC9A1, NHE1; solute carrier family 9 (sodium/hydrogen exchanger), member 1
+C    K14722  SLC9A2, NHE2; solute carrier family 9 (sodium/hydrogen exchanger), member 2
+C    K12040  SLC9A3, NHE3; solute carrier family 9 (sodium/hydrogen exchanger), member 3
+C    K13961  SLC9A4, NHE4; solute carrier family 9 (sodium/hydrogen exchanger), member 4
+C    K14723  SLC9A5, NHE5; solute carrier family 9 (sodium/hydrogen exchanger), member 5
+C    K12041  SLC9A6_7, NHE6_7; solute carrier family 9 (sodium/hydrogen exchanger), member 6/7
+C    K14724  SLC9A8, NHE8; solute carrier family 9 (sodium/hydrogen exchanger), member 8
+C    K14725  SLC9A9, NHE9; solute carrier family 9 (sodium/hydrogen exchanger), member 9
+C    K14726  SLC9A10_11; solute carrier family 9 (sodium/hydrogen exchanger), member 10/11
+B  SLC10: Sodium bile salt cotransporter
+C    K14341  SLC10A1, NTCP; solute carrier family 10 (sodium/bile acid cotransporter), member 1
+C    K14342  SLC10A2, ASBT; solute carrier family 10 (sodium/bile acid cotransporter), member 2
+C    K14343  SLC10A3_5; solute carrier family 10 (sodium/bile acid cotransporter), member 3/5
+C    K14344  SLC10A4; solute carrier family 10 (sodium/bile acid cotransporter), member 4
+C    K14346  SLC10A6, SOAT; solute carrier family 10 (sodium/bile acid cotransporter), member 6
+C    K14347  SLC10A7, P7; solute carrier family 10 (sodium/bile acid cotransporter), member 7
+B  SLC11: Proton-coupled metal ion transporter
+C    K12347  SLC11A, NRAMP; natural resistance-associated macrophage protein
+B  SLC12: Electroneutral cation-coupled Cl cotransporter
+C    K14425  SLC12A1, NKCC2; solute carrier family 12 (sodium/potassium/chloride transporter), member 1
+C    K10951  SLC12A2, NKCC1; solute carrier family 12 (sodium/potassium/chloride transporter), member 2
+C    K14426  SLC12A3, TSC; solute carrier family 12 (sodium/chloride transporter), member 3
+C    K14427  SLC12A4_5_6, KCC; solute carrier family 12 (potassium/chloride transporter), member 4/5/6
+C    K13627  SLC12A7, KCC4; solute carrier family 12 (potassium/chloride transporter), member 7
+C    K14428  SLC12A8, CCC9; solute carrier family 12 (potassium/chloride transporters), member 8
+C    K14429  SLC12A9, CCC6; solute carrier family 12 (potassium/chloride transporters), member 9
+B  SLC13: Human Na+-sulfate/carboxylate cotransporter
+C    K14444  SLC13A1_4; solute carrier family 13 (sodium/sulfate cotransporter), member 1/4
+C    K14445  SLC13A2_3_5; solute carrier family 13 (sodium-dependent dicarboxylate transporter), member 2/3/5
+B  SLC14: Urea transporter
+C    K08716  SLC14A; solute carrier family 14 (urea transporter)
+B  SLC15: Proton oligopeptide cotransporter
+C    K14206  SLC15A1, PEPT1; solute carrier family 15 (oligopeptide transporter), member 1
+C    K14637  SLC15A2, PEPT2; solute carrier family 15 (oligopeptide transporter), member 2
+C    K14638  SLC15A3_4, PHT; solute carrier family 15 (peptide/histidine transporter), member 3/4
+C    K14639  SLC15A5; solute carrier family 15, member 5
+B  SLC16: Monocarboxylate transporter
+C    K08179  SLC16A1; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 1
+C    K08231  SLC16A2; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 2
+C    K08180  SLC16A3; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 3
+C    K08181  SLC16A4; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 4
+C    K08182  SLC16A5; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 5
+C    K08183  SLC16A6; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 6
+C    K08184  SLC16A7; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 7
+C    K08185  SLC16A8; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 8
+C    K08186  SLC16A9; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 9
+C    K08187  SLC16A10; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 10
+C    K08188  SLC16A11; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 11
+C    K11810  SLC16A12; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 12
+C    K08189  SLC16A13; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 13
+C    K08190  SLC16A14; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 14
+B  SLC17: Vesicular glutamate transporter
+C    K12300  SLC17A1S; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), member 1/2/3/4
+C    K12301  SLC17A5; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), member 5
+C    K12302  SLC17A6_7_8; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), member 6/7/8
+C    K12303  SLC17A9; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), member 9
+C    K08193  SLC17A; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), other
+B  SLC18: Vesicular amine transporter
+C    K08155  SLC18A1_2, VMAT; MFS transporter, DHA1 family, solute carrier family 18 (vesicular amine transporter), member 1/2
+C    K14636  SLC18A3, VACHT; MFS transporter, DHA1 family, solute carrier family 18 (vesicular acetylcholine transporter), member 3
+B  SLC19: Folate/thiamine transporter
+C    K14609  SLC19A1, RFC1; solute carrier family 19 (folate transporter), member 1
+C    K14610  SLC19A2_3, THTR; solute carrier family 19 (thiamine transporter), member 2/3
+B  SLC20: Type III Na+-phosphate cotransporter
+C    K14640  SLC20A, PIT; solute carrier family 20 (sodium-dependent phosphate transporter)
+B  SLC21/ASLCO: Organic anion transporter
+C    K03460  SLCO1A; solute carrier organic anion transporter family, member 1A
+C    K05043  SLCO1B; solute carrier organic anion transporter family, member 1B
+C    K08747  SLCO1C; solute carrier organic anion transporter family, member 1C
+C    K14345  SLCO2A; solute carrier organic anion transporter family, member 2A
+C    K14352  SLCO2B; solute carrier organic anion transporter family, member 2B
+C    K14353  SLCO3A; solute carrier organic anion transporter family, member 3A
+C    K14354  SLCO4A; solute carrier organic anion transporter family, member 4A
+C    K14355  SLCO4C; solute carrier organic anion transporter family, member 4C
+C    K14356  SLCO5A; solute carrier organic anion transporter family, member 5A
+C    K14357  SLCO6A; solute carrier organic anion transporter family, member 6A
+B  SLC22: Organic cation/anion/zwitterion transporter
+C    K08198  SLC22A1, OCT1; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 1
+C    K08199  SLC22A2, OCT2; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 2
+C    K08200  SLC22A3, OCT3; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 3
+C    K08202  SLC22A4_5, OCTN; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 4/5
+C    K08203  SLC22A6, OAT1; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 6
+C    K08204  SLC22A7, OAT2; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 7
+C    K08205  SLC22A8, OAT3; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 8
+C    K08206  SLC22A9S; MFS transporter, OCT family, solute carrier family 22 (organic anion/cation transporter), member 9/10/19/24/25
+C    K08207  SLC22A11, OAT4; MFS transporter, OCT family, solute carrier family 22 (organic anion/cation transporter), member 11
+C    K08208  SLC22A12, URAT1; MFS transporter, OCT family, solute carrier family 22 (organic anion/cation transporter), member 12
+C    K08209  SLC22A13; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 13
+C    K08210  SLC22A14; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 14
+C    K08211  SLC22A15; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 15
+C    K08212  SLC22A16; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 16
+C    K08213  SLC22A17; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 17
+C    K08214  SLC22A18; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 18
+C    K08216  SLC22A20; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 20
+C    K08215  SLC22A23; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 23
+B  SLC23: Na+-dependent ascorbic acid transporter
+C    K14611  SLC23A1_2, SVCT1_2; solute carrier family 23 (nucleobase transporter), member 1/2
+C    K14612  SLC23A3, SVCT3; solute carrier family 23 (nucleobase transporter), member 3
+B  SLC24: Na+/(Ca2+-K+) exchanger
+C    K13749  SLC24A1, NCKX1; solute carrier family 24 (sodium/potassium/calcium exchanger), member 1
+C    K13750  SLC24A2, NCKX2; solute carrier family 24 (sodium/potassium/calcium exchanger), member 2
+C    K13751  SLC24A3, NCKX3; solute carrier family 24 (sodium/potassium/calcium exchanger), member 3
+C    K13752  SLC24A4, NCKX4; solute carrier family 24 (sodium/potassium/calcium exchanger), member 4
+C    K13753  SLC24A5, NCKX5; solute carrier family 24 (sodium/potassium/calcium exchanger), member 5
+C    K13754  SLC24A6, NCKX6; solute carrier family 24 (sodium/potassium/calcium exchanger), member 6
+B  SLC25: Mitochondrial carrier
+C    K15100  SLC25A1, CTP; solute carrier family 25 (mitochondrial citrate transporter), member 1
+C    K15101  SLC25A2_15, ORNT; solute carrier family 25 (mitochondrial ornithine transporter) member 2/15
+C    K15102  SLC25A3, PHC, PIC; solute carrier family 25 (mitochondrial phosphate transporter), member 3
+C    K05863  SLC25A4S, ANT; solute carrier family 25 (mitochondrial adenine nucleotide translocator), member 4/5/6/31
+C    K08769  UCP1, SLC25A7; solute carrier family 25 (mitochondrial uncoupling protein), member 7
+C    K15103  UCP2_3, SLC25A8_9; solute carrier family 25 (mitochondrial uncoupling protein), member 8/9
+C    K13577  SLC25A10, DIC; solute carrier family 25 (mitochondrial dicarboxylate transporter), member 10
+C    K15104  SLC25A11, OGC; solute carrier family 25 (mitochondrial oxoglutarate transporter), member 11
+C    K15105  SLC25A12_13, AGC; solute carrier family 25 (mitochondrial aspartate/glutamate transporter), member 12/13
+C    K15106  SLC25A14_30; solute carrier family 25 (mitochondrial carrier), member 14/30
+C    K15084  SLC25A16, GDA, LEU5; solute carrier family 25 (mitochondrial carrier protein), member 16
+C    K13354  SLC25A17, PMP34; solute carrier family 25 (peroxisomal adenine nucleotide transporter), member 17
+C    K15107  SLC25A18_22, GC; solute carrier family 25 (mitochondrial glutamate transporter), member 18/22
+C    K15108  SLC25A19, DNC, TPC1; solute carrier family 25 (mitochondrial thiamine pyrophosphate transporter), member 19
+C    K15109  SLC25A20_29, CACT, CACL, CRC1; solute carrier family 25 (mitochondrial carnitine/acylcarnitine transporter), member 20/29
+C    K15110  SLC25A21, ODC; solute carrier family 25 (mitochondrial 2-oxodicarboxylate transporter), member 21
+C    K14684  SLC25A23S; solute carrier family 25 (mitochondrial phosphate transporter), member 23/24/25/41
+C    K15111  SLC25A26; solute carrier family 25 (mitochondrial S-adenosylmethionine transporter), member 26
+C    K15112  SLC25A27, UCP4; solute carrier family 25 (mitochondrial uncoupling protein), member 27
+C    K15113  SLC25A28_37, MFRN; solute carrier family 25 (mitochondrial iron transporter), member 28/37
+C    K15115  SLC25A32, MFT; solute carrier family 25 (mitochondrial folate transporter), member 32
+C    K15116  SLC25A33_36, RIM2; solute carrier family 25, member 33/36
+C    K15117  SLC25A34_35, OAC1; solute carrier family 25, member 34/35
+C    K15118  SLC25A38; solute carrier family 25, member 38
+C    K15119  SLC25A39_40; solute carrier family 25, member 39/40
+C    K15085  SLC25A42; solute carrier family 25, member 42
+C    K15120  SLC25A43; solute carrier family 25, member 43
+C    K15121  SLC25A44; solute carrier family 25, member 44
+C    K15123  SLC25A45_47; solute carrier family 25, member 45/47
+C    K03454  SLC25A46; solute carrier family 25, member 46
+C    K15124  SLC25A48; solute carrier family 25, member 48
+B  SLC26: Multifunctional anion exchanger
+C    K14700  SLC26A1, SAT1; solute carrier family 26 (sulfate anion transporter), member 1
+C    K14701  SLC26A2, DTD; solute carrier family 26 (sulfate anion transporter), member 2
+C    K14078  SLC26A3, DRA; solute carrier family 26 (chloride anion exchanger), member 3
+C    K14702  SLC26A4, PDS; solute carrier family 26 (sodium-independent chloride/iodide transporter), member 4
+C    K14703  SLC26A5, PRES; solute carrier family 26, member 5
+C    K14704  SLC26A6; solute carrier family 26 (sulfate anion transporter), member 6
+C    K13962  SLC26A7, SUT2; solute carrier family 26 (anion exchange transporter), member 7
+C    K14705  SLC26A8, TAT1; solute carrier family 26 (testis anion transporter), member 8
+C    K14706  SLC26A9; solute carrier family 26 (sulfate anion transporter), member 9
+C    K14707  SLC26A10; solute carrier family 26, member 10
+C    K14708  SLC26A11; solute carrier family 26 (sodium-independent sulfate anion transporter), member 11
+C    K14453  K14453; solute carrier family 26, other
+B  SLC27: Fatty acid transporter
+C    K08745  SLC27A1_4, FATP1, FATP4; solute carrier family 27 (fatty acid transporter), member 1/4 [EC:6.2.1.-]
+C    K08746  SLC27A2, FACVL1, FATP2; solute carrier family 27 (fatty acid transporter), member 2 [EC:6.2.1.- 6.2.1.3]
+C    K08772  SLC27A3, FATP3; solute carrier family 27 (fatty acid transporter), member 3 [EC:6.2.1.-]
+C    K08748  SLC27A5, FATP5; solute carrier family 27 (fatty acid transporter), member 5 [EC:6.2.1.7]
+C    K08749  SLC27A6, FATP6; solute carrier family 27 (fatty acid transporter), member 6
+B  SLC28: Na+-coupled nucleoside transporter
+C    K11536  SLC28A; pyrimidine nucleoside transport protein
+B  SLC29: Facilitative nucleoside transporter
+C    K15014  SLC29A1_2_3, ENT1_2_3; solute carrier family 29 (equilibrative nucleoside transporter), member 1/2/3
+C    K03323  SLC29A4, ENT4; solute carrier family 29 (equilibrative nucleoside transporter), member 4
+B  SLC30: Zinc efflux transporter
+C    K14688  SLC30A1, ZNT1; solute carrier family 30 (zinc transporter), member 1
+C    K14689  SLC30A2, ZNT2; solute carrier family 30 (zinc transporter), member 2
+C    K14690  SLC30A3, ZNT3; solute carrier family 30 (zinc transporter), member 3
+C    K14691  SLC30A4, ZNT4; solute carrier family 30 (zinc transporter), member 4
+C    K14692  SLC30A5_7, ZNT5_7, MTP, MSC2; solute carrier family 30 (zinc transporter), member 5/7
+C    K14693  SLC30A6, ZNT6; solute carrier family 30 (zinc transporter), member 6
+C    K14695  SLC30A8, ZNT8; solute carrier family 30 (zinc transporter), member 8
+C    K14696  SLC30A9, ZNT9; solute carrier family 30 (zinc transporter), member 9
+C    K14697  SLC30A10, ZNT10; solute carrier family 30 (zinc transporter), member 10
+B  SLC31: Copper transporter
+C    K14686  SLC31A1, CTR1; solute carrier family 31 (copper transporter), member 1
+C    K14687  SLC31A2, CTR2; solute carrier family 31 (copper transporter), member 2
+B  SLC32: Vesicular inhibitory amino acid transporter
+C    K15015  SLC32A, VGAT; solute carrier family 32 (vesicular inhibitory amino acid transporter)
+B  SLC33: Acetyl-CoA transporter
+C    K03372  ACATN, SLC33A1; MFS transporter, PAT family, solute carrier family 33 (acetyl-CoA transportor), member 1 [EC:2.3.1.-]
+B  SLC34: Type II Na+-phosphate cotransporter
+C    K14683  SLC34A, NPT, nptA; solute carrier family 34 (sodium-dependent phosphate cotransporter)
+B  SLC35: Nucleoside-sugar transporter
+C    K15272  SLC35A1_2_3; solute carrier family 35 (UDP-sugar transporter), member A1/2/3
+C    K15273  SLC35A4; solute carrier family 35 (probable UDP-sugar transporter), member A4
+C    K15274  SLC35A5; solute carrier family 35 (probable UDP-sugar transporter), member A5
+C    K15275  SLC35B1; solute carrier family 35 (UDP-galactose transporter), member B1
+C    K15276  SLC35B2, PAPST1; solute carrier family 35 (adenosine 3'-phospho 5'-phosphosulfate transporter), member B2
+C    K15277  SLC35B3, PAPST2; solute carrier family 35 (adenosine 3'-phospho 5'-phosphosulfate transporter), member B3
+C    K15278  SLC35B4, YEA4; solute carrier family 35 (UDP-xylose/UDP-N-acetylglucosamine transporter), member B4
+C    K15279  SLC35C1, FUCT1; solute carrier family 35 (GDP-fucose transporter), member C1
+C    K15280  SLC35C2; solute carrier family 35, member C2
+C    K15281  SLC35D; solute carrier family 35
+C    K15283  SLC35E1; solute carrier family 35, member E1
+C    K15284  SLC35E2; solute carrier family 35, member E2
+C    K15285  SLC35E3; solute carrier family 35, member E3
+C    K15286  SLC35E4; solute carrier family 35, member E4
+C    K15287  SLC35F1_2; solute carrier family 35, member F1/2
+C    K15288  SLC35F3_4; solute carrier family 35, member F3/4
+C    K15289  SLC35F5; solute carrier family 35, member F5
+B  SLC36: Proton-coupled amino acid transporter
+C    K14209  SLC36A, PAT; solute carrier family 36 (proton-coupled amino acid transporter)
+B  SLC37: Sugar-phosphate/phosphate exchanger
+C    K13783  SLC37A1_2; MFS transporter, OPA family, solute carrier family 37 (glycerol-3-phosphate transporter), member 1/2
+C    K03447  SLC37A3; MFS transporter, OPA family, solute carrier family 37 (glycerol-3-phosphate transporter), member 3
+C    K08171  SLC37A4; MFS transporter, OPA family, solute carrier family 37 (glycerol-6-phosphate transporter), member 4
+B  SLC38: System A and System N sodium-coupled neutral amino acid transporter
+C    K14990  SLC38A1, SNAT1, GLNT; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 1
+C    K14207  SLC38A2, SNAT2; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 2
+C    K13576  SLC38A3, SNAT3; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 3
+C    K14991  SLC38A4, SNAT4; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 4
+C    K14992  SLC38A5, SNAT5; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 5
+C    K14993  SLC38A6, SNAT6; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 6
+C    K14994  SLC38A7_8; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 7/8
+C    K14995  SLC38A9; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 9
+C    K14996  SLC38A10; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 10
+C    K14997  SLC38A11; solute carrier family 38 (sodium-coupled neutral amino acid transporter), member 11
+B  SLC39: Metal ion transporter
+C    K14709  SLC39A1_2_3, ZIP1_2_3; solute carrier family 39 (zinc transporter), member 1/2/3
+C    K14710  SLC39A4, ZIP4; solute carrier family 39 (zinc transporter), member 4
+C    K14711  SLC39A5, ZIP5; solute carrier family 39 (zinc transporter), member 5
+C    K14712  SLC39A6, LIV1, ZIP6; solute carrier family 39 (zinc transporter), member 6
+C    K14713  SLC39A7, KE4, ZIP7; solute carrier family 39 (zinc transporter), member 7
+C    K14714  SLC39A8, ZIP8; solute carrier family 39 (zinc transporter), member 8
+C    K14715  SLC39A9, ZIP9; solute carrier family 39 (zinc transporter), member 9
+C    K14716  SLC39A10, ZIP10; solute carrier family 39 (zinc transporter), member 10
+C    K14717  SLC39A11, ZIP11; solute carrier family 39 (zinc transporter), member 11
+C    K14718  SLC39A12, ZIP12; solute carrier family 39 (zinc transporter), member 12
+C    K14719  SLC39A13, ZIP13; solute carrier family 39 (zinc transporter), member 13
+C    K14720  SLC39A14, ZIP14; solute carrier family 39 (zinc transporter), member 14
+B  SLC40: Basolateral iron transporter
+C    K14685  SLC40A1, FPN1; solute carrier family 40 (iron-regulated transporter), member 1
+B  SLC41: MgtE-like magnesium transporter
+C    K15122  SLC41A; solute carrier family 41
+B  SLC42: Rh ammonium transporter
+C    K06580  SLC42A, RHAG, RHBG, RHCG; ammonium transporter Rh
+B  SLC43: Na+-independent, system-L-like amino acid transporter
+C    K08228  SLC43A1; MFS transporter, LAT3 family, solute carrier family 43, member 1
+C    K08229  SLC43A2; MFS transporter, LAT3 family, solute carrier family 43, member 2
+C    K08230  SLC43A3; MFS transporter, LAT3 family, solute carrier family 43, member 3
+B  SLC44: Choline-like transporter
+C    K06515  SLC44A1, CDW92; solute carrier family 44 (choline transporter-like protein), member 1
+C    K15377  SLC44A2_4_5; solute carrier family 44 (choline transporter-like protein), member 2/4/5
+C    K15282  SLC44A3; solute carrier family 44 (choline transporter-like protein), member 3
+B  SLC45: Putative sugar transporter
+C    K15378  SLC45A1_2_4; solute carrier family 45, member 1/2/4
+C    K15379  SLC45A3; solute carrier family 45, member 3
+B  SLC46: Folate transporter family
+C    K14613  SLC46A1_3; MFS transporter, PCFT/HCP family, solute carrier family 46 (folate transporter), member 1/3
+C    K14614  SLC46A2; MFS transporter, PCFT/HCP family, solute carrier family 46 (thymic stromal cotransporter), member 2
+B  SLC47: Multidrug and Toxin Extrusion (MATE) family
+C    K03327  TC.MATE, SLC47A, norM, mdtK, dinF; multidrug resistance protein, MATE family
+B  SLC48: Heme transporter family
+C    K15380  SLC48A1, HRG1; solute carrier family 48 (heme transporter), member 1
+B  SLC49: Transporters of the major facilitator superfamily
+C    K08220  FLVCR, SLC49A1_2; MFS transporter, FLVCR family, feline leukemia virus subgroup C receptor-related protein
+C    K15381  DIRC2, SLC49A3; MFS transporter, FLVCR family, disrupted in renal carcinoma protein 2
+C    K12306  MSFD7, SLC49A4; MFS transporter, FLVCR family, MFS-domain-containing protein 7
+B  SLC50: Sugar efflux transporter
+C    K15382  SLC50A, SWEET; solute carrier family 50 (sugar transporter)
+B  SLC51: Transporters of steroid-derived molecules
+C    K14360  OSTALPHA, OSTA, SLC51A1; organic solute transporter subunit alpha
+C    K14361  OSTBETA, OSTB, SLC51A2; organic solute transporter subunit beta
+#
+A<b>Major Facilitator Superfamily (MFS)</b>
+B  Sugar transporters
+C    Sugar porter (SP) family [TC:2.A.1.1]
+D      K08137  galP; MFS transporter, SP family, galactose:H+ symporter
+D      K02100  araE; MFS transporter, SP family, arabinose:H+ symporter
+D      K08138  xylE; MFS transporter, SP family, xylose:H+ symportor
+D      K13854  K13854, glf; MFS transporter, SP family, glucose uniporter
+D      K08139  HXT; MFS transporter, SP family, sugar:H+ symporter
+D      K08141  MAL; MFS transporter, SP family, general alpha glucoside:H+ symporter
+D      K06609  iolT; MFS transporter, SP family, major inositol transporter
+D      K06610  iolF; MFS transporter, SP family, inositol transporter
+D      K07299  SLC2A1, GLUT1; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 1
+D      K07593  SLC2A2, GLUT2; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 2
+D      K08142  SLC2A3, GLUT3; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 3
+D      K07191  SLC2A4, GLUT4; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 4
+D      K08143  SLC2A5, GLUT5; MFS transporter, SP family, solute carrier family 2 (facilitated glucose/fructose transporter), member 5
+D      K08144  SLC2A6, GLUT6; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 6
+D      K12201  SLC2A7, GLUT7; MFS transporter, SP family, solute carrier family 2 (facilitated glucose/fructose transporter), member 7
+D      K08145  SLC2A8, GLUT8; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 8
+D      K08146  SLC2A9, GLUT9; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 9
+D      K08147  SLC2A10, GLUT10; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 10
+D      K08148  SLC2A11, GLUT11; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 11
+D      K08149  SLC2A12, GLUT12; MFS transporter, SP family, solute carrier family 2 (facilitated glucose transporter), member 12
+D      K08150  SLC2A13, ITR; MFS transporter, SP family, solute carrier family 2 (myo-inositol transporter), member 13
+D      K14258  TRET1; facilitated trehalose transporter
+D      K03444  MFS.SP; MFS transporter, SP family, sugar porter, other
+C    Oligosaccharide:H+ symporter (OHS) family [TC:2.A.1.5]
+D      K02532  lacY; MFS transporter, OHS family, lactose permease
+C    Fucose:H+ symporter (FHS) family [TC:2.A.1.7]
+D      K02429  fucP; MFS transporter, FHS family, L-fucose permease
+D      K08174  glcP; MFS transporter, FHS family, glucose/mannose:H+ symporter
+D      K08175  NAGLT1; MFS transporter, FHS family, Na+ dependent glucose transporter 1
+C    Sugar efflux transporter (SET) [TC:2.A.1.20]
+D      K03291  MFS.SET; MFS transporter, SET family, sugar efflux transporter
+C    Nucleoside:H+ symporter (NHS) family [TC:2.A.1.10]
+D      K03289  nupG; MFS transporter, NHS family, nucleoside permease
+D      K11537  xapB; MFS transporter, NHS family, xanthosine permease
+C    Purine transporter (AzgA) family [TC:2.A.1.40]
+D      K06901  pbuG; putative MFS transporter, AGZA family, xanthine/uracil permease
+B  Organic acid transporters
+C    Metabolite:H+ symporter (MHS) family [TC:2.A.1.6]
+D      K03288  citA, tcuC; MFS transporter, MHS family, citrate/tricarballylate:H+ symporter
+D      K03761  kgtP; MFS transporter, MHS family, alpha-ketoglutarate permease
+D      K02625  pcaT; MFS transporter, MHS family, dicarboxylic acid transporter PcaT
+D      K03762  proP; MFS transporter, MHS family, proline/betaine transporter
+D      K08172  shiA; MFS transporter, MHS family, shikimate and dehydroshikimate transport protein
+D      K08173  ydfJ; MFS transporter, MHS family, metabolite:H+ symporter
+C    Oxalate:formate antiporter (OFA) family [TC:2.A.1.11]
+D      K08177  oxlT; MFS transporter, OFA family, oxalate/formate antiporter
+C    Sialate:H+ symporter (SHS) family [TC:2.A.1.12]
+D      K03290  nanT; MFS transporter, SHS family, sialic acid transporter
+D      K08178  JEN; MFS transporter, SHS family, lactate transporter
+C    Monocarboxylate porter (MCP) family [TC:2.A.1.13]
+D      K08179  SLC16A1; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 1
+D      K08231  SLC16A2; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 2
+D      K08180  SLC16A3; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 3
+D      K08181  SLC16A4; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 4
+D      K08182  SLC16A5; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 5
+D      K08183  SLC16A6; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 6
+D      K08184  SLC16A7; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 7
+D      K08185  SLC16A8; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 8
+D      K08186  SLC16A9; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 9
+D      K08187  SLC16A10; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 10
+D      K08188  SLC16A11; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 11
+D      K11810  SLC16A12; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 12
+D      K08189  SLC16A13; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 13
+D      K08190  SLC16A14; MFS transporter, MCP family, solute carrier family 16 (monocarboxylic acid transporters), member 14
+C    Anion:cation symporter (ACS) family [TC:2.A.1.14]
+D      K03535  gudP; MFS transporter, ACS family, glucarate transporter
+D      K08191  exuT; MFS transporter, ACS family, hexuronate transporter
+D      K13021  ttuB; MFS transporter, ACS family, tartrate transporter
+D      K08192  DAL; MFS transporter, ACS family, allantoate permease
+D      K08194  dgoT; MFS transporter, ACS family, D-galactonate transporter
+D      K02511  hpaX; MFS transporter, ACS family, 4-hydroxyphenylacetate permease
+D      K12299  garP; MFS transporter, ACS family, probable galactarate transporter
+D      K03448  FEN2, LIZ1; MFS transporter, ACS family, pantothenate transporter
+D      K12300  SLC17A1S; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), member 1/2/3/4
+D      K12301  SLC17A5; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), member 5
+D      K12302  SLC17A6_7_8; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), member 6/7/8
+D      K12303  SLC17A9; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), member 9
+D      K08193  SLC17A; MFS transporter, ACS family, solute carrier family 17 (sodium-dependent inorganic phosphate cotransporter), other
+C    Aromatic acid:H+ symporter (AAHS) family [TC:2.A.1.15]
+D      K08195  pcaK; MFS transporter, AAHS family, 4-hydroxybenzoate transporter
+D      K05819  mhpT; MFS transporter, AAHS family, 3-hydroxyphenylpropionic acid transporter
+D      K08196  mucK; MFS transporter, AAHS family, cis,cis-muconate transporter
+D      K05548  benK; MFS transporter, AAHS family, benzoate transport protein
+C    Cyanate porter (CP) family [TC:2.A.1.17]
+D      K03449  MFS.CP; MFS transporter, CP family, cyanate transporter
+C    Organic cation transporter (OCT) family [TC:2.A.1.19]
+D      K08198  SLC22A1, OCT1; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 1
+D      K08199  SLC22A2, OCT2; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 2
+D      K08200  SLC22A3, OCT3; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 3
+D      K08202  SLC22A4_5, OCTN; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 4/5
+D      K08203  SLC22A6, OAT1; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 6
+D      K08204  SLC22A7, OAT2; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 7
+D      K08205  SLC22A8, OAT3; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 8
+D      K08206  SLC22A9S; MFS transporter, OCT family, solute carrier family 22 (organic anion/cation transporter), member 9/10/19/24/25
+D      K08207  SLC22A11, OAT4; MFS transporter, OCT family, solute carrier family 22 (organic anion/cation transporter), member 11
+D      K08208  SLC22A12, URAT1; MFS transporter, OCT family, solute carrier family 22 (organic anion/cation transporter), member 12
+D      K08209  SLC22A13; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 13
+D      K08210  SLC22A14; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 14
+D      K08211  SLC22A15; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 15
+D      K08212  SLC22A16; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 16
+D      K08213  SLC22A17; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 17
+D      K08214  SLC22A18; MFS transporter, OCT family, solute carrier family 22 (organic cation transporter), member 18
+D      K08216  SLC22A20; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 20
+D      K08215  SLC22A23; MFS transporter, OCT family, solute carrier family 22 (organic anion transporter), member 23
+C    Phenylproprionate permease (PPP) [TC:2.A.1.27]
+D      K05820  hcaT; MFS transporter, PPP family, 3-phenylpropionic acid transporter
+C    L-Amino acid transporter-3 (LAT3) family (SLC43 family) [TC:2.A.1.44]
+D      K08228  SLC43A1; MFS transporter, LAT3 family, solute carrier family 43, member 1
+D      K08229  SLC43A2; MFS transporter, LAT3 family, solute carrier family 43, member 2
+D      K08230  SLC43A3; MFS transporter, LAT3 family, solute carrier family 43, member 3
+C    Proton coupled folate transporter/heme carrier protein (PCFT/HCP) family [TC:2.A.1.50]
+D      K14613  SLC46A1_3; MFS transporter, PCFT/HCP family, solute carrier family 46 (folate transporter), member 1/3
+D      K14614  SLC46A2; MFS transporter, PCFT/HCP family, solute carrier family 46 (thymic stromal cotransporter), member 2
+B  Phosphate and organophosphate transporters
+C    Phosphate:H+ symporter (PHS) family [TC:2.A.1.9]
+D      K08176  PHO84; MFS transporter, PHS family, inorganic phosphate transporter
+C    Organophosphate:Pi antiporter (OPA) family [TC:2.A.1.4]
+D      K07784  uhpT; MFS transporter, OPA family, hexose phosphate transport protein UhpT
+D      K11382  pgtP; MFS transporter, OPA family, phosphoglycerate transporter protein
+D      K02445  glpT; MFS transporter, OPA family, glycerol-3-phosphate transporter
+D      K07783  uhpC; MFS transporter, OPA family, sugar phosphate sensor protein UhpC
+D      K13783  SLC37A1_2; MFS transporter, OPA family, solute carrier family 37 (glycerol-3-phosphate transporter), member 1/2
+D      K03447  SLC37A3; MFS transporter, OPA family, solute carrier family 37 (glycerol-3-phosphate transporter), member 3
+D      K08171  SLC37A4; MFS transporter, OPA family, solute carrier family 37 (glycerol-6-phosphate transporter), member 4
+B  Nitrate/nitrite transporters
+C    Nitrate/nitrite porter (NNP) family [TC:2.A.1.8]
+D      K02575  NRT, narK, nrtP, nasA; MFS transporter, NNP family, nitrate/nitrite transporter
+D      K10850  narT; MFS transporter, NNP family, putative nitrate transporter
+B  Lipid transporters
+C    Lysophospholipid transporter (LplT) family [TC:2.A.1.42]
+D      K08227  lplT; MFS transporter, LPLT family, lysophospholipid transporter
+B  Metal transporters
+C    Siderophore-iron transporter (SIT) [TC:2.A.1.16]
+D      K08197  ARN; MFS transporter, SIT family, siderophore-iron:H+ symporter
+C    Enterobactin (siderophore) exporter (EntS) family [TC:2.A.1.38]
+D      K08225  entS; MFS transporter, ENTS family, enterobactin (siderophore) exporter
+C    Nickel resistance (Nre) [TC:2.A.1.31]
+D      K07785  nrsD, nreB; MFS transporter, NRE family, putaive nickel resistance protein
+C    Putative bacteriochlorophyll delivery (BCD) family [TC:2.A.1.41]
+D      K08226  pucC; MFS transporter, BCD family, chlorophyll transporter
+B  Protein transporters
+C    Vesicular neurotransmitter transporter (VNT) [TC:2.A.1.22]
+D      K06258  SV2; MFS transporter, VNT family, synaptic vesicle glycoprotein 2
+C    Peptide-acetyl-CoA transporter (PAT) [TC:2.A.1.25]
+D      K03372  ACATN, SLC33A1; MFS transporter, PAT family, solute carrier family 33 (acetyl-CoA transportor), member 1 [EC:2.3.1.-]
+D      K08218  ampG; MFS transporter, PAT family, beta-lactamase induction signal transducer AmpG
+C    Feline leukemia virus subgroup C receptor (FLVCR) [TC:2.A.1.28]
+D      K08220  FLVCR, SLC49A1_2; MFS transporter, FLVCR family, feline leukemia virus subgroup C receptor-related protein
+D      K15381  DIRC2, SLC49A3; MFS transporter, FLVCR family, disrupted in renal carcinoma protein 2
+D      K12306  MSFD7, SLC49A4; MFS transporter, FLVCR family, MFS-domain-containing protein 7
+B  Drug transporters
+C    Drug:H+ antiporter-1 (12 spanner) (DHA1) family [TC:2.A.1.2]
+D      K07552  bcr; MFS transporter, DHA1 family, bicyclomycin/chloramphenicol resistance protein
+D      K08151  tetA; MFS transporter, DHA1 family, tetracycline resistance protein
+D      K08152  lmrP; MFS transporter, DHA1 family, multidrug resistance protein B
+D      K07786  emrY; MFS transporter, multidrug resistance protein Y
+D      K08153  blt, norA; MFS transporter, DHA1 family, multidrug resistance protein
+D      K08157  TPO1; MFS transporter, DHA1 family, multidrug resistance protein
+D      K08158  MDR1; MFS transporter, DHA1 family, multidrug resistance protein
+D      K08160  cmr, mdfA; MFS transporter, DHA1 family, multidrug/chloramphenicol efflux transport protein
+D      K08161  mdtG; MFS transporter, DHA1 family, multidrug resistance protein
+D      K08162  mdtH; MFS transporter, DHA1 family, multidrug resistance protein
+D      K08163  mdtL; MFS transporter, DHA1 family, multidrug resistance protein
+D      K08156  araJ; MFS transporter, DHA1 family, arabinose polymer transporter
+D      K08159  sotB; MFS transporter, DHA1 family, L-arabinose/isopropyl-beta-D-thiogalactopyranoside export protein
+D      K08164  ybcL; MFS transporter, DHA1 family, chloramphenicol resistance protein
+D      K03445  nepI; MFS transporter, DHA1 family, purine ribonucleoside efflux pump
+D      K08154  emrD; MFS transporter, DHA1 family, 2-module integral membrane pump EmrD
+D      K08155  SLC18A1_2, VMAT; MFS transporter, DHA1 family, solute carrier family 18 (vesicular amine transporter), member 1/2
+D      K14636  SLC18A3, VACHT; MFS transporter, DHA1 family, solute carrier family 18 (vesicular acetylcholine transporter), member 3
+C    Drug:H+ antiporter-2 (14 spanner) (DHA2) family [TC:2.A.1.3]
+D      K08165  ATR1; MFS transporter, DHA2 family, multidrug resistance protein
+D      K03446  emrB; MFS transporter, DHA2 family, multidrug resistance protein B
+D      K08169  yebQ; MFS transporter, DHA2 family, multidrug resistance protein
+D      K08170  BLTL; MFS transporter, DHA2 family, multidrug resistance protein
+D      K08166  mmr; MFS transporter, DHA2 family, methylenomycin A resistance protein
+D      K08167  smvA; MFS transporter, DHA2 family, methyl viologen resistance protein SmvA
+D      K08168  tetB; MFS transporter, DHA2 family, metal-tetracycline-proton antiporter
+D      K05557  actVA1; MFS transporter, DHA2 family, integral membrane protein
+C    Drug:H+ antiporter-3 (12 spanner) (DHA3) [TC:2.A.1.21]
+D      K08217  mef; MFS transporter, DHA3 family, macrolide efflux protein
+C    Putative aromatic compound/drug exporter (ACDE) family [TC:2.A.1.32]
+D      K08221  yitG; MFS transporter, ACDE family, multidrug resistance protein
+C    Fosmidomycin resistance (Fsr) family [TC:2.A.1.35]
+D      K08223  fsr; MFS transporter, FSR family, fosmidomycin resistance protein
+C    Acriflavin-sensitivity (YnfM) family [TC:2.A.1.36]
+D      K08224  ynfM; MFS transporter, YNFM family, putative membrane transport protein
+B  Unknown transporters
+C    Unknown major facilitator-1 (UMF1) [TC:2.A.1.24]
+D      K06902  UMF1; MFS transporter, UMF1 family
+C    Unknown major facilitator-2 (UMF2) [TC:2.A.1.26]
+D      K08219  UMF2; MFS transporter, UMF2 family, putative MFS family transporter protein
+C    Putative YqgE transporter (YqgE) family [TC:2.A.1.33]
+D      K08222  yqgE; MFS transporter, YQGE family, putative transporter
+C    Others
+D      K05373  ybtX, irp8; MFS transporter, putative signal transducer
+D      K06141  tsgA; MFS transporter, TsgA protein
+D      K08368  yaaU; MFS transporter, putative metabolite transport protein
+D      K08369  ydjE; MFS transporter, putative metabolite:H+ symporter
+D      K12307  MSFD8, CLN7; MFS transporter, ceroid-lipofuscinosis neuronal protein 7
+#
+A<b>Phosphotransferase System (PTS)</b>
+B  Enzyme I and HPr
+C    Enzyme I [TC:8.A.7]
+D      K08483  PTS-EI.PTSI, ptsI; phosphotransferase system, enzyme I, PtsI [EC:2.7.3.9]
+D      K08484  PTS-EI.PTSP, ptsP; phosphotransferase system, enzyme I, PtsP [EC:2.7.3.9]
+C    Phosphocarrier protein HPr [TC:8.A.8 4.A.2]
+D      K02784  PTS-HPR.PTSH, ptsH; phosphocarrier protein HPr
+D      K11183  PTS-HPR.FRUB, fruB, fpr; phosphocarrier protein FPr
+D      K08485  PTS-HPR.PTSO, ptsO, npr; phosphocarrier protein NPr
+D      K11189  PTS-HPR; phosphocarrier protein
+B  Enzyme II [TC:4.A]
+C    Glucose-specific II component [MD:M00265]
+D      K02777  PTS-Glc-EIIA, crr; PTS system, glucose-specific IIA component [EC:2.7.1.69]
+D      K02778  PTS-Glc-EIIB, ptsG; PTS system, glucose-specific IIB component [EC:2.7.1.69]
+D      K02779  PTS-Glc-EIIC, ptsG; PTS system, glucose-specific IIC component
+C    N-Acetylglucosamine-specific II component [MD:M00267]
+D      K02802  PTS-Nag-EIIA, nagE; PTS system, N-acetylglucosamine-specific IIA component [EC:2.7.1.69]
+D      K02803  PTS-Nag-EIIB, nagE; PTS system, N-acetylglucosamine-specific IIB component [EC:2.7.1.69]
+D      K02804  PTS-Nag-EIIC, nagE; PTS system, N-acetylglucosamine-specific IIC component
+C    Maltose and glucose-specific II component [MD:M00266]
+D      K02777  PTS-Glc-EIIA, crr; PTS system, glucose-specific IIA component [EC:2.7.1.69]
+D      K02790  PTS-Mal-EIIB, malX; PTS system, maltose and glucose-specific IIB component [EC:2.7.1.69]
+D      K02791  PTS-Mal-EIIC, malX; PTS system, maltose and glucose-specific IIC component
+C    D-Glucosamine-specific II component [MD:M00282]
+D      K02763  PTS-Dgl-EIIA, gamP; PTS system, D-glucosamine-specific IIA component [EC:2.7.1.69]
+D      K02764  PTS-Dgl-EIIB, gamP; PTS system, D-glucosamine-specific IIB component [EC:2.7.1.69]
+D      K02765  PTS-Dgl-EIIC, gamP; PTS system, D-glucosamine-specific IIC component
+C    Sucrose-specific II component [MD:M00269]
+D      K02808  PTS-Scr-EIIA, scrA; PTS system, sucrose-specific IIA component [EC:2.7.1.69]
+D      K02809  PTS-Scr-EIIB, scrA; PTS system, sucrose-specific IIB component [EC:2.7.1.69]
+D      K02810  PTS-Scr-EIIC, scrA; PTS system, sucrose-specific IIC component
+C    Teta-glucosides-specific II component [MD:M00271]
+D      K02755  PTS-Bgl-EIIA, bglF; PTS system, beta-glucosides-specific IIA component [EC:2.7.1.69]
+D      K02756  PTS-Bgl-EIIB, bglF; PTS system, beta-glucosides-specific IIB component [EC:2.7.1.69]
+D      K02757  PTS-Bgl-EIIC, bglF; PTS system, beta-glucosides-specific IIC component
+C    Arbutin-, cellobiose-, and salicin-specific II component [MD:M00272]
+D      K02777  PTS-Glc-EIIA, crr; PTS system, glucose-specific IIA component [EC:2.7.1.69]
+D      K02752  PTS-Asc-EIIB, ascF; PTS system, arbutin-, cellobiose-, and salicin-specific IIB component [EC:2.7.1.69]
+D      K02753  PTS-Asc-EIIC, ascF; PTS system, arbutin-, cellobiose-, and salicin-specific IIC component
+C    Trehalose-specific II component [MD:M00270]
+D      K02777  PTS-Glc-EIIA, crr; PTS system, glucose-specific IIA component [EC:2.7.1.69]
+D      K02817  PTS-Tre-EIIA, treP; PTS system, trehalose-specific IIA component [EC:2.7.1.69]
+D      K02818  PTS-Tre-EIIB, treB; PTS system, trehalose-specific IIB component [EC:2.7.1.69]
+D      K02819  PTS-Tre-EIIC, treB; PTS system, trehalose-specific IIC component
+C    N-Acetylmuramic acid-specific II component [MD:M00303]
+D      K02777  PTS-Glc-EIIA, crr; PTS system, glucose-specific IIA component [EC:2.7.1.69]
+D      K11191  PTS-Mur-EIIB, murP; PTS system, N-acetylmuramic acid-specific IIB component [EC:2.7.1.69]
+D      K11192  PTS-Mur-EIIC, murP; PTS system, N-acetylmuramic acid-specific IIC component
+C    Arbutin-like II component [MD:M00268]
+D      K02777  PTS-Glc-EIIA, crr; PTS system, glucose-specific IIA component [EC:2.7.1.69]
+D      K02749  PTS-Arb-EIIB, glvB; PTS system, arbutin-like IIB component [EC:2.7.1.69]
+D      K02750  PTS-Arb-EIIC, glvC; PTS system, arbutin-like IIC component
+C    Fructose-specific II component [MD:M00273]
+D      K02768  PTS-Fru-EIIA, fruB; PTS system, fructose-specific IIA component [EC:2.7.1.69]
+D      K02769  PTS-Fru-EIIB, fruA; PTS system, fructose-specific IIB component [EC:2.7.1.69]
+D      K02770  PTS-Fru-EIIC, fruA; PTS system, fructose-specific IIC component
+C    Fructose-specific II-like component [MD:M00306]
+D      K11201  PTS-Fru2-EIIA; PTS system, fructose-specific IIA-like component [EC:2.7.1.69]
+D      K11202  PTS-Fru2-EIIB; PTS system, fructose-specific IIB-like component [EC:2.7.1.69]
+D      K11203  PTS-Fru2-EIIC; PTS system, fructose-specific IIC-like component
+C    Mannitol-specific II component [MD:M00274]
+D      K02798  PTS-Mtl-EIIA, mtlA; PTS system, mannitol-specific IIA component [EC:2.7.1.69]
+D      K02799  PTS-Mtl-EIIB, mtlA; PTS system, mannitol-specific IIB component [EC:2.7.1.69]
+D      K02800  PTS-Mtl-EIIC, mtlA; PTS system, mannitol-specific IIC component
+C    2-O-A-Mannosyl-D-glycerate-specific II component [MD:M00305]
+D      K11198  PTS-Mng-EIIA, mngA, hrsA; PTS system, 2-O-A-mannosyl-D-glycerate-specific IIA component [EC:2.7.1.69]
+D      K11199  PTS-Mng-EIIB, mngA, hrsA; PTS system, 2-O-A-mannosyl-D-glycerate-specific IIB component [EC:2.7.1.69]
+D      K11200  PTS-Mng-EIIC, mngA, hrsA; PTS system, 2-O-A-mannosyl-D-glycerate-specific IIC component
+C    Lactose-specific II component [MD:M00281]
+D      K02786  PTS-Lac-EIIA, lacF; PTS system, lactose-specific IIA component [EC:2.7.1.69]
+D      K02787  PTS-Lac-EIIB, lacE; PTS system, lactose-specific IIB component [EC:2.7.1.69]
+D      K02788  PTS-Lac-EIIC, lacE; PTS system, lactose-specific IIC component
+C    Cellobiose-specific II component [MD:M00275]
+D      K02759  PTS-Cel-EIIA, celC; PTS system, cellobiose-specific IIA component [EC:2.7.1.69]
+D      K02760  PTS-Cel-EIIB, celA; PTS system, cellobiose-specific IIB component [EC:2.7.1.69]
+D      K02761  PTS-Cel-EIIC, celB; PTS system, cellobiose-specific IIC component
+C    Glucitol/sorbitol-specific II component [MD:M00280]
+D      K02781  PTS-Gut-EIIA, srlB; PTS system, glucitol/sorbitol-specific IIA component [EC:2.7.1.69]
+D      K02782  PTS-Gut-EIIB, srlE; PTS system, glucitol/sorbitol-specific IIB component [EC:2.7.1.69]
+D      K02783  PTS-Gut-EIIC, srlA; PTS system, glucitol/sorbitol-specific IIC component
+C    Galactitol-specific II component [MD:M00279]
+D      K02773  PTS-Gat-EIIA, gatA; PTS system, galactitol-specific IIA component [EC:2.7.1.69]
+D      K02774  PTS-Gat-EIIB, gatB; PTS system, galactitol-specific IIB component [EC:2.7.1.69]
+D      K02775  PTS-Gat-EIIC, gatC; PTS system, galactitol-specific IIC component
+C    Mannose-specific II component [MD:M00276]
+D      K02793  PTS-Man-EIIA, manX; PTS system, mannose-specific IIA component [EC:2.7.1.69]
+D      K02794  PTS-Man-EIIB, manX; PTS system, mannose-specific IIB component [EC:2.7.1.69]
+D      K02795  PTS-Man-EIIC, manY; PTS system, mannose-specific IIC component
+D      K02796  PTS-Man-EIID, manZ; PTS system, mannose-specific IID component
+C    Fructose-specific II component [MD:M00304]
+D      K11194  PTS-Fru1-EIIA, levD; PTS system, fructose-specific IIA component [EC:2.7.1.69]
+D      K11195  PTS-Fru1-EIIB, levE; PTS system, fructose-specific IIB component [EC:2.7.1.69]
+D      K11196  PTS-Fru1-EIIC, levF; PTS system, fructose-specific IIC component
+D      K02771  PTS-Fru1-EIID, levG; PTS system, fructose-specific IID component
+C    Sorbose-specific II component [MD:M00278]
+D      K02812  PTS-Sor-EIIA, sorF; PTS system, sorbose-specific IIA component [EC:2.7.1.69]
+D      K02813  PTS-Sor-EIIB, sorB; PTS system, sorbose-specific IIB component [EC:2.7.1.69]
+D      K02814  PTS-Sor-EIIC, sorA; PTS system, sorbose-specific IIC component
+D      K02815  PTS-Sor-EIID, sorM; PTS system, sorbose-specific IID component
+C    N-Acetylgalactosamine-specific II component [MD:M00277]
+D      K02744  PTS-Aga-EIIA, agaF; PTS system, N-acetylgalactosamine-specific IIA component [EC:2.7.1.69]
+D      K02745  PTS-Aga-EIIB, agaV; PTS system, N-acetylgalactosamine-specific IIB component [EC:2.7.1.69]
+D      K02746  PTS-Aga-EIIC, agaW; PTS system, N-acetylgalactosamine-specific IIC component
+D      K02747  PTS-Aga-EIID, agaE; PTS system, N-acetylgalactosamine-specific IID component
+C    Galactosamine-specific II component [MD:M00287]
+D      K02744  PTS-Aga-EIIA, agaF; PTS system, N-acetylgalactosamine-specific IIA component [EC:2.7.1.69]
+D      K10984  PTS-Gam-EIIB, agaB; PTS system, galactosamine-specific IIB component [EC:2.7.1.69]
+D      K10985  PTS-Gam-EIIC, agaC; PTS system, galactosamine-specific IIC component
+D      K10986  PTS-Gam-EIID, agaD; PTS system, galactosamine-specific IID component
+C    D-Glucosaminate-specific II component [MD:M00610]
+D      K17464  PTS-Dga-EIIA, dgaA; PTS system, D-glucosaminate-specific IIA component [EC:2.7.1.69]
+D      K17465  PTS-Dga-EIIB, dgaB; PTS system, D-glucosaminate-specific IIB component [EC:2.7.1.69]
+D      K17466  PTS-Dga-EIIC, dgaC; PTS system, D-glucosaminate-specific IIC component
+D      K17467  PTS-Dga-EIID, dgaD; PTS system, D-glucosaminate-specific IID component
+C    Ascorbate-specific II component [MD:M00283]
+D      K02821  PTS-Ula-EIIA, ulaC, sgaA; PTS system, ascorbate-specific IIA component [EC:2.7.1.69]
+D      K02822  PTS-Ula-EIIB, ulaB, sgaB; PTS system, ascorbate-specific IIB component [EC:2.7.1.69]
+D      K03475  PTS-Ula-EIIC, ulaA, sgaT; PTS system, ascorbate-specific IIC component
+C    Nitrogen regulatory II component
+D      K02806  PTS-Ntr-EIIA, ptsN; PTS system, nitrogen regulatory IIA component [EC:2.7.1.69]
+C    Hybrid protein
+D      K05881  dhaM; PTS hybrid protein
+#
+A<b>Other Transporters</b>
+B  Aquaporins and small neutral solute transporters [TC:1.A.8]
+C    Aquaporins
+D      K09863  AQP0, MIP; aquaporin-0
+D      K09864  AQP1; aquaporin-1
+D      K09865  AQP2; aquaporin-2
+D      K09866  AQP4; aquaporin-4
+D      K09867  AQP5; aquaporin-5
+D      K09868  AQP6; aquaporin-6
+D      K09869  AQP8; aquaporin-8
+D      K09870  AQP11; aquaporin-11
+D      K09871  AQP12; aquaporin-12
+D      K09884  AQPN; aquaporin rerated protein, invertebrate
+D      K09885  AQPF; aquaporin rerated protein, other eukaryote
+D      K06188  aqpZ; aquaporin Z
+D      K09872  PIP; aquaporin PIP
+D      K09873  TIP; aquaporin TIP
+D      K09874  NIP; aquaporin NIP
+D      K09875  SIP; aquaporin SIP
+C    Aquaglyceroporins or glycerol-uptake facilitators
+D      K09876  AQP3; aquaporin-3
+D      K08771  AQP7; aquaporin-7
+D      K09877  AQP9; aquaporin-9
+D      K09878  AQP10; aquaporin-10
+D      K09886  GLPN; aquaglyceroporin related protein, invertebrate
+D      K03441  GLP-F; aquaglyceroporin related protein, other eukaryote
+D      K02440  GLPF; glycerol uptake facilitator protein
+B  Pores ion channels [TC:1]
+C    K08713  lctB; potassium channel LctB
+C    K10716  kch, trkA, mthK, pch; voltage-gated potassium channel
+C    K08714  VGSC; voltage-gated sodium channel
+C    K08715  IRPC; inward rectifier potassium channel
+C    K03320  amt, AMT, MEP; ammonium transporter, Amt family
+C    K06579  RH; Rhesus blood group glycoprotein
+C    K07114  yfbK; Ca-activated chloride channel homolog
+C    K08284  MID1; calcium channel MID1
+C    K15464  BNIP3; BCL2/adenovirus E1B 19 kDa protein-interacting protein 3
+C    K15465  BNIP3L; BCL2/adenovirus E1B 19 kDa protein-interacting protein 3-like
+C    K04570  BCL2L1, bcl-xL; BCL2-like 1 (apoptosis regulator Bcl-X)
+C    K03282  mscL; large conductance mechanosensitive channel
+C    K05802  kefA, bspA, aefA; potassium efflux system protein
+C    K03442  mscS; small conductance mechanosensitive channel
+C    K16052  ynaI, mscMJ, MSL; MscS family membrane protein
+C    K16053  mscM; miniconductance mechanosensitive channel
+C    K03443  PANX; pannexin
+C    K06213  mgtE; magnesium transporter
+C    K07244  K07244; mgtE-like transporter
+C    K13360  FXYD1, PLM; FXYD domain-containing ion transport regulator 1
+C    K13361  FXYD3, MAT8; FXYD domain-containing ion transport regulator 3
+C    K13363  FXYD6; FXYD domain-containing ion transport regulator 6
+C    K13359  FXYD4, CHIF; FXYD domain containing ion transport regulator 4
+C    K01538  FXYD2, ATP1G1; sodium/potassium-transporting ATPase subunit gamma (FXYD domain-containing ion transport regulator 2)
+C    K13362  FXYD5, DYSAD; FXYD domain-containing ion transport regulator 5
+C    K13364  FXYD7; FXYD domain-containing ion transport regulator 7
+C    K08717  utp; urea transporter
+C    K08363  merT; mercuric ion transport protein
+C    K08364  merP; periplasmic mercuric ion binding protein
+C    K02556  motA; chemotaxis protein MotA
+C    K02557  motB; chemotaxis protein MotB
+C    K03561  exbB; biopolymer transport protein ExbB
+C    K03559  exbD; biopolymer transport protein ExbD
+C    K03562  tolQ; biopolymer transport protein TolQ
+C    K03560  tolR; biopolymer transport protein TolR
+C    K03283  HSPA1_8; heat shock 70kDa protein 1/8
+C    K09489  HSPA4; heat shock 70kDa protein 4
+C    K09490  HSPA5, BIP; heat shock 70kDa protein 5
+C    K09491  STCH; stress 70 protein chaperone microsome-associated 60kDa protein
+C    K04043  dnaK; molecular chaperone DnaK
+C    K04044  hscA; molecular chaperone HscA
+C    K04045  hscC; molecular chaperone HscC
+C    K04046  yegD; hypothetical chaperone protein
+C    K03284  corA; magnesium transporter
+C    K16073  ALR, MNR; magnesium transporter
+C    K16074  zntB; zinc transporter
+C    K16075  MRS2, MFM1; magnesium transporter
+C    K13878  BEST1, VMD2; bestrophin-1
+C    K13879  BEST2, VMD2L1; bestrophin-2
+C    K13880  BEST3, VMD2L3; bestrophin-3
+C    K13881  BEST4, VMD2L2; bestrophin-4
+C    K08363  merT; mercuric ion transport protein
+C    K08364  merP; periplasmic mercuric ion binding protein
+C    K09476  ompF; outer membrane pore protein F
+C    K11929  phoE; outer membrane pore protein E
+C    K09475  ompC; outer membrane pore protein C
+C    K16076  nmpC, ompD; outer membrane porin protein LC
+C    K14062  ompN; outer membrane protein N
+C    K08720  ompU; outer membrane protein OmpU
+C    K10940  K10940, ompT; outer membrane protein OmpT
+C    K03162  ompA; major outer membrane protein
+C    K08719  K08719, porB; outer membrane protein B
+C    K02024  lamB; maltoporin
+C    K16077  scrY; sucrose porin
+C    K10124  bglH; carbohydrate-specific outer membrane porin
+C    K16079  omp31; outer membrane immunogenic protein
+C    K16080  mnoP; high affinity Mn2+ porin
+C    K07221  oprO_P; phosphate-selective porin OprO and OprP
+C    K16191  K16191, arfA; peptidoglycan-binding protein ArfA
+C    K03286  TC.OOP; OmpA-OmpF porin, OOP family
+C    K11934  ompX; outer membrane protein X
+C    K16078  ail; attachment invasion locus protein
+C    K05862  VDAC1; voltage-dependent anion channel protein 1
+C    K15040  VDAC2; voltage-dependent anion channel protein 2
+C    K15041  VDAC3; voltage-dependent anion channel protein 3
+C    K06076  fadL; long-chain fatty acid transport protein
+C    K05517  tsx; nucleoside-specific channel-forming protein
+C    K07347  fimD, fimC, mrkC, htrE, cssD; outer membrane usher protein
+C    K12678  aidA-I; AIDA-I adhesin-like protein
+C    K12679  icsA, virG; outer membrane protein IcsA
+C    K12680  misL; autotransported protein MisL
+C    K01347  iga; IgA-specific serine endopeptidase [EC:3.4.21.72]
+C    K12685  ssp; subtilase-type serine protease [EC:3.4.21.-]
+C    K12516  bigA; putative surface-exposed virulence protein
+C    K16081  algE; alginate production protein
+C    K16090  fiu; catecholate siderophore receptor
+C    K16091  fecA; Fe(3+) dicitrate transport protein
+C    K16092  btuB; vitamin B12 transporter
+C    K12545  hasA; heme acquisition protein HasA
+C    K16152  hasR; heme acquisition protein HasR
+C    K15721  fyuA; pesticin/yersiniabactin receptor
+C    K16088  TC.FEV.OM1, fhuE, fpvA, fptA; outer-membrane receptor for ferric coprogen and ferric-rhodotorulic acid
+C    K16089  TC.FEV.OM2, fepA, iroN, cirA, pfeA, cfrA, hmuR; outer membrane receptor for ferrienterochelin and colicins
+C    K16087  TC.FEV.OM3, tbpA, hemR, lbpA, hpuB, bhuR, hugA, hmbR; hemoglobin/transferrin/lactoferrin receptor protein
+C    K02014  TC.FEV.OM; iron complex outermembrane recepter protein
+C    K15725  czcC; cobalt-zinc-cadmium resistance protein CzcC
+C    K12340  tolC; outer membrane channel protein
+C    K07796  cusC, silC; Cu(I)/Ag(I) efflux system outer membrane protein CusC/SilC
+C    K15550  mdtP; multidrug resistance outer membrane protein MdtP
+C    K08721  oprJ; multidrug resistance outer membrane protein OprJ
+C    K16552  exoF; exopolysaccharide production protein ExoF
+C    K01991  ABC-2.OM, wza; polysaccharide export outer membrane protein
+C    K07267  oprB; porin
+C    K14053  ompG; outer membrane protein G
+C    K16140  uidC, gusC; putative glucuronide porin
+C    K16517  K16517, galP; porin-like protein GalP
+C    K09774  lptA; lipopolysaccharide export system protein LptA
+C    K06861  lptB; lipopolysaccharide export system ATP-binding protein [EC:3.6.3.-]
+C    K11719  lptC; lipopolysaccharide export system protein LptC
+C    K04744  lptD, imp, ostA; LPS-assembly protein
+C    K03643  lptE, rlpB; LPS-assembly lipoprotein
+C    K11720  lptG; lipopolysaccharide export system permease protein
+C    K11005  hlyA1, hlyA; hemolysin A
+C    K10948  hlyA; hemolysin
+C    K11032  hlyII; hemolysin II
+C    K11038  hlg, luk; leukocidin/hemolysin toxin family protein
+C    K13285  sipB, ipaB, bipB; invasin B
+C    K13287  sipD, ipaD, bipD; invasin D
+C    K15344  sseB; secreted effector protein SseB
+C    K15345  sseC; secreted effector protein SseC
+C    K15346  sseD; secreted effector protein SseD
+C    K16626  ha-70; hemagglutinin components HA-22/23/53
+C    K05338  lrgA; holin-like protein
+C    K06518  cidA; holin-like protein
+B  Electrochemical potential-driven transporters [TC:2]
+C    K11104  melB; melibiose permease
+C    K16209  lacS, galP, rafP; lactose/raffinose/galactose permease
+C    K16139  uidB, gusB; glucuronide carrier protein
+C    K16248  gutA, gutP; probable glucitol transport protein GutA
+C    K16210  togT, rhiT; oligogalacturonide transporter
+C    K16211  malY, malT; maltose/moltooligosaccharide transporter
+C    K11732  pheP; phenylalanine-specific permease
+C    K11733  lysP; lysine-specific permease
+C    K11734  aroP; aromatic amino acid transport protein AroP
+C    K11735  gabP; GABA permease
+C    K11736  proY; proline-specific permease ProY
+C    K11737  cycA; D-serine/D-alanine/glycine transporter
+C    K11738  ansP; L-asparagine permease
+C    K16234  hutT; histidine transporter
+C    K16235  mmuP; S-methylmethionine transporter
+C    K02205  rocE, rocC; arginine/ornithine permease
+C    K16236  hutM; histidine permease
+C    K16237  aroP2; aromatic amino acid permease
+C    K14052  puuP; putrescine importer
+C    K03756  potE; putrescine:ornithine antiporter
+C    K03757  cadB; cadaverine:lysine antiporter
+C    K03758  arcD, lysl, lysP; arginine:ornithine antiporter / lysine permease
+C    K03759  adiC; arginine:agmatine antiporter
+C    K16238  eat, eutP; ethanolamine permease
+C    K06289  gerAB; spore germination protein AB
+C    K06292  gerBB; spore germination protein BB
+C    K06296  gerKB; spore germination protein KB
+C    K06311  yndE; spore germination protein
+C    K16261  YAT; yeast amino acid transporter
+C    K16262  PHS, POT1; polyamine:H+ symporter
+C    K16263  yjeH; amino acid efflux transporter
+C    K16264  czcD, zitB; cobalt-zinc-cadmium efflux system protein
+C    K13283  fieF; ferrous-iron efflux pump FieF
+C    K16267  zipB; zinc and cadmium transporter
+C    K07238  TC.ZIP, zupT, ZRT3, ZIP2; zinc transporter, ZIP family
+C    K03297  TC.SMR, emrE; small multidrug resistance family protein
+C    K11741  sugE; quaternary ammonium compound-resistance protein SugE
+C    K11814  ebrA; multidrug resistance protein EbrA
+C    K11815  ebrB; multidrug resistance protein EbrB
+C    K11742  mdtI; spermidine export protein MdtI
+C    K11743  mdtJ; spermidine export protein MdtJ
+C    K08978  TC.BAT1; bacterial/archaeal transporter family protein
+C    K15268  eamA; O-acetylserine/cysteine efflux transporter
+C    K15269  pecM; probable blue pigment (indigoidine) exporter
+C    K03298  TC.DME; drug/metabolite transporter, DME family
+C    K11939  rhtA; inner membrane transporter RhtA
+C    K15270  sam; S-adenosylmethionine uptake transporter
+C    K05340  glcU; glucose uptake protein
+C    K06216  rbsU; putative ribose uptake protein
+C    K02856  K02856, rhaT; L-rhamnose-H+ transport protein
+C    K05786  rarD; chloramphenicol-sensitive protein RarD
+C    K15356  VRG4, GONST1; GDP-mannose transporter
+C    K09936  TC.BAT2; bacterial/archaeal transporter family-2 protein
+C    K12962  arnE; undecaprenyl phosphate-alpha-L-ara4N flippase subunit ArnE
+C    K09771  TC.SMR3; small multidrug resistance family-3 protein
+C    K06157  idnT; Gnt-II system L-idonate transporter
+C    K16321  gntP; high-affinity gluconate transporter
+C    K06155  gntT; Gnt-I system high-affinity gluconate transporter
+C    K13629  dsdX; D-serine transporter
+C    K06156  gntU; Gnt-I system low-affinity gluconate transporter
+C    K03299  TC.GNTP; gluconate:H+ symporter, GntP family
+C    K07791  dcuA; anaerobic C4-dicarboxylate transporter DcuA
+C    K07792  dcuB; anaerobic C4-dicarboxylate transporter DcuB
+C    K00427  lldP, lctP; L-lactate permease
+C    K02550  glcA; glycolate permease
+C    K02168  betT, betS; choline/glycine/proline betaine transport protein
+C    K03304  tehA; tellurite resistance protein
+C    K07300  chaA, CAX; Ca2+:H+ antiporter
+C    K07301  yrbG; cation:H+ antiporter
+C    K03452  MHX; magnesium/proton exchanger
+C    K16322  pit; low-affinity inorganic phosphate transporter
+C    K16331  ylnA, cysP; sulfate permease
+C    K14392  panF; sodium/pantothenate symporter
+C    K11928  putP; sodium/proline symporter
+C    K14393  actP; cation/acetate symporter
+C    K03312  gltS; glutamate:Na+ symporter, ESS family
+C    K03313  nhaA; Na+:H+ antiporter, NhaA family
+C    K03314  nhaB; Na+:H+ antiporter, NhaB family
+C    K03315  nhaC; Na+:H+ antiporter, NhaC family
+C    K11105  cvrA, nhaP2; cell volume regulation protein A
+C    K11745  kefC; glutathione-regulated potassium-efflux system ancillary protein KefC
+C    K11746  kefF; glutathione-regulated potassium-efflux system ancillary protein KefF
+C    K11747  kefB; glutathione-regulated potassium-efflux system protein KefB
+C    K11748  kefG; glutathione-regulated potassium-efflux system ancillary protein KefG
+C    K10974  codB; cytosine permease
+C    K02824  pyrP, uraA; uracil permease
+C    K09016  rutG; putative pyrimidine permease RutG
+C    K16169  pbuX; xanthine permease
+C    K16170  pucJ; uric acid permease
+C    K16345  xanP; xanthine permease XanP
+C    K16346  xanQ; xanthine permease XanQ
+C    K11535  nupC; nucleoside transport protein
+C    K16323  yxjA, nupG; purine nucleoside transport protein
+C    K16324  psuT; putative pseudouridine transporter
+C    K16325  nupX; nucleoside permease
+C    K03834  tyrP; tyrosine-specific transport protein
+C    K03835  mtr; tryptophan-specific transport protein
+C    K03836  tnaB; low affinity tryptophan permease
+C    K03318  tutB; tyrosine permease
+C    K03837  sdaC; serine transporter
+C    K03838  tdcC; threonine transporter
+C    K06212  focA; formate transporter
+C    K03459  focB; formate transporter
+C    K02598  nirC; nitrite transporter NirC
+C    K03893  arsB; arsenical pump membrane protein
+C    K05782  benE; benzoate membrane transport protein
+C    K14430  PHO87_91; phosphate transporter
+C    K09477  citT; citrate:succinate antiporter
+C    K11106  ttdT; L-tartrate/succinate antiporter
+C    K07240  chrA; chromate transporter
+C    K07241  nixA; high-affinity nickel-transport protein
+C    K08970  rcnA; nickel/cobalt exporter
+C    K03321  TC.SULP; sulfate permease, SulP family
+C    K12346  SMF; metal iron transporter
+C    K03322  mntH; manganese transport protein
+C    K03324  yjbB; phosphate:Na+ symporter
+C    K03326  TC.DCUC, dcuC, dcuD; C4-dicarboxylate transporter, DcuC family
+C    K05559  phaA; multicomponent K+:H+ antiporter subunit A
+C    K05560  phaC; multicomponent K+:H+ antiporter subunit C
+C    K05561  phaD; multicomponent K+:H+ antiporter subunit D
+C    K05562  phaE; multicomponent K+:H+ antiporter subunit E
+C    K05563  phaF; multicomponent K+:H+ antiporter subunit F
+C    K05564  phaG; multicomponent K+:H+ antiporter subunit G
+C    K05565  mnhA, mrpA; multicomponent Na+:H+ antiporter subunit A
+C    K05566  mnhB, mrpB; multicomponent Na+:H+ antiporter subunit B
+C    K05567  mnhC, mrpC; multicomponent Na+:H+ antiporter subunit C
+C    K05568  mnhD, mrpD; multicomponent Na+:H+ antiporter subunit D
+C    K05569  mnhE, mrpE; multicomponent Na+:H+ antiporter subunit E
+C    K05570  mnhF, mrpF; multicomponent Na+:H+ antiporter subunit F
+C    K05571  mnhG, mrpG; multicomponent Na+:H+ antiporter subunit G
+C    K16553  exoT; succinoglycan exporter
+C    K16693  wzxE; O-antigen flippase
+C    K16694  K16694, tuaB; teichuronic acid exporter
+C    K16695  wzxC; lipopolysaccharide exporter
+C    K16696  amsL; exopolysaccharide (amylovoran) exporter
+C    K16712  epsE; EPS I polysaccharide export inner membrane protein EpsE
+C    K16713  epsF; EPS I polysaccharide export inner membrane protein EpsF
+C    K06409  spoVB; stage V sporulation protein B
+C    K13947  PIN; auxin efflux carrier family
+C    K13936  mdcF; malonate transporter
+C    K03549  kup; KUP system potassium uptake protein
+C    K06895  lysE, argO; L-lysine exporter family protein LysE/ArgO
+C    K05834  rhtB; homoserine/homoserine lactone efflux protein
+C    K05835  rhtC; threonine efflux protein
+C    K03329  yahN; hypothetical protein
+C    K11249  eamB; cysteine/O-acetylserine efflux protein
+C    K11250  leuE; leucine efflux protein
+C    K16327  K16327; putative LysE/RhtB family amino acid efflux pump
+C    K06600  chpE; chemosensory pili system protein ChpE
+C    K03468  aaeB; p-hydroxybenzoic acid efflux pump subunit AaeB
+C    K15547  mdtO; multidrug resistance protein MdtO
+C    K03548  perM; putative permease
+C    K05595  marC; multiple antibiotic resistance protein
+C    K07243  FTR, efeU; high-affinity iron transporter
+C    K07224  efeO; iron uptake system component EfeO
+C    K16301  efeB; deferrochelatase/peroxidase EfeB [EC:1.11.1.-]
+C    K03832  tonB; periplasmic protein TonB
+C    K03640  pal; peptidoglycan-associated lipoprotein
+C    K03646  tolA; colicin import membrane protein
+C    K03641  tolB; TolB protein
+B  Transmembrane electron carriers [TC:5]
+C    K06196  ccdA; cytochrome c-type biogenesis protein
+C    K08344  scsB; suppressor for copper-sensitivity B
+C    K07312  ynfH; Tat-targeted selenate reductase subunit YnfH
+C    K07311  ynfG; Tat-targeted selenate reductase subunit YnfG
+C    K07309  ynfE; Tat-targeted selenate reductase subunit YnfE [EC:1.97.1.9]
+C    K07310  ynfF; Tat-targeted selenate reductase subunit YnfF [EC:1.97.1.9]
+C    K07306  dmsA; anaerobic dimethyl sulfoxide reductase subunit A [EC:1.8.5.3]
+C    K07307  dmsB; anaerobic dimethyl sulfoxide reductase subunit B (DMSO reductase iron- sulfur subunit)
+C    K07308  dmsC; anaerobic dimethyl sulfoxide reductase subunit C (DMSO reductase anchor subunit)
+C    K07811  torA; trimethylamine-N-oxide reductase (cytochrome c) 1 [EC:1.7.2.3]
+C    K03532  torC; trimethylamine-N-oxide reductase (cytochrome c) 1, cytochrome c-type subunit TorC
+C    K03533  torD; TorA specific chaperone
+C    K07821  torY; trimethylamine-N-oxide reductase (cytochrome c) 2, cytochrome c-type subunit TorY
+C    K07812  torZ; trimethylamine-N-oxide reductase (cytochrome c) 2 [EC:1.7.2.3]
+C    K08351  bisC; biotin/methionine sulfoxide reductase [EC:1.-.-.-]
+C    K08352  phsA, psrA; thiosulfate reductase / polysulfide reductase chain A
+C    K08353  phsB; thiosulfate reductase electron transport protein
+C    K08354  phsC; thiosulfate reductase cytochrome b subunit
+C    K16293  psrB; polysulfide reductase chain B
+C    K16294  psrC; polysulfide reductase chain C
+C    K08355  aoxA; arsenite oxidase small subunit [EC:1.20.9.1]
+C    K08356  aoxB; arsenite oxidase large subunit [EC:1.20.9.1]
+C    K17050  clrA, serA; complex iron-sulfur molybdoenzyme family reductase subunit alpha
+C    K17051  clrb, serB; complex iron-sulfur molybdoenzyme family reductase subunit beta
+C    K17052  clrC, serC; complex iron-sulfur molybdoenzyme family reductase subunit gamma
+C    K10700  ebdA; ethylbenzene hydroxylase subunit alpha [EC:1.17.99.2]
+C    K17048  ebdB; ethylbenzene hydroxylase subunit beta
+C    K17049  ebdC; ethylbenzene hydroxylase subunit gamma
+C    K08357  ttrA; tetrathionate reductase subunit A
+C    K08358  ttrB; tetrathionate reductase subunit B
+C    K08359  ttrC; tetrathionate reductase subunit C
+C    K13411  DUOX, THOX; dual oxidase [EC:1.6.3.1 1.11.1.-]
+C    K08360  CYB561; cytochrome b-561
+C    K08371  CYB561D2; cytochrome b-561 domain containing protein 2
+C    K08370  CYBRD1; cytochrome b reductase 1
+C    K16295  CYBASC3; cytochrome b ascorbate-dependent protein 3 [EC:1.-.-.-]
+B  Others
+C    K01551  arsA, ASNA1; arsenite-transporting ATPase [EC:3.6.3.16]
+C    K03893  arsB; arsenical pump membrane protein
+C    K03811  pnuC; nicotinamide mononucleotide transporter
+C    K03543  emrA; multidrug resistance protein A
+C    K15549  mdtN; multidrug resistance protein MdtN
+C    K15727  czcB; cobalt-zinc-cadmium resistance protein CzcB
+C    K11003  hlyD, cyaD; hemolysin D
+C    K16300  eexE; membrane fusion protein EexE
+C    K15548  aaeA; p-hydroxybenzoic acid efflux pump subunit AaeA
+C    K16554  exoP; succinoglycan biosynthesis transport protein ExoP
+C    K13365  SLC9A3R1, NHERF1; Na(+)/H(+) exchange regulatory cofactor NHE-RF1
+C    K13358  SLC9A3R2, NHERF2; Na(+)/H(+) exchange regulatory cofactor NHE-RF2
+C    K04758  feoA; ferrous iron transport protein A
+C    K04759  feoB; ferrous iron transport protein B
+C    K07490  feoC; ferrous iron transport protein C
+C    K10123  feoC1; putative ferrous iron transport protein C
+C    K06189  corC; magnesium and cobalt transporter
+C    K16302  CNNM; metal transporter CNNM
+C    K15383  K15383; MtN3 and saliva related transmembrane protein
+C    K06144  uspB; universal stress protein B
+C    K16347  ecnA; entericidin A
+C    K16348  ecnB; entericidin B
+C    K02198  ccmF; cytochrome c-type biogenesis protein CcmF
+C    K10707  VAPB, ALS8; vesicle-associated membrane protein-associated protein B
+C    K07507  mgtC; putative Mg2+ transporter-C (MgtC) family protein
+C    K07245  pcoD; putative copper resistance protein D
+C    K14166  ycnJ; copper transport protein
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: September 19, 2013
+#<br>ABC classifications based on Igarashi et al. (2004) and Tomii & Kanehisa (1998)
+#<br>MFS classification taken from TCDB

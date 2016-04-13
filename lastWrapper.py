@@ -1,26 +1,17 @@
 #!/usr/bin/python
 #$ -cwd
 #$ -V
-#$ -p -10
 #$ -S /usr/bin/python
-#$ -l greedy=24
 
 import sys, threading, logging, tempfile, subprocess, shutil, os
 from edl.batch import fileTypeMap, getSizePerChunk, fragmentInputBySize, formatCommand, getFragmentPath
 from edl.util import addUniversalOptions, setupLogging, parseMapFile
 from edl.blastm8 import getHitCol
 
-binDir='/usr/local/bin'
-#binDir='/common/bin'
-#lastBin='%s/lastal' % binDir
-lastBin='/slipstream/home/jmeppley/tmp/phylosift/phylosift/bin/lastal'
-tantanBin='%s/tantan' % binDir
-#scriptDir='/Users/jmeppley/work/delong/projects/scripts'
-scriptDir='/slipstream/opt/scripts'
-#scriptDir='/slipstream/home/jmeppley/work/delong/projects/scripts'
-#scriptDir='/common/bin/scripts'
-tmpDirRoot='/slipstream/tmp'
-#tmpDirRoot='/tmp'
+lastBin='lastal'
+tantanBin='tantan'
+scriptDir=os.path.dirname(os.path.abspath(__file__))
+tmpDirRoot='/localtmp'
 # this may have to change based on the system. I haven't figured the cases yet
 #sorttab="$'\t'"
 sorttab="'\t'"
@@ -59,6 +50,11 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
     Lastal does not return hit descriptions, just the ID string, but some formats have description columns (gene and liz). If the output format is one of these and if there is a DB.ids file (next to the DB.prj file), lastWrapper will use that file as a map from hit ids to descriptions.
     -d ID-TO-DESC-MAP            Map hit ids to descriptions using file
     -D                             Don't insert descriptions even if ids file present
+
+    The lastal binary needs to be in your path. The same is true for tantan and sort, if those options are selected.
+
+    Temporary files are created in a temporary location. This defaults to /localtmp if it exists and falls back to /tmp if not. You can set it with the option:
+    -T TMP_DIR_ROOT            Directory in which to create temporary files
 
     Help/Info:
     -A, --about, -h, --help     This message
@@ -102,6 +98,13 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
             args.insert(-1,key)
             args.insert(-1, defaultDict[key])
 
+    # temporary file root
+    if options.tmpDirRoot is None:
+        if os.path.exists('/localtmp'):
+            options.tmpDirRoot = '/localtmp'
+        else:
+            options.tmpDirRoot = '/tmp'
+
     ##
     # Fragment input file to temporary local dir
     if options.fastq:
@@ -114,7 +117,7 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
     outsuff='.out'
 
     # create local tmp dir
-    localdir = tempfile.mkdtemp(suffix='lastWrapper',dir=tmpDirRoot)
+    localdir = tempfile.mkdtemp(suffix='lastWrapper',dir=options.tmpDirRoot)
 
     # make sure we know how big to make chunks
     if options.chunk is None:
@@ -163,14 +166,16 @@ The input file may be fasta or fastq. Fasta files are fragmented using the ">" c
             cmd.append(inFrag)
             # sort (and possibly filter) last-formatted hit table
             cmd = "%s | %s" % (getCommandString(cmd),
-                               getSortCommand(options.sort,options.maxHits))
+                               getSortCommand(options.sort,options.maxHits,options.tmpDirRoot))
             useShell=True
         elif options.format in ('blast','gene','liz'):
             cmd.append(inFrag)
             # convert to m8 (and sort)
-            cmd = "%s | %s" % (getCommandString(cmd), getConvertCommand(options.format,
-                                                                        options.sort,
-                                                                        options.maxHits))
+            cmd = "%s | %s" % (getCommandString(cmd), 
+			       getConvertCommand(options.format,
+                                                 options.sort,
+                                                 options.maxHits,
+                                                 options.tmpDirRoot))
             useShell=True
         else:
             cmd.insert(-1,'-o')
@@ -289,6 +294,7 @@ class Options():
         self.maxHits=10
         self.fastq=False
         self.idMap=True
+        self.tmpDirRoot=None
 
 ##############
 # Methods
@@ -350,6 +356,9 @@ def parseArgs():
             args.pop(index)
             options.idMap=args.pop(index)
             continue
+        elif arg=='-T':
+            args.pop(index)
+            options.tmpDirRoot=args.pop(index)
         elif arg=='-D':
             args.pop(index)
             options.idMap=None
@@ -382,11 +391,11 @@ def printHelp(cmd):
     ## TODO
     pass
 
-def convertOutput(raw,out,format,sort=True,maxHits=-1):
+def convertOutput(raw,out,format,tmpDirRoot,sort=True,maxHits=-1):
     """
     pipe output through liz's parser and then through sort
     """
-    command=getConvertCommand(format,sort,maxHits)
+    command=getConvertCommand(format,sort,maxHits,tmpDirRoot)
     logging.debug("processing output with: %s" % (command))
     tmpstr=tempfile.TemporaryFile()
     try:
@@ -400,7 +409,7 @@ def convertOutput(raw,out,format,sort=True,maxHits=-1):
     logging.info("Conversion log:\n" + "".join(tmpstr.readlines()))
     tmpstr.close()
 
-def getConvertCommand(format, sort, maxHits):
+def getConvertCommand(format, sort, maxHits, tmpDirRoot):
     """
     Return a command string to convert lastal output to (filtered and/or sorted) m8
     """
@@ -417,11 +426,11 @@ def getConvertCommand(format, sort, maxHits):
         command += " | sort -T %s -t %s -k 1,1 -k %drn,%d" % (tmpDirRoot,sorttab, scoreCol,scoreCol)
 
         if maxHits >= 0:
-            command += " | %s/filter_blast_m8.py -H %s -f %s" % (scriptDir, maxHits, format)
+            command += " | python %s/filter_blast_m8.py -H %s -f %s" % (scriptDir, maxHits, format)
 
     return command
 
-def getSortCommand(sort,maxHits):
+def getSortCommand(sort, maxHits, tmpDirRoot):
     """
     return command string to (filter and) sort lastal tabular output
     """
@@ -430,18 +439,18 @@ def getSortCommand(sort,maxHits):
         if not sort:
             raise Exception("Code shouldn't get here if sort is False and maxHits<0")
     else:
-        maxHits="| %s/filter_blast_m8.py -f last -H %s" % (scriptDir,maxHits)
+        maxHits="| python %s/filter_blast_m8.py -f last -H %s" % (scriptDir,maxHits)
 
     if sort:
         return "grep -v '^#' | sort -T %s -t %s -k 7,7 -k 1rn,1 %s" % (tmpDirRoot,sorttab,maxHits)
     else:
         return maxhits[2:]
 
-def sortOutput(raw,out,sort=True,maxHits=-1):
+def sortOutput(raw,out,tmpDirRoot,sort=True,maxHits=-1):
     """
     Run output through grep and sort
     """
-    subprocess.check_call(getSortCommand(sort,maxHits), shell=True, stdin=raw, stdout=out)
+    subprocess.check_call(getSortCommand(sort,maxHits,tmpDirRoot), shell=True, stdin=raw, stdout=out)
 
 def getCommandString(cmd):
     """

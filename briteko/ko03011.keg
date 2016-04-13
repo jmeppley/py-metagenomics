@@ -1,0 +1,328 @@
++D	Ribosome
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Ribosome</h2>
+#<!---
+#ENTRY       ko03011
+#NAME        Ribosome
+#DEFINITION  Ribosome
+#--->
+!
+A<b>Ribosomal Proteins</b>
+B
+B  <b>Eukaryotes</b>
+C    Small subunit
+D      K02981  RP-S2e, RPS2; small subunit ribosomal protein S2e
+D      K02985  RP-S3e, RPS3; small subunit ribosomal protein S3e
+D      K02984  RP-S3Ae, RPS3A; small subunit ribosomal protein S3Ae
+D      K02987  RP-S4e, RPS4; small subunit ribosomal protein S4e
+D      K02989  RP-S5e, RPS5; small subunit ribosomal protein S5e
+D      K02991  RP-S6e, RPS6; small subunit ribosomal protein S6e
+D      K02993  RP-S7e, RPS7; small subunit ribosomal protein S7e
+D      K02995  RP-S8e, RPS8; small subunit ribosomal protein S8e
+D      K02997  RP-S9e, RPS9; small subunit ribosomal protein S9e
+D      K02947  RP-S10e, RPS10; small subunit ribosomal protein S10e
+D      K02949  RP-S11e, RPS11; small subunit ribosomal protein S11e
+D      K02951  RP-S12e, RPS12; small subunit ribosomal protein S12e
+D      K02953  RP-S13e, RPS13; small subunit ribosomal protein S13e
+D      K02955  RP-S14e, RPS14; small subunit ribosomal protein S14e
+D      K02958  RP-S15e, RPS15; small subunit ribosomal protein S15e
+D      K02957  RP-S15Ae, RPS15A; small subunit ribosomal protein S15Ae
+D      K02960  RP-S16e, RPS16; small subunit ribosomal protein S16e
+D      K02962  RP-S17e, RPS17; small subunit ribosomal protein S17e
+D      K02964  RP-S18e, RPS18; small subunit ribosomal protein S18e
+D      K02966  RP-S19e, RPS19; small subunit ribosomal protein S19e
+D      K02969  RP-S20e, RPS20; small subunit ribosomal protein S20e
+D      K02971  RP-S21e, RPS21; small subunit ribosomal protein S21e
+D      K02973  RP-S23e, RPS23; small subunit ribosomal protein S23e
+D      K02974  RP-S24e, RPS24; small subunit ribosomal protein S24e
+D      K02975  RP-S25e, RPS25; small subunit ribosomal protein S25e
+D      K02976  RP-S26e, RPS26; small subunit ribosomal protein S26e
+D      K02978  RP-S27e, RPS27; small subunit ribosomal protein S27e
+D      K02977  RP-S27Ae, RPS27A; small subunit ribosomal protein S27Ae
+D      K02979  RP-S28e, RPS28; small subunit ribosomal protein S28e
+D      K02980  RP-S29e, RPS29; small subunit ribosomal protein S29e
+D      K02983  RP-S30e, RPS30; small subunit ribosomal protein S30e
+D      K02998  RP-SAe, RPSA; small subunit ribosomal protein SAe
+C    Large subunit
+D      K02925  RP-L3e, RPL3; large subunit ribosomal protein L3e
+D      K02930  RP-L4e, RPL4; large subunit ribosomal protein L4e
+D      K02932  RP-L5e, RPL5; large subunit ribosomal protein L5e
+D      K02934  RP-L6e, RPL6; large subunit ribosomal protein L6e
+D      K02937  RP-L7e, RPL7; large subunit ribosomal protein L7e
+D      K02936  RP-L7Ae, RPL7A; large subunit ribosomal protein L7Ae
+D      K02938  RP-L8e, RPL8; large subunit ribosomal protein L8e
+D      K02940  RP-L9e, RPL9; large subunit ribosomal protein L9e
+D      K02866  RP-L10e, RPL10; large subunit ribosomal protein L10e
+D      K02865  RP-L10Ae, RPL10A; large subunit ribosomal protein L10Ae
+D      K02868  RP-L11e, RPL11; large subunit ribosomal protein L11e
+D      K02870  RP-L12e, RPL12; large subunit ribosomal protein L12e
+D      K02873  RP-L13e, RPL13; large subunit ribosomal protein L13e
+D      K02872  RP-L13Ae, RPL13A; large subunit ribosomal protein L13Ae
+D      K02875  RP-L14e, RPL14; large subunit ribosomal protein L14e
+D      K02877  RP-L15e, RPL15; large subunit ribosomal protein L15e
+D      K02880  RP-L17e, RPL17; large subunit ribosomal protein L17e
+D      K02883  RP-L18e, RPL18; large subunit ribosomal protein L18e
+D      K02882  RP-L18Ae, RPL18A; large subunit ribosomal protein L18Ae
+D      K02885  RP-L19e, RPL19; large subunit ribosomal protein L19e
+D      K02889  RP-L21e, RPL21; large subunit ribosomal protein L21e
+D      K02891  RP-L22e, RPL22; large subunit ribosomal protein L22e
+D      K02894  RP-L23e, RPL23; large subunit ribosomal protein L23e
+D      K02893  RP-L23Ae, RPL23A; large subunit ribosomal protein L23Ae
+D      K02896  RP-L24e, RPL24; large subunit ribosomal protein L24e
+D      K02898  RP-L26e, RPL26; large subunit ribosomal protein L26e
+D      K02901  RP-L27e, RPL27; large subunit ribosomal protein L27e
+D      K02900  RP-L27Ae, RPL27A; large subunit ribosomal protein L27Ae
+D      K02903  RP-L28e, RPL28; large subunit ribosomal protein L28e
+D      K02905  RP-L29e, RPL29; large subunit ribosomal protein L29e
+D      K02908  RP-L30e, RPL30; large subunit ribosomal protein L30e
+D      K02910  RP-L31e, RPL31; large subunit ribosomal protein L31e
+D      K02912  RP-L32e, RPL32; large subunit ribosomal protein L32e
+D      K02915  RP-L34e, RPL34; large subunit ribosomal protein L34e
+D      K02918  RP-L35e, RPL35; large subunit ribosomal protein L35e
+D      K02917  RP-L35Ae, RPL35A; large subunit ribosomal protein L35Ae
+D      K02920  RP-L36e, RPL36; large subunit ribosomal protein L36e
+D      K02922  RP-L37e, RPL37; large subunit ribosomal protein L37e
+D      K02921  RP-L37Ae, RPL37A; large subunit ribosomal protein L37Ae
+D      K02923  RP-L38e, RPL38; large subunit ribosomal protein L38e
+D      K02924  RP-L39e, RPL39; large subunit ribosomal protein L39e
+D      K02927  RP-L40e, RPL40; large subunit ribosomal protein L40e
+D      K02928  RP-L41e, RPL41; large subunit ribosomal protein L41e
+D      K02929  RP-L44e, RPL44; large subunit ribosomal protein L44e
+D      K02941  RP-LP0, RPLP0; large subunit ribosomal protein LP0
+D      K02942  RP-LP1, RPLP1; large subunit ribosomal protein LP1
+D      K02943  RP-LP2, RPLP2; large subunit ribosomal protein LP2
+B
+B  <b>Mitochondria</b>
+C    Small subunit
+D      K02967  RP-S2, MRPS2, rpsB; small subunit ribosomal protein S2
+D      K02988  RP-S5, MRPS5, rpsE; small subunit ribosomal protein S5
+D      K02990  RP-S6, MRPS6, rpsF; small subunit ribosomal protein S6
+D      K02992  RP-S7, MRPS7, rpsG; small subunit ribosomal protein S7
+D      K02996  RP-S9, MRPS9, rpsI; small subunit ribosomal protein S9
+D      K02946  RP-S10, MRPS10, rpsJ; small subunit ribosomal protein S10
+D      K02948  RP-S11, MRPS11, rpsK; small subunit ribosomal protein S11
+D      K02950  RP-S12, MRPS12, rpsL; small subunit ribosomal protein S12
+D      K02954  RP-S14, MRPS14, rpsN; small subunit ribosomal protein S14
+D      K02956  RP-S15, MRPS15, rpsO; small subunit ribosomal protein S15
+D      K02959  RP-S16, MRPS16, rpsP; small subunit ribosomal protein S16
+D      K02961  RP-S17, MRPS17, rpsQ; small subunit ribosomal protein S17
+D      K02963  RP-S18, MRPS18, rpsR; small subunit ribosomal protein S18
+D      K02970  RP-S21, MRPS21, rpsU; small subunit ribosomal protein S21
+D      K16174  MRPS18B, MRPS18-2; small subunit ribosomal protein S18b, mitochondrial
+D      K17401  MRPS22; small subunit ribosomal protein S22, mitochondrial
+D      K17402  MRPS23; small subunit ribosomal protein S23, mitochondrial
+D      K17403  MRPS24; small subunit ribosomal protein S24, mitochondrial
+D      K17404  MRPS25; small subunit ribosomal protein S25, mitochondrial
+D      K17405  MRPS26; small subunit ribosomal protein S26, mitochondrial
+D      K17406  MRPS27; small subunit ribosomal protein S27, mitochondrial
+D      K17407  MRPS28; small subunit ribosomal protein S28, mitochondrial
+D      K17408  DAP3, MRPS29; small subunit ribosomal protein S29, mitochondrial
+D      K17409  MRPS30; small subunit ribosomal protein S30, mitochondrial
+D      K17410  MRPS31; small subunit ribosomal protein S31, mitochondrial
+D      K17411  MRPS33; small subunit ribosomal protein S33, mitochondrial
+D      K17412  MRPS34; small subunit ribosomal protein S34, mitochondrial
+D      K17413  MRPS35; small subunit ribosomal protein S35, mitochondrial
+D      K17414  MRPS36; small subunit ribosomal protein S36, mitochondrial
+D      K17415  MRP21; small subunit ribosomal protein MRP21, mitochondrial
+D      K17417  YMR31; small subunit ribosomal protein YMR-31, mitochondrial
+C    Large subunit
+D      K02863  RP-L1, MRPL1, rplA; large subunit ribosomal protein L1
+D      K02886  RP-L2, MRPL2, rplB; large subunit ribosomal protein L2
+D      K02906  RP-L3, MRPL3, rplC; large subunit ribosomal protein L3
+D      K02926  RP-L4, MRPL4, rplD; large subunit ribosomal protein L4
+D      K02931  RP-L5, MRPL5, rplE; large subunit ribosomal protein L5
+D      K02933  RP-L6, MRPL6, rplF; large subunit ribosomal protein L6
+D      K02939  RP-L9, MRPL9, rplI; large subunit ribosomal protein L9
+D      K02864  RP-L10, MRPL10, rplJ; large subunit ribosomal protein L10
+D      K02867  RP-L11, MRPL11, rplK; large subunit ribosomal protein L11
+D      K02935  RP-L7, MRPL12, rplL; large subunit ribosomal protein L7/L12
+D      K02871  RP-L13, MRPL13, rplM; large subunit ribosomal protein L13
+D      K02874  RP-L14, MRPL14, rplN; large subunit ribosomal protein L14
+D      K02876  RP-L15, MRPL15, rplO; large subunit ribosomal protein L15
+D      K02878  RP-L16, MRPL16, rplP; large subunit ribosomal protein L16
+D      K02879  RP-L17, MRPL17, rplQ; large subunit ribosomal protein L17
+D      K02881  RP-L18, MRPL18, rplR; large subunit ribosomal protein L18
+D      K02884  RP-L19, MRPL19, rplS; large subunit ribosomal protein L19
+D      K02887  RP-L20, MRPL20, rplT; large subunit ribosomal protein L20
+D      K02888  RP-L21, MRPL21, rplU; large subunit ribosomal protein L21
+D      K02890  RP-L22, MRPL22, rplV; large subunit ribosomal protein L22
+D      K02892  RP-L23, MRPL23, rplW; large subunit ribosomal protein L23
+D      K02895  RP-L24, MRPL24, rplX; large subunit ribosomal protein L24
+D      K02899  RP-L27, MRPL27, rpmA; large subunit ribosomal protein L27
+D      K02902  RP-L28, MRPL28, rpmB; large subunit ribosomal protein L28
+D      K02907  RP-L30, MRPL30, rpmD; large subunit ribosomal protein L30
+D      K02911  RP-L32, MRPL32, rpmF; large subunit ribosomal protein L32
+D      K02913  RP-L33, MRPL33, rpmG; large subunit ribosomal protein L33
+D      K02914  RP-L34, MRPL34, rpmH; large subunit ribosomal protein L34
+D      K02916  RP-L35, MRPL35, rpmI; large subunit ribosomal protein L35
+D      K02919  RP-L36, MRPL36, rpmJ; large subunit ribosomal protein L36
+D      K17418  MRPL37; large subunit ribosomal protein L37, mitochondrial
+D      K17419  MRPL38; large subunit ribosomal protein L38, mitochondrial
+D      K17420  MRPL39; large subunit ribosomal protein L39, mitochondrial
+D      K17421  MRPL40; large subunit ribosomal protein L40, mitochondrial
+D      K17422  MRPL41; large subunit ribosomal protein L41, mitochondrial
+D      K17423  MRPL42; large subunit ribosomal protein L42, mitochondrial
+D      K17424  MRPL43; large subunit ribosomal protein L43, mitochondrial
+D      K17425  MRPL44; large subunit ribosomal protein L44, mitochondrial [EC:3.1.26.-]
+D      K17426  MRPL45; large subunit ribosomal protein L45, mitochondrial
+D      K17427  MRPL46; large subunit ribosomal protein L46, mitochondrial
+D      K17428  MRPL47, NCM1; large subunit ribosomal protein L47, mitochondrial
+D      K17429  MRPL48; large subunit ribosomal protein L48, mitochondrial
+D      K17430  MRPL49, NOF1; large subunit ribosomal protein L49, mitochondrial
+D      K17431  MRPL50; large subunit ribosomal protein L50, mitochondrial
+D      K17432  MRPL51; large subunit ribosomal protein L51, mitochondrial
+D      K17433  MRPL52; large subunit ribosomal protein L52, mitochondrial
+D      K17434  MRPL53; large subunit ribosomal protein L53, mitochondrial
+D      K17435  MRPL54; large subunit ribosomal protein L54, mitochondrial
+D      K17436  MRPL55; large subunit ribosomal protein L55, mitochondrial
+D      K17437  MRPL15; large subunit ribosomal protein L15, mitochondrial
+D      K17438  MRPL25; large subunit ribosomal protein L25, mitochondrial
+D      K17439  MRPL35; large subunit ribosomal protein L35, mitochondrial
+D      K17440  MRP49; large subunit ribosomal protein MRP49, mitochondrial
+B
+B  <b>Bacteria</b>
+C    Small subunit
+D      K02945  RP-S1, rpsA; small subunit ribosomal protein S1
+D      K02967  RP-S2, MRPS2, rpsB; small subunit ribosomal protein S2
+D      K02982  RP-S3, rpsC; small subunit ribosomal protein S3
+D      K02986  RP-S4, rpsD; small subunit ribosomal protein S4
+D      K02988  RP-S5, MRPS5, rpsE; small subunit ribosomal protein S5
+D      K02990  RP-S6, MRPS6, rpsF; small subunit ribosomal protein S6
+D      K02992  RP-S7, MRPS7, rpsG; small subunit ribosomal protein S7
+D      K02994  RP-S8, rpsH; small subunit ribosomal protein S8
+D      K02996  RP-S9, MRPS9, rpsI; small subunit ribosomal protein S9
+D      K02946  RP-S10, MRPS10, rpsJ; small subunit ribosomal protein S10
+D      K02948  RP-S11, MRPS11, rpsK; small subunit ribosomal protein S11
+D      K02950  RP-S12, MRPS12, rpsL; small subunit ribosomal protein S12
+D      K02952  RP-S13, rpsM; small subunit ribosomal protein S13
+D      K02954  RP-S14, MRPS14, rpsN; small subunit ribosomal protein S14
+D      K02956  RP-S15, MRPS15, rpsO; small subunit ribosomal protein S15
+D      K02959  RP-S16, MRPS16, rpsP; small subunit ribosomal protein S16
+D      K02961  RP-S17, MRPS17, rpsQ; small subunit ribosomal protein S17
+D      K02963  RP-S18, MRPS18, rpsR; small subunit ribosomal protein S18
+D      K02965  RP-S19, rpsS; small subunit ribosomal protein S19
+D      K02968  RP-S20, rpsT; small subunit ribosomal protein S20
+D      K02970  RP-S21, MRPS21, rpsU; small subunit ribosomal protein S21
+C    Large subunit
+D      K02863  RP-L1, MRPL1, rplA; large subunit ribosomal protein L1
+D      K02886  RP-L2, MRPL2, rplB; large subunit ribosomal protein L2
+D      K02906  RP-L3, MRPL3, rplC; large subunit ribosomal protein L3
+D      K02926  RP-L4, MRPL4, rplD; large subunit ribosomal protein L4
+D      K02931  RP-L5, MRPL5, rplE; large subunit ribosomal protein L5
+D      K02933  RP-L6, MRPL6, rplF; large subunit ribosomal protein L6
+D      K02935  RP-L7, MRPL12, rplL; large subunit ribosomal protein L7/L12
+D      K02939  RP-L9, MRPL9, rplI; large subunit ribosomal protein L9
+D      K02864  RP-L10, MRPL10, rplJ; large subunit ribosomal protein L10
+D      K02867  RP-L11, MRPL11, rplK; large subunit ribosomal protein L11
+D      K02871  RP-L13, MRPL13, rplM; large subunit ribosomal protein L13
+D      K02874  RP-L14, MRPL14, rplN; large subunit ribosomal protein L14
+D      K02876  RP-L15, MRPL15, rplO; large subunit ribosomal protein L15
+D      K02878  RP-L16, MRPL16, rplP; large subunit ribosomal protein L16
+D      K02879  RP-L17, MRPL17, rplQ; large subunit ribosomal protein L17
+D      K02881  RP-L18, MRPL18, rplR; large subunit ribosomal protein L18
+D      K02884  RP-L19, MRPL19, rplS; large subunit ribosomal protein L19
+D      K02887  RP-L20, MRPL20, rplT; large subunit ribosomal protein L20
+D      K02888  RP-L21, MRPL21, rplU; large subunit ribosomal protein L21
+D      K02890  RP-L22, MRPL22, rplV; large subunit ribosomal protein L22
+D      K02892  RP-L23, MRPL23, rplW; large subunit ribosomal protein L23
+D      K02895  RP-L24, MRPL24, rplX; large subunit ribosomal protein L24
+D      K02897  RP-L25, rplY; large subunit ribosomal protein L25
+D      K02899  RP-L27, MRPL27, rpmA; large subunit ribosomal protein L27
+D      K02902  RP-L28, MRPL28, rpmB; large subunit ribosomal protein L28
+D      K02904  RP-L29, rpmC; large subunit ribosomal protein L29
+D      K02907  RP-L30, MRPL30, rpmD; large subunit ribosomal protein L30
+D      K02909  RP-L31, rpmE; large subunit ribosomal protein L31
+D      K02911  RP-L32, MRPL32, rpmF; large subunit ribosomal protein L32
+D      K02913  RP-L33, MRPL33, rpmG; large subunit ribosomal protein L33
+D      K02914  RP-L34, MRPL34, rpmH; large subunit ribosomal protein L34
+D      K02916  RP-L35, MRPL35, rpmI; large subunit ribosomal protein L35
+D      K02919  RP-L36, MRPL36, rpmJ; large subunit ribosomal protein L36
+D      K07590  RP-L7A, rplGB; large subunit ribosomal protein L7A
+B
+B  <b>Archaea</b>
+C    Small subunit
+D      K02967  RP-S2, MRPS2, rpsB; small subunit ribosomal protein S2
+D      K02982  RP-S3, rpsC; small subunit ribosomal protein S3
+D      K02986  RP-S4, rpsD; small subunit ribosomal protein S4
+D      K02988  RP-S5, MRPS5, rpsE; small subunit ribosomal protein S5
+D      K02992  RP-S7, MRPS7, rpsG; small subunit ribosomal protein S7
+D      K02994  RP-S8, rpsH; small subunit ribosomal protein S8
+D      K02996  RP-S9, MRPS9, rpsI; small subunit ribosomal protein S9
+D      K02946  RP-S10, MRPS10, rpsJ; small subunit ribosomal protein S10
+D      K02948  RP-S11, MRPS11, rpsK; small subunit ribosomal protein S11
+D      K02950  RP-S12, MRPS12, rpsL; small subunit ribosomal protein S12
+D      K02952  RP-S13, rpsM; small subunit ribosomal protein S13
+D      K02954  RP-S14, MRPS14, rpsN; small subunit ribosomal protein S14
+D      K02956  RP-S15, MRPS15, rpsO; small subunit ribosomal protein S15
+D      K02961  RP-S17, MRPS17, rpsQ; small subunit ribosomal protein S17
+D      K02965  RP-S19, rpsS; small subunit ribosomal protein S19
+D      K02984  RP-S3Ae, RPS3A; small subunit ribosomal protein S3Ae
+D      K02987  RP-S4e, RPS4; small subunit ribosomal protein S4e
+D      K02991  RP-S6e, RPS6; small subunit ribosomal protein S6e
+D      K02995  RP-S8e, RPS8; small subunit ribosomal protein S8e
+D      K02962  RP-S17e, RPS17; small subunit ribosomal protein S17e
+D      K02966  RP-S19e, RPS19; small subunit ribosomal protein S19e
+D      K02974  RP-S24e, RPS24; small subunit ribosomal protein S24e
+D      K02975  RP-S25e, RPS25; small subunit ribosomal protein S25e
+D      K02976  RP-S26e, RPS26; small subunit ribosomal protein S26e
+D      K02978  RP-S27e, RPS27; small subunit ribosomal protein S27e
+D      K02977  RP-S27Ae, RPS27A; small subunit ribosomal protein S27Ae
+D      K02979  RP-S28e, RPS28; small subunit ribosomal protein S28e
+D      K02983  RP-S30e, RPS30; small subunit ribosomal protein S30e
+C    Large subunit
+D      K02863  RP-L1, MRPL1, rplA; large subunit ribosomal protein L1
+D      K02886  RP-L2, MRPL2, rplB; large subunit ribosomal protein L2
+D      K02906  RP-L3, MRPL3, rplC; large subunit ribosomal protein L3
+D      K02931  RP-L5, MRPL5, rplE; large subunit ribosomal protein L5
+D      K02933  RP-L6, MRPL6, rplF; large subunit ribosomal protein L6
+D      K02864  RP-L10, MRPL10, rplJ; large subunit ribosomal protein L10
+D      K02867  RP-L11, MRPL11, rplK; large subunit ribosomal protein L11
+D      K02869  RP-L12, rpl12; large subunit ribosomal protein L12
+D      K02871  RP-L13, MRPL13, rplM; large subunit ribosomal protein L13
+D      K02874  RP-L14, MRPL14, rplN; large subunit ribosomal protein L14
+D      K02876  RP-L15, MRPL15, rplO; large subunit ribosomal protein L15
+D      K02881  RP-L18, MRPL18, rplR; large subunit ribosomal protein L18
+D      K02890  RP-L22, MRPL22, rplV; large subunit ribosomal protein L22
+D      K02892  RP-L23, MRPL23, rplW; large subunit ribosomal protein L23
+D      K02895  RP-L24, MRPL24, rplX; large subunit ribosomal protein L24
+D      K02904  RP-L29, rpmC; large subunit ribosomal protein L29
+D      K02907  RP-L30, MRPL30, rpmD; large subunit ribosomal protein L30
+D      K02930  RP-L4e, RPL4; large subunit ribosomal protein L4e
+D      K02936  RP-L7Ae, RPL7A; large subunit ribosomal protein L7Ae
+D      K02866  RP-L10e, RPL10; large subunit ribosomal protein L10e
+D      K02873  RP-L13e, RPL13; large subunit ribosomal protein L13e
+D      K02875  RP-L14e, RPL14; large subunit ribosomal protein L14e
+D      K02877  RP-L15e, RPL15; large subunit ribosomal protein L15e
+D      K02883  RP-L18e, RPL18; large subunit ribosomal protein L18e
+D      K02885  RP-L19e, RPL19; large subunit ribosomal protein L19e
+D      K02889  RP-L21e, RPL21; large subunit ribosomal protein L21e
+D      K02896  RP-L24e, RPL24; large subunit ribosomal protein L24e
+D      K02908  RP-L30e, RPL30; large subunit ribosomal protein L30e
+D      K02910  RP-L31e, RPL31; large subunit ribosomal protein L31e
+D      K02912  RP-L32e, RPL32; large subunit ribosomal protein L32e
+D      K02915  RP-L34e, RPL34; large subunit ribosomal protein L34e
+D      K02917  RP-L35Ae, RPL35A; large subunit ribosomal protein L35Ae
+D      K02922  RP-L37e, RPL37; large subunit ribosomal protein L37e
+D      K02921  RP-L37Ae, RPL37A; large subunit ribosomal protein L37Ae
+D      K02924  RP-L39e, RPL39; large subunit ribosomal protein L39e
+D      K02927  RP-L40e, RPL40; large subunit ribosomal protein L40e
+D      K02928  RP-L41e, RPL41; large subunit ribosomal protein L41e
+D      K02929  RP-L44e, RPL44; large subunit ribosomal protein L44e
+D      K02944  RP-LX, rplX; large subunit ribosomal protein LX
+#
+A<b>Ribosomal RNAs</b>
+B
+B  <b>Eukaryotes</b>
+C    K01979  SSUrRNA; small subunit ribosomal RNA
+C    K01982  LSUrRNA; large subunit ribosomal RNA
+C    K01981  LSU5S; large subunit ribosomal RNA, 5S
+C    K01984  LSU4.5S; large subunit ribosomal RNA, 4.5S
+C    K01986  LSU5.8S; large subunit ribosomal RNA, 5.8S
+B
+B  <b>Prokaryotes</b>
+C    K01985  5SrRNA, rrf; 5S ribosomal RNA
+C    K01977  16SrRNA, rrs; 16S ribosomal RNA
+C    K01980  23SrRNA, rrl; 23S ribosomal RNA
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: August 6, 2013

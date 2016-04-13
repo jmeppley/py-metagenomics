@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 """
 Generates a simple bar plot from a table of data. By default first two columns are taken as labels and data. Can alternatively transpose and take selected row/column.
 

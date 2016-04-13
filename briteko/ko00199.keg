@@ -1,0 +1,332 @@
++D	Cytochrome P450
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Cytochrome P450</h2>
+#<!---
+#ENTRY       ko00199
+#DEFINITION  Cytochrome P450
+#--->
+!
+A<b>Cytochrome P450, animal type</b>
+B  CYP1 family
+C    CYP1A subfamily
+D      K07408  CYP1A1; cytochrome P450, family 1, subfamily A, polypeptide 1 [EC:1.14.14.1]
+D      K07409  CYP1A2; cytochrome P450, family 1, subfamily A, polypeptide 2 [EC:1.14.14.1]
+C    CYP1B subfamily
+D      K07410  CYP1B1; cytochrome P450, family 1, subfamily B, polypeptide 1 [EC:1.14.14.1]
+B  CYP2 family
+C    CYP2A subfamily
+D      K07411  CYP2A; cytochrome P450, family 2, subfamily A [EC:1.14.14.1]
+C    CYP2B subfamily
+D      K07412  CYP2B; cytochrome P450, family 2, subfamily B [EC:1.14.14.1]
+C    CYP2C subfamily
+D      K07413  CYP2C; cytochrome P450, family 2, subfamily C [EC:1.14.14.1]
+C    CYP2D subfamily
+D      K07414  CYP2D; cytochrome P450, family 2, subfamily D [EC:1.14.14.1]
+C    CYP2E subfamily
+D      K07415  CYP2E; cytochrome P450, family 2, subfamily E [EC:1.14.14.1]
+C    CYP2F subfamily
+D      K07416  CYP2F; cytochrome P450, family 2, subfamily F [EC:1.14.14.1]
+C    CYP2G subfamily
+D      K07417  CYP2G; cytochrome P450, family 2, subfamily G
+C    CYP2J subfamily
+D      K07418  CYP2J; cytochrome P450, family 2, subfamily J [EC:1.14.14.1]
+C    CYP2R subfamily
+D      K07419  CYP2R1; cytochrome P450, family 2, subfamily R, polypeptide 1 (vitamin D 25-hydroxylase) [EC:1.14.13.159]
+C    CYP2S subfamily
+D      K07420  CYP2S; cytochrome P450, family 2, subfamily S [EC:1.14.14.1]
+C    CYP2T subfamily
+D      K07421  CYP2T; cytochrome P450, family 2, subfamily T
+C    CYP2U subfamily
+D      K07422  CYP2U; cytochrome P450, family 2, subfamily U
+C    CYP2W subfamily
+D      K07423  CYP2W; cytochrome P450, family 2, subfamily W
+B  CYP3 family
+C    CYP3A subfamily
+D      K07424  CYP3A; cytochrome P450, family 3, subfamily A [EC:1.14.14.1]
+B  CYP4 family
+C    CYP4A subfamily
+D      K07425  CYP4A; cytochrome P450, family 4, subfamily A [EC:1.14.15.3]
+C    CYP4B subfamily
+D      K07426  CYP4B; cytochrome P450, family 4, subfamily B [EC:1.14.14.1]
+C    CYP4F subfamily
+D      K00490  CYP4F; cytochrome P450, family 4, subfamily F (leukotriene-B4 20-monooxygenase) [EC:1.14.13.30]
+C    CYP4V subfamily
+D      K07427  CYP4V; cytochrome P450, family 4, subfamily V
+C    CYP4X subfamily
+D      K07428  CYP4X; cytochrome P450, family 4, subfamily X [EC:1.14.14.1]
+C    CYP4Z subfamily
+D      K07429  CYP4Z; cytochrome P450, family 4, subfamily Z [EC:1.14.14.1]
+B  CYP5 family
+C    CYP5A subfamily
+D      K01832  TBXAS1, CYP5A; cytochrome P450, family 5, subfamily A (thromboxane-A synthase) [EC:5.3.99.5]
+B  CYP7 family
+C    CYP7A subfamily
+D      K00489  CYP7A1; cytochrome P450, family 7, subfamily A (cholesterol 7alpha-monooxygenase) [EC:1.14.13.17]
+C    CYP7B subfamily
+D      K07430  CYP7B; cytochrome P450, family 7, subfamily B (oxysterol 7-alpha-hydroxylase) [EC:1.14.13.100]
+B  CYP8 family
+C    CYP8A subfamily
+D      K01831  PTGIS, CYP8A; cytochrome P450, family 8, subfamily A (Prostacyclin synthase) [EC:5.3.99.4]
+C    CYP8B subfamily
+D      K07431  CYP8B; cytochrome P450, family 8, subfamily B (sterol 12-alpha-hydroxylase) [EC:1.14.13.95]
+B  CYP11 family
+C    CYP11A subfamily
+D      K00498  CYP11A; cytochrome P450, family 11, subfamily A (cholesterol monooxygenase (side-chain-cleaving)) [EC:1.14.15.6]
+C    CYP11B subfamily
+D      K00497  CYP11B1; cytochrome P450, family 11, subfamily B1 (steroid 11beta-monooxygenase) [EC:1.14.15.4]
+D      K07433  CYP11B2; cytochrome P450, family 11, subfamily B2 (steroid 11beta-monooxygenase / corticosterone 18-monooxygenase) [EC:1.14.15.4 1.14.15.5]
+B  CYP17 family
+C    CYP17A subfamily
+D      K00512  CYP17; cytochrome P450, family 17, subfamily A (steroid 17alpha-monooxygenase) [EC:1.14.99.9]
+B  CYP19 family
+C    CYP19A subfamily
+D      K07434  CYP19A; cytochrome P450, family 19, subfamily A [EC:1.14.14.1]
+B  CYP20 family
+C    CYP20A subfamily
+D      K07435  CYP20A; cytochrome P450, family 20, subfamily A
+B  CYP21 family
+C    CYP21A subfamily
+D      K00513  CYP21; cytochrome P450, family 21, subfamily A (steroid 21-monooxygenase) [EC:1.14.99.10]
+B  CYP24 family
+C    CYP24A subfamily
+D      K07436  CYP24A1; cytochrome P450, family 24, subfamily A, polypeptide 1 (vitamin D3 24-hydroxylase) [EC:1.14.13.126]
+B  CYP26 family
+C    CYP26A subfamily
+D      K07437  CYP26A; cytochrome P450, family 26, subfamily A
+C    CYP26B subfamily
+D      K12664  CYP26B; cytochrome P450, family 26, subfamily B
+C    CYP26C subfamily
+D      K12665  CYP26C; cytochrome P450, family 26, subfamily C
+B  CYP27 family
+C    CYP27A subfamily
+D      K00488  CYP27A; cytochrome P450, family 27, subfamily A (cholestanetriol 26-monooxygenase) [EC:1.14.13.15]
+C    CYP27B subfamily
+D      K07438  CYP27B; cytochrome P450, family 27, subfamily B (25-hydroxyvitamin D3 1alpha-hydroxylase) [EC:1.14.13.13]
+B  CYP39 family
+C    CYP39A subfamily
+D      K07439  CYP39; cytochrome P450, family 39, subfamily A (24-hydroxycholesterol 7alpha-hydroxylase) [EC:1.14.13.99]
+B  CYP46 family
+C    CYP46A subfamily
+D      K07440  CYP46; cytochrome P450, family 46, subfamily A (cholesterol 24(S)-hydroxylase) [EC:1.14.13.98]
+B  CYP51 family
+C    CYP51A subfamily
+D      K05917  CYP51; cytochrome P450, family 51 (sterol 14-demethylase) [EC:1.14.13.70]
+#
+A<b>Cytochrome P450, insect type</b>
+B  CYP6 family
+C    CYP6G subfamily
+D      K14999  CYP6G1; cytochrome P450, family 6, subfamily G, polypeptide 1 [EC:1.14.-.-]
+D      K15000  CYP6G2; cytochrome P450, family 6, subfamily G, polypeptide 2 [EC:1.14.-.-]
+B  CYP15 family
+C    CYP15A subfamily
+D      K14937  CYP15A1; cytochrome P450, family 15, subfamily A, polypeptide 1
+B  CYP18 family
+C    CYP18A subfamily
+D      K14985  CYP18A1; cytochrome P450, family 18, subfamily A, polypeptide 1 (26-hydroxylase) [EC:1.14.-.-]
+B  CYP302 family
+C    CYP302A subfamily
+D      K10721  DIB; CYP302A1; ecdysteroid 22-hydroxylase
+B  CYP306 family
+C    CYP306A subfamily
+D      K10720  PHM; CYP306A1; ecdysteroid 25-hydroxylase
+B  CYP307 family
+C    CYP307A subfamily
+D      K14939  spo, spok, CYP307A; cytochrome P450, family 307, subfamily A
+B  CYP314 family
+C    CYP314A subfamily
+D      K10723  SHD, CYP314A1; ecdysone 20-monooxygenase [EC:1.14.99.22]
+B  CYP315 family
+C    CYP315A subfamily
+D      K10722  SAD, CYP315A1; ecdysteroid 2-hydroxylase
+#
+A<b>Cytochrome P450, plant type</b>
+B  CYP71 family
+C    CYP71A subfamily
+D      K11868  CYP71A13; cytochrome P450, family 71, subfamily A, polypeptide 13 (indoleacetaldoxime dehydratase) [EC:4.99.1.6]
+C    CYP71C subfamily
+D      K13225  BX4, CYP71C1; cytochrome P450, family 71, subfamily C, polypeptide 1 (3-hydroxyindolin-2-one monooxygenase) [EC:1.14.13.139]
+D      K13224  BX3, CYP71C2; cytochrome P450, family 71, subfamily C, polypeptide 2 (indolin-2-one monooxygenase) [EC:1.14.13.138]
+D      K13226  BX5, CYP71C3; cytochrome P450, family 71, subfamily C, polypeptide 3 (benzoxazinone N-monooxygenase) [EC:1.14.13.140]
+D      K13223  BX2, CYP71C4; cytochrome P450, family 71, subfamily C, polypeptide 4 (indole-2-monooxygenase) [EC:1.14.13.137]
+C    CYP71D subfamily
+D      K13267  CYP71D9, F6H; cytochrome P450, family 71, subfamily D, polypeptide 9 (flavonoid 6-hydroxylase) [EC:1.14.13.-]
+D      K12696  CYP71D12; tabersonine 16-hydroxylase [EC:1.14.13.73]
+D      K15089  CYP71D13_15_95; cytochrome P450, family 71, subfamily D, polypeptide 13/15/95 ((S)-limonene 3-monooxygenase) [EC:1.14.13.47]
+D      K07381  CYP71D18; cytochrome P450, family 71, subfamily D, polypeptide 18 ((S)-limonene 6-monooxygenase) [EC:1.14.13.48]
+D      K15805  EAH; 5-epiaristolochene 1,3-dihydroxylase [EC:1.14.13.119]
+D      K15472  CYP71D55; premnaspirodiene oxygenase [EC:1.14.13.121]
+C    CYP71E subfamily
+D      K13029  CYP71E1; 4-hydroxyphenylacetaldehyde oxime monooxygenase [EC:1.14.13.68]
+D      K16265  CYP71E7; cytochrome P450, family 71, subfamily E, polypeptide 7 (2-methylbutanal oxime monooxygenase) [EC:1.14.13.-]
+C    CYP71Z subfamily
+D      K16083  CYP71Z6; cytochrome P450, family 71, subfamily Z, polypeptide 6 (ent-isokaurene C2-hydroxylase) [EC:1.14.13.143]
+B  CYP72 family
+C    CYP72A subfamily
+D      K13400  CYP72A1; cytochrome P450, family 72, subfamily A, polypeptide 1 (secologanin synthase) [EC:1.3.3.9]
+C    CYP72C subfamily
+D      K15638  CYP72C1, SOB7; cytochrome P450, family 72, subfamily C, polypeptide 1
+B  CYP73 family
+C    CYP73A subfamily
+D      K00487  CYP73A; trans-cinnamate 4-monooxygenase [EC:1.14.13.11]
+B  CYP74 family
+C    CYP74A subfamily
+D      K01723  AOS; hydroperoxide dehydratase [EC:4.2.1.92]
+C    CYP74B_C subfamily
+D      K10528  HPL; hydroperoxide lyase [EC:4.1.2.-]
+B  CYP75 family
+C    CYP75A subfamily
+D      K13083  CYP75A; cytochrome P450, family 75, subfamily A (flavonoid 3',5'-hydroxylase) [EC:1.14.13.88]
+C    CYP75B subfamily
+D      K05280  E1.14.13.21; flavonoid 3'-monooxygenase [EC:1.14.13.21]
+B  CYP76 family
+C    CYP76B subfamily
+D      K13404  CYP76B1; cytochrome P450, family 76, subfamily B, polypeptide 1 (7-ethoxycoumarin O-deethylase) [EC:1.14.-.-]
+D      K15099  CYP76B6, G10H; cytochrome P450, family 76, subfamily B, polypeptide 6 (geraniol 8-hydroxylase) [EC:1.14.13.152]
+C    CYP76M subfamily
+D      K16084  CYP76M7; cytochrome P450, family 76, subfamily M, polypeptide 7 (ent-cassa-12,15-diene 11-hydroxylase) [EC:1.14.13.145]
+B  CYP77 family
+C    CYP77A subfamily
+D      K15399  CYP77A6; cytochrome P450, family 77, subfamily A, polypeptide 6 [EC:1.14.-.-]
+B  CYP79 family
+C    CYP79A subfamily
+D      K13027  CYP79A1; tyrosine N-monooxygenase [EC:1.14.13.41]
+D      K12153  CYP79A2; cytochrome P450, family 79, subfamily A, polypeptide 2 (phenylalanine N-monooxygenase) [EC:1.14.13.124]
+C    CYP79B subfamily
+D      K11812  CYP79B2; cytochrome P450, family 79, subfamily B, polypeptide 2 (tryptophan N-monooxygenase) [EC:1.14.13.125]
+D      K11813  CYP79B3; cytochrome P450, family 79, subfamily B, polypeptide 3 (tryptophan N-monooxygenase) [EC:1.14.13.125]
+C    CYP79D subfamily
+D      K13401  CYP79D1_2; cytochrome P450, family 79, subfamily D, polypeptide 1/2 (valine N-monooxygenase) [EC:1.14.13.118]
+D      K14984  CYP79D3_4; cytochrome P450, family 79, subfamily D, polypeptide 3/4 (isoleucine N-monooxygenase) [EC:1.14.13.117]
+C    CYP79F subfamily
+D      K12154  CYP79F1; cytochrome P450, family 79, subfamily F, polypeptide 1 [EC:1.14.13.-]
+D      K12155  CYP79F2; cytochrome P450, family 79, subfamily F, polypeptide 2 [EC:1.14.13.-]
+B  CYP80 family
+C    CYP80A subfamily
+D      K13387  CYP80A1; cytochrome P450, family 80, subfamily A, polypeptide 1 (berbamunine synthase) [EC:1.14.21.3]
+C    CYP80B subfamily
+D      K13385  CYP80B; cytochrome P450, family 80, subfamily B (N-methylcoclaurine 3'-monooxygenase) [EC:1.14.13.71]
+C    CYP80G subfamily
+D      K13389  CYP80G2; cytochrome P450, family 80, subfamily G, polypeptide 2 (corytuberine synthase) [EC:1.14.21.-]
+B  CYP81 family
+C    CYP81E subfamily
+D      K13260  CYP81E1_7; cytochrome P450, family 81, subfamily E, polypeptide 1/7 (isoflavone 2'-hydroxylase) [EC:1.14.13.89]
+B  CYP82 family
+C    CYP82B subfamily
+D      K13405  CYP82B1; cytochrome P450, family 82, subfamily B, polypeptide 1 ((S)-N-methylcoclaurine 3'-hydroxylase)
+B  CYP83 family
+C    CYP83A subfamily
+D      K12156  CYP83A1; cytochrome P450, family 83, subfamily A, polypeptide 1 [EC:1.14.-.-]
+C    CYP83B subfamily
+D      K11818  CYP83B1; cytochrome P450, family 83, subfamily B, polypeptide 1 [EC:1.14.-.-]
+B  CYP84 family
+C    CYP84A subfamily
+D      K09755  CYP84A, F5H; ferulate-5-hydroxylase [EC:1.14.-.-]
+B  CYP85 family
+C    CYP85A subfamily
+D      K09590  CYP85A1, BR6OX1; cytochrome P450, family 85, subfamily A, polypeptide 1 (brassinosteroid-6-oxidase 1) [EC:1.14.-.-]
+D      K12640  CYP85A2, BR6OX2; cytochrome P450, family 85, subfamily A, polypeptide 2 (brassinosteroid-6-oxidase 2) [EC:1.14.-.-]
+B  CYP86 family
+C    CYP86A sufamily
+D      K15401  CYP86A1; cytochrome P450, family 86, subfamily A, polypeptide 1 (fatty acid omega-hydroxylase) [EC:1.14.-.-]
+D      K15398  CYP86A4S; cytochrome P450, family 86, subfamily A, polypeptide 2/4/7/8 (fatty acid omega-hydroxylase) [EC:1.14.-.-]
+C    CYP86B subfamily
+D      K15402  CYP86B1; cytochrome P450, family 86, subfamily B, polypeptide 1 (fatty acid omega-hydroxylase) [EC:1.14.-.-]
+B  CYP88 family
+C    CYP88A subfamily
+D      K04123  KAO; ent-kaurenoic acid hydroxylase [EC:1.14.13.79]
+B  CYP90 family
+C    CYP90A subfamily
+D      K09588  CYP90A1, CPD; cytochrome P450, family 90, subfamily A, polypeptide 1 [EC:1.14.-.-]
+C    CYP90B subfamily
+D      K09587  CYP90B1, DWF4; cytochrome P450, family 90, subfamily B, polypeptide 1 (steroid 22-alpha-hydroxylase) [EC:1.14.13.-]
+C    CYP90C subfamily
+D      K12637  CYP90C1, ROT3; cytochrome P450, family 90, subfamily C, polypeptide 1 (3-epi-6-deoxocathasterone 23-monooxygenase) [EC:1.14.13.112]
+C    CYP90D subfamily
+D      K12638  CYP90D1; cytochrome P450, family 90, subfamily D, polypeptide 1 (3-epi-6-deoxocathasterone 23-monooxygenase) [EC:1.14.13.112]
+D      K09589  CYP90D2, D2; cytochrome P450, family 90, subfamily D, polypeptide 2 (steroid 3-oxidase) [EC:1.14.-.-]
+B  CYP93 family
+C    CYP93A subfamily
+D      K13261  CYP93A1; cytochrome P450, family 93, subfamily A, polypeptide 1 (3,9-dihydroxypterocarpan 6a-monooxygenase) [EC:1.14.13.28]
+C    CYP93B subfamily
+D      K13406  CYP93B1; cytochrome P450, family 93, subfamily B, polypeptide 1 (licodione synthase) [EC:1.14.13.87]
+C    CYP93C subfamily
+D      K13257  CYP93C; cytochrome P450, family 93, subfamily C (2-hydroxyisoflavanone synthase) [EC:1.14.13.136]
+C    CYP93E subfamily
+D      K15814  CYP93E1; beta-amyrin 24-hydroxylase [EC:1.14.99.43]
+B  CYP94 family
+C    CYP94A subfamily
+D      K13407  CYP94A1; cytochrome P450, family 94, subfamily A, polypeptide 1 (fatty acid omega-hydroxylase) [EC:1.14.-.-]
+B  CYP96 family
+C    CYP96A subfamily
+D      K15405  MAH1, CYP96A15; cytochrome P450, family 96, subfamily A, polypeptide 15 (midchain alkane hydroxylase)
+B  CYP97 family
+C    CYP97A subfamily
+D      K15747  LUT5, CYP97A3; cytochrome P450, family 97, subfamily A (beta-ring hydroxylase) [EC:1.14.-.-]
+C    CYP97C subfamily
+D      K09837  LUT1, CYP97C1; carotene epsilon-monooxygenase [EC:1.14.99.45]
+B  CYP98 family
+C    CYP98A subfamily
+D      K09754  CYP98A3, C3'H; coumaroylquinate(coumaroylshikimate) 3'-monooxygenase [EC:1.14.13.36]
+D      K15506  CYP98A8_9; cytochrome P450, family 98, subfamily A, polypeptide 8/9 [EC:1.14.13.-]
+B  CYP99 family
+C    CYP99A subfamily
+D      K16085  CYP99A3; cytochrome P450, family 99, subfamily A, polypeptide 3 (9beta-pimara-7,15-diene oxidase) [EC:1.14.13.144]
+B  CYP701 family
+C    CYP701A subfamily
+D      K04122  E1.14.13.78; ent-kaurene oxidase [EC:1.14.13.78]
+B  CYP707 family
+C    CYP707A subfamily
+D      K09843  E1.14.13.93; (+)-abscisic acid 8'-hydroxylase [EC:1.14.13.93]
+B  CYP710 family
+C    CYP710A subfamily
+D      K09832  CYP710A; cytochrome P450, family 710, subfamily A
+B  CYP719 family
+C    CYP719A subfamily
+D      K13395  E1.14.21.1; cytochrome P450, family 719, subfamily A (stylopine synthase) [EC:1.14.21.1]
+C    CYP719B subfamily
+D      K13391  CYP719B1; cytochrome P450, family 719, subfamily B, polypeptide 1 (salutaridine synthase) [EC:1.14.21.4]
+B  CYP720 family
+C    CYP720B subfamily
+D      K14040  CYP720B1, PTAO; cytochrome P450, family 720, subfamily B, polypeptide 1 (abietadienol/abietadienal oxidase) [EC:1.14.13.109]
+B  CYP724 family
+C    CYP724B subfamily
+D      K12639  CYP724B1, D11; cytochrome P450, family 724, subfamily B, polypeptide 1 [EC:1.14.13.-]
+B  CYP725 family
+C    CYP725A subfamily
+D      K12924  CYP725A1; taxane 10-beta-hydroxylase [EC:1.14.13.76]
+D      K12922  CYP725A2; taxane 13-alpha-hydroxylase [EC:1.14.13.77]
+B  CYP734 family
+C    CYP734A subfamily
+D      K15639  CYP734A1, BAS1; cytochrome P450, family 734, subfamily A, polypeptide 1 (PHYB activation tagged suppressor 1) [EC:1.14.-.-]
+B  CYP735 family
+C    CYP735A subfamily
+D      K10717  CYP735A; cytokinin trans-hydroxylase
+#
+A<b>Cytochrome P450, bacteria type</b>
+B  CYP107 family
+C    CYP107H subfamily
+D      K16593  bioI; cytochrome P450 [EC:1.14.-.-]
+B  CYP125 family
+C    CYP125A subfamily
+D      K15981  CYP125A1; cytochrome P450, family 125, subfamily A, polypeptide 1 (cholest-4-en-3-one 26-monooxygenase) [EC:1.14.13.141]
+B  CYP134 family
+C    CYP134A subfamily
+D      K17474  CYP134A1, cypX; pulcherriminic acid synthase [EC:1.14.15.13]
+B  CYP142 family
+C    CYP142A subfamily
+D      K16046  CYP142A1; cytochrome P450, family 142, subfamily A, polypeptide 1
+B  CYP152 family
+C    CYP152A subfamily
+D      K15629  CYP152A1; fatty-acid peroxygenase [EC:1.11.2.4]
+B  CYP158 family
+C    CYP158A subfamily
+D      K13074  CYP158A2; biflaviolin synthase [EC:1.14.21.7]
+B  CYP170 family
+C    CYP170A subfamily
+D      K12645  CYP170A1; epi-isozizaene 5-monooxygenase [EC:1.14.13.106]
+B  CYP183 family
+C    CYP183A subfamily
+D      K15907  ptlI; pentalenene oxygenase [EC:1.14.13.133]
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: August 19, 2013

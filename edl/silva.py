@@ -56,19 +56,20 @@ class SilvaTaxNode(edl.taxon.TaxNode):
             root.name = root.id
             tree['root']=root
 
-        lineage = scRE.split(taxString)
+        if removeSpaces:
+            lineage = scRE.split(edl.taxon.removeSpaces(taxString))
+        else:
+            lineage = scRE.split(taxString)
         logging.debug("parsing %s: %s"  % (taxString,str(lineage)))
         lastNode = tree['root']
-        for taxon in lineage:
-            taxon = taxon.strip()
-            if removeSpaces:
-                taxon = edl.taxon.removeSpaces(taxon)
-            if (taxon in tree) and (tree[taxon].parent is lastNode):
+        for i in range(len(lineage)):
+            taxon = ";".join(lineage[:i+1])
+            if (taxon in tree):
                 lastNode = tree[taxon]
             else:
                 #logging.debug("Adding %s as child to %s" % (taxon, lastNode.name))
                 newNode = SilvaTaxNode(taxon, lastNode.id, None)
-                newNode.name = newNode.id
+                newNode.name = lineage[i]
                 newNode.setParent(lastNode)
                 tree[taxon] = newNode
                 lastNode=newNode

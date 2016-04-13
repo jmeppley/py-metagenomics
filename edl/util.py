@@ -417,7 +417,7 @@ def addUniversalOptions(parser,addQuiet=True):
               action="store_true", dest="about", default=False,
               help="Print description")
 
-DEFAULT_LOGGER_FORMAT='%(asctime)s::%(levelname)s:%(name)s:%(funcName)s:\n%(message)s'
+DEFAULT_LOGGER_FORMAT=':%(asctime)s::%(levelname)s:%(name)s:%(funcName)s:\n%(message)s'
 def setupLogging(options, description, stream=sys.stderr, format=DEFAULT_LOGGER_FORMAT):
     """
     Do some basic setup common to all scripts.
@@ -456,7 +456,7 @@ def addScreenOptions(parser, defaults={}, accs=False):
                       action="store_true", dest="keep", default=False,
                       help="Keep listed reads instead of removing")
     parser.add_option("-D", "--listDelim", dest="listDelim", default=None,
-                      help="list delimiter. If listColumn set, default is '\t', otherwise, the whole line (stripped) is used. '\w' will split on any whitespace.", metavar="DELIM")
+                      help="list delimiter. If listColumn set, default is any whitespace, otherwise, the whole line (stripped of whietspace at the ends) is used. '\\t' will split on tab characters.", metavar="DELIM")
     parser.add_option("-C", "--listColumn", dest="listColumn", default=None, type='int',
                       help="Column in listFile to get names from. Defaults to 0 if a delimiter is set.")
     parser.add_option("-G", "--galaxy", default=False, action="store_true", help="Column indices should start with 1")
@@ -498,6 +498,10 @@ def parseAcc(read):
     return read
 
 def treeGenerator(node, kidsFirst=False, **kwargs):
+    """
+    Yields the given node and children recursively.
+    Starts with this node unless kidsFirst==True
+    """
     if not kidsFirst:
         yield node
     for kid in sorted(node.children,**kwargs):
@@ -506,3 +510,75 @@ def treeGenerator(node, kidsFirst=False, **kwargs):
                 yield n
     if kidsFirst:
         yield node
+
+returnSelf=lambda x: x
+def pairwise(items, sortKey=returnSelf):
+    """
+    iterate over unique pairs of items
+    """
+    itemList = sorted(items, key=sortKey)
+    for i in range(len(itemList)):
+        for j in range(i+1,len(itemList)):
+            yield itemList[i],itemList[j]
+from numpy import ceil
+from numpy import log as nplog, exp as npexp
+def asciiHistogram(histogram, log=False, width=60, label='length', maxLabelWidth=10):
+    (values,edges)=histogram[:2]
+    
+    maxValue=max(values)
+    
+    centers=[int(float(sum(edges[i:i+2]))/2.) for i in range(len(values))]
+    largestLabel = max(max([len(str(c)) for c in centers]),len(label))
+    if largestLabel<6:
+        largestLabel=6
+    elif largestLabel>maxLabelWidth:
+        largestLabel=maxLabelWidth
+    
+    plotWidth=width-largestLabel+1
+    
+    midPoint = npexp((nplog(maxValue)-nplog(.5))/2) if log else maxValue/2
+    output="%s|count%s%s|%s%s|\n" % (rightPad(label,largestLabel),
+                                     "".join([" " for i in range(plotWidth/2 - len(str(int(midPoint))) - len("count"))]),
+                                     str(int(midPoint)),
+                                     "".join([" " for i in range(int(ceil(plotWidth/2.)) - 1 - len(str(int(maxValue))))]),
+                                     str(int(maxValue)),
+                                     )
+    #output+="%s|%s\n" % ("".join(["_" for i in range(largestLabel)]),
+    #                     "".join(["_" for i in range(plotWidth)]),
+    #                     )
+    for i, v in enumerate(values):
+        output+="%s|%s\n" % (rightPad(str(centers[i]),largestLabel),getBarString(v, maxValue, plotWidth, log))
+    return output
+
+logChars=['-','~','=','#']
+def getBarString(value, maxValue, maxWidth, log):
+    """
+    return string of various signs (-,~,=,#) based on value and scale
+    """
+    if log:
+        value=nplog(value)-nplog(.5) if value>0 else 0
+        maxValue=nplog(maxValue)-nplog(.5)
+    width=maxWidth*(value/float(maxValue))
+    if width<1:
+        return ''
+    char=logChars[0]
+    s=char
+    while len(s)<width:
+        if log:
+            #print "s: %s, mw: %s, w: %s" % (s, maxWidth, width)
+            char=logChars[int(ceil(len(logChars)*len(s)/float(maxWidth))-1)]
+        s+=char
+    return s
+
+def rightPad(name, width):
+    if width<6:
+        width=6
+        logger.warn("Can't force names to be fewer than 6 characters")
+    if len(name)>width:
+        # remove middle and insert elipsis to get to -width- characters
+        return name[:width-4]+'***'+name[-1:]
+    while len(name)<width:
+        # pad with trailing space to get to 13 characters
+        name+=' '
+    return name
+

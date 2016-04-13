@@ -69,8 +69,7 @@ def main():
                       metavar="HITCOL")
     parser.add_option('-s', '--hitSep', default=None,
                       help="Use this string to split multiple values in single hit cell. Default is 'None' to leave hits as is, use 'eval' to parse as python repr strings")
-    parser.add_option("-C", "--clusterFile", dest="clusterFile",
-                      metavar="CLUSTERFILE", help="Location of cd-hit output. Use this to multiply hits to recreate counts of unclustered data.")
+    addWeightOption(parser, multiple=False)
     parser.add_option("-T", "--total", default=False, action="store_true",
                       help="Report 'Total' in the first row")
 
@@ -98,7 +97,7 @@ def main():
     # process arguments
     takeFirst = (options.allMethod == 'first')
     splitHits = (options.hitSep is not None and options.hitSep != 'None')
-    uncluster = (options.clusterFile != None)
+    uncluster = (options.weights != None)
 
     if options.hitSep=='eval':
         parser.error("Sorry, parsing with eval is not yet supported!")
@@ -118,7 +117,7 @@ def main():
         else:
             logging.info ("Adding 1 to every hit for each read")
     if uncluster:
-        logging.info("Getting read cluster sizes from: %s" % (options.clusterFile));
+        logging.info("Getting read cluster sizes from: %s" % (options.weights));
     if options.countFirst:
         logging.info("First line is data")
     else:
@@ -130,7 +129,7 @@ def main():
 
     clusteredReadCounts={}
     if uncluster:
-        clusteredReadCounts = readClusterFile(options.clusterFile)
+        clusteredReadCounts = parseMapFile(options.clusterFile, valueType=int)
 
     currentRead=''
     readCount=1
@@ -215,49 +214,6 @@ def main():
     for hit, count in counts.iteritems():
         hit=delimRE.sub('_',hit)
         outhandle.write(outFmtString % (hit,options.delimOut,count))
-
-
-###################
-# functions
-###################
-##
-# readClusterFile(file)
-# return dict from read name to cluster size
-##
-def readClusterFile(file):
-    cfile = open(file)
-    clusters = {}
-    clusterread=""
-    for line in cfile:
-        if len(line)==0:
-            continue
-        if line[0]=='>':
-            clusterread=''
-            continue
-
-        # get read (use regex?)
-        thisread=""
-        expr = ">(\S+)\.\.\."
-        m = re.search(expr, line)
-        if m:
-            thisread=m.group(1)
-        else:
-            logging.warn("Cannot parse line: %s" % line)
-            continue
-
-        if clusterread=="":
-            clusterread = thisread
-            clusters[clusterread]=1
-        else:
-            clusters[clusterread]+=1
-
-    if options.verbose>1:
-        dstr= "Parsed cluster file:\n"
-        for read, count in clusters.iteritems():
-            dstr += "%s:%s::" % (read,str(count))
-        logging.info(dstr)
-
-    return clusters
 
 if __name__ == '__main__':
     main()

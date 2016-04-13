@@ -8,7 +8,14 @@ from edl import blastm8
 ###############
 # Pick a best hit for each read based on abundances from singular hits
 ###############
-def pickBestHitByAbundance(m8stream, filterParams=None, returnLines=True, returnTranslations=False, organismCounts=None, winnerTakeAll=False, **kwargs):
+def pickBestHitByAbundance(m8stream, 
+                         filterParams=None, 
+                         returnLines=True, 
+                         returnTranslations=False, 
+                         organismCounts=None, 
+                         winnerTakeAll=False, 
+                         sequenceWeights=None,
+                         **kwargs):
     """
     Given a hit table with (potentially) multiple hits for each read. Select the best hit for each read. Hits are parsed from given hit table (m8stream) if given a FilterParams object, otherwise it is assumed that m8stream is an iterator over Hit objects. Remaining keyword arguments are used to translate hits to accessions, organisms, or anything else using a HitTranslator.
     Ambiguous hits (multiple 'best' hits to one read) are resolved as follows:
@@ -47,7 +54,7 @@ def pickBestHitByAbundance(m8stream, filterParams=None, returnLines=True, return
 
     # loop over hits and yield unambiguous ones
     # Save ambiguous hits and org abundances
-    logging.debug(str(hitIter))
+    logger.debug(str(hitIter))
     for (read, hits) in hitIter:
         logger.debug("Read: %s" % (read))
         totalReads+=1
@@ -76,9 +83,14 @@ def pickBestHitByAbundance(m8stream, filterParams=None, returnLines=True, return
             logger.error("No hits for %s!!!!!" % (read))
             raise Exception("Read (%s) has not hits. This shouldn't happen." % (read))
         elif count==1 or len(hitByOrg)==1:
+            logger.debug("Read is UNambiguous")
             unambiguousReads+=1
             for org in orgs:
-                orgCounts[org]=orgCounts.get(org,0)+1
+                if sequenceWeights is not None:
+                    increment=sequenceWeights.get(read,1)
+                else:
+                    increment=1
+                orgCounts[org]=orgCounts.get(org,0)+increment
             if returnLines:
                 yield hit.line
             elif returnTranslations:
@@ -86,6 +98,7 @@ def pickBestHitByAbundance(m8stream, filterParams=None, returnLines=True, return
             else:
                 yield (read,hit)
         else:
+            logger.debug("Read IS ambiguous")
             ambiguousReads+=1
             if organismCounts is None:
                 # If we don't have count data to start, save these til the end
@@ -96,7 +109,7 @@ def pickBestHitByAbundance(m8stream, filterParams=None, returnLines=True, return
                     yield formatReturn(hit,org,returnLines, returnTranslations)
 
     logger.info( "Processed %d reads:" % (totalReads) )
-    logger.info( "Collected unambiguous counts for %d orgs and %d genes" % (len(orgCounts),unambiguousReads) )
+    logger.info( "Collected unambiguous counts for %d orgs from %d reads" % (len(orgCounts),unambiguousReads) )
 
     # if we used given organism counts, then we are done
     if organismCounts is not None:
@@ -113,7 +126,7 @@ def pickBestHitByAbundance(m8stream, filterParams=None, returnLines=True, return
     # loop over ambiguous hits (grouped by possible orgs) and pick one for each read
     ambiguousReads=0
     #for orgs, hits in ambiguousHits.iteritems():
-    for orgs in sorted(ambiguousHits.keys()):
+    for orgs in sorted(ambiguousHits.iterkeys()):
         hits = ambiguousHits[orgs]
         for (hit,org) in assignHits(orgs,hits,orgCounts,winnerTakeAll):
             ambiguousReads+=1

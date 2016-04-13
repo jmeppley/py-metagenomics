@@ -5,8 +5,10 @@ from optparse import OptionParser
 import sys, re
 from edl.taxon import *
 from edl.hits import *
-from edl.util import addUniversalOptions, setupLogging, checkNoneOption
+from edl.util import addUniversalOptions, setupLogging, checkNoneOption, parseMapFile
 from edl.expressions import accessionRE, nrOrgRE
+
+ORG_RANK='organism'
 
 def main():
     usage = "usage: %prog [OPTIONS] BLAST_M8_FILE[S]"
@@ -18,11 +20,22 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
                       metavar="OUTFILE", help="Write count table to OUTFILE")
     parser.add_option("-r", "--rank", dest="ranks", default=None,
                       metavar="RANK", action="append",
-                      help=" Rank(s) to collect counts on. Use flag multiple times to specify multiple ranks. If multiple values given, one table produced for each with rank name appended to file name. Defaults to all major ranks between phylum and species. Corresponds to rank names in nodes.dmp. To see list run: 'cut -f5 nodes.dmp | uniq | sort | uniq' in ncbi tax dir")
+                      help=""" Rank(s) to collect counts on. Use flag multiple
+                      times to specify multiple ranks. If multiple values
+                      given, one table produced for each with rank name
+                      appended to file name. Defaults to all major ranks
+                      between phylum and species. Corresponds to rank names 
+                      in nodes.dmp. To see list run: 
+                      'cut -f5 nodes.dmp | uniq | sort | uniq' 
+                      in ncbi tax dir. Will also accept 'organism' to mean 
+                      no rank (ie, just the organism name).""")
     parser.add_option("-s","--collapseToDomain", default=False, action="store_true",
                       help="Collapse all taxa below given rank down to superkingdom/domain. EG: in the genus output, anything assigned to Cyanobactia, will be lumped in with all other bacteria")
     parser.add_option("-R","--printRank",dest="printRanks",action="append",
                       help="Include indeicated rank(s) in lineage of printed taxa. Will be ignored if beyond the rank of the taxa (IE We can't include species if the taxon being counted is genus)")
+
+    # option for deconvoluting clusters or assemblies
+    addWeightOption(parser, multiple=True)
 
     # cutoff options
     addCountOptions(parser)
@@ -47,7 +60,7 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
     # Set defaults and check for some conflicts
     if options.ranks is None and options.taxdir is None:
         # using hit names only
-        options.ranks=[None]
+        options.ranks=[ORG_RANK]
         if options.printRanks is not None:
             parser.error("Display ranks are not used without taxonomic info")
     else:
@@ -64,6 +77,9 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
                 options.printRanks=cleanRanks(options.printRanks)
         except Exception as e:
             parser.error(str(e))
+
+    # load weights file
+    sequenceWeights = loadSequenceWeights(options.weights)
 
     # only print to stdout if there is a single rank
     if len(options.ranks)>1 and options.outfile is None:
@@ -111,10 +127,11 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
         if options.countMethod == 'tophit':
             # don't give any taxonomy, just map to accessions for redistribution
             readHits = redistribute.pickBestHitByAbundance(multifile,
-                                                  filterParams=params,
-                                                  returnLines=False,
-                                                  winnerTakeAll=True,
-                                                  parseStyle=options.parseStyle)
+                                              filterParams=params,
+                                              returnLines=False,
+                                              winnerTakeAll=True,
+                                              parseStyle=options.parseStyle,
+                                              sequenceWeights=sequenceWeights)
             # define method to turn Hits into orgnaisms
             hitTranslator=getHitTranslator(parseStyle=options.parseStyle,
                                            taxonomy=taxonomy,
@@ -136,13 +153,16 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
 
         # use read->file mapping and hit translator to get file based counts
         #  from returned (read,Hit) pairs
+        increment=1
         for (read, hit) in readHits:
             filename = readFileDict[read]
             filetag = fileLabels[filename]
             taxon = translateHit(hit)
             taxcount = fileCounts[filetag].setdefault(taxon,0)
-            fileCounts[filetag][taxon]=taxcount+1
-            totals[filetag]+=1
+            if sequenceWeights is not None:
+                increment = sequenceWeights.get(read,1)
+            fileCounts[filetag][taxon]=taxcount+increment
+            totals[filetag]+=increment
         logging.debug(str(totals))
 
     else:
@@ -152,7 +172,7 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
 
             hitIter = parseM8FileIter(infile, hitStringMap, options.hitTableFormat, options.filterTopPct, options.parseStyle, options.countMethod, taxonomy=taxonomy, rank=rank, sortReads=options.hitTableSortReads)
 
-            (total,counts,hitMap) = countIterHits(hitIter,allMethod=options.allMethod)
+            (total,counts,hitMap) = countIterHits(hitIter,allMethod=options.allMethod, weights=sequenceWeights)
             fileCounts[filetag] = counts
             totals[filetag]=total
 
@@ -163,6 +183,9 @@ Takes m8 blast files and generates a table of taxon hit counts for the given ran
     printCountTablesByRank(fileCounts, totals, sortedLabels, options)
 
 def cleanRanks(rankList):
+    if ORG_RANK not in ranks:
+        ranks.insert(0,ORG_RANK)
+
     # don't allow duplicates
     rankList=list(set(rankList))
 
@@ -210,7 +233,7 @@ def printCountTablesByRank(fileCounts, totals, fileNames, options):
                 # get parent taxon at the given rank
                 if taxon is None:
                     ranked=None
-                elif rank is None:
+                elif rank is None or rank == ORG_RANK:
                     ranked=taxon
                 else:
                     if options.collapseToDomain:

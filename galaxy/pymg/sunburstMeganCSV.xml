@@ -1,0 +1,95 @@
+<tool id="sunburstMeganCSV" name="Sunburst Phylo Viz (MEGAN)" version="0.1.2">
+    <description> Plot taxa from MEGAN csv file as a sunburst. </description>
+    <command>
+    export VERSIONER_PYTHON_PREFER_32_BIT=yes; 
+    sunburstFromMeganCSV.py $datatable -o $plotname
+#if str($nodeColors).strip() != "":
+	-c $nodeColors
+#end if
+    -C $cutoff
+	-R $rankList
+        -n "${lastdb.fields.taxdump}"
+#if $outputType.createImage:
+ #if str($outputType.rootNode).strip() != "":
+	-r $outputType.rootNode
+ #end if
+ #if $outputType.icicle == "True":
+	-i
+ #end if
+ #if $outputType.exteriorLabels == "True":
+	-e
+ #end if
+	-S 10,15
+	-f $outputType.plotformat
+#else
+    -J
+#end if
+
+    </command>
+    <inputs>
+     <param name="datatable" label="Table of data" type="data" format="csv"/>
+     <param name="lastdb" type="select" display="radio" label="Which database was used:">
+            <options from_file="lastdb.loc" >
+		<column name="value" index="0"/>
+		<column name="name" index="1"/>
+		<column name="taxmapfile" index="4"/>
+		<column name="taxkey" index="5"/>
+		<column name="taxdump" index="8"/>
+		<filter type="static_value" value="None" column="8"
+			   keep="False"/>
+	     </options>
+     </param>
+
+	 <!--param name="rankList" label="Plot these ranks" type="text" value="superkingdom,phylum,family"/ -->
+	 <param name="rankList" type="select" multiple="true" label="Plot these ranks" display="checkboxes">
+		 <option value="superkingdom" selected="True">Superkingdom</option>
+		 <option value="phylum" selected="True">Phylum</option>
+		 <option value="class">Class</option>
+		 <option value="order">Order</option>
+		 <option value="family">Family</option>
+		 <option value="genus" selected="True">Genus</option>
+		 <option value="species">Species</option>
+	</param>
+	 <param name="nodeColors" type="text" value="Bacteria=r,Eukaryota=b,Archaea=g,Proteobacteria=purple" label="Node colors" help="A comma separated list of taxon=color settings" size="50"/>
+     <param name="cutoff" type="float" value="0.025" min="0.0"/>
+     <conditional name="outputType">
+        <param name="createImage" type="boolean" checked="True" truevalue="True" falsevalue="False" label="Create image file (else, just create JSON data file)"/>
+        <when value="True">
+         
+         <param name="plotformat" type="select" label="Figure format">
+                <option value="pdf">PDF</option>
+                <option value="png" selected="True">PNG</option>
+                <option value="ps">PS</option>
+                <option value="svg">SVG</option>
+         </param>
+         <param name="icicle" label="Check to make icicle" type="boolean" help="Bars hang down from above instead of wrap around into arcs" truevalue="True"/>
+         <param name="exteriorLabels" label="print outermost labels outside bars" type="boolean" truevalue="True" checked="yes"/>
+         <param name="rootNode" type="text" value="" label="Print subtree starting with this node:" help="leave blank to print entire tree" size="30"/>
+     </when>
+ </conditional>
+    </inputs>
+    <outputs>
+        <data name="plotname" format="png">
+	  <change_format>
+            <when input="outputType.plotformat" value="pdf" format="pdf" />
+          </change_format>
+	  <change_format>
+            <when input="outputType.plotformat" value="svg" format="svg" />
+          </change_format>
+	  <change_format>
+            <when input="outputType.plotformat" value="ps" format="eps" />
+          </change_format>
+	  <change_format>
+            <when input="outputType.createImage" value="False" format="json" />
+          </change_format>
+        </data>
+    </outputs>
+    <help>
+    
+**What it does**
+
+Prints a sunburst representation ofthe taxonomy
+
+-------
+    </help>
+</tool>

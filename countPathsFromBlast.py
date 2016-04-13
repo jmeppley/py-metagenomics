@@ -36,6 +36,9 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
                       levels 1, 2, and 3 for KEGG and SEED
                       and gene and group for CAZy and COG.""")
 
+    # option for deconvoluting clusters or assemblies
+    addWeightOption(parser, multiple=True)
+
     # cutoff options
     hits.addCountOptions(parser)
 
@@ -74,6 +77,9 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
             options.levels=cleanLevels(options.levels)
         except Exception as e:
             parser.error(str(e))
+
+    # load weights file
+    sequenceWeights = loadSequenceWeights(options.weights)
 
     # only print to stdout if there is a single level
     if len(options.levels)>1 and options.outfile is None:
@@ -138,6 +144,7 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
         fileCounts[filetag]={}
         totals[filetag]=0
 
+    TODO: incorporate weights into tophit algorithm!
     if options.countMethod == 'tophit':
         # Process all files at once and use overall abundance to pick best hits
         from edl import redistribute
@@ -149,7 +156,8 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
                                               filterParams=params,
                                               returnLines=False,
                                               winnerTakeAll=True,
-                                              parseStyle=options.parseStyle)
+                                              parseStyle=options.parseStyle,
+                                              sequenceWeights=sequenceWeights)
         # define method to turn Hits into Genes (kos, families)
         hitTranslator=hits.getHitTranslator(parseStyle=options.parseStyle,
                                        hitStringMap=valueMap)
@@ -157,14 +165,17 @@ Takes m8 blast files and generates a table (or tables) of hit counts for gene fa
 
         # use read->file mapping and hit translator to get file based counts
         #  from returned (read,Hit) pairs
+        increment=1
         for (read, hit) in readHits:
             filename = readFileDict[read]
             filetag = fileLabels[filename]
             gene = translateHit(hit)
             logging.debug("READ: %s\t%s\t%s\t%s" % (filetag,read,hit.hit,gene))
             genecount = fileCounts[filetag].setdefault(gene,0)
-            fileCounts[filetag][gene]=genecount+1
-            totals[filetag]+=1
+            if sequenceWeights is not None:
+                increment = sequenceWeights.get(read,1)
+            fileCounts[filetag][gene]=genecount+increment
+            totals[filetag]+=increment
         logging.debug(str(totals))
 
     else:
@@ -198,7 +209,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
     for level in options.levels:
         logging.debug("Processing level %s" % (level))
         translateToPaths = level not in koSyns
-        addDescColumn = False
+        descString = None
         if translateToPaths:
             if options.heirarchyType == 'cazy':
                 geneTranslator = getCazyGroup
@@ -216,14 +227,14 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
 
         elif level is not None and options.heirarchyType == 'kegg':
             # return descriptions if level explicitly set to ko (or syn.)
-            addDescColumn = True
+            descString = "Description"
             logging.info("Reading KO descriptions from %s" % options.heirarchyFile)
             geneTranslation = kegg.readKEGGFile(options.heirarchyFile, "DESCRIPTION")
             geneTranslator = lambda gene: "%s\t%s" % (gene,
                                              geneTranslation.get(gene,gene))
         elif level is not None and options.heirarchyType == 'cog':
             # return descriptions if level explicitly set to ko (or syn.)
-            addDescColumn = True
+            descString = "Description\tCategories"
             geneTranslator = lambda gene: "%s\t%s\t%s" % (
                                      seedTree['gene'].get(gene, gene),
                                      seedTree['description'].get(gene,"None"),
@@ -313,8 +324,9 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
         # header
         if level in koSyns:
             # Header for when level is the gene
-            if addDescColumn:
-                outs.write("Gene\tDescription\t%s\n" % ('\t'.join(fileNames)))
+            if descString is not None:
+                outs.write("Gene\t%s\t%s\n" % (descString,
+                                               '\t'.join(fileNames)))
             else:
                 outs.write("Gene\t%s\n" % ('\t'.join(fileNames)))
         else:

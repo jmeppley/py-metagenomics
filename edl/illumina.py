@@ -7,7 +7,7 @@ logger=logging.getLogger(__name__)
 overlapRE=re.compile(r'^\S+\s+INFO\s+BESTOLP\s+(\S+?)(?:\:(?:\d{1,2})|(?:\:[NACTG]+))?\s+(\S+)')
 errorRE=re.compile(r'^\S+\s+ERR\s+(\S+)\s+(\S+)(?:\:\d)?\s+')
 dbgRE=re.compile(r'^\S+\s+DBG')
-def scanPandaseqLog(stream,errFile=None):
+def scanPandaseqLog(stream,errFile=None,expectedCount=None):
     """
     Scan the output of pandaseq and find the unpaired reads. Can also look for errors.
     Each requested type is returned as a dictionary object with read names as keys.
@@ -72,6 +72,9 @@ def scanPandaseqLog(stream,errFile=None):
             #failed[read]=code
             continue
 
+    if expectedCount is not None and expectedCount != olpCount:
+        logger.warn("Sequence count does not match expectations! %s != %s" % (expectedCount, oplCount))
+
     logger.debug("%d overlap lines in %d total lines" % (olpCount, lineCount))
     unpCount=len(unpaired)
     msg="""
@@ -102,7 +105,7 @@ def errCountString(errCount):
         retStr="%s#   %s:   %d\n" %(retStr, code, count)
     return retStr
 
-def runPandaseq(forward, reverse, output, unpairedList=None, catchUnpaired=True, exe='/common/bin/pandaseq', fastq=False, gap=20, errFile=None, inputFormat='fastq', threshold=0.6):
+def runPandaseq(forward, reverse, output, unpairedList=None, catchUnpaired=True, exe='pandaseq', fastq=False, gap=20, errFile=None, inputFormat='fastq', threshold=0.6, expectedCount=None):
     """
     Runs pandaseq on the two given (forward,reverse) fastq files, printing the paired
     reads to the file or stream named in the third argument. By default, unparied reads are
@@ -338,7 +341,10 @@ def revComp(record, qual=False, suffix=''):
 
 def trimEnds(record,trimOptions):
     """
-    Given a sequence record, remove low quality bases from ends
+    Given a sequence record, remove low quality bases from ends and discards sequences that are too short or have too high a fraction of a single base. The trimming parameters are:
+     "minlen": The minimum length in bases
+     "cutoff": The minimum quality for a base at the end of a sequence
+     "polyfrac": The maximum fraction of positions that can be a single base
     """
     minlen=trimOptions.minLength
     cutoff=trimOptions.endQuality
@@ -450,6 +456,9 @@ def screenRecords(records, reads):
             yield record
 
 def recordTrimmer(records, trimOptions, errstream):
+    """
+    generator: yeilds trimmed sequence (`trimEnds(record, trimOptions)`) for each BioPython sequence record in given collection or iterator.
+    """
     recordCount=0
     trimmedCounts={}
     for record in records:

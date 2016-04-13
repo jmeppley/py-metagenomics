@@ -1,0 +1,160 @@
++B	Proteins	Comments
+%<style type="text/css"><!--#grid{table-layout:fixed;font-family:monospace;position:relative;color:black;width:1200px;}.col1{position:relative;background:white;z-index:1;overflow:hidden;width:600px;}.col2{position:relative;background:white;z-index:3;padding-left:10px;}--></style>
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Heparan sulfate/heparin binding proteins</h2>
+#<!---
+#ENTRY       ko00536
+#NAME        HS/heparin
+#DEFINITION  Heparan sulfate/heparin binding proteins
+#--->
+!
+A<b>Cytokines</b>	(General comment) Chemotaxis, singal transduction, inflammation
+B  K04519  IL1B; interleukin 1 beta
+B  K05429  IL2; interleukin 2
+B  K04736  IL3; interleukin 3
+B  K05430  IL4; interleukin 4
+B  K05428  IL5; interleukin 5
+B  K05431  IL7; interleukin 7
+B  K05443  IL10, CSIF; interleukin 10	Modulation of IL10 activity
+B  K05406  IL12A; interleukin 12A	Retention of IL12 close to the sites of secretion
+B  K05425  IL12B; interleukin 12B	Retention of IL12 close to the sites of secretion
+B  K05427  CSF2, GMCSF; granulocyte-macrophage colony-stimulating factor
+B  K04687  IFNG; interferon gamma	Dimerization, modulation of proteolytic processing and the interaction of IFN-gamma with IFN-gamma receptor
+B  K03156  TNFA; tumor necrosis factor superfamily, member 2
+#
+A<b>Chemokines</b>	(General comment) Chemokine presentation, transcellular transport, signal transduction
+B  K14624  CCL2, MCP1; C-C motif chemokine 2
+B  K05408  CCL3; C-C motif chemokine 3
+B  K12499  CCL5; C-C motif chemokine 5	Multimerization, promotion of leukocyte adhesion
+B  ------  CCL12; C-C motif chemokine 12 [MMU:20293] [KO:K14624]
+B  K16595  CCL13; C-C motif chemokine 13
+B  K05407  PF4, CXCL4; platelet factor 4	Inhibition of the activity of PF4 after interaction
+B  K10030  IL8, CXCL8; interleukin 8	Protection from degradation, sequesters the chemokine and prevents its diffusion
+B  K12671  CXCL10, IP10; C-X-C motif chemokine 10
+B  K10031  CXCL12; C-X-C motif chemokine 12
+#
+A<b>Adhesion molecules of cell surface</b>	(General comment) Cell attachment, inflammation, transition
+B  K06495  SELL; selectin, lymphocyte	Adhesion, inflammation and metastasis
+B  K06496  SELP; selectin, platele	Adhesion, inflammation and metastasis
+B  K06461  ITGAM; integrin alpha M	Inhibition of Mac-1-mediated ligand binding
+B  K06491  NCAM; neural cell adhesion molecule	Promotion of nerve cell adhesion
+B  K06471  PECAM1, CD31; platelet/endothelial cell adhesion molecule
+#
+A<b>Morphogens</b>	(General comment) Effective diffusion, tissue differentiation, development
+B  K04662  BMP2_4; bone morphogenetic protein 2/4
+B  K16621  BMP7; bone morphogenetic protein 7	Involvement in BMP-7 signaling
+B  K06224  HH; hedgehog
+B  K11988  SHH; sonic hedgehog
+B  K03209  WNT1; wingless-type MMTV integration site family, member 1	Involvement in extracellular distribution of Wg proteins
+B  K00182  WNT2; wingless-type MMTV integration site family, member 2	Involvement in extracellular distribution of Wg proteins
+B  K00312  WNT3; wingless-type MMTV integration site family, member 3	Involvement in extracellular distribution of Wg proteins
+B  K00408  WNT4; wingless-type MMTV integration site family, member 4	Involvement in extracellular distribution of Wg proteins
+B  K00444  WNT5; wingless-type MMTV integration site family, member 5	Involvement in extracellular distribution of Wg proteins
+B  K00445  WNT6; wingless-type MMTV integration site family, member 6	Involvement in extracellular distribution of Wg proteins
+B  K00572  WNT7; wingless-type MMTV integration site family, member 7	Involvement in extracellular distribution of Wg proteins
+B  K00714  WNT8; wingless-type MMTV integration site family, member 8	Involvement in extracellular distribution of Wg proteins
+B  K01064  WNT9; wingless-type MMTV integration site family, member 9	Involvement in extracellular distribution of Wg proteins
+B  K01357  WNT10; wingless-type MMTV integration site family, member 10	Involvement in extracellular distribution of Wg proteins
+B  K01384  WNT11; wingless-type MMTV integration site family, member 11	Involvement in extracellular distribution of Wg proteins
+B  K01558  WNT16; wingless-type MMTV integration site family, member 16	Involvement in extracellular distribution of Wg proteins
+#
+A<b>Growth factors/receptors</b>	(General comment) Ligand-receptor clustering and signaling, cell migration, mitogenesis
+B  K09782  AREG; amphiregulin
+B  K09783  BTC; betacellulin
+B  K04358  FGF; fibroblast growth factor	Cell proliferation, differentiation, and internalization
+B  K04362  FGFR1; fibroblast growth factor receptor 1 [EC:2.7.10.1]	Mitogenesis
+B  K05093  FGFR2; fibroblast growth factor receptor 2 [EC:2.7.10.1]	Mitogenesis
+B  K08523  HBEGF; heparin-binding EGF-like growth factor
+B  K05460  HGF; hepatocyte growth factor	Haepatocyte regeneration, morphogenesis, cell motility, tumourigenesis and metastasis
+B  K06828  MDK; midkine
+B  K13769  IGF2; insulin-like growth factor 2
+B  K05455  NRG1; neuregulin 1
+B  K16641  HDGF; hepatoma-derived growth factor
+B  K04359  PDGFA; platelet-derived growth factor subunit A	Storage and secretion of PDGF-AA, and may affect receptor binding
+B  K17386  PDGFB; platelet-derived growth factor subunit B	Storage and secretion of PDGF-AA, and may affect receptor binding
+B  K13375  TGFB1; transforming growth factor beta-1	Mediating TGF-beta singaling
+B  K13376  TGFB2; transforming growth factor beta-2	Mediating TGF-beta singaling
+B  K16642  PTN; pleiotrophin
+B  K05448  VEGFA; vascular endothelial growth factor A
+#
+A<b>Extracellular matrix molecules</b>	(General comment) Storage depot, cell adhesion and motility, ECM/barrier formation
+B  K03903  FGA; fibrinogen alpha chain
+B  K03904  FGB; fibrinogen beta chain
+B  K03905  FGG; fibrinogen gamma chain
+B  K05717  FN1; fibronectin 1	Adhesion, focal adhesion formation
+B  K06825  FBN1; fibrillin 1
+B  ------  LAMA5; laminin, alpha 5 [HSA:3911] [KO:K06240]
+B  K06252  TN; tenascin
+B  K16857  THBS1; thrombospondin 1
+B  K04659  THBS2S; thrombospondin 2/3/4/5
+B  K06251  VTN; vitronectin
+B  K06236  COL1AS; collagen, type I/II/III/V/XI/XXIV/XXVII, alpha
+B  K06237  COL4A; collagen, type IV, alpha
+B  K06238  COL6A; collagen, type VI, alpha
+B  K16617  COL13A; collagen, type XIII, alpha
+B  K06823  COL18A; collagen, type XVIII, alpha
+#
+A<b>Axon guidance molecules</b>
+B  K05462  EFNA; ephrin-A
+B  K06843  NTN1; netrin 1
+B  K06838  SLIT1; slit 1
+B  K06839  SLIT2; slit 2
+B  K06850  SLIT3; slit 3
+B  ------  SEMA5A; semaphorin 5A [HSA:9037] [KO:K06841]
+#
+A<b>Coagulation and fibrinolysis</b>	(General comment) Coagulation, inflammation, complement control
+B  K01313  F2; coagulation factor II (thrombin) [EC:3.4.21.5]
+B  K01314  F10; coagulation factor X [EC:3.4.21.6]
+B  K03913  SERPINA5, PCI; protein C inhibitor	Procoagulant
+B  K03911  SERPINC1, AT3; antithrombin III	Inactivation of coagulation enzymes at vascular endothelium
+B  K03912  SERPIND1, HCF2; heparin cofactor II	Inactivation of thrombin
+B  K03982  SERPINE1, PAI1; plasminogen activator inhibitor-1
+B  K16643  SERPINE2; glia-derived nexin	Inactivation of serine proteases in the extracellular matrix
+B  K01343  PLAT; tissue plasminogen activator [EC:3.4.21.68]
+B  K01348  PLAU; urokinase plasminogen activator [EC:3.4.21.73]
+B  K03909  TFPI; tissue factor pathway inhibitor
+#
+A<b>Enzymes</b>	(General comment) Variety
+B  K01327  ELANE; leukocyte elastase [EC:3.4.21.37]	Protection from inactivation by serpins
+B  K07964  HPSE; heparanase 1 [EC:3.2.1.166]	Cleavage of HS, participation of degradation and remodelling of the ECM
+B  K07965  HPSE2; heparanase 2 [EC:3.2.1.-]	Cleavage of HS, participation of degradation and remodelling of the ECM
+B  K01197  hya; hyaluronoglucosaminidase [EC:3.2.1.35]
+B  K01059  LPL; lipoprotein lipase [EC:3.1.1.34]	Stablization of dimeric LPL, immobilization, internalization, transport
+B  K16627  SOD3; superoxide dismutase, Cu-Zn family [EC:1.15.1.1]	Anchor enzyme at cell surface or in extracellular matrix
+#
+A<b>Microbial pathogens</b>	(General comment) Adhesion of microorganism to host cells
+B  ------  Adeno-associated virus 2
+B  ------  Human herpesvirus 1, gB, gC, gD [vg:NC_001806_30 NC_001806_47 NC_001806_69]	HSV attachment to the host cell
+B  ------  Human herpesvirus 2, gB, gC [vg:NC_001798_30 NC_001798_47]	HSV attachment to the host cell
+B  ------  Human herpesvirus 5, gB [vg:NC_006273_65]
+B  ------  Human immunodeficiency virus 1, gp120, tat [vg:NC_001802_8 NC_001802_5]
+B  ------  Suid herpesvirus 1, gC [vg:NC_006151_29]
+B  ------  Sindbis virus
+B  ------  Dengue virus 1	Viral localization and tropism
+B  ------  Dengue virus 2, envelope protein	Viral localization and tropism
+B  ------  Dengue virus 4 	Viral localization and tropism
+B  ------  Foot-and-mouth disease virus - type O, VP3 [vg:NC_004004_1]
+B  K13836  CSP; circumsporozoite protein
+B  K15125  fhaB; filamentous hemagglutinin
+B  K16644  actA; actin-assembly inducing protein
+B  K16645  hbhA; heparin binding hemagglutinin HbhA
+B  ------  penetrin
+B  ------  Borrelia burgdorferi
+B  ------  Chlamydia trachomatis
+B  ------  Neisseria gonorrhoeae
+B  ------  Leishmania amazonensis
+#
+A<b>Others</b>
+B  K16631  ANG, RNASE5; angiogenin [EC:3.1.27.-]
+B  K16646  ANXA5; annexin A5	Anticoagulant activity
+B  K09025  APOA5; apolipoprotein A-V	Mediating lipoprotein uptake by cells; role in atherosclerosis
+B  K14462  APOB; apolipoprotein B	Mediating lipoprotein uptake by cells; role in atherosclerosis
+B  K04524  APOE; apolipoprotein E	Mediating lipoprotein uptake by cells; role in atherosclerosis
+B  K04520  APP; amyloid beta A4 protein	Plaque formation
+B  K01363  CTSB; cathepsin B [EC:3.4.22.1]	Increasing endopeptidase activity, protection from alkaline pH denaturation
+B  K01319  CTSG; cathepsin G [EC:3.4.21.20]	Protection from inactivation by serpins
+B  K05634  PRNP, PrP; prion protein	Plaque formation
+B  K05849  SLC8A, NCX; solute carrier family 8 (sodium/calcium exchanger)
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: July 24, 2013

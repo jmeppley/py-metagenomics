@@ -1,0 +1,35 @@
+<tool id="readLengthHist" name="Read Length Histogram" version="0.1.0">
+    <description> Generate a histogram of read lengths in a FASTA or FASTQ file.</description>
+    <command interpreter="python">
+        readLengths.py
+        -r $input
+        -o $output
+        -b $bins
+        -f $format
+    </command>
+    <inputs>
+        <param name="input" type="data" format="fasta,fastq,fastqsanger,fastqcssanger,fastqsolexa,fastqillumina" label="Display these sequences" />
+        <param name="format" type="select" label="Figure format">
+            <option value="png" selcted="true">PNG</option>
+            <option value="pdf">PDF</option>
+        </param>
+        <param name="bins" type="integer" value="50" size="10" label="Number of histogram bins"/>
+    </inputs>
+    <outputs>
+      <data name="output" format="png"/>
+	  <change_format>
+            <when input="format" value="pdf" format="pdf" />
+      </change_format>
+    </outputs>
+    <help>
+    
+.. class:: warningmark
+
+-----
+
+**What it does**
+
+This script uses BioPython to parse the fasta/fastq file and get readlengths. These are plotted using the histogram() function in matplotlib.
+
+    </help>
+</tool>
