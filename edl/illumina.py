@@ -7,6 +7,7 @@ logger=logging.getLogger(__name__)
 overlapRE=re.compile(r'^\S+\s+INFO\s+BESTOLP\s+(\S+?)(?:\:(?:\d{1,2})|(?:\:[NACTG]+))?\s+(\S+)')
 errorRE=re.compile(r'^\S+\s+ERR\s+(\S+)\s+(\S+)(?:\:\d)?\s+')
 dbgRE=re.compile(r'^\S+\s+DBG')
+read_index_dir_RE=re.compile(r'(#(\d+|[ACTGN]+))?(/[12])?')
 def scanPandaseqLog(stream,errFile=None,expectedCount=None):
     """
     Scan the output of pandaseq and find the unpaired reads. Can also look for errors.
@@ -200,12 +201,12 @@ def fakePairs(singles,forward,reverse,paired,gap=20,fastq=True,trim=None,inputFo
     """
     trimmingCounts={}
 
-    # if singles is not a dict, make it so
-    if not isinstance(singles,dict):
-        tempDict={}
-        for s in singles:
-            tempDict[s]=True
-        singles=tempDict
+    # make sure singles is a set and remove runs of colons
+    prev_len=len(singles)
+    singles = set(re.sub(r':+',r':',s) for s in singles)
+    if prev_len!=len(singles):
+        ## Uh oh, this hack broke something
+        raise Exception("The list of unpaired reads from pandaseq has name collisions if multiple colons are ignored. Your reads are using a naming convetion that the author of this software (illuminPrep) didn't anticipate. My apologies")
 
     # Open input files. Use gzip if needed
     if len(reverse)>3 and reverse[-3:]=='.gz':
@@ -217,6 +218,8 @@ def fakePairs(singles,forward,reverse,paired,gap=20,fastq=True,trim=None,inputFo
     else:
         frecords=SeqIO.parse(forward, format=inputFormat)
 
+    rrecid_set = set()
+    rrecid_count=0
     joinCount=0
     fwdCount=0
     revCount=0
@@ -241,8 +244,19 @@ def fakePairs(singles,forward,reverse,paired,gap=20,fastq=True,trim=None,inputFo
             if rrec.id[:-1] != frec.id[:-1]:
                 logger.warn("Mismatched IDs in forward and reverse fastq (%s :: %s)\n%s\n%s" % (frec.id,rrec.id,forward,reverse))
 
+        # the pandaseq log strips index and direction from the read name
+        rrecid_count+=1
+        rrecid=read_index_dir_RE.sub('',rrec.id)
+        if rrecid in rrecid_set:
+            raise Exception("Removing the index and read direction (...#0/2) from the end of read names has caused duplicate names to appear. Your reads are using a naming convetion that the author of this software (illuminPrep) didn't anticipate. My apologies. (%s became %s)" % (rrec.id,rrecid))
+        else:
+            rrecid_set.add(rrecid)
+
         # ignore all but singles
-        if not singles.pop(rrec.id,False):
+        try:
+            singles.remove(rrecid)
+        except KeyError:
+            # not a sing;e, move on to next
             continue
 
         # optional trim
@@ -329,7 +343,10 @@ def fakePairs(singles,forward,reverse,paired,gap=20,fastq=True,trim=None,inputFo
         logger.info("# Faked joins: %d" % (totalJoined))
 
     if len(singles)>0:
-        raise Exception("Some (%d) unpaired read names were not found! EG: %s" % (len(singles),singles.keys()[0]))
+        raise Exception("Some (%d) unpaired read names were not found! EG: %s" % (len(singles),singles.pop()))
+
+    if len(rrecid_set)!=rrecid_count:
+        raise Exception("%d != %d! Removing the index and read direction (...#0/2) from the end of read names has caused duplicate names to appear. Your reads are using a naming convetion that the author of this software (illuminPrep) didn't anticipate. My apologies" % (len(rrecid_set),rrecid_count))
 
     return numWritten
 
