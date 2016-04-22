@@ -613,3 +613,88 @@ def reservoirSample(iterator, N=100, returnCount=False):
         return (sample, i)
     else:
         return sample
+
+class ReservoirSamplingList(list):
+    """
+    Behaves mostly as a generic python container with one primary difference: it has a maximum size and
+    only keeps a random subsample of added items once that size is reached.
+    
+    Other properties:
+    
+     * Insert() at an index is not supported. 
+     * Deleting items is not supported.
+     * Only append() is allowed to change the contents
+     * The total_added veriable tracks how many iterms were added
+     * The order of items is not guaranteed to match the order in which they were added. 
+     * The order is nevertheless stable and elements can be retrieved by index or slice
+    """
+    
+    def __init__(self, sample_size=100, iterable=[], preserve_order=False):
+        """
+        Create a new reservoirSampleingList with the given sample size (defaults to 100).
+        
+        If an iterable object is given as a second object,
+         the reservoirSamplingList will be initialized with the items returned by iterating ofer the iterable.
+        """
+        self.N=int(sample_size)
+        self.total_added=0
+        if preserve_order:
+            self.append=self._append_preserve_order
+        else:
+            self.append=self._append
+        for item in iterable:
+            self.append(item)
+        
+    def __delitem__(self, key):
+        raise Exception("This container can only changed by appending items. Deleting is not supported")
+
+    def _append(self, item):
+        """
+        Add an item to the reservoirSamplingList. 
+        If the current size of the list is less than the sample_size, this item will simply be added.
+        As the total added surpasses the sample_size, each new item will have a decreasing probability
+         of replacing an existing item.
+        This will simulate a subsample of the total set of added items.
+        """
+        self.total_added+=1
+        if self.total_added <= self.N:
+            # Fill up container with first N elements
+            super(ReservoirSamplingList,self).append(item)
+            return
+
+        val = numpy.random.rand()
+        if val < self.N/float(self.total_added):
+            # Replace random item in sample
+            # with next element with probabliity N/i
+            self[numpy.random.random_integers(0,self.N-1)]=item
+
+    def _append_preserve_order(self, item):
+        """
+        Add an item to the reservoirSamplingList. 
+        If the current size of the list is less than the sample_size, this item will simply be added.
+        As the total added surpasses the sample_size, each new item will have a decreasing probability
+         of replacing an existing item.
+        This will simulate a subsample of the total set of added items.
+        """
+        self.total_added+=1
+        if self.total_added <= self.N:
+            # Fill up container with first N elements
+            super(ReservoirSamplingList,self).append(item)
+            return
+
+        val = numpy.random.rand()
+        # Replace random item in sample
+        # with next element with probabliity N/i
+        if val < self.N/float(self.total_added):
+            # pick random element to replace
+            drop_index=numpy.random.random_integers(0,self.N-1)
+            # shift following items over
+            for i in xrange(drop_index,len(self)-1):
+                self[i]=self[i+1]
+            # add new one at the end
+            self[i+1]=item
+
+    def extend(self, iterable):
+        for item in iterable:
+            self.add(item)
+
