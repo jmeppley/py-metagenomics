@@ -13,7 +13,7 @@ MAINTAINER_EMAIL = "jmeppley@mit.edu"
 URL = 'http://eddelong.mit.edu/'
 DOWNLOAD_URL = 'http://github.com/jmeppley/py-metagenomics'
 LICENSE = 'GPL'
-VERSION = '0.2'
+VERSION = '0.2.02'
 
 setup(name=NAME,
       version=VERSION,

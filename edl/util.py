@@ -226,19 +226,23 @@ def testStack():
 def passThrough(x):
     return x
 
-def parseMapFile(mapFile, delim="\t", keyType=None, valueType=None, keyCol=0, valueCol=1, skipFirst=0):
+def parseMapFile(mapFile, delim="\t", keyType=None, valueType=None, keyCol=0, valueCol=1, valueDelim=None, skipFirst=0):
     """
     Parse a tabular file into a dictionary. The parameters are:
 
     delim:
-        String to split lines on (using str.split()). None => whitespace. Defaults to tab
+        String to split lines on (using str.split()). None => whitespace.
+        Defaults to tab
     keyType:
     valueType:
-        Functions to apply to parsed strings (can be int(), float(), or anything else). Defaults to None for no action.
+        Functions to apply to parsed strings (can be int(), float(), or
+        anything else). Defaults to None for no action.
     keyCol:
-		column index (starting with 0) of the key values (default: 0)
+        column index (starting with 0) of the key values (default: 0)
     valueCol:
-		column index (starting with 0) of the values (default: 1)
+        column index (starting with 0) of the values (default: 1)
+    valueDelim:
+        String to split value cells into multiple values (default: None => don't split)
     skipFirst:
         How many lines to skip at start of file. Defaults to 0.
     """
@@ -249,6 +253,9 @@ def parseMapFile(mapFile, delim="\t", keyType=None, valueType=None, keyCol=0, va
         keyType=passThrough
     if valueType is None:
         valueType=passThrough
+    if valueDelim is not None:
+        baseValueType=valueType
+        valueType = lambda value_cell: [baseValueType(v) for v in value_cell.split(valueDelim)]
 
     logger.info("parsing map file: %s" % (mapFile))
     translation={}
