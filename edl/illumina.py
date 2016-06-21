@@ -499,3 +499,67 @@ def recordTrimmer(records, trimOptions, errstream):
     if errstream is not None:
         errstream.write(msg)
 
+
+def get_barcodes_and_chemistry(sample_sheet, sample_number):
+    with open(sample_sheet) as sample_sheet_handle:
+        chemistry, all_barcodes = parseSampleSheet(sample_sheet_handle)
+    return all_barcodes[sample_number], chemistry
+
+def parseSampleSheet(sample_sheet_handle, **kwargs):
+    """
+    Parses a SampleSheet to get the chemistry and barcodes
+
+    Returns a two-element tuple:
+        chemistry: either 'nextera' or 'truseq'
+        barcodes: dictionary from sample number (as integer) to two-element list of barcodes. Second element will be an empty string for truseq.
+    """
+    chemistry='truseq'
+    barcodes={}
+
+    f=sample_sheet_handle
+    # find Assay line or Workflow line
+    line = ""
+    while re.match(r'\[Reads\]',line) is None:
+        line = next(f)
+
+        # not the fastest approach, but should be clear
+        if re.match(r'Assay,', line) is not None:
+            if re.search(r'[Nn]extera',line) is not None:
+                print (line)
+                chemistry='nextera'
+            elif re.search(r'[Tt]rue?[Ss]eq',line) is not None:
+                print (line)
+                chemistry='truseq'
+            elif re.search(r'[Ss]cript?[Ss]eq',line) is not None:
+                print (line)
+                chemistry='scriptseq'
+         
+        # work around for lack of Assay in ClarityLIMS samplle sheets
+        m=re.match(r'Workflow,.+\s-\s([Tt]ru[Ss]eq|[Ss]crip[Ss]eq|[Nn]extera)',line)
+        if m is not None:
+            chmistry=m.group(1).lower()
+            # Don't use assay line if this is present 
+            break
+        
+    # Skip ahead to sample table
+    line = ""
+    while re.match(r'\[Data\]',line) is None:
+        line = next(f)
+        
+    # parse first line as headers
+    headers = next(f).split(',')
+    indexIndex = headers.index('index')
+    if 'index2' in headers:
+        index2Index = headers.index('index2')
+        
+    # get the barcode for each sample
+    for i,line in enumerate(f):
+        cells=line.split(',')
+        if chemistry=='nextera':
+            barcodes[i+1]=[cells[indexIndex],cells[index2Index]]
+        else:
+            # put an empty string for unused barcode
+            barcodes[i+1]=[cells[indexIndex],""]
+
+    return (chemistry, barcodes)
+
