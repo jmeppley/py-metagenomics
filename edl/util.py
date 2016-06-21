@@ -336,7 +336,8 @@ def readClusterFile(file):
 
     if logger.getEffectiveLevel() <= logging.DEBUG:
         text=""
-        for read, count in clusters.iteritems():
+        for read in clusters:
+            count=clusters[read]
             text+="%s::%s:%d" % (text,read,count)
         logger.debug( "Parsed cluster file:\n %s" % text)
 
@@ -433,7 +434,7 @@ def setupLogging(options, description, stream=sys.stderr, format=DEFAULT_LOGGER_
     Set up a logger otherwise. Accepts stream and format key word arguments
     """
     if options.about:
-        print description
+        print( description)
         exit(0)
 
     verbose=options.verbose
@@ -540,7 +541,7 @@ def asciiHistogram(histogram, log=False, width=60, label='length', maxLabelWidth
     
     midPoint = npexp((nplog(maxValue)-nplog(.5))/2) if log else maxValue/2
     output="%s|count%s%s|%s%s|\n" % (rightPad(label,largestLabel),
-                                     "".join([" " for i in range(plotWidth/2 - len(str(int(midPoint))) - len("count"))]),
+                                     "".join([" " for i in range(int(plotWidth/2) - len(str(int(midPoint))) - len("count"))]),
                                      str(int(midPoint)),
                                      "".join([" " for i in range(int(ceil(plotWidth/2.)) - 1 - len(str(int(maxValue))))]),
                                      str(int(maxValue)),
