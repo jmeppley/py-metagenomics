@@ -307,7 +307,7 @@ class Hit:
 
     # score name1   start1  alnSize1        strand1 seqSize1        name2   start2  alnSize2   strand2 seqSize2        blocks
     def parseLastalLine(self, line):
-        logger.debug(line)
+        #logger.debug(line)
         if line[0]=='#':
             raise EmptyHitException("Comment line")
         cells=line.rstrip('\n\r').split('\t')

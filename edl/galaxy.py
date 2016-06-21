@@ -2,9 +2,14 @@ import logging
 logger=logging.getLogger(__name__)
 
 import simplejson as json
-import urllib2, re, os, sys
+import re, os, sys
+try:
+    from urllib.request import urlopen, Request
+    from urllib.error import HTTPError
+except:
+    from urllib2 import urlopen, HTTPError, Request
 from bioblend.galaxy import GalaxyInstance
-from httplib import IncompleteRead
+#from httplib import IncompleteRead
 
 def getApiKey(apiKeyFile = '.galaxy_api_key', apiEnvVar = 'GALAXY_API_KEY'):
     """
@@ -15,10 +20,10 @@ def getApiKey(apiKeyFile = '.galaxy_api_key', apiEnvVar = 'GALAXY_API_KEY'):
     api_key=None
     if os.path.exists(apiKeyFile):
         with open(apiKeyFile) as f:
-            api_key = f.next().strip()
+            api_key = next(f).strip()
     elif os.path.exists(os.environ.get('HOME','.') + os.path.sep + apiKeyFile):
         with open(os.environ.get('HOME','.') + os.path.sep + apiKeyFile) as f:
-            api_key = f.next().strip()
+            api_key = next(f).strip()
     elif apiEnvVar in os.environ:
         api_key = os.environ[apiEnvVar].strip()
 
@@ -28,7 +33,7 @@ def getApiKey(apiKeyFile = '.galaxy_api_key', apiEnvVar = 'GALAXY_API_KEY'):
 # For retrieving data
 def findDatasets(apiKey, patterns, 
                  dsName=None, 
-                 dsNum=None, 
+                 dsNums=[], 
                  apiURL='http://localhost/api',
                  skipDeleted=True):
     """
@@ -56,7 +61,7 @@ def findDatasets(apiKey, patterns,
             for dataset in getDatasetData(apiKey,
                                           apiURL,
                                           historyId=historyId,
-                                          datasetNumber=dsNum,
+                                          datasetNumbers=dsNums,
                                           datasetName=dsName,
                                           skipDeleted=skipDeleted):
                 yield (history, dataset)
@@ -79,7 +84,7 @@ def getDatasetFile(apiKey, apiURL, historyName, datasetNumber,
         if returnURL:
             return durl
         else:
-            return urllib2.urlopen(durl)
+            return urlopen(durl)
 
     else:
         raise Exception("No match found for item %d in history '%s'" % (datasetNumber, historyName))
@@ -87,7 +92,7 @@ def getDatasetFile(apiKey, apiURL, historyName, datasetNumber,
 def getDatasetData(apiKey, apiURL, 
                    historyName=None, 
                    historyId=None, 
-                   datasetNumber=None, 
+                   datasetNumbers=None, 
                    datasetName=None, 
                    skipDeleted=True):
     """
@@ -98,7 +103,9 @@ def getDatasetData(apiKey, apiURL,
 
     Under the hood, this is an HTTP connection using urllib2. 
 
-    HistoryName can be a string or compiled re object. It will be ignored if historyId is not None. The same is true for datasetNumber and datasetName.
+    HistoryName can be a string or compiled re object. It will be ignored if historyId is not None. 
+    
+    The same is not true for datasetNumbers and datasetName. All datasets mathing either will be returned.
     """
 
     # Collate history IDs
@@ -117,14 +124,14 @@ def getDatasetData(apiKey, apiURL,
         hurl=apiURL+"/histories/"+historyId+"/contents?key="+apiKey
         logger.debug("Searching for datasets in url: %s" % hurl)
         count=0
-        for dataset in json.loads(urllib2.urlopen(hurl).read()):
+        for dataset in json.loads(urlopen(hurl).read()):
             logger.debug("Getting details with url: %s" % hurl)
             hurl = apiURL+"/histories/" + historyId + "/contents/" + dataset[u'id'] + "?key=" + apiKey
 
-            details = json.loads(urllib2.urlopen(hurl).read())
+            details = json.loads(urlopen(hurl).read())
             if (details['deleted'] or details['state']=='error') and skipDeleted:
                 continue
-            if _dataset_match(details, datasetNumber, datasetName):
+            if _dataset_match(details, datasetNumbers, datasetName):
                 if 'download_url' not in details:
                     logger.warn("Can't find the download URL in %r\nHistory: %r" % (details,historyId))
                     continue
@@ -145,12 +152,14 @@ def fixDownloadUrl(downloadUrl, apiUrl, apiKey):
         qstringsep="?"
     return apiUrl + durl + qstringsep + "key=" + apiKey
 
-def _dataset_match(dataset, datasetNumber, datasetName):
+def _dataset_match(dataset, datasetNumbers, datasetName):
     """
     helper method to check for dataset number or name in dataset details
     """
-    if datasetNumber is not None:
-        return dataset[u'hid']==datasetNumber
+    if dataset[u'hid'] in datasetNumbers:
+        return True
+    elif datasetName is None:
+        return False
     elif isinstance(datasetName,str):
         return dataset[u'name']==datasetName
     else:
@@ -167,7 +176,7 @@ def getHistories(apiKey, apiURL,
     """
     hurl=apiURL+"/histories?key="+apiKey
     logger.debug("Searching for histories at url: %s" % hurl)
-    for history in json.loads(urllib2.urlopen(hurl).read()):
+    for history in json.loads(urlopen(hurl).read()):
         if nameRE is not None:
             if isinstance(nameRE, str):
                 # just do exact match
@@ -202,6 +211,7 @@ def locateDatasets(runName, galaxyInstance, libraryNameTemplate = "MiSeq Run: %s
     files={}
     libName=libraryNameTemplate % (runName)
     libs=galaxyInstance.libraries.get_libraries(name=libName)
+    libs=[l for l in libs if not l[u'deleted']]
     if len(libs)==0:
         raise Exception("No library named %s" % (libName))
     libID=libs[0][u'id']
@@ -286,7 +296,7 @@ def parseSampleSheet(runName, sampleSheetId, galaxyInstance, **kwargs):
         # find Assay line
         line = ""
         while re.match(r'\[Reads\]',line) is None:
-            line = f.next()
+            line = next(f)
 
             # not the fastest approach, but should be clear
             if re.match(r'Assay,', line) is not None:
@@ -303,10 +313,10 @@ def parseSampleSheet(runName, sampleSheetId, galaxyInstance, **kwargs):
         # Skip ahead to sample table
         line = ""
         while re.match(r'\[Data\]',line) is None:
-            line = f.next()
+            line = next(f)
             
         # parse first line as headers
-        headers = f.next().split(',')
+        headers = next(f).split(',')
         indexIndex = headers.index('index')
         if 'index2' in headers:
             index2Index = headers.index('index2')
@@ -536,8 +546,8 @@ def make_url( api_key, url, args=None ):
 def post( api_key, url, data ):
     # Do the actual POST.
     url = make_url( api_key, url )
-    req = urllib2.Request( url, headers = { 'Content-Type': 'application/json' }, data = json.dumps( data ) )
-    return json.loads( urllib2.urlopen( req ).read() )
+    req = Request( url, headers = { 'Content-Type': 'application/json' }, data = json.dumps( data ) )
+    return json.loads( urlopen( req ).read() )
 
 def submit( api_key, url, data, return_formatted=True ):
     # Sends an API POST request and acts as a generic formatter for the JSON response.
@@ -545,34 +555,34 @@ def submit( api_key, url, data, return_formatted=True ):
     try:
         logging.debug("SUBMIT: %s\n%r" % (url,data))
         r = post( api_key, url, data )
-    except urllib2.HTTPError, e:
+    except HTTPError as e:
         if return_formatted:
-            print e
-            print e.read( 1024 )
+            print (e)
+            print (e.read( 1024 ))
             sys.exit( 1 )
         else:
             return 'Error. '+ str( e.read( 1024 ) )
     if not return_formatted:
         return r
-    print 'Response'
-    print '--------'
+    print ('Response')
+    print ('--------')
     if type( r ) == list:
         # Currently the only implemented responses are lists of dicts, because
         # submission creates some number of collection elements.
         for i in r:
             if type( i ) == dict:
                 if 'url' in i:
-                    print i.pop( 'url' )
+                    print (i.pop( 'url' ))
                 else:
-                    print '----'
+                    print ('----')
                 if 'name' in i:
-                    print '  name: %s' % i.pop( 'name' )
+                    print ( '  name: %s' % i.pop( 'name' ))
                 for k, v in i.items():
-                    print '  %s: %s' % ( k, v )
+                    print ( '  %s: %s' % ( k, v ))
             else:
-                print i
+                print ( i)
     else:
-        print r
+        print ( r)
 
 ######
 # Methods for manipulating libraries
@@ -639,7 +649,7 @@ def createOrFindFolderInLibrary(folder, library, galaxyInstance):
         try:
             libid=library[u'id']
             data=galaxyInstance.libraries.create_folder(libid, folder, base_folder_id=rootFolder[u'id'])
-        except IncompleteRead as inst:
+        except Exception as inst:
             # This error usually happens after the folder is
             # created. Let's see if it exists...
             for item in galaxyInstance.libraries.show_library(library[u'id'], contents=True):

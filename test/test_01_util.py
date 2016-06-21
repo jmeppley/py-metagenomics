@@ -1,4 +1,5 @@
 import edl.util
+from edl.util import testStack as test_util_stack
 
 def test_reservoir_sampling_simple():
     ten_numbers, one_hundred = edl.util.reservoirSample(xrange(100), 

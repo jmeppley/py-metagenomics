@@ -1,0 +1,102 @@
++C	Receptor
+#<h2><img src="/Fig/bget/kegg3.gif" align="middle" border=0>&nbsp; Enzyme-linked Receptors</h2>
+#<!---
+#ENTRY       ko01020
+#DEFINITION  Enzyme-linked receptors
+#--->
+!
+A<b>Receptor tyrosine kinases</b>
+B  RTK class I (EGF receptor family)
+C    K04361  EGFR, ERBB1; epidermal growth factor receptor [EC:2.7.10.1]
+C    K05083  ERBB2, HER2; receptor tyrosine-protein kinase erbB-2 [EC:2.7.10.1]
+C    K05084  ERBB3, HER3; receptor tyrosine-protein kinase erbB-3 [EC:2.7.10.1]
+C    K05085  ERBB4, HER4; receptor tyrosine-protein kinase erbB-4 [EC:2.7.10.1]
+B  RTK class II (Insulin receptor family)
+C    K04527  INSR; insulin receptor [EC:2.7.10.1]
+C    K05086  INSRR; insulin receptor-related receptor [EC:2.7.10.1]
+C    K05087  IGF1R; insulin-like growth factor 1 receptor [EC:2.7.10.1]
+C    K05088  ROS1; proto-oncogene tyrosine-protein kinase ROS [EC:2.7.10.1]
+B  RTK class III (PDGF receptor family)
+C    K04363  PDGFRA; platelet-derived growth factor receptor alpha [EC:2.7.10.1]
+C    K05089  PDGFRB; platelet-derived growth factor receptor beta [EC:2.7.10.1]
+C    K05090  CSF1R, FMS; macrophage colony-stimulating factor 1 receptor [EC:2.7.10.1]
+C    K05091  KIT, SCFR; proto-oncogene tyrosine-protein kinase Kit [EC:2.7.10.1]
+C    K05092  FLT3, FLK2; fms-related tyrosine kinase 3 [EC:2.7.10.1]
+B  RTK class IV (FGF receptor family)
+C    K04362  FGFR1; fibroblast growth factor receptor 1 [EC:2.7.10.1]
+C    K05093  FGFR2; fibroblast growth factor receptor 2 [EC:2.7.10.1]
+C    K05094  FGFR3; fibroblast growth factor receptor 3 [EC:2.7.10.1]
+C    K05095  FGFR4; fibroblast growth factor receptor 4 [EC:2.7.10.1]
+B  RTK class V (VEGF receptor family)
+C    K05096  FLT1, VEGFR1; FMS-like tyrosine kinase 1 [EC:2.7.10.1]
+C    K05097  FLT4, VEGFR3; FMS-like tyrosine kinase 4 [EC:2.7.10.1]
+C    K05098  KDR, VEGFR2; kinase insert domain protein receptor [EC:2.7.10.1]
+B  RTK class VI (HGF receptor family)
+C    K05099  MET, HGFR; proto-oncogene tyrosine-protein kinase Met [EC:2.7.10.1]
+C    K05100  MST1R, RON; macrophage-stimulating 1 receptor [EC:2.7.10.1]
+B  RTK class VII (TRK receptor family)
+C    K03176  NTRK1, TRKA; neurotrophic tyrosine kinase receptor type 1 [EC:2.7.10.1]
+C    K04360  NTRK2, TRKB; neurotrophic tyrosine kinase receptor type 2 [EC:2.7.10.1]
+C    K05101  NTRK3, TRKC; neurotrophic tyrosine kinase, receptor type 3 [EC:2.7.10.1]
+B  RTK class VIII (EPH receptor family)
+C    K05102  EPHA1, EPH; Eph receptor A1 [EC:2.7.10.1]
+C    K05103  EPHA2, ECK; Eph receptor A2 [EC:2.7.10.1]
+C    K05104  EPHA3, HEK, TYRO4; Eph receptor A3 [EC:2.7.10.1]
+C    K05105  EPHA4, SEK, TYRO1; Eph receptor A4 [EC:2.7.10.1]
+C    K05106  EPHA5, EHK1, TYRO4; Eph receptor A5 [EC:2.7.10.1]
+C    K05107  EPHA6, EHK2; Eph receptor A6 [EC:2.7.10.1]
+C    K05108  EPHA7, EHK3, HEK11; EphA7 [EC:2.7.10.1]
+C    K05109  EPHA8, EEK; Eph receptor A8 [EC:2.7.10.1]
+C    K08897  EPHA10; Eph receptor A10 [EC:2.7.10.1]
+C    K05110  EPHB1, ELK, NET; Eph receptor B1 [EC:2.7.10.1]
+C    K05111  EPHB2, ERK, DRT; Eph receptor B2 [EC:2.7.10.1]
+C    K05112  EPHB3, HEK2, ETK2; Eph receptor B3 [EC:2.7.10.1]
+C    K05113  EPHB4, HTK; Eph receptor B4 [EC:2.7.10.1]
+C    K05114  EPHB6; Eph receptor B6 [EC:2.7.10.1]
+B  RTK class IX (AXL receptor family)
+C    K05115  AXL, UFO; AXL receptor tyrosine kinase [EC:2.7.10.1]
+C    K05116  TYRO3, RSE; TYRO3 protein tyrosine kinase 3 [EC:2.7.10.1]
+C    K05117  MERTK, MER; c-mer proto-oncogene tyrosine kinase [EC:2.7.10.1]
+B  RTK class X (LTK receptor family)
+C    K05118  LTK; leukocyte tyrosine kinase [EC:2.7.10.1]
+C    K05119  ALK; anaplastic lymphoma kinase [EC:2.7.10.1]
+B  RTK class XI (TIE receptor family)
+C    K05120  TIE1; tyrosine kinase receptor 1 [EC:2.7.10.1]
+C    K05121  TEK, TIE2; endothelial-specific receptor tyrosine kinase [EC:2.7.10.1]
+B  RTK class XII (ROR receptor family)
+C    K05122  ROR1, NTRKR1; receptor tyrosine kinase-like orphan receptor 1 [EC:2.7.10.1]
+C    K05123  ROR2, NTRKR2; receptor tyrosine kinase-like orphan receptor 2 [EC:2.7.10.1]
+B  RTK class XIII (DDR receptor family)
+C    K05124  DDR1, NEP; discoidin domain receptor family member 1 [EC:2.7.10.1]
+C    K05125  DDR2, TKT; discoidin domain receptor family member 2 [EC:2.7.10.1]
+B  RTK class XIV (RET receptor family)
+C    K05126  RET; proto-oncogene tyrosine-protein kinase Ret [EC:2.7.10.1]
+B  RTK class XV (KLG receptor family)
+C    K05127  PTK7, CCK4; PTK7 protein tyrosine kinase 7 [EC:2.7.10.1]
+B  RTK class XVI (RYK receptor family)
+C    K05128  RYK; RYK receptor-like tyrosine kinase [EC:2.7.10.1]
+B  RTK class XVII (MuSK receptor family)
+C    K05129  MUSK; muscle, skeletal, receptor tyrosine kinase [EC:2.7.10.1]
+#
+A<b>Receptor serine/threonine kinases</b>
+B  Type I TGF-beta receptor
+C    K04674  TGFBR1, ALK5; TGF-beta receptor type-1 [EC:2.7.11.30]
+C    K04673  BMPR1A, ALK3; bone morphogenetic protein receptor type-1A [EC:2.7.11.30]
+C    K13578  BMPR1B, ALK6; bone morphogenetic protein receptor type-1B [EC:2.7.11.30]
+C    K13579  BMPR1N; bone morphogenetic protein receptor type-1, invertebrate
+C    K04675  ACVR1, ALK2; activin receptor type-1 [EC:2.7.11.30]
+C    K13594  ACVRL1, ALK1; activin receptor-like kinase 1 [EC:2.7.11.30]
+C    K13567  ACVR1B, ALK4; activin receptor type-1B [EC:2.7.11.30]
+C    K13568  ACVR1C, ALK7; activin receptor type-1C [EC:2.7.11.30]
+C    K13569  TGFBRN; TGF-beta receptor, invertebrate
+B  Type II TGF-beta receptor
+C    K04670  ACVR2A; activin receptor type-2A [EC:2.7.11.30]
+C    K13596  ACVR2B; activin receptor type-2B [EC:2.7.11.30]
+C    K13597  ACVR2N; activin receptor type-2, invertebrate
+C    K04388  TGFBR2; TGF-beta receptor type-2 [EC:2.7.11.30]
+C    K04671  BMPR2; bone morphogenetic protein receptor type-2 [EC:2.7.11.30]
+C    K04672  AMHR2; anti-mullerian hormone receptor type-2 [EC:2.7.11.30]
+!
+#<hr>
+#<b>[ BRITE | KEGG2 | KEGG ]</b><br>
+#Last updated: February 28, 2013

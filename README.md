@@ -58,7 +58,7 @@ repository, you'll need to edit the tool_path value set in
 galaxy/pymg_tool_conf.xml.
 
 # Data tables #
-First, copy the contents of galaxy/tool-data/tool_data_table_conf.xml (from this repository) into the galaxy data table config file, usually config/tool_data_table_conf.xml (If it doesn't exist yet, copy the .sample version into place and edit from that. The lines to copy are also here:
+First, copy the contents of galaxy/tool-data/tool_data_table_conf.xml.sample (from this repository) into the galaxy data table config file, usually config/tool_data_table_conf.xml (If it doesn't exist yet, copy the .sample version into place and edit from that. The lines to copy are also here:
 
     <!-- Locations of last(al) databases -->
     <table name="lastdb" comment_char="#">

@@ -163,10 +163,10 @@ $(RSDIR)/complete/.download.complete.aa:
 	cd $(RSDIR)/complete && wget -c $(FTP_ROOT)/complete/complete.[0-9]*.protein.gpff.gz
 	touch $@
 
-$(ACCMAPP).oldway: $(MDDIR) $(TAXDUMP) $(TAXMAPSCRIPT) 
+$(ACCMAPP).oldway: $(MDDIR) $(TAXDUMP_SOURCE) $(TAXMAPSCRIPT) 
 	# The catalog only has one taxid even for multispecies entries, so
 	# now we get the taxid maps from the gpff files
-	export PYTHONPATH=$(DB_SCRIPT_DIR)/.. && gunzip -c $(MDDIR)/RefSeq-release$(REL).catalog.gz | python $(TAXMAPSCRIPT) $(TAXDUMP) | sort > $@
+	export PYTHONPATH=$(DB_SCRIPT_DIR)/.. && gunzip -c $(MDDIR)/RefSeq-release$(REL).catalog.gz | python $(TAXMAPSCRIPT) $(TAXDUMP_SOURCE) | sort > $@
 
 $(ACCMAPP): $(RSDIR)/complete/.download.complete.aa
 	# For multispecies entries, you'll get multiple lines in the tax map

@@ -1,0 +1,12 @@
+Taxon	../../keggtaxa/files/H186x25M.300reads.vs.RefSeq.blastx.b50.m8	../../parse_m0/files/HOT100genesVfortyOneRefSeqs.blastp.b50.m8	../../parse_m0/files/HOT186_25m_454DNA.vs.RefSeqMicrobesProteins.250records.blastx.b50.m8
+Archaea	1	0	0
+Bacteria <prokaryote>	128	0	37
+Bacteria <prokaryote>;Bacteroidetes;Psychroflexus;Psychroflexus torquis	1	0	3
+Bacteria <prokaryote>;Cyanobacteria;Prochlorococcus;Prochlorococcus marinus	101	0	42
+Bacteria <prokaryote>;Proteobacteria;;alpha proteobacterium HIMB114	8	0	2
+Bacteria <prokaryote>;Proteobacteria;Candidatus Pelagibacter	8	0	4
+Bacteria <prokaryote>;Proteobacteria;Candidatus Pelagibacter;Candidatus Pelagibacter sp. HTCC7211	27	0	9
+Bacteria <prokaryote>;Proteobacteria;Candidatus Pelagibacter;Candidatus Pelagibacter ubique	20	0	4
+Eukaryota	0	0	1
+Viruses	4	0	2
+root	2	0	0
