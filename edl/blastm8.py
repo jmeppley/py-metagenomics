@@ -412,16 +412,10 @@ class Hit:
             sys.exit("Cannot calculate alignment percentage from data in this m8 format")
 
     def checkForOverlap(self,regions):
-        """
-        check to see if this hit overlaps any already hit region. The regions array should be a list of (Start,end) pairs indicating resiongs already hit.
-        """
-        logger.debug("Looking for [%d,%d] in %s" % (self.qstart,self.qend,regions))
-
         # make sure start is smaller than end
         start = min(self.qstart,self.qend)
         end = max(self.qstart,self.qend)
 
-        # compare with all used ranges
         for i in range(len(regions)):
             occupiedRange = regions[i]
             # hit cannot intersect an used range
@@ -430,10 +424,22 @@ class Hit:
                 continue
             else:
                 # overlaps. We are done here
-                return None
+                return ((start,end),occupiedRange)
+        return ((start,end),None)
+
+    def checkForOverlapAndAdd(self,regions):
+        """
+        check to see if this hit overlaps any already hit region. The regions array should be a list of (Start,end) pairs indicating resiongs already hit.
+        """
+        logger.debug("Looking for [%d,%d] in %s" % (self.qstart,self.qend,regions))
+
+        # compare with all used ranges
+        hit_spand,overlap_region = checkForOverlap(regions)
+        if overlap_region is not None:
+            return None
 
         # we get here if there was no overlap
-        regions.append((start,end))
+        regions.append(hit_span)
         return regions
 
     def getLine(self,options):
@@ -561,6 +567,24 @@ def getUnsortedHitStream(instream, options):
         if hit is not None:
             yield hit
 
+def generate_hits(hit_table,format=BLASTPLUS,**filter_args):
+    """
+    yeilds read,hit_iterator tuples
+
+    default format is BLAST, change with format=format
+    See class FilterParams for other arguments
+    """
+    annotations={}
+    m8stream=M8Stream(hit_table)
+    params = FilterParams(format=format,**filter_args)
+    for read, hits in filterM8Stream(m8stream,
+                                     params,
+                                     returnLines=False,
+                                    ):
+        yield read,hits
+    m8stream.close()
+
+
 def filterM8Stream(instream, options, returnLines=True):
     """
     return an iterator over the lines in given input stream that pass filter
@@ -687,7 +711,7 @@ def filterHits(hits, options, returnLines=True):
 
         if options.nonoverlapping:
             # check for previous overlapping hits
-            newHitRegions = hit.checkForOverlap(hitRegions)
+            newHitRegions = hit.checkForOverlapAndAdd(hitRegions)
             if newHitRegions is not None:
                 hitRegions = newHitRegions
             else:

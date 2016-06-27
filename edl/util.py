@@ -13,8 +13,8 @@ class LineCounter():
     def __iter__(self):
         return self
 
-    def next(self):
-        line = self.rawStream.next()
+    def __next__(self):
+        line = next(self.rawStream)
         self.lines+=1
         return line
 
@@ -226,19 +226,23 @@ def testStack():
 def passThrough(x):
     return x
 
-def parseMapFile(mapFile, delim="\t", keyType=None, valueType=None, keyCol=0, valueCol=1, skipFirst=0):
+def parseMapFile(mapFile, delim="\t", keyType=None, valueType=None, keyCol=0, valueCol=1, valueDelim=None, skipFirst=0):
     """
     Parse a tabular file into a dictionary. The parameters are:
 
     delim:
-        String to split lines on (using str.split()). None => whitespace. Defaults to tab
+        String to split lines on (using str.split()). None => whitespace.
+        Defaults to tab
     keyType:
     valueType:
-        Functions to apply to parsed strings (can be int(), float(), or anything else). Defaults to None for no action.
+        Functions to apply to parsed strings (can be int(), float(), or
+        anything else). Defaults to None for no action.
     keyCol:
-		column index (starting with 0) of the key values (default: 0)
+        column index (starting with 0) of the key values (default: 0)
     valueCol:
-		column index (starting with 0) of the values (default: 1)
+        column index (starting with 0) of the values (default: 1)
+    valueDelim:
+        String to split value cells into multiple values (default: None => don't split)
     skipFirst:
         How many lines to skip at start of file. Defaults to 0.
     """
@@ -249,6 +253,9 @@ def parseMapFile(mapFile, delim="\t", keyType=None, valueType=None, keyCol=0, va
         keyType=passThrough
     if valueType is None:
         valueType=passThrough
+    if valueDelim is not None:
+        baseValueType=valueType
+        valueType = lambda value_cell: [baseValueType(v) for v in value_cell.split(valueDelim)]
 
     logger.info("parsing map file: %s" % (mapFile))
     translation={}
@@ -408,36 +415,28 @@ def inputIterator(infileNames, options):
                 outhandle.close()
             inhandle.close()
 
-def addUniversalOptions(parser,addQuiet=True):
-    parser.add_option("-v", "--verbose",
+def add_universal_options(parser,addQuiet=True):
+    parser.add_argument("-v", "--verbose",
                       action="count", dest="verbose", default=1,
                       help="Print log messages. Use twice for debugging")
     if addQuiet:
-        parser.add_option("-q", '--quiet', dest='verbose',
+        parser.add_argument("-q", '--quiet', dest='verbose',
                           action="store_const", const=0,
                           help="Suppress warnings. Only print fatal messages")
-    parser.add_option("-A", "--about",
-              action="store_true", dest="about", default=False,
-              help="Print description")
 
-DEFAULT_LOGGER_FORMAT=':%(asctime)s::%(levelname)s:%(name)s:%(funcName)s:\n%(message)s'
-def setupLogging(options, description, stream=sys.stderr, format=DEFAULT_LOGGER_FORMAT):
+DEFAULT_LOGGER_FORMAT=\
+        ':%(asctime)s::%(levelname)s:%(name)s:%(funcName)s:\n%(message)s'
+def setup_logging(parsed_args, stream=sys.stderr, \
+        format=DEFAULT_LOGGER_FORMAT):
     """
     Do some basic setup common to all scripts.
 
     Given:
-        an options object with:
-            an integer logLevel value between 0(silent) and 3(debug)
-            a boolean called 'about'
-        a description string
-    Print the description string and exit if about is True
-    Set up a logger otherwise. Accepts stream and format key word arguments
+        an parsed_arguments object with:
+            an integer "verbose" value between 0(silent) and 3(debug)
+    Set up a logger. Accepts stream and format key word arguments
     """
-    if options.about:
-        print( description)
-        exit(0)
-
-    verbose=options.verbose
+    verbose=parsed_args.verbose
     if verbose==0:
         loglevel=logging.ERROR
     elif verbose==1:
