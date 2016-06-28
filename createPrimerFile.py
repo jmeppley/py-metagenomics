@@ -1,34 +1,31 @@
-#!/usr/bin/python
-import re
+#!/usr/bin/env python
+import re, argparse
 from edl.util import *
-from optparse import OptionParser
 
 def main():
-    usage = "usage: %prog [PRIMER_TEMPLATE BARCODE [BARCODE]]"
     description="""
 Generates a primer file for use iwth trimmomatic (and illuminPrep.py)
 Given a template file and barcode(s), replaces placeholders with these barcodes
 
-If no arguments are given, it returns (via STDOUT) a dummy file with all N's
     """
 
-    parser = OptionParser(usage, description=description)
-    addUniversalOptions(parser)
-    (options, args) = parser.parse_args()
-    setupLogging(options, description)
+    parser = argparse.ArgumentParser(description=description)
+    add_universal_arguments(parser)
+    parser.add_argument('template',type=argparse.FileType('r'),
+                    default=sys.stdin,
+                    help="primer template file with {BARCODE} placeholders")
+    parser.add_argument('barcodes',nargs='+', 
+                    help="1 or 2 barcode sequences")
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
     # check/adjust options
-    if len(args)==0:
-        dummy=True
-        primers=getDummyPrimers()
-    else:
-        dummy=False
-        if len(args)==2 or len(args)==3:
-            primers=getPrimers(*args)
-        else:
-            parser.error("Wrong number of arguments, should be 0, 2, or 3")
+    if len(arguments.barcodes)>2:
+        parser.error("Wrong number of arguments, there should be either 1 or 2 barcode sequences")
 
-    print primers
+    primers=get_primers(**vars(arguments))
+
+    print (primers)
 
 #############
 # Functions
@@ -38,40 +35,38 @@ NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 >Prefix/2
 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"""
 
-def getPrimers(*args):
+def get_primers(template="dummy", barcodes=["NNNNNN"], **kwargs):
     """
     Create a primer file from a template with one or two barcodes
     replace "{BARCODE}" in file
     """
-    if len(args)==2:
-        (template,barcode)=args
-        barcodes=[barcode,barcode]
-    else:
-        (template,barcode1,barcode2)=args
-        barcodes=(barcode1,barcode2)
+    if template=='dummy':
+        return getDummyPrimers()
+
+    if len(barcodes)==1:
+        barcodes.append(barcodes[0])
 
     logging.info("Processing %s with %s" % (template, barcodes))
     subst=0
     primers=""
-    with open(template) as f:
-        for line in f:
-            if subst>0 and not line.startswith(">"):
-                logging.debug(line)
-                line=barCodeRcRE.sub(reverseComplement(barcodes[subst-1]),line)
-                line=barCodeRE.sub(barcodes[subst-1],line)
-                logging.debug(line)
-            elif line.startswith(">Prefix"):
-                try:
-                    subst=int(line.split(None,1)[0][-1:])
-                except ValueError:
-                    logging.error("Prefix Id must end with /1 or /2. Offending line:\n %s" % (line))
-                    sys.exit(-1)
-            primers+=line
+    for line in template:
+        if subst>0 and not line.startswith(">"):
+            logging.debug(line)
+            line=barCodeRcRE.sub(reverse_complement(barcodes[subst-1]),line)
+            line=barCodeRE.sub(barcodes[subst-1],line)
+            logging.debug(line)
+        elif line.startswith(">Prefix"):
+            try:
+                subst=int(line.split(None,1)[0][-1:])
+            except ValueError:
+                logging.error("Prefix Id must end with /1 or /2. Offending line:\n %s" % (line))
+                sys.exit(-1)
+        primers+=line
     return primers
 
-def reverseComplement(sequence):
+def reverse_complement(sequence):
     newSeq=""
-    for i in xrange(len(sequence)-1,-1,-1):
+    for i in range(len(sequence)-1,-1,-1):
         c=sequence[i]
         if c=='A':
             c='T'
