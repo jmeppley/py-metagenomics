@@ -1,112 +1,86 @@
-#! /usr/bin/python
+#!/usr/bin/env python
 """
 """
 
-from optparse import OptionParser
-import sys, logging
-from edl.blastm8 import filterM8, addHitTableOptions, FilterParams
-from edl.util import addUniversalOptions, setupLogging
+import sys, logging, argparse
+from edl.blastm8 import filterM8, add_hit_table_arguments, FilterParams
+from edl.util import add_universal_arguments, setup_logging
 
 def main():
-    usage = "usage: %prog [OPTIONS] BLAST_FILE"
     description = """
     Take a blast result table and output a subset of hits based on the chosen filtering options. If more than one blast file given, use -O to get multiple output files, otherwise all output data will be concatenated into one output.
     """
 
-# command line options
-    parser = OptionParser(usage, description=description, conflict_handler='resolve')
-    addHitTableOptions(parser, flags='all')
-    parser.add_option("-o", "--outfilenome", dest="outfilename", default=None,
+# command line arguments
+    parser = argparse.ArgumentParser(description=description, conflict_handler='resolve')
+    add_hit_table_arguments(parser, flags='all')
+    parser.add_argument("-o", "--outfilenome", dest="outfilename", default=None,
                       metavar="OUTFILENAME", help="Write masked fasta output to OUTFILENAME.")
-    parser.add_option('-O', '--autoOutName', default=False,
+    parser.add_argument('-O', '--autoOutName', default=False,
                       action='store_true',
                       help="Automatically generate output file name from input name and options. Overridden by -o, cannot be used with data from STDIN.")
+    parser.add_argument('hit_table', nargs='*', 
+            type=argparse.FileType('rU'), default=[sys.stdin,],
+            help="Table of search results to be filtered. If absent, \
+                    data will be read from STDIN")
 
-    addUniversalOptions(parser)
+    add_universal_arguments(parser)
 
-    (options, args) = parser.parse_args()
+    arguments = parser.parse_args()
 
-    setupLogging(options,description)
-
-    #if options.hitTableFormat=='last':
-    #    if options.hitTableSort=='evalue':
-    #        parser.error("The last format has no evalue to sort by, sorry")
+    setup_logging(arguments)
 
     # check that we have blast file as argument
-    if len(args) <= 1:
-        # input
-        if len(args) == 1:
-            infile = args[0]
-            logging.info("reading data from %s" % (infile))
-            instream = open(infile,'rU')
-        else:
-            infile = './stdin'
-            logging.info("reading data from STDIN")
-            instream=sys.stdin
 
-        # output
-        if options.outfilename is not None:
-            logging.info("Writing data to %s" % (options.outfilename))
-            outstream=open(options.outfilename,'w')
-        elif options.autoOutName:
-            outfile=getOutputFile(infile,options)
-            logging.info("Writing data to %s" % (outfile))
-            outstream=open(outfile,'w')
+    # if we're not doing auto file names, wriate all outputs to same file
+    if not arguments.autoOutName:
+        if arguments.outfilename is not None:
+            logging.info("Writing data to %s" % (arguments.outfilename))
+            outfile_handle=open(arguments.outfilename,'w')
         else:
             logging.info("writing data to STDOUT")
-            outstream=sys.stdout
+            outfile_handle=sys.stdout
+
+    # loop over inputs
+    for infile_handle in arguments.hit_table:
+        logging.info("reading data from %s" % (infile_handle.name))
+        if arguments.autoOutName:
+            outfile_handle=open(getOutputFile(infile_handle.name,arguments),'w')
 
         # filter
-        params=FilterParams.createFromOptions(options)
-        filterM8(instream,outstream,params)
-    else:
-        if not options.autoOutName:
-            if options.outfilename is not None:
-                logging.info("Writing data to %s" % (options.outfilename))
-                outstream=open(options.outfilename,'w')
-            else:
-                logging.info("writing data to STDOUT")
-                outstream=sys.stdout
-        for infilename in args:
-            logging.info("reading data from %s" % (infilename))
-            instream=open(infilename,'rU')
-            if options.autoOutName:
-                outstream=open(getOutputFile(infilename,options),'w')
+        params=FilterParams.create_from_arguments(arguments)
+        filterM8(infile_handle,outfile_handle,params)
 
-            # filter
-            params=FilterParams.createFromOptions(options)
-            filterM8(instream,outstream,params)
-
-            if options.autoOutName:
-                outstream.close()
-            instream.close()
+        if arguments.autoOutName:
+            outfile_handle.close()
+        infile_handle.close()
 
 #############
 # Functions #
 #############
-def getOutputFile(infile, options):
+def getOutputFile(infile, arguments):
     """
-    Use the requested options to name the output file
+    Use the requested arguments to name the output file
     """
     outfile = infile
-    if options.filterPctid > 0:
-        outfile += ".i%g" % options.filterPctid
-    if options.filterLength > 0:
-        outfile += ".l%d" % options.filterLength
-    if options.filterBits > 0:
-        outfile += ".b%g" % options.filterBits
-    if options.filterEvalue is not None:
-        outfile += ".e%g" % options.filterEvalue
-    if options.filterAln is not None and options.filterAln>0:
-        outfile += ".a%g" % options.filterAln
-    if options.filterHspsPerHit!=1:
-        outfile += ".h%d" % options.filterHspsPerHit
-    if options.filterTopPct >= 0:
-        outfile += ".p%g" % options.filterTopPct
-    if options.filterNonoverlapping:
+    if arguments.filterPctid > 0:
+        outfile += ".i%g" % arguments.filterPctid
+    if arguments.filterLength > 0:
+        outfile += ".l%d" % arguments.filterLength
+    if arguments.filterBits > 0:
+        outfile += ".b%g" % arguments.filterBits
+    if arguments.filterEvalue is not None:
+        outfile += ".e%g" % arguments.filterEvalue
+    if arguments.filterAln is not None and arguments.filterAln>0:
+        outfile += ".a%g" % arguments.filterAln
+    if arguments.filterHspsPerHit!=1:
+        outfile += ".h%d" % arguments.filterHspsPerHit
+    if arguments.filterTopPct >= 0:
+        outfile += ".p%g" % arguments.filterTopPct
+    if arguments.filterNonoverlapping:
         outfile += ".u"
-    if options.filterHitsPerRead > 0:
-        outfile += ".n%d" % options.filterHitsPerRead
+    if arguments.filterHitsPerRead > 0:
+        outfile += ".n%d" % arguments.filterHitsPerRead
 
     if outfile == infile:
         sys.exit("outfile and infile are the same!!\n%s" % infile)

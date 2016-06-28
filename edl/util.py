@@ -415,7 +415,7 @@ def inputIterator(infileNames, options):
                 outhandle.close()
             inhandle.close()
 
-def add_universal_options(parser,addQuiet=True):
+def add_universal_arguments(parser,addQuiet=True):
     parser.add_argument("-v", "--verbose",
                       action="count", dest="verbose", default=1,
                       help="Print log messages. Use twice for debugging")
@@ -451,26 +451,26 @@ def setup_logging(parsed_args, stream=sys.stderr, \
 ###############
 # Methods for parsing tables to list (e.g. for screening)
 ##############
-def addScreenOptions(parser, defaults={}, accs=False):
-    parser.add_option("-l", "--listFile", dest="listFile",
+def add_screen_arguments(parser, defaults={}, accs=False):
+    parser.add_argument("-l", "--listFile", dest="listFile",
                       metavar="LISTFILE", help="List of names to filter with"),
-    parser.add_option("-k", "--keep",
+    parser.add_argument("-k", "--keep",
                       action="store_true", dest="keep", default=False,
                       help="Keep listed reads instead of removing")
-    parser.add_option("-D", "--listDelim", dest="listDelim", default=None,
+    parser.add_argument("-D", "--listDelim", dest="listDelim", default=None,
                       help="list delimiter. If listColumn set, default is any whitespace, otherwise, the whole line (stripped of whietspace at the ends) is used. '\\t' will split on tab characters.", metavar="DELIM")
-    parser.add_option("-C", "--listColumn", dest="listColumn", default=None, type='int',
+    parser.add_argument("-C", "--listColumn", dest="listColumn", default=None, type='int',
                       help="Column in listFile to get names from. Defaults to 0 if a delimiter is set.")
-    parser.add_option("-G", "--galaxy", default=False, action="store_true", help="Column indices should start with 1")
+    parser.add_argument("-G", "--galaxy", default=False, action="store_true", help="Column indices should start with 1")
     if accs:
-        parser.add_option("-a", "--accs",
+        parser.add_argument("-a", "--accs",
                           action="store_true", dest="accs", default=False,
                           help="parse accession from read name in fasta")
 
 dotRE=re.compile(r'(\.\d+)$')
-def getScreenList(options, accs=False):
+def get_screen_list(arguments, accs=False):
     """
-    Use the listFile, listDelim, and listColumn fields in options to
+    Use the listFile, listDelim, and listColumn fields in arguments to
     parse a text file into a dict of names all mapped to True
 
     If accs==True, remove version (s/\.\d+$//) from accessions.
@@ -484,13 +484,13 @@ def getScreenList(options, accs=False):
     else:
         translator=None
 
-    if options.listDelim is not None or options.listColumn is not None:
-        if options.listColumn is None:
-            options.listColumn=0
-        if options.galaxy:
-            options.listColumn-=1
+    if arguments.listDelim is not None or arguments.listColumn is not None:
+        if arguments.listColumn is None:
+            arguments.listColumn=0
+        if arguments.galaxy:
+            arguments.listColumn-=1
 
-    return parseListToMap(options.listFile, col=options.listColumn, delim=options.listDelim, keyType=translator)
+    return parseListToMap(arguments.listFile, col=arguments.listColumn, delim=arguments.listDelim, keyType=translator)
 
 def parseAcc(read):
     #logging.info("looking for acc in %s" % (repr(read)))

@@ -7,7 +7,7 @@ Outputs 3 files: a master gff, a matching fna of fastq seqs, and a faa of amino 
 
 import sys, re, os, glob, argparse, logging
 from edl.blastm8 import GFF, generate_hits
-from edl.util import add_universal_options, setup_logging
+from edl.util import add_universal_arguments, setup_logging
 from Bio import SeqIO
 
 def main():
@@ -27,7 +27,7 @@ def main():
                               May be specified multiple times for \
                               multiple files")
 
-    add_universal_options(parser)
+    add_universal_arguments(parser)
     args = parser.parse_args()
     setup_logging(args)
     
@@ -110,7 +110,7 @@ def write_annotations_to_files(hit_list_dicts, contigs_fasta_file,
                      "strand={strand};start={start};end={end};") \
                      .format(source=source, start=start, end=end, \
                              feature_type=feature_type, score=score, \
-                             strand=strand)
+                             strand=strand) + \
                     hit.hitDesc + \
                     "contig_length={length};contig_cov={coverage}" \
                      .format(length=length, coverage=coverage)
@@ -119,6 +119,8 @@ def write_annotations_to_files(hit_list_dicts, contigs_fasta_file,
                 subsequence=contig.seq[hit.qstart-1:hit.qend]
             else:
                 subsequence=contig.seq[hit.qend-1:hit.qstart].reverse_complement()
+            if strand=='-':
+                subsequence=subsequence.reverse_complement()
             fna_output_handle.write(">{seqid}\t{desc}\n{seq}\n" \
                         .format(seqid=gene_name,
                                 desc=gene_desc,

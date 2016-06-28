@@ -1,6 +1,5 @@
 #! /usr/bin/python
 import sys, logging, re
-from optparse import OptionGroup
 from edl.util import parseExp, LineCounter, openInputFile
 logger=logging.getLogger(__name__)
 
@@ -41,34 +40,34 @@ class M8Stream(LineCounter):
 
 class FilterParams:
     @staticmethod
-    def createFromOptions(options, ignore=[], translate={}):
+    def create_from_arguments(arguments, ignore=[], translate={}):
         """
-        Translate an options object created using the addHitTableOptions below into a FilterParams object. The attributes format, sort, and sortReads are expected to be in the options object with the 'hitTable' prefix. The attributes bits, evalue, pctid, aln, length, hitsPerRead, hspsPerHit, and nonoverlapping with the prefix 'filter'. For example, options.hitTableFormat will be copied to params.format and options.filterTopPct to params.topPct.
+        Translate a NameSpace object created using the add_hit_table_arguments below into a FilterParams object. The attributes format, sort, and sortReads are expected to be in the arguments object with the 'hitTable' prefix. The attributes bits, evalue, pctid, aln, length, hitsPerRead, hspsPerHit, and nonoverlapping with the prefix 'filter'. For example, arguments.hitTableFormat will be copied to params.format and arguments.filterTopPct to params.topPct.
 
-        translate= should be set to a dictionary mapping attributes of the options object to the desired attribuets of the FilterParams object.
+        translate= should be set to a dictionary mapping attributes of the arguments object to the desired attribuets of the FilterParams object.
 
         ignore= should be a list of the standard params to be skipped (eg: filterTopPct).
         """
         params=FilterParams()
 
         # check the nonstandard one(s)
-        for (oname,pname) in translate.iteritems():
-            if hasattr(options,oname):
-                setattr(params,pname,getattr(options,oname))
+        for (oname,pname) in translate.items():
+            if hasattr(arguments,oname):
+                setattr(params,pname,getattr(arguments,oname))
 
         # get the standard ones
         for param in ['bits','evalue','pctid','length', 'aln', 'hitsPerRead','hspsPerHit','nonoverlapping','topPct']:
             oparam = 'filter' + param[0].upper() + param[1:]
             if oparam not in ignore:
-                if hasattr(options,oparam):
-                    setattr(params,param,getattr(options,oparam))
+                if hasattr(arguments,oparam):
+                    setattr(params,param,getattr(arguments,oparam))
         for param in ['format','sort','sortReads']:
             oparam = 'hitTable' + param[0].upper() + param[1:]
             if oparam not in ignore:
-                if hasattr(options,oparam):
-                    setattr(params,param,getattr(options,oparam))
+                if hasattr(arguments,oparam):
+                    setattr(params,param,getattr(arguments,oparam))
 
-        logging.debug("%r" % (options))
+        logging.debug("%r" % (arguments))
         logging.debug("%r" % (params))
         return params
 
@@ -434,7 +433,7 @@ class Hit:
         logger.debug("Looking for [%d,%d] in %s" % (self.qstart,self.qend,regions))
 
         # compare with all used ranges
-        hit_spand,overlap_region = checkForOverlap(regions)
+        hit_span,overlap_region = self.checkForOverlap(regions)
         if overlap_region is not None:
             return None
 
@@ -515,14 +514,18 @@ def getHitCol(format, useDesc=False):
 
     return hitCol
 
-def filterM8(instream, outstream, options):
+def filterM8(instream, outstream, params):
     """
     Filter instream and write output to outstream
     """
-    #if options.sortReads:
+    #if params.sortReads:
     #    instream=sortLines(instream)
-    for line in filterM8Stream(instream, options):
+    logger.debug("blastm8.filterM8: reading from {}".format(instream.name))
+    line_count=0
+    for line in filterM8Stream(instream, params):
+        line_count+=1
         outstream.write(line)
+    logger.debug("blastm8.filterM8: wrote {} lines".format(line_count))
 
 def sortLines(instream):
     logger.info("Sorting input lines")
@@ -727,7 +730,7 @@ def filterHits(hits, options, returnLines=True):
         else:
             yield hit
 
-def addHitTableOptions(parser, defaults={}, flags=['format','filterPct','sortReads']):
+def add_hit_table_arguments(parser, defaults={}, flags=['format','filterPct','sortReads']):
     """
     Set up command line arguments for parsing and filtering an m8 file. By default, only the --format and --filterPct options are added, but any of the following can be enabled using the flags= keyword.
 
@@ -754,12 +757,12 @@ For example, flags=['format','bits','filterPct'] would enable filtering on bit s
     # merge explicit defaulst in to flags list
     if flags != 'all':
         flags=set(flags)
-        for key in defaults.iterkeys():
+        for key in defaults.keys():
             flags.add(key)
 
-    ogroup = OptionGroup(parser, "Hit Table Options", """These options control the parsing and filtering of hit tables (from blast or lastal)""")
+    agroup = parser.add_argument_group("Hit Table Options", """These options control the parsing and filtering of hit tables (from blast or lastal)""")
     if flags=='all' or 'format' in flags:
-        ogroup.add_option('-f','--format', dest='hitTableFormat',
+        agroup.add_argument('-f','--format', dest='hitTableFormat',
                           default=defaults.get("format",GENE),
                           choices=[GENE,
                                    LIZ,
@@ -774,60 +777,60 @@ For example, flags=['format','bits','filterPct'] would enable filtering on bit s
                                    HMMSEARCH],
                           help="Format of input table: blast, last, hmmer, gene, yanmei, or liz. Default is %s" % (defaults.get("format",GENE)))
     if flags=='all' or 'filterPct' in flags:
-        ogroup.add_option('-F','--filterPct',dest='filterTopPct',
+        agroup.add_argument('-F','--filterPct',dest='filterTopPct',
                           default=defaults.get("filterPct",-1),
-                          type='int',
-                          help="If a positive number is given, only allow hits within this percent of the best hit. Use -1 for no filtering. Use 0 to just take the hit(s) with the best score. If hit table is from last, it will be automatically sorted by read. Sorting by read is slow and should be avoided if you already have a sorted and filtered hit table (e.g. skip this option). Default is %s" % (defaults.get("filterPct",-1)))
+                          type=int,
+                          help="If a positive number is given, only allow hits within this percent of the best hit. Use -1 for no filtering. Use 0 to just take the hit(s) with the best score. If hit table is from last, it will be automatically sorted by read. Sorting by read is slow and should be avoided if you already have a sorted and filtered hit table (e.g. skip this option). Default is {}".format(defaults.get("filterPct",-1)))
     if flags=='all' or 'bits' in flags:
-        ogroup.add_option('-B','--bitScore', dest='filterBits',
-                          type='int', default=defaults.get("bits",0),
-                          help="Minimum bit score to allow. Default: %default")
+        agroup.add_argument('-B','--bitScore', dest='filterBits',
+                          type=int, default=defaults.get("bits",0),
+                          help="Minimum bit score to allow. Default: \
+                          {}".format(defaults.get('bits',0)))
     if flags=='all' or 'evalue' in flags:
-        ogroup.add_option('-E','--evalue', dest='filterEvalue',
-                          type='float', default=defaults.get("evalue",None),
-                          help="Maximum evalue to allow. Default: %default")
+        agroup.add_argument('-E','--evalue', dest='filterEvalue',
+                          type=float, default=defaults.get("evalue",None),
+                          help="Maximum evalue to allow. Default: \
+                          {}".format(defaults.get('evalue',None)))
     if flags=='all' or 'pctid' in flags:
         defVal=defaults.get("pctid",0)
-        ogroup.add_option('-I','--pctid', dest='filterPctid',
-                          type='float', default=defVal,
+        agroup.add_argument('-I','--pctid', dest='filterPctid',
+                          type=float, default=defVal,
                           help="Minimum percent identity to allow. Default: %s" % (defVal))
     if flags=='all' or 'length' in flags:
         default=defaults.get("length",0)
-        ogroup.add_option('-L','--length', dest='filterLength',
-                          type='int', default=default,
+        agroup.add_argument('-L','--length', dest='filterLength',
+                          type=int, default=default,
                           help="Minimum alignment length to allow. Default: %s" % (default))
     if flags=='all' or 'aln' in flags:
         default=defaults.get("aln",None)
-        ogroup.add_option('-N','--aln', dest='filterAln',
-                          type='float', default=default,
+        agroup.add_argument('-N','--aln', dest='filterAln',
+                          type=float, default=default,
                           help="Minimum aligned fraction to allow. Default: %s" % (default))
     if flags=='all' or 'hitsPerRead' in flags:
         default=defaults.get("hitsPerRead",0)
-        ogroup.add_option('-H','--hitsPerRead', dest='filterHitsPerRead',
-                          type='int', default=default,
+        agroup.add_argument('-H','--hitsPerRead', dest='filterHitsPerRead',
+                          type=int, default=default,
                           help="Maximum number of hits to allow per read. 0 for all hits. Default: %s" % (default))
     if flags=='all' or 'hspsPerHit' in flags:
         default=defaults.get("hspsPerHit",1)
-        ogroup.add_option('-P','--hspsPerHit', dest='filterHspsPerHit',
-                          type='int', default=default,
+        agroup.add_argument('-P','--hspsPerHit', dest='filterHspsPerHit',
+                          type=int, default=default,
                           help="Maximum number of HSPs to keep per hit. 0 for all HSPs. Default: %s" % (default))
     if flags=='all' or 'nonoverlapping' in flags:
         default=defaults.get("nonoverlapping",False)
-        ogroup.add_option('-O','--nonoverlapping', action='store_true',
+        agroup.add_argument('-O','--nonoverlapping', action='store_true',
                           default=default, dest='filterNonoverlapping',
                           help="Ignore hits which overlap higher scoring hits.Default: %s" % (default))
     if flags=='all' or 'sort' in flags:
         default=defaults.get("sort",None)
-        ogroup.add_option('-s', '--sort', dest='hitTableSort',
+        agroup.add_argument('-s', '--sort', dest='hitTableSort',
                           default=default, choices=['evalue','score'],
                           help="sort hits for each read by 'evalue' or 'score' before filtering. Secondarily sorted by hit id to make output more deterministic")
     if flags=='all' or 'sortReads' in flags:
         default=defaults.get("sortReads", False)
-        ogroup.add_option('-S', '--sortReads', dest='hitTableSortReads',
+        agroup.add_argument('-S', '--sortReads', dest='hitTableSortReads',
                           default=default, action='store_true',
                           help="Sort input lines by read before parsing. Only needed if merging multiple results or when processing raw LAST output.  For REALLY large files, this may fill up available memory and be slow. If that happens, run through 'sort' first. (for last: sort -t $'\\t' -k 7,7 -k1rn,1 FILE)")
-
-    parser.add_option_group(ogroup)
 
 def parseCigarString(cigar):
     """
