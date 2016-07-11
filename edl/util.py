@@ -1,6 +1,8 @@
 import re, logging, sys, os, numpy
+from edl import __version__ 
 from edl.expressions import accessionRE
 logger=logging.getLogger(__name__)
+VERSION='py-metagenomics-{}'.format(__version__)
 
 class LineCounter():
     """
@@ -416,6 +418,8 @@ def inputIterator(infileNames, options):
             inhandle.close()
 
 def add_universal_arguments(parser,addQuiet=True):
+    parser.add_argument('-V','--version', 
+            action="version", version=VERSION)
     parser.add_argument("-v", "--verbose",
                       action="count", dest="verbose", default=1,
                       help="Print log messages. Use twice for debugging")
@@ -447,6 +451,7 @@ def setup_logging(parsed_args, stream=sys.stderr, \
         loglevel=logging.DEBUG
     logging.basicConfig(stream=stream, level=loglevel, format=format)
     logging.info("Log level set to %r(%d)" % (loglevel,verbose))
+
 
 ###############
 # Methods for parsing tables to list (e.g. for screening)
@@ -697,4 +702,5 @@ class ReservoirSamplingList(list):
     def extend(self, iterable):
         for item in iterable:
             self.add(item)
+
 
