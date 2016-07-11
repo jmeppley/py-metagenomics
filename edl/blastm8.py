@@ -16,6 +16,8 @@ HMMSCANDOM='hmmscandom'
 HMMSEARCHDOM='hmmsearchdom'
 HMMSCAN='hmmscan'
 HMMSEARCH='hmmsearch'
+CMSEARCH='cmsearch'
+CMSCAN='cmscan'
 SAM='sam'
 GFF='gff'
 formatsWithNoDescription=[LAST0, FRHIT, BLASTPLUS, SAM]
@@ -143,10 +145,15 @@ class Hit:
             self.parseLine = self.parseHmmSearchLine
         elif self.format == HMMSCAN:
             self.parseLine = self.parseHmmScanLine
+        elif self.format == CMSEARCH:
+            self.parseLine = self.parseCmSearchLine
+        elif self.format == CMSCAN:
+            self.parseLine = self.parseCmScanLine
         elif self.format == SAM:
             self.parseLine = self.parseSamLine
         elif self.format == GFF:
             self.parseLine = self.parseGFFLine
+            self.to_gff = lambda self: self.line
         else:
             sys.exit("Unknown format: %s" % (self.format))
 
@@ -192,34 +199,8 @@ class Hit:
         self.hit=cells[2]
         if self.hit=='*':
             raise EmptyHitException("No match")
-        (alen,alenh,alenq,qstart,qend,pctid)=parseCigarString(cells[5])
-        self.mlen=alen
-        self.qstart=qstart
-        self.qend=qend
-        self.astart=int(cells[3])
-        self.aend=self.astart+alenh-1
-        self.qlen=len(cells[9])
-        if pctid is not None:
-            self.pctid=pctid
-        else:
-            self.pctid=0
-        for tagstr in cells[11:]:
-            if len(tagstr)>2 and tagstr[:2]=='AS':
-                self.score = float(tagstr.split(":")[2])
-                # for now, we only carea bout the score tag
-                break
-        else:
-            raise Exception("No score (AS tag) found in line:\n%s" % (line))
-
-    def parseGFFLine(self, line):
-        if line[0]=='@':
-            raise EmptyHitException("reference sequence line")
-        cells=line.rstrip('\n\r').split('\t')
-        self.read=cells[0]
-        self.hit=cells[2]
-        if self.hit=='*':
-            raise EmptyHitException("No match")
-        (alen,alenh,alenq,qstart,qend,pctid)=parseCigarString(cells[5])
+        self.cigar=cells[5]
+        (alen,alenh,alenq,qstart,qend,pctid)=parseCigarString(self.cigar)
         self.mlen=alen
         self.qstart=qstart
         self.qend=qend
@@ -304,6 +285,44 @@ class Hit:
         self.pctid=0
         self.mlen=0
 
+    #target name           accession query name           accession mdl mdl from   mdl to seq from   seq to strand trunc pass   gc  bias  score   E-value inc description of target
+    def parseCmSearchLine(self, line):
+        if line[0]=='#':
+            raise EmptyHitException("Comment line")
+        cells=line.rstrip('\n\r').split()
+        self.read=cells[0]
+        self.hit=cells[3]
+        self.hitDesc=cells[2]
+        self.hstart=int(cells[5])
+        self.hend=int(cells[6])
+        self.qstart=int(cells[7])
+        self.qend=int(cells[8])
+        self.strand=cells[9]
+        self.evalue=float(cells[15])
+        self.score=float(cells[14])
+        self.readDesc=cells[17]
+        self.pctid=0
+        self.mlen=self.hend-self.hstart+1
+
+    #target name         accession query name           accession mdl mdl from   mdl to seq from   seq to strand trunc pass   gc  bias  score   E-value inc description of target
+    def parseCmScanLine(self, line):
+        if line[0]=='#':
+            raise EmptyHitException("Comment line")
+        cells=line.rstrip('\n\r').split()
+        self.read=cells[2]
+        self.hit=cells[1]
+        self.hitDesc=cells[0]
+        self.hstart=int(cells[5])
+        self.hend=int(cells[6])
+        self.qstart=int(cells[7])
+        self.qend=int(cells[8])
+        self.strand=cells[9]
+        self.evalue=float(cells[15])
+        self.score=float(cells[14])
+        self.readDesc=cells[17]
+        self.pctid=0
+        self.mlen=self.hend-self.hstart+1
+
     # score name1   start1  alnSize1        strand1 seqSize1        name2   start2  alnSize2   strand2 seqSize2        blocks
     def parseLastalLine(self, line):
         #logger.debug(line)
@@ -334,6 +353,10 @@ class Hit:
             self.qstart = qlen - int(cells[7])
             self.qend = self.qstart - qmlen + 1
         self.aln=qmlen/float(qlen)
+        if cells[9]==cells[4]:
+            strand="+"
+        else:
+            strand="-"
 
         # some versions have evalues in the last few spots (eg: E=2.1e-09)
         self.evalue=float(cells[13][2:].strip()) if len(cells)>13 else None
@@ -405,9 +428,9 @@ class Hit:
         self.mlen=self.qend+1- self.qstart
 
     def getAln(self):
-        if 'aln' in dir(self):
+        try:
             return self.aln
-        else:
+        except AttributeError:
             sys.exit("Cannot calculate alignment percentage from data in this m8 format")
 
     def checkForOverlap(self,regions):
@@ -443,6 +466,47 @@ class Hit:
 
     def getLine(self,options):
         return self.line
+
+    def to_gff(self):
+        """
+        An attempt to export any hit to GFF. Only partially tested
+        """
+
+        # The core data in a  GFF file:
+        sequence_id=self.read
+        source=self.format
+        feature=self.hitDesc
+        start=self.qstart
+        end=self.qend
+        score=self.score
+        try:
+            strand = self.strand
+        except AttributeError:
+            strand = "+" if start<=end else "-"
+        # Ignore phase for now
+        phase='.'
+
+        # create attribute field for attributes we have
+        attributes={}
+        attributes['Target']=" ".join(str(v) for v in [self.hit,self.hstart, self.hend])
+        try:
+            attributes['Cigar']=self.cigar
+        except AttributeError:
+            pass
+        attributes = ';'.join(["{0}={1}".format(k,attributes[k]) \
+                               for k in attributes])
+        # create line
+        gff_line = '\t'.join(str(v) for v in \
+                             [sequence_id,
+                              source,
+                              feature,
+                              start,
+                              end,
+                              score,
+                              strand,
+                              phase,
+                              attributes])
+        return gff_line
 
 #############
 # Functions #
