@@ -416,15 +416,21 @@ class Hit:
             raise EmptyHitException("Comment")
         cells=line.rstrip('\n\r').split('\t')
         self.read = cells[0]
+        self.source=cells[1]
+        self.hit_type=cells[2]
         self.qstart=int(cells[3])
         self.qend=int(cells[4])
-        self.evalue = float(cells[5])
+        self.score = float(cells[5])
         self.strand = cells[6]
-        hit_data = cells[8].split(';',1)
-        self.hit = hit_data[0]
-        self.hitDesc = hit_data[1]
-        self.score=1
-        self.pctid=1
+        hit_data = dict([kv.split('=') for kv in cells[8].strip(';').split(';')])
+        if "ID" in hit_data:
+            self.hit=hit_data['ID']
+        elif "Name" in hit_data:
+            self.hit=hit_data['Name']
+        elif "Target" in hit_data:
+            self.hit=hit_data['Target'].split()[0]
+        self.hitDesc=hit_data.get('product',cells[8])
+        self.evalue=self.score
         self.mlen=self.qend+1- self.qstart
 
     def getAln(self):
@@ -671,8 +677,12 @@ def filterM8Stream(instream, options, returnLines=True):
                 if needsFilter:
                     hits=filterHits(hits, options, returnLines=returnLines)
                 if returnLines:
-                    for line in hits:
-                        yield line
+                    if needsFilter:
+                        for line in hits:
+                            yield line
+                    else:
+                        for hit in hits:
+                            yield hit.line
                 else:
                     yield (currentRead, hits)
                 hits=[]
@@ -686,8 +696,12 @@ def filterM8Stream(instream, options, returnLines=True):
         if needsFilter:
             hits=filterHits(hits, options,returnLines=returnLines)
         if returnLines:
-            for line in hits:
-                yield line
+            if needsFilter:
+                for line in hits:
+                    yield line
+            else:
+                for hit in hits:
+                    yield hit.line
         else:
             yield (currentRead, hits)
 
@@ -790,7 +804,7 @@ def filterHits(hits, options, returnLines=True):
 
         # print hit
         if returnLines:
-            yield hit.getLine(options)
+            yield hit.line
         else:
             yield hit
 
@@ -955,7 +969,7 @@ def parseCigarString(cigar):
     qend = qstart + alenq - 1
     return (alen, alenh, alenq, qstart, qend, pctid)
 
-def test():
+def setup_tests():
     import sys
     global myAssertEq, myAssertIs
     from edl.test import myAssertEq, myAssertIs
@@ -966,6 +980,8 @@ def test():
         loglevel=logging.WARN
     logging.basicConfig(stream=sys.stderr, level=loglevel)
 
+def test():
+    setup_tests()
     m8data=["001598_1419_3101	H186x25M  length=284 uaccno=E3N7QM101DQXE3	gi|91763278|ref|ZP_01265242.1|	Peptidase family M48 [Candidatus Pelagibacter ubique HTCC1002]	61.7021276595745	94	282	1	57	150	134	4e-30	0.992957746478873\n",
         "001598_1419_3101	H186x25M  length=284 uaccno=E3N7QM101DQXE3	gi|71083682|ref|YP_266402.1|	M48 family peptidase [Candidatus Pelagibacter ubique HTCC1062]	61.7021276595745	94	282	1	40	133	134	4e-30	0.992957746478873\n",
         "001598_1419_3101	H186x25M  length=284 uaccno=E3N7QM101DQXE3	gi|262277211|ref|ZP_06055004.1|	peptidase family M48 family [alpha proteobacterium HIMB114]	65.9090909090909	88	264	1	63	150	132	9e-30	0.929577464788732\n",
@@ -981,21 +997,21 @@ def test():
     logging.info("Starting passthrough test")
     m8stream=m8data.__iter__()
     params=FilterParams()
-    outs = filterM8Stream(m8stream,params)
-    myAssertEq(outs.next(),m8data[0])
-    myAssertEq(outs.next(),m8data[1])
-    myAssertEq(outs.next(),m8data[2])
-    myAssertEq(outs.next(),m8data[3])
-    myAssertEq(outs.next(),m8data[4])
+    outs = filterM8Stream(m8stream,params,returnLines=True)
+    myAssertEq(next(outs),m8data[0])
+    myAssertEq(next(outs),m8data[1])
+    myAssertEq(next(outs),m8data[2])
+    myAssertEq(next(outs),m8data[3])
+    myAssertEq(next(outs),m8data[4])
 
     logging.info("Starting best test")
     m8stream=m8data.__iter__()
     params=FilterParams(topPct=0.)
     outs = filterM8Stream(m8stream,params)
-    myAssertEq(outs.next(),m8data[0])
-    myAssertEq(outs.next(),m8data[1])
+    myAssertEq(next(outs),m8data[0])
+    myAssertEq(next(outs),m8data[1])
     try:
-        outs.next()
+        next(outs)
         sys.exit("There should only be 2 elements!")
     except StopIteration:
         pass
@@ -1004,12 +1020,33 @@ def test():
     m8stream=m8data.__iter__()
     params = FilterParams(hitsPerRead=1)
     outs = filterM8Stream(m8stream,params)
-    myAssertEq(outs.next(),m8data[0])
+    myAssertEq(next(outs),m8data[0])
     try:
-        outs.next()
+        next(outs)
         sys.exit("There should only be 1 elements!")
     except StopIteration:
         pass
+
+def test_gff():
+    setup_tests()
+
+    line='KM282-20-02b-5_c283151\tcsearch\ttRNA\t303\t233\t40.6\t-\t.\tTarget=RF00005 2 70\n'
+    hit=Hit(line,'gff')
+    myAssertEq(hit.read,'KM282-20-02b-5_c283151')
+    myAssertEq(hit.score,40.6)
+    myAssertEq(hit.hit,'RF00005')
+
+    line='KM282-20-02a-100_c12273\tbarrnap:0.7\trRNA\t9\t772\t6.8e-41\t+\t.\tName=12S_rRNA;product=12S ribosomal RNA\n'
+    hit=Hit(line,'gff')
+    myAssertEq(hit.read,'KM282-20-02a-100_c12273')
+    myAssertEq(hit.evalue,6.8e-41)
+    myAssertEq(hit.hit,'12S_rRNA')
+
+    line='KM282-20-02a-100_c1\tProdigal_v2.6.2\tCDS\t309\t686\t53.3\t-\t0\tID=1_2;partial=00;start_type=ATG;rbs_motif=AGGA;rbs_spacer=5-10bp;gc_cont=0.381;conf=100.00;score=54.54;cscore=45.68;sscore=8.86;rscore=5.50;uscore=-0.63;tscore=2.76;\n'
+    hit=Hit(line,'gff')
+    myAssertEq(hit.read,'KM282-20-02a-100_c1')
+    myAssertEq(hit.score,53.3)
+    myAssertEq(hit.hit,'1_2')
 
 if __name__ == '__main__':
     test()
