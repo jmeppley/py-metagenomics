@@ -598,7 +598,7 @@ def filterM8(instream, outstream, params, to_gff=False):
                 line_count+=1
                 outstream.write(hit.to_gff())
     else:
-        for line in filterM8Stream(instream, params):
+        for line in filterM8Stream(instream, params, returnLines=True):
             line_count+=1
             outstream.write(line)
     logger.debug("blastm8.filterM8: wrote {} lines".format(line_count))
