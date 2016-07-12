@@ -19,6 +19,8 @@ def main():
     parser.add_argument('-O', '--autoOutName', default=False,
                       action='store_true',
                       help="Automatically generate output file name from input name and options. Overridden by -o, cannot be used with data from STDIN.")
+    parser.add_argument('-G','--gff', default=False, action='store_true',
+            help="output GFF format instead of input format")
     parser.add_argument('hit_table', nargs='*', 
             type=argparse.FileType('rU'), default=[sys.stdin,],
             help="Table of search results to be filtered. If absent, \

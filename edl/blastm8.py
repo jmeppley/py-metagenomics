@@ -578,7 +578,7 @@ def getHitCol(format, useDesc=False):
 
     return hitCol
 
-def filterM8(instream, outstream, params):
+def filterM8(instream, outstream, params, to_gff=False):
     """
     Filter instream and write output to outstream
     """
@@ -586,9 +586,15 @@ def filterM8(instream, outstream, params):
     #    instream=sortLines(instream)
     logger.debug("blastm8.filterM8: reading from {}".format(instream.name))
     line_count=0
-    for line in filterM8Stream(instream, params):
-        line_count+=1
-        outstream.write(line)
+    if to_gff and params.format!=GFF:
+        for read,hits in filterM8Stream(instream, params, returnLines=False):
+            for hit in hits:
+                line_count+=1
+                outstream.write(hit.to_gff())
+    else:
+        for line in filterM8Stream(instream, params):
+            line_count+=1
+            outstream.write(line)
     logger.debug("blastm8.filterM8: wrote {} lines".format(line_count))
 
 def sortLines(instream):
@@ -834,7 +840,9 @@ For example, flags=['format','bits','filterPct'] would enable filtering on bit s
                                    LAST0,
                                    BLASTPLUS,
                                    SAM,
-				   GFF,
+                                   GFF,
+                                   CMSEARCH,
+                                   CMSCAN,
                                    HMMSCANDOM,
                                    HMMSCAN,
                                    HMMSEARCHDOM,
