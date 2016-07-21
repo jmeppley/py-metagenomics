@@ -511,7 +511,8 @@ class Hit:
                               score,
                               strand,
                               phase,
-                              attributes])
+                              attributes]) \
+                        + '\n'
         return gff_line
 
 #############

@@ -43,6 +43,9 @@ def main():
             logging.info("writing data to STDOUT")
             outfile_handle=sys.stdout
 
+    if arguments.gff:
+        logging.info("Converting to GFF")
+
     # loop over inputs
     for infile_handle in arguments.hit_table:
         logging.info("reading data from %s" % (infile_handle.name))
@@ -51,7 +54,7 @@ def main():
 
         # filter
         params=FilterParams.create_from_arguments(arguments)
-        filterM8(infile_handle,outfile_handle,params)
+        filterM8(infile_handle,outfile_handle,params,to_gff=arguments.gff)
 
         if arguments.autoOutName:
             outfile_handle.close()
