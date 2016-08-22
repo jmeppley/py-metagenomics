@@ -1,9 +1,162 @@
 from numpy import histogram
 import os, sys, numpy, argparse, logging, re, pandas
-import edl.blastm8
-from Bio import SeqIO
-from edl.util import asciiHistogram
+from Bio import SeqIO, SeqUtils
 logger=logging.getLogger(__name__)
+if __name__ == '__main__':
+    sys.path[0] += "/.."
+from edl.util import asciiHistogram
+import edl.blastm8
+
+###
+# hook for scriptifying
+def main():
+    """
+    Simple hook for running some of the functions below as a script. Only works with positional arguments that are strings.
+
+    Examples:
+     python assembly.py contig_read_counts file_1
+       will run countig_read_counts("file_1")
+       """
+    function = eval(sys.argv[1])
+    args=[]
+    kwargs={}
+    for arg in sys.argv[2:]:
+        try:
+            param,value = arg.split("=",1)
+            try:
+                value=eval(value)
+            except NameError:
+                pass
+            kwargs[param]=value
+        except ValueError:
+            args.append(arg)
+    function(*args,**kwargs)
+
+###
+# Code for getting contig stats from SPAdes output
+#
+renamed_desc_RE = re.compile(r'^(\S+)\s+NODE.+length_(\d+)_cov_([0-9.]+)')
+spades_desc_RE = re.compile(r'^NODE.+length_(\d+)_cov_([0-9.]+)')
+def get_contig_stats(contigs_fasta,
+                     contig_depth_file=None,
+                     contig_read_counts_file=None,
+                     contig_stats_file=None,
+                     **kwargs):
+    """
+    Extracts GC, lenght, and coverage from SPAdes fasta
+
+    CAn optionally merge with read counts and mapped coverage if
+    samtools output files given.
+
+    This method assumes the SPAdes fasta has been processed to rename
+    contigs and the SPAdes contig names are now in the description.
+
+    provide a contig_stats_file location to write data to disk instead of just returning a pandas DataFrame.
+
+    Use renamed=false to process raw SPAdes output
+    """
+    # parse contigs fasta
+    contig_stats = get_spades_stats_from_contigs(contigs_fasta, **kwargs)
+    
+    # add other files if requested
+    if contig_read_counts_file is not None:
+        # read counts
+        read_count_table = pandas.read_table(contig_read_counts_file,delim_whitespace=True,names=['read count','contig']).set_index('contig')
+        contig_stats=contig_stats.join(read_count_table,how='left')
+
+    if contig_depth_file is not None:
+        # convert base by base depth data into coverage
+        mapping_depth_table = get_samtool_depth_table(contig_depth_file)
+        contig_stats=contig_stats.join(mapping_depth_table, how='left')
+    
+    # sort and get cumulative length
+    contig_stats.fillna(0,inplace=True)
+    contig_stats.sort_values(by='length',ascending=False,inplace=True)
+    contig_stats['cumul length']=contig_stats.length.cumsum()
+    for col in ['length', 'read count','mx cov','cumul length']:
+        contig_stats[col]=contig_stats[col].astype(int)
+
+    if contig_stats_file is not None:
+        contig_stats.to_csv(contig_stats_file,sep='\t',float_format="%0.2f")
+
+    return contig_stats
+
+def get_spades_stats_from_contigs(contigs_fasta, renamed=True):
+    """
+    Use BioPython parser and GC calculator with some regexp to get contig lengths, coverages, and GS from SPADES fasta
+    """
+    
+    # switch RegExp if contigs were renamed
+    desc_RE = renamed_desc_RE if renamed else spades_desc_RE
+    
+    # initialize lists
+    contigs=[]
+    lengths=[]
+    covs=[]
+    gcs=[]
+    
+    # loop over fasta records (this is 2-3 times faster than SeqIO.parse)
+    # (and only marginally slower than my custom built parser.)
+    with open(contigs_fasta,'r') as CF:
+        for title, sequence in SeqIO.FastaIO.SimpleFastaParser(CF):
+            # parse title with RegEx
+            contig,length,cov = desc_RE.match(title).groups()
+            
+            contigs.append(contig)
+            lengths.append(int(length))
+            covs.append(float(cov))
+            gcs.append(SeqUtils.GC(sequence))
+        
+    # convert to DataFrame and return
+    return pandas.DataFrame({'contig':contigs,'length':lengths,'coverage':covs,'GC':gcs}).set_index('contig')
+
+def get_samtool_depth_table(depth_file):
+    """
+    Calculate coverage stats for each contig in an assembly
+
+    Params:
+     depth_file: output file from the command:
+                    `samtools depth reads.v.contigs.bam`
+                 this is a 3 column file with one line per base.
+                 columns are:
+                     'contig_id base_index base_depth'
+
+    Returns:
+     pandas.DataFrame with one row per contig and the three following columns:
+            contig  av cov  mx cov
+            """
+
+    # reading into lists is a fast way to build a big DataFrame
+    contigs, av_covs, mx_covs = [], [], []
+
+    # loop over contig bases
+    current_contig=None
+    with open(depth_file,'r') as DEPTHS:
+        for line in DEPTHS:
+            contig, base, depth = line.split()
+            if contig!=current_contig:
+                if current_contig is not None:
+                    # end of contig, save numbers
+                    contigs.append(current_contig)
+                    av_covs.append(depths/bases)
+                    mx_covs.append(max_depth)
+                bases=0
+                depths=0
+                max_depth=0
+                current_contig = contig
+
+            # update contig numbers with current base
+            bases+=1
+            depth=int(depth)
+            depths+=depth
+            max_depth=max(depth,max_depth)
+
+        # end of final contig, save numbers
+        contigs.append(current_contig)
+        av_covs.append(depths/bases)
+        mx_covs.append(max_depth)
+
+    return pandas.DataFrame({'contig':contigs,'av cov':av_covs,'mx cov':mx_covs},columns=['contig','av cov','mx cov']).set_index('contig')
 
 ## 
 # the calc_stat, plot_assembly, and getN50 methods originally come from the
@@ -12,11 +165,15 @@ logger=logging.getLogger(__name__)
 # Date: 09 Feb. 2013
 # http://travispoulsen.com/blog/2013/07/basic-assembly-statistics/
 # https://gist.github.com/tpoulsen/422b1a19cbd8c0f514fe/raw/assembly_quality_stats.py
-def calc_stats(file_in, return_data=False, txt_width=0, log=False, backend=None, format='fasta', minLength=0, **kwargs):
+def calc_stats(file_in, return_type=None, txt_width=0, log=False, backend=None, format='fasta', minLength=0, **kwargs):
     """
     Given contigs in fastsa format:
      * calculate length stats (including N50)
      * plot histogram (use txt_width and backend to select format)
+     * return_types:
+       None: just print text to STDOUT
+       'report': return text
+       'data': return dictionary of data
     """
     with open(file_in, 'r') as seq:
         sizes = [len(record) for record in SeqIO.parse(seq, format) if len(record)>=minLength]
@@ -24,7 +181,7 @@ def calc_stats(file_in, return_data=False, txt_width=0, log=False, backend=None,
     sizes = numpy.array(sizes)
     data = get_contig_length_stats(sizes)
 
-    if not return_data:
+    if return_type != 'data':
         report = get_contig_length_report(data)
 
     if backend is not None:
@@ -33,7 +190,7 @@ def calc_stats(file_in, return_data=False, txt_width=0, log=False, backend=None,
         if backend is None:
             h=histogram(sizes, **kwargs)
         histogramText = asciiHistogram(h, log=log, width=txt_width)
-        if not return_data:
+        if return_type != 'data':
             if log:
                 report += "\n\nContig length histogram (log):\n"
             else:
@@ -42,8 +199,10 @@ def calc_stats(file_in, return_data=False, txt_width=0, log=False, backend=None,
         else:
             data['histogram']=histogramText
 
-    if return_data:
+    if return_type=='data':
         return data
+    elif return_type is None:
+        print(report)
     else:
         return report
 
