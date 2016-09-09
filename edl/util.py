@@ -280,9 +280,9 @@ def parseMapFile(mapFile, delim="\t", keyType=None, valueType=None, keyCol=0, va
     logger.info("Read %d records from %s" % (len(translation), mapFile))
     return translation
 
-def parseListToMap(listFile,delim=None,keyType=None,col=None):
+def parse_list_to_set(listFile,delim=None,keyType=None,col=None):
     """
-    Given a file, return a map where each line is a key and the value is True
+    Given a file, return a set where each line or cell (if delim and col are provided) is an entry in the set
     """
 
     if listFile is None:
@@ -303,14 +303,14 @@ def parseListToMap(listFile,delim=None,keyType=None,col=None):
         if delim is not None:
             logger.debug("List delim: %r" % delim)
 
-    listHash={}
+    items=set()
     with open(listFile) as f:
         for line in f:
-            listHash[processLine(line)]=True
+            items.add(processLine(line))
 
-    logger.debug("Read %d items from list: %s" % (len(listHash),listFile))
+    logger.debug("Read %d items from list: %s" % (len(items),listFile))
 
-    return listHash
+    return items
 
 ##
 # readClusterFile(file)
@@ -480,7 +480,7 @@ def get_screen_list(arguments, accs=False):
 
     If accs==True, remove version (s/\.\d+$//) from accessions.
 
-    Uses parseListToMap to do the actual parsing
+    Uses parse_list_to_set() to do the actual parsing
     """
     if accs:
         # hack the keyType to do our regex subs
@@ -495,7 +495,7 @@ def get_screen_list(arguments, accs=False):
         if arguments.galaxy:
             arguments.listColumn-=1
 
-    return parseListToMap(arguments.listFile, col=arguments.listColumn, delim=arguments.listDelim, keyType=translator)
+    return parse_list_to_set(arguments.listFile, col=arguments.listColumn, delim=arguments.listDelim, keyType=translator)
 
 def parseAcc(read):
     #logging.info("looking for acc in %s" % (repr(read)))

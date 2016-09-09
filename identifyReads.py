@@ -14,7 +14,7 @@ import sys, re, os, logging
 from edl.taxon import *
 from edl.blastm8 import filterM8Stream
 from edl.hits import *
-from edl.util import parseMapFile, addUniversalOptions, setupLogging, parseListToMap, inputIterator, addIOOptions
+from edl.util import parseMapFile, addUniversalOptions, setupLogging, parse_list_to_map, inputIterator, addIOOptions
 from edl.expressions import nrOrgRE
 
 def main():
@@ -58,11 +58,11 @@ def main():
     else:
         taxonomy = None
 
-    group1Map=getGroupMap(options.group1,taxonomy)
-    group2Map=getGroupMap(options.group2,taxonomy)
-    logging.debug("Group 1 has %d entries and 439482 in group1 is %s" % (len(group1Map),group1Map.get(439482,False)))
-    if group2Map is not None:
-        logging.debug("Group 2 has %d entries and 439482 in group2 is %s" % (len(group2Map),group2Map.get(439482,False)))
+    group_1_set=get_group_set(options.group1,taxonomy)
+    group_2_set=get_group_set(options.group2,taxonomy)
+    logging.debug("Group 1 has %d entries and 439482 in group1 is %s" % (len(group_1_set),439482 in group_1_set))
+    if group_2_set is not None:
+        logging.debug("Group 2 has %d entries and 439482 in group2 is %s" % (len(group_2_set),439482 in group_2_set))
 
     # map reads to hits
     if options.parseStyle==GIS:
@@ -105,7 +105,7 @@ def main():
                 for taxid in getTaxid(hit,accToTaxMap,taxonomy):
                     if taxid is None:
                         break
-                    if group2Map is not None and not group2Map.get(taxid,False):
+                    if group_2_set is not None and taxid not in group_2_set:
                         break
                     taxids.append(taxid)
                 if len(taxids)==0:
@@ -122,7 +122,7 @@ def main():
                 all=True
                 recognized=[]
                 for hit,taxids in _getBestHitTaxids(hitTaxids,bestScore,options.topHitPct):
-                    if _anyTaxidInGroup(taxids,group1Map):
+                    if _anyTaxidInGroup(taxids,group_1_set):
                         logging.debug("%s (%r)  is in group 1" % (hit,taxids))
 
                         recognized.append(hit)
@@ -155,9 +155,9 @@ def main():
         else:
             logging.info("Printed %d lines for %d of %d reads" % (printCount,goodReadCount, readCount))
 
-def _anyTaxidInGroup(taxids, groupMap):
+def _anyTaxidInGroup(taxids, group_set):
     for taxid in taxids:
-        if groupMap.get(taxid,False):
+        if taxid in group_set:
             return True
     return False
 
@@ -189,22 +189,22 @@ def _getHitdescTaxid(hit,taxmap,taxonomy):
     if taxon is not None:
         yield taxon
 
-def getGroupMap(groups,taxonomy):
+def get_group_set(groups,taxonomy):
     """
-    Return map from all indicated taxids to True
+    Return set of all indicated taxids 
     input may be a taxid, taxon name, or file listing taxids
     """
     if groups is None or len(groups)==0:
         return None
-    taxidmap={}
+    taxidset=set()
     for group in groups:
         if os.path.isfile(group):
-            taxidmap.update(parseListToMap(group,keyType=int))
+            taxidset.update(parse_list_to_set(group,keyType=int))
         else:
             taxon = getTaxonFromArg(taxonomy, group)
-            taxidmap.update( createTaxMap(taxon) )
+            taxidset.update( create_taxid_set(taxon) )
 
-    return taxidmap
+    return taxidset
 
 def generateMemberTaxids(node):
     for child in node.children:
@@ -212,11 +212,11 @@ def generateMemberTaxids(node):
             yield taxid
     yield node.id
 
-def createTaxMap(node):
-    idmap={}
+def create_taxid_set(node):
+    idset=set()
     for taxid in generateMemberTaxids(node):
-        idmap[taxid]=True
-    return idmap
+        idset.add(taxid)
+    return idset
 
 def getTaxonFromArg(taxonomy, arg):
     """

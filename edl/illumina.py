@@ -447,7 +447,7 @@ def pyTrim(infile, outfile, trimOptions, errFile=None, inputFormat='fastq', fast
     """
     Apply simple trimming using biopython
     trimOptions is an object with the vaules: endQuality, polyFrac, minLength
-    if reads is set to a dict of read names, only process named reads
+    if reads is a set or dict of read names, only process named reads
     if fastq is set to False, ouput fasta
     """
     records=SeqIO.parse(infile,format=inputFormat)

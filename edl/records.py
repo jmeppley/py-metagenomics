@@ -1,4 +1,4 @@
-from edl.util import parseListToMap
+from edl.util import parse_list_to_set
 
 def recordIterator(stream, separatorRE, idRE=None):
     """
@@ -36,21 +36,21 @@ def recordIterator(stream, separatorRE, idRE=None):
     if recordId is not None:
         yield (recordId, recordLines)
 
-def screenRecords(stream, separatorRE, idRE=None, keep=False, screenMap=None, screenFile=None):
+def screenRecords(stream, separatorRE, idRE=None, keep=False, screen_set=None, screenFile=None):
     """
     uses recordIterator(strean, separatorRE, idRE) to parse input into records
-    uses screenMap (can be read from screenFile) to identify records 
+    uses screen_set (can be read from screenFile) to identify records 
     identified records are kept or skipped based on the value of keep
     """
 
-    if screenMap is None:
+    if screen_set is None:
         if screenFile is None:
             raise Exception("Please supply a hash(Python map) or file of record keys")
         else:
-            screenMap=parseListToMap(screenFile)
+            screen_set=parse_list_to_set(screenFile)
 
     for (recordId, recordLines) in recordIterator(stream,separatorRE,idRE=idRE):
-        screened = recordId in screenMap
+        screened = recordId in screen_set
         if screened == keep:
             for line in recordLines:
                 yield line
