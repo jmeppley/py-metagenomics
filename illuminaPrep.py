@@ -172,7 +172,7 @@ def trimUnpairedReads(urList, fwd, rev, trimLimits, out, inputFormat, gap, fastq
         fake join
         append to out file
     """
-    reads=parseListToMap(urList)
+    reads=parse_list_to_set(urList)
     #if fake:
     logging.info("Submitting %d reads to be joined with %d N's" % (len(reads),gap))
     outstream = open(out,'a')
