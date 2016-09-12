@@ -73,7 +73,7 @@ class FilterParams:
         logging.debug("%r" % (params))
         return params
 
-    def __init__(self, format=GENE, topPct=-1, bits=0.0, evalue=None, pctid=0.0, length=0, aln=None,hitsPerRead=0,hspsPerHit=0,nonoverlapping=False, sort=None, sortReads=None):
+    def __init__(self, format=GENE, topPct=-1, bits=0.0, evalue=None, pctid=0.0, length=0, aln=None,hitsPerRead=0,hspsPerHit=0,nonoverlapping=False, sort=None, sortReads=None, bad_refs=None):
         self.format=format
         self.topPct=topPct
         self.bits=bits
@@ -86,6 +86,7 @@ class FilterParams:
         self.nonoverlapping=nonoverlapping
         self.sortReads=sortReads
         self.sort=sort
+        self.bad_refs=None
 
     def __repr__(self):
         return "FilterParams(format=%r, topPct=%r, bits=%r, evalue=%r, pctid=%r, length=%r, aln=%r, hitsPerRead=%r, hspsPerHit=%r, nonoverlapping=%r sort=%r, sortReads=%r)" % (self.format, self.topPct, self.bits, self.evalue, self.pctid, self.length, self.aln, self.hitsPerRead, self.hspsPerHit, self.nonoverlapping, self.sort, self.sortReads)
@@ -748,6 +749,9 @@ def doWeNeedToFilter(options):
     return False
 
 def filterHits(hits, options, returnLines=True):
+    if self.bad_refs:
+        hits = [h for h in hits if h not in self.bad_refs]
+
     # A topPct cutoff, requires finding the top score first
     if options.topPct >= 0:
         # get the best score in this set of hits
@@ -781,7 +785,7 @@ def filterHits(hits, options, returnLines=True):
         if options.format != LAST0 and options.evalue is not None and hit.evalue>options.evalue:
             logger.debug("evalue too high: %r" % hit.evalue)
             continue
-        if hit.pctid > 0 and hit.pctid<options.pctid:
+        if options.pctid>0 and hit.pctid > 0 and hit.pctid<options.pctid:
             logger.debug("pct ID too low: %r < %r" % (hit.pctid,options.pctid))
             continue
         if hit.mlen<options.length:
