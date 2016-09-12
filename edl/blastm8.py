@@ -181,7 +181,8 @@ class Hit:
         try:
             self.pctid=float(cells[3])
         except:
-            self.pctid=0
+            # leave unset if it's not a float
+            pass
         self.mlen=int(cells[4])
         self.qstart=int(cells[5])
         self.qend=int(cells[6])
@@ -209,8 +210,6 @@ class Hit:
         self.qlen=len(cells[9])
         if pctid is not None:
             self.pctid=pctid
-        else:
-            self.pctid=0
         for tagstr in cells[11:]:
             if len(tagstr)>2 and tagstr[:2]=='AS':
                 self.score = float(tagstr.split(":")[2])
@@ -235,7 +234,6 @@ class Hit:
         self.qstart=int(cells[17])
         self.qend=int(cells[18])
         self.hitDesc=cells[22]
-        self.pctid=0
         self.mlen=1+self.qend-self.qstart
         self.aln=self.mlen/float(qlen)
 
@@ -249,8 +247,6 @@ class Hit:
         self.evalue=float(cells[4])
         self.score=float(cells[5])
         self.hitDesc=cells[18]
-        self.pctid=0
-        self.mlen=0
 
     #target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
     def parseHmmSearchDomLine(self, line):
@@ -268,7 +264,6 @@ class Hit:
         self.qstart=int(cells[17])
         self.qend=int(cells[18])
         self.readDesc=cells[22]
-        self.pctid=0
         self.mlen=1+self.qend-self.qstart
         self.aln=self.mlen/float(qlen)
 
@@ -282,8 +277,6 @@ class Hit:
         self.evalue=float(cells[4])
         self.score=float(cells[5])
         self.readDesc=cells[18]
-        self.pctid=0
-        self.mlen=0
 
     #target name           accession query name           accession mdl mdl from   mdl to seq from   seq to strand trunc pass   gc  bias  score   E-value inc description of target
     def parseCmSearchLine(self, line):
@@ -301,7 +294,6 @@ class Hit:
         self.evalue=float(cells[15])
         self.score=float(cells[14])
         self.readDesc=cells[17]
-        self.pctid=0
         self.mlen=self.hend-self.hstart+1
 
     #target name         accession query name           accession mdl mdl from   mdl to seq from   seq to strand trunc pass   gc  bias  score   E-value inc description of target
@@ -320,7 +312,6 @@ class Hit:
         self.evalue=float(cells[15])
         self.score=float(cells[14])
         self.readDesc=cells[17]
-        self.pctid=0
         self.mlen=self.hend-self.hstart+1
 
     # score name1   start1  alnSize1        strand1 seqSize1        name2   start2  alnSize2   strand2 seqSize2        blocks
@@ -360,7 +351,6 @@ class Hit:
 
         # some versions have evalues in the last few spots (eg: E=2.1e-09)
         self.evalue=float(cells[13][2:].strip()) if len(cells)>13 else None
-        self.pctid=None
         self.mlen=computeLastHitValues(cells[11])
         self.hitDesc=None
         logger.debug("Span: %d-%d" % (self.qstart,self.qend))
@@ -432,6 +422,7 @@ class Hit:
         self.hitDesc=hit_data.get('product',cells[8])
         self.evalue=self.score
         self.mlen=self.qend+1- self.qstart
+    
 
     def getAln(self):
         try:
@@ -781,9 +772,17 @@ def filterHits(hits, options, returnLines=True):
         if options.format != LAST0 and options.evalue is not None and hit.evalue>options.evalue:
             logger.debug("evalue too high: %r" % hit.evalue)
             continue
-        if hit.pctid > 0 and hit.pctid<options.pctid:
-            logger.debug("pct ID too low: %r < %r" % (hit.pctid,options.pctid))
-            continue
+        
+        # PCTID
+        try:
+            if hit.pctid<options.pctid:
+                logger.debug("pct ID too low: %r < %r" % \
+                               (hit.pctid,options.pctid))
+                continue
+        except AttributeError:
+            if options.pctid>0:
+                raise Exception("This hit type (%s) does not have a PCTID defined. You cannot filter by PCTID" % (hit.format))
+
         if hit.mlen<options.length:
             logger.debug("hit too short: %r" % hit.mlen)
             continue
