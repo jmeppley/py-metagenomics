@@ -1,4 +1,4 @@
-import re, logging, sys, os, numpy
+import re, logging, sys, os, numpy, argparse, random
 from edl import __version__ 
 from edl.expressions import accessionRE
 logger=logging.getLogger(__name__)
@@ -358,61 +358,56 @@ def tupleIteratorToMap(iterator):
         retMap[key]=value
     return retMap
 
-def addIOOptions(parser, defaults={}):
-    parser.add_option("-o", "--outfile", dest="outfile",
-                      metavar="OUTFILE", help="Write output to OUTFILE. Interpreted as a suffix if multiple input files given. Defaults to STDOUT.")
-    parser.add_option("--cwd", default=False, action='store_true', help="If creating multiple output files from multiple inputs, create output files in current directory, not in directory with input files. (By default, a suffix is appended to the full path of the input file)")
+def add_IO_arguments(parser, defaults={}):
+    parser.add_argument("-o", "--outfile", dest="output_file",
+                        metavar="OUTFILE", help="Write output to OUTFILE. Interpreted as a suffix if multiple input files given. Defaults to STDOUT.")
+    parser.add_argument("--cwd", default=False, action='store_true', help="If creating multiple output files from multiple inputs, create output files in current directory, not in directory with input files. (By default, a suffix is appended to the full path of the input file)")
+    parser.add_argument("input_files", nargs="*", 
+                        type=argparse.FileType('r'),
+                        default=[sys.stdin,],
+                        metavar="INFILE",
+                        help="List of input files. Omit to read from STDIN")
 
-#def inputIterator(infileNames, outfileName, infileName=None, cwd=True):
-def inputIterator(infileNames, options):
+def inputIterator(arguments):
     """
-    take list of input files from infileName (which can be None) and infileNames (which is a list of any length)
-    if no file names give, read from stdin
+    processes arguments from add_IO_arguments:
+     input_files: list of file(...,'r') objects
+     output_file: file name or prefix
+    if no input file names give, read from stdin
     if outfile is not given, pritn to stdout
     if multiple infiles, treat outfile as suffix
     if cwd set to False (for multipleinpus) create output files in same dir as inputs. Otherwise, create files in current dir withinput names plus suffix
 
     yields pairs of input and output streams as 2-element tuples
     """
-    outfileName=options.outfile
-    if 'infile' in dir(options) and options.infile is not None:
-        infileNames.append(options.infile)
-    if len(infileNames)==0:
-        inhandle=sys.stdin
-        if outfileName==None:
-            logger.info("IO: STDIN -> STDOUT")
+    outfile_name=arguments.output_file
+    infiles=arguments.input_files
+    if len(infiles)==1:
+        inhandle=infiles[0]
+        infile_name=inhandle.name
+        if outfile_name==None:
+            logger.info("IO: %s -> STDOUT" % infile_name)
             yield (inhandle,sys.stdout)
         else:
-            outhandle=open(outfileName,'w')
-            logger.info("IO: STDIN -> %s" % outfileName)
-            yield(inhandle,outhandle)
-            outhandle.close()
-    elif len(infileNames)==1:
-        infileName=infileNames[0]
-        inhandle=open(infileName)
-        if outfileName==None:
-            logger.info("IO: %s -> STDOUT" % infileName)
-            yield (inhandle,sys.stdout)
-        else:
-            outhandle=open(outfileName,'w')
-            logger.info("IO: %s -> %s" % (infileName,outfileName))
+            outhandle=open(outfile_name,'w')
+            logger.info("IO: %s -> %s" % (infile_name,outfile_name))
             yield(inhandle,outhandle)
             outhandle.close()
         inhandle.close()
     else:
-        for infileName in infileNames:
-            inhandle=open(infileName)
-            if outfileName==None:
-                logger.info("IO: %s -> STDOUT" % (infileName))
+        for inhandle in infiles:
+            infile_name = inhandle.name
+            if outfile_name==None:
+                logger.info("IO: %s -> STDOUT" % (infile_name))
                 yield (inhandle,sys.stdout)
             else:
-                # use outfileName as suffix
+                # use outfile_name as suffix
                 if options.cwd:
                     # strip path info first
-                    (infilePath,infileName)=os.path.split(infileName)
-                    infileName="./"+infileName
-                outhandle=open("%s%s" % (infileName,outfileName),'w')
-                logger.info("IO: %s -> %s%s" % (infileName,infileName,outfileName))
+                    (infile_path,infile_name)=os.path.split(infile_name)
+                    infile_name="./"+infile_name
+                outhandle=open("%s%s" % (infile_name,outfile_name),'w')
+                logger.info("IO: %s -> %s%s" % (infile_name,infile_name,outfile_name))
                 yield (inhandle,outhandle)
                 outhandle.close()
             inhandle.close()
@@ -589,33 +584,52 @@ def rightPad(name, width):
         name+=' '
     return name
 
-def reservoirSample(iterator, N=100, returnCount=False):
+def indexed_sample_generator(records, N, P=None):
+    """
+    Generate a random sample of N records from interator "records".
+
+    If the total numer of records in terator (P) is not specified, 
+    then reservoir sampling (storing entire sample in RAM) will be used!
+    """
+    if P>0:
+        # use random.sample to get list of indices ahead of time
+        indexes_to_return = set(random.sample(range(P),N))
+
+        # return just records with tose indices
+        for i, record in enumerate(records):
+            if i in indexes_to_return:
+                yield record
+    else:
+        # We don't know how many records to expect, so use reservoir
+        for record in reservoir_sample(records, N=N, return_count=False):
+            yield record
+
+def reservoir_sample(iterator, N=100, return_count=False):
     """
     Randomly sample N items from an iterator of unknown size. Returns a list of the
     selected items. 
     
     If the iterator returns fewer than N items, all will be in the sample, but the sample will not have N elements.
     
-    IF returnCount set to true, return value is tuple: (sample, totalItemsFromIterator)
+    IF return_count set to true, return value is tuple: (sample, totalItemsFromIterator)
     """
     
     sample = []
-    i=0
 
     numerator = float(N)
-    for item in iterator:        
-        i+=1
+    for i,item in enumerate(iterator):
+        n=i+1
         val = numpy.random.rand()
-        if i <= N:
+        if n <= N:
             # Fill up sample with first N elements
             sample.append(item)
-        elif val < numerator/i:
+        elif val < numerator/n:
             # Replace random item in sample 
             # with next element with probabliity N/i
             sample[numpy.random.random_integers(0,N-1)]=item
             
-    if returnCount:
-        return (sample, i)
+    if return_count:
+        return (sample, n)
     else:
         return sample
 

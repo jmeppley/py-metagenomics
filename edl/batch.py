@@ -109,6 +109,25 @@ OR set the record separator pattern with '-p PATTERN' where PATTERN is a regular
 """ % (filename, fileExtensionMap.keys(), fileExtensionMap.keys()))
         sys.exit(65)
 
+def get_total_size(inhandle, file_type, split_on_size=False):
+    """
+    Get the total size of all records
+    """
+    if splitOnSize:
+        # get a custom function that returns the size of this type of record
+        recordSizer=file_type.sizer
+    else:
+        # just return 1 for each record
+        recordSizer=recordCounter
+
+    # loop through records
+    total_size = 0
+    for record in file_type.recordStreamer(inhandle):
+        total_size+=recordSizer(record)
+
+    return total_size
+
+
 def getSizePerChunk(infile, splits, fileType, splitOnSize=False):
     """
     Get total size of all records and return target size for each chunk to end up with number of chunks specified by 'splits'
@@ -116,18 +135,8 @@ def getSizePerChunk(infile, splits, fileType, splitOnSize=False):
     if infile is None:
         raise Exception("We cannot determine chunk size from STDIN!")
 
-    if splitOnSize:
-        # get a custom function that returns the size of this type of record
-        recordSizer=fileType.sizer
-    else:
-        # just return 1 for each record
-        recordSizer=recordCounter
-
-    # loop through records
     inhandle = openInputFile(infile)
-    totalSize = 0
-    for record in fileType.recordStreamer(inhandle):
-        totalSize+=recordSizer(record)
+    total_size = get_total_size(inhandle, fileType, split_on_size=splitOnSize)
     inhandle.close()
 
     return calculateChunkSize(totalSize,splits)
@@ -281,23 +290,24 @@ def linedRecordGenerator(fileType, stream):
     if len(lastRecord)>0:
         yield lastRecord
 
-def addRecordParsingOptions(parser):
-    parser.add_option("-L", "--recordLines", metavar="NUMLINES", dest='numLines', default=None, type="int",
+def add_record_parsing_arguments(parser):
+    parser.add_argument("-L", "--recordLines", metavar="NUMLINES", \
+                       dest='numLines', default=None, type=int, \
                        help="Number of lines per record")
-    parser.add_option("-P", "--pattern", metavar="PATTERN", dest='pattern', default=None,
+    parser.add_argument("-P", "--pattern", metavar="PATTERN", dest='pattern', default=None,
                        help="Regular expression to split records")
-    parser.add_option("-T","--infileType", dest='infileType', default=None,
+    parser.add_argument("-T","--infileType", dest='infileType', default=None,
                       choices=fileTypeMap.keys(),
-                      help='Type of input file. Otherwise, choose by extension. Known types are: %choices')
+                      help='Type of input file. Otherwise, choose by extension. Known types are: %s' % (", ".join(fileTypeMap.keys())))
 
-def addFragmentingOptions(parser,defaults={"splits":400}):
-    addRecordParsingOptions(parser)
-    parser.add_option("-C", "--chunkSize", type="int", dest='chunk',  metavar="FRAG_SIZE",
+def add_fragmenting_arguments(parser,defaults={"splits":400}):
+    add_record_parsing_arguments(parser)
+    parser.add_argument("-C", "--chunkSize", type="int", dest='chunk',  metavar="FRAG_SIZE",
                       help="The number of records per fragment. Overrides NUM_FRAGS")
     default=defaults.get("splits",None)
-    parser.add_option("-N", "--numChunks", dest='splits', type='int', metavar="NUM_FRAGS", default=default,
+    parser.add_argument("-N", "--numChunks", dest='splits', type='int', metavar="NUM_FRAGS", default=default,
                       help="The number of fragments to create (defaults to %default)")
-    parser.add_option("-s", "--splitOnSize",  default=False, action='store_true',
+    parser.add_argument("-s", "--splitOnSize",  default=False, action='store_true',
                       help="create chunks based on record size, not number of records. For known sequence types (fasta, fastq, gb), sequence length is used, otherwize the full size of the record text is counted")
 
 #################
