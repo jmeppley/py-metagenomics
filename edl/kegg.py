@@ -380,10 +380,10 @@ def readKeggFile(keggFile, keggLevel):
                 # make sure we have something to map to
                 if desc=='':
                     die("Pathway info not found before ko: %s" % ko)
-                if kmap.has_key(ko):
+                try:
                     if desc not in kmap[ko]:
                         kmap[ko].append(desc)
-                else:
+                except KeyError:
                     kmap[ko]=[desc]
 
     else:
@@ -510,7 +510,7 @@ def test():
 
 def kegg_nosetest(ko_map, kegg_file):
     global myAssertEq, myAssertIs
-    from test import myAssertEq, myAssertIs
+    from edl.test import myAssertEq, myAssertIs
     testReadKeggFile(kegg_file)
     testParseGeneLink(ko_map)
     #testParseGeneKOMap(ko_map)
@@ -545,7 +545,7 @@ def testReadKeggFile(keggFile):
     myAssertEq(k3map['K07347'],['02000 Transporters', '02044 Secretion system', '02035 Bacterial motility proteins', '05133 Pertussis'])
     myAssertEq(k3map['K09630'],['01000 Enzymes', '01002 Peptidases'])
     k3mapQ=readKeggFile(keggFile,'3')
-    for k in k3map.iterkeys():
+    for k in k3map.keys():
         try:
             myAssertEq(k3map[k],k3mapQ[k])
         except AsserionError:

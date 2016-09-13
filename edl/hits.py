@@ -1,6 +1,6 @@
 from edl.util import parseMapFile
 from edl.taxon import getNodeFromHit, getAncestorClosestToRank, readTaxonomy, addTaxonomyDirOption
-from edl.blastm8 import filterM8Stream, FilterParams, formatsWithNoDescription, addHitTableOptions
+from edl.blastm8 import filterM8Stream, FilterParams, formatsWithNoDescription, add_hit_table_arguments
 from edl.expressions import accessionRE, nrOrgRE, koRE, giRE
 import logging
 logger=logging.getLogger(__name__)

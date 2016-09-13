@@ -77,10 +77,11 @@ def main():
                 P = arguments.population_size)
 
         # print out sampled records
-        for i,record in enumerate(sampled_records):
+        count=0
+        for record in sampled_records:
             outhandle.writelines(record)
-        logging.debug("Sampled %d of %d records" % (len(sampled_records),
-                                                    i+1))
+            count+=1
+        logging.debug("Sampled %d records" % (count))
 
 if __name__ == '__main__':
     main()

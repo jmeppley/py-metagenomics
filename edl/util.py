@@ -20,6 +20,9 @@ class LineCounter():
         self.lines+=1
         return line
 
+    def next(self):
+        return self.__next__()
+
 def checkNoneOption(value):
     """
     Check if a given option has been set to the string 'None' and return None if so. Otherwise return the value unchanged
@@ -79,151 +82,6 @@ def parseExp(string):
         return float(string)
     except ValueError:
         return float('1'+string)
-
-class Stack():
-    """
-    Created a linked list for fun
-    """
-    class Item():
-        def __init__(self, item, prev, next):
-            self.item = item
-            self.prev = prev
-            self.next = next
-
-        def getRepr(self):
-            """ return a repr style string of this item and everything after it """
-            thisRepr = repr(self.item)
-            if self.next is not None:
-                return thisRepr + ", " + self.next.getRepr()
-            else:
-                return thisRepr
-
-        def __repr__(self):
-            return repr(self.item)
-
-        def __str__(self):
-            return str(self.item)
-
-    def __init__(self,data=None):
-        self._first = None
-        self._last = None
-        if data is not None:
-            for val in data:
-                self.append(val)
-
-    def pop(self):
-        ret = self._last
-        if ret is not None:
-            self._last = ret.prev
-            self._last.next = None
-            if self._last is None:
-                self._first = None
-        return ret.item
-
-    def append(self, item):
-        new = Stack.Item(item,self._last,None)
-        if self._last is None:
-            self._first = new
-        else:
-            self._last.next = new
-        self._last = new
-
-    def shift(self, item):
-        new = Stack.Item(item,None,self._first)
-        if self._first is None:
-            self._last=new
-        else:
-            self._first.prev = new
-        self._first = new
-
-    def unshift(self):
-        ret = self._first
-        if ret is not None:
-           self._first = ret.next
-           self._first.prev = None
-           if self._first is None:
-               self._last = None
-        return ret.item
-
-    def __len__(self):
-       count = 0
-       item = self._first
-       while item is not None:
-           count+=1
-           item=item.next
-       return count
-
-    def isEmpty(self):
-       return self._first is None
-
-    def __getitem__(self, index):
-       if index>=0:
-           count = 0
-           item = self._first
-           if item is None:
-               raise IndexError("list index out of range")
-           while count<index:
-               try:
-                   count+=1
-                   item = item.next
-               except AttributeError:
-                   raise IndexError("list index out of range")
-           return item.item
-       if index<0:
-           count = -1
-           item = self._last
-           if item is None:
-               raise IndexError("list index out of range")
-           while count>index:
-               try:
-                   count-=1
-                   item = item.prev
-               except AttributeError:
-                   raise IndexError("list index out of range")
-           return item.item
-
-    def __repr__(self):
-       contents = ""
-       if self._first is not None:
-           contents = self._first.getRepr()
-       return "[%s]" % (contents)
-
-    def __getslice__(self,i,j):
-       #TODO
-       pass
-
-    def __iter__(self):
-        return Stack.Iter(self._first)
-
-    class Iter():
-       def __init__(self, item):
-           self._next = item
-
-       def __iter__(self):
-           return self
-
-       def next(self):
-           ret = self._next
-           if ret is None:
-               raise StopIteration
-           self._next = ret.next
-           return ret
-
-def testStack():
-    s1=Stack()
-    s1.shift(1)
-    s1.shift(2)
-    s1.shift(3)
-    assert(len(s1)==3)
-    s2=Stack((3,2,1))
-    assert(len(s2)==3)
-    assert(s2[2]==s1[-1])
-    assert(1==s1.pop())
-    s1.append(1)
-    assert(3==s2.unshift())
-    s2.shift(3)
-    assert(s1 is not s2)
-    assert(len(s2)==3)
 
 def passThrough(x):
     return x
@@ -583,6 +441,22 @@ def rightPad(name, width):
         # pad with trailing space to get to 13 characters
         name+=' '
     return name
+
+######
+# manipulating large collections
+
+def head(iterable, N=10):
+    """
+    yields the first N(=10) items of the given iterator or collection
+    """
+
+    iterator = iter(iterable)
+    while N>0:
+        N-=1
+        try:
+            yield(next(iterator))
+        except StopIteration:
+            break
 
 def indexed_sample_generator(records, N, P=None):
     """

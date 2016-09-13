@@ -17,7 +17,7 @@ class Taxonomy:
         self.realNameMap = realNameMap
         self.path = path
         if rootNode is None:
-            rootNode = idMap.itervalues().next().getRootNode()
+            rootNode = next(iter(idMap.values())).getRootNode()
         self.root=rootNode
 
     def __str__(self):
@@ -318,7 +318,7 @@ def deduceRankOrder(taxMap):
     import numpy as np
 
     logger.info("figuring out ranks!")
-    root = taxMap.values()[0].getRootNode()
+    root = next(iter(taxMap.values())).getRootNode()
 
     # this generates a map of tuples to counts
     #  comparisons[(ranka,rankb)] == 4  means ranka was an ancestor to rankb 4 times
@@ -776,11 +776,11 @@ def test_collapse_counts():
     try:
         assert collapsedCounts == expectedCounts
     except AssertionError:
-        print "total: %d, ctotal: %d" % (total,ctotal)
-        print str(counts)
-        print str(collapsedHits)
-        print str(collapsedCounts)
-        print str(expectedCounts)
+        print ( "total: %d, ctotal: %d" % (total,ctotal))
+        print ( str(counts))
+        print ( str(collapsedHits))
+        print ( str(collapsedCounts))
+        print ( str(expectedCounts))
         raise AssertionError
 
 def test_root_node():

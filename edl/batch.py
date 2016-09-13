@@ -113,7 +113,7 @@ def get_total_size(inhandle, file_type, split_on_size=False):
     """
     Get the total size of all records
     """
-    if splitOnSize:
+    if split_on_size:
         # get a custom function that returns the size of this type of record
         recordSizer=file_type.sizer
     else:

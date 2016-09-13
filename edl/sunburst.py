@@ -38,7 +38,7 @@ def convertToNx(counts, leaves=True, ranks=['superkingdom','class','genus'], col
     colorKey=kwargs.get(COLOR,COLOR)
 
     # merge counts for None in to counts for root
-    root = counts.keys()[0].getRootNode()
+    root = next(iter(counts.keys())).getRootNode()
     counts[root]=counts.get(root,0)+counts.pop(None,0)
 
     # set up graph
@@ -51,7 +51,7 @@ def convertToNx(counts, leaves=True, ranks=['superkingdom','class','genus'], col
     #for node, count in _nodeCountGenerator(root,counts):
     #for node in _treeGenerator(root):
     used = set([root,])
-    for node, count in counts.iteritems():
+    for node, count in counts.items():
         if node in used:
             # We've already seen this node
             continue
@@ -101,8 +101,8 @@ def convertToNx(counts, leaves=True, ranks=['superkingdom','class','genus'], col
             parent = parent.parent
         used.add(node)
 
-    #print G.nodes()
-    #print G.edges()
+    #print (G.nodes())
+    #print (G.edges())
     return (G,root)
 
 def isLeaf(taxon,counts):
@@ -169,7 +169,7 @@ def plotSunburst(tree, root=None, total=None, sort=None, **kwargs):
     logger.info("Generating sunburst")
 
     if root is None:
-        root=tree.nodes()[0].getRootNode()
+        root=next(iter(tree.nodes())).getRootNode()
 
     if total is None:
         total=sumCounts(tree, kwargs.get(VALUE,VALUE))
@@ -238,7 +238,7 @@ def radToDeg(angle):
 
 def getChildren(node,tree,sortType):
     if sortType is None:
-        return tree.edge[node].iterkeys()
+        return tree.edge[node].keys()
     else:
         return sorted(tree.edge[node].keys(),key=lambda n: tree.node[n].get(sortType,n))
 
@@ -281,7 +281,7 @@ def convertToJSON(nxTree,node):
     tree=nxTree.node[node]
     logger.debug("NX->JSON: %s(%d)" % (tree[NAME],tree[VALUE]))
     children=[]
-    for child in nxTree.edge[node].iterkeys():
+    for child in nxTree.edge[node].keys():
         children.append(convertToJSON(nxTree,child))
     if len(children)>0:
         tree[KIDS]=children
@@ -399,7 +399,7 @@ def sumCountsJSON(tree,**kwargs):
     treesum+=tree.get(kwargs.get(VALUE,VALUE),0)
     for kid in tree.get(kwargs.get(KIDS,KIDS),[]):
         treesum+=sumCountsJSON(kid,**kwargs)
-    #print "total=%s" % treesum
+    #print ("total=%s" % treesum)
     return treesum
 
 def applyCutoff(tree, cutoff, **kwargs):
@@ -464,7 +464,7 @@ def testNXConversion():
     testCounts[taxonomy.idMap[1291540]]=4
     testCounts[taxonomy.idMap[1236689]]=10
     usum=0
-    for count in testCounts.itervalues():
+    for count in testCounts.values():
         usum+=count
     logger.debug("..without species")
     (nxtreeo,rooto) = convertToNx(testCounts,ranks=['superkingdom','phylum','order'])
@@ -481,7 +481,7 @@ def testNXConversion():
     testCounts[taxonomy.idMap[115531]]=3
     testCounts[taxonomy.idMap[379547]]=10
     usum=0
-    for count in testCounts.itervalues():
+    for count in testCounts.values():
         usum+=count
     (nxtreeo,rooto) = convertToNx(testCounts,ranks=['superkingdom','phylum','order'])
     (nxtreeos,rootos) = convertToNx(testCounts,ranks=['superkingdom','phylum','order','species'])
@@ -502,7 +502,7 @@ def testNXConversion():
          taxonomy.idMap[1236689]: 10,
          taxonomy.idMap[1291540]: 4}
     usum=0
-    for count in testCounts.itervalues():
+    for count in testCounts.values():
         usum+=count
     (nxtreeo,rooto) = convertToNx(testCounts,ranks=['superkingdom','phylum','order'])
     (nxtreeos,rootos) = convertToNx(testCounts,ranks=['superkingdom','phylum','order','species'])
@@ -518,7 +518,7 @@ def testNXJSON():
     testCounts[taxonomy.idMap[1236689]]=10
     testCounts[taxonomy.idMap[1032475]]=520
     usum=0
-    for count in testCounts.itervalues():
+    for count in testCounts.values():
         usum+=count
     (nxtreeo,rooto) = convertToNx(testCounts,ranks=['superkingdom','phylum','order'])
     (nxtreeos,rootos) = convertToNx(testCounts,ranks=['superkingdom','phylum','order','species'])
@@ -534,7 +534,7 @@ def testNXJSON():
     testCounts[taxonomy.idMap[115531]]=3
     testCounts[taxonomy.idMap[379547]]=10
     usum=0
-    for count in testCounts.itervalues():
+    for count in testCounts.values():
         usum+=count
     (nxtreeo,rooto) = convertToNx(testCounts,ranks=['superkingdom','phylum','order'])
     (nxtreeos,rootos) = convertToNx(testCounts,ranks=['superkingdom','phylum','order','species'])
@@ -556,7 +556,7 @@ def testNXJSON():
          taxonomy.idMap[1236689]: 10,
          taxonomy.idMap[1291540]: 4}
     usum=0
-    for count in testCounts.itervalues():
+    for count in testCounts.values():
         usum+=count
     (nxtreeo,rooto) = convertToNx(testCounts,ranks=['superkingdom','phylum','order'])
     (nxtreeos,rootos) = convertToNx(testCounts,ranks=['superkingdom','phylum','order','species'])

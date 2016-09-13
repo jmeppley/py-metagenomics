@@ -740,8 +740,8 @@ def doWeNeedToFilter(options):
     return False
 
 def filterHits(hits, options, returnLines=True):
-    if self.bad_refs:
-        hits = [h for h in hits if h not in self.bad_refs]
+    if options.bad_refs:
+        hits = [h for h in hits if h not in options.bad_refs]
 
     # A topPct cutoff, requires finding the top score first
     if options.topPct >= 0:
