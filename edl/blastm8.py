@@ -818,7 +818,7 @@ def filterHits(hits, options, returnLines=True):
         else:
             yield hit
 
-def add_hit_table_arguments(parser, defaults={}, flags=['format','filterPct','sortReads']):
+def add_hit_table_arguments(parser, defaults={}, flags=['format','filterPct']):
     """
     Set up command line arguments for parsing and filtering an m8 file. By default, only the --format and --filterPct options are added, but any of the following can be enabled using the flags= keyword.
 

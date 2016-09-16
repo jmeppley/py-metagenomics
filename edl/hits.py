@@ -1,5 +1,5 @@
 from edl.util import parseMapFile
-from edl.taxon import getNodeFromHit, getAncestorClosestToRank, readTaxonomy, addTaxonomyDirOption
+from edl.taxon import getNodeFromHit, getAncestorClosestToRank, readTaxonomy, add_taxonomy_dir_argument
 from edl.blastm8 import filterM8Stream, FilterParams, formatsWithNoDescription, add_hit_table_arguments
 from edl.expressions import accessionRE, nrOrgRE, koRE, giRE
 import logging
@@ -775,22 +775,23 @@ def _findAllREfunction(hit, expr):
 
 # end helper functions for processHits
 
-def addTaxonOptions(parser,defaults={},choices={}):
+def add_taxon_arguments(parser,defaults={},choices={}):
     # get format and filterPct options from blastm8
-    addHitTableOptions(parser,defaults)
+    add_hit_table_arguments(parser,defaults,
+            flags=['format','filterPct'])
 
     # specific to taxon parsing:
-    parser.add_option("-m", "--mapFile", dest="mapFile",
+    parser.add_argument("-m", "--mapFile", dest="mapFile",
                       default=defaults.get("mapFile",None),
                       metavar="MAPFILE", help="Location of file containing table of with db hit name as first column and taxa or taxonids in second column. Defaults to '%s'" % (defaults.get("mapFile",None)))
-    parser.add_option("-p", "--parseStyle",
+    parser.add_argument("-p", "--parseStyle",
                       default=defaults.get("parseStyle",ACCS),
                       choices=[ACCS,GIS,ORGS,HITID,HITDESC],
                       help="What should be parsed from the hit table: accessions('accs'), 'gis', organsim names in brackets ('orgs'), the full hit name('hitid'), or the full hit description('hitdesc'). (defaults to '%s')" % (defaults.get("parseStyle",ACCS)))
-    parser.add_option("-C", "--countMethod", dest="countMethod", default=defaults.get("countMethod","first"), choices=choices.get('countMethod',('first','most','all','LCA','consensus')),
-                      help="How to deal with counts from multiple hits. (first, most: can return multiple hits, LCA: MEGAN-like, rLCA: redistributed LCA, all: return every hit, consensus: return None unless all the same). Do not use most or consensus with more than one rank at a time. Default is %s" % (defaults.get("countMethod","first")),
+    parser.add_argument("-C", "--countMethod", dest="countMethod", default=defaults.get("countMethod","first"), choices=choices.get('countMethod',('first','most','all','LCA','consensus')),
+                      help="How to deal with counts from multiple hits. (first, most: can return multiple hits in case of a tie, LCA: MEGAN-like, all: return every hit, consensus: return None unless all the same). Default is %s" % (defaults.get("countMethod","first")),
                     metavar="COUNTMETHOD")
-    addTaxonomyDirOption(parser, defaults)
+    add_taxonomy_dir_argument(parser, defaults)
 
 def readMaps(options, namesMap=False):
     """

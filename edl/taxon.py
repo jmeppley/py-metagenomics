@@ -826,8 +826,8 @@ def test_read_ncbi(ndir):
 
     return taxIds
 
-def addTaxonomyDirOption(parser, defaults={}):
-    parser.add_option("-n", "--ncbiTaxDir", dest="taxdir", metavar="PATH", default=defaults.get("taxdir",None),
+def add_taxonomy_dir_argument(parser, defaults={}):
+    parser.add_argument("-n", "--ncbiTaxDir", dest="taxdir", metavar="PATH", default=defaults.get("taxdir",None),
                       help="Directory with unpacked ncbi tax dump (specifically names.dmp and nodes.dmp) and use to translate org names in desc, otherwise try to find lineage info in desc. Default is: %s" % (defaults.get("taxdir",None)))
 
 
