@@ -1,6 +1,12 @@
 #! /usr/bin/python
 """
+Takes a single hit table file and generates a table (or tables) of pathway/gene family assignments for the query sequences (aka 'reads'). Assignments can be for gene families, gene classes, or pathways. Multiple pathway or classification levels can be given. If they are, an assignment will be made at each level.
+    This differs from assignPathsToReadsFromBlast.py in that: (1) it can handle CAZy and SEED, (2) it will output multiple levels in one file, (3) multiple assignments are always printed on multiple lines.
+    This script will work with KEGG, SEED, or CAZy. CAZy only has one level of heirarchy, the others have 3. The CAZy heirarchy is apparent from the hit name and needs no supporting files. KEGG and SEED require mapping files to identify gene families and heirachy files to report levels other than the gene family or ortholog level. Both SEED and KEGG have three levels of classifications that can be indicated with a 1, 2, or 3. The words "subsystem" and "pathway" are synonyms for level 3.
+    If a count method is selected that can produce multiple assignments per read, each assignment will be printed on a new line. 
+    NOTE: in KEGG (and SEED) a single ortholog (role) may belong to multiple pathways (subsystems). A hit to such an ortholog will result in extra assignment values for that query sequence (1 for each pathway it belongs to). 
 """
+
 from optparse import OptionParser
 import sys, re, logging
 from edl import redistribute, kegg, hits
@@ -9,14 +15,8 @@ from edl.expressions import accessionRE, nrOrgRE
 
 def main():
     usage = "usage: %prog [OPTIONS] BLAST_M8_FILE[S]"
-    description = """
-Takes a single m8 blast file and generates a table (or tables) of pathway/gene family assignments for the query sequences (aka 'reads'). Assignments can be for gene families, gene classes, or pathways. Multiple pathway or classification levels can be given. If they are, an assignment will be made at each level.
-    This differs from assignPathsToReadsFromBlast.py in that: (1) it can handle CAZy and SEED, (2) it will output multiple levels in one file, (3) multiple assignments are always printed on multiple lines.
-    This script will work with KEGG, SEED, or CAZy. CAZy only has one level of heirarchy, the others have 3. The CAZy heirarchy is apparent from the hit name and needs no supporting files. KEGG and SEED require mapping files to identify gene families and heirachy files to report levels other than the gene family or ortholog level. Both SEED and KEGG have three levels of classifications that can be indicated with a 1, 2, or 3. The words "subsystem" and "pathway" are synonyms for level 3.
-    If a count method is selected that can produce multiple assignments per read, each assignment will be printed on a new line. 
-    NOTE: in KEGG (and SEED) a single ortholog (role) may belong to multiple pathways (subsystems). A hit to such an ortholog will result in extra assignment values for that query sequence (1 for each pathway it belongs to). 
-    """
-    parser = OptionParser(usage, description=description)
+    description = __doc__
+   parser = OptionParser(usage, description=description)
     addIOOptions(parser)
     parser.add_option("-l", "--level", dest="levels", default=None,
                       metavar="LEVEL", action="append",
