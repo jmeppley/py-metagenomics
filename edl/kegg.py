@@ -5,7 +5,6 @@ Library of methods and regular expressions for parsing files from the KEGG gene 
 
 import sys, re, logging, os
 logger=logging.getLogger(__name__)
-from optparse import OptionGroup
 
 ##############
 # Classes    #
@@ -449,23 +448,23 @@ def processBriteFile(pathway, desc, file1, kmap):
     except IOError:
         logging.warn("Cannot parse brite pathway: %s from %s" % (pathway,briteFile))
 
-def addPathOptions(parser,defaults={},choices={}):
-    # get format and filterPct options from blastm8
-    from edl.hits import addHitTableOptions, HITID, ACCS, GIS, KEGG, HITDESC
-    addHitTableOptions(parser,defaults)
+def add_path_arguments(parser,defaults={},choices={}):
+    # get format and filterPct arguments from blastm8
+    from edl.blastm8 import add_hit_table_arguments, HITID, ACCS, GIS, KEGG, HITDESC
+    add_hit_table_arguments(parser,defaults)
 
     # specific to pathway parsing:
-    pgroup = OptionGroup(parser, "Pathway Options", """These options control the mapping of hits to gene function heirarchies like KEGG or SEED""")
-    pgroup.add_option("-m", "--mapFile", dest="mapFile",
+    pgroup = parser.add_argument_group("Pathway Arguments", """These arguments control the mapping of hits to gene function heirarchies like KEGG or SEED""")
+    pgroup.add_argument("-m", "--mapFile", dest="mapFile",
                       default=defaults.get("mapFile",None),
                       metavar="MAPFILE", help="Location of file containing table of with db hit name as first column and geneIDs (Knumber) in second column.")
-    pgroup.add_option("-M", "--mapStyle", default='auto', choices=['auto','kegg','tab','seed'],
-                      help="What type of mapping file are you using: simple tab separated list of IDs and kos/subsystems/domains, the genes_ko.list file from KEGG (which adds ko: to the K numbers and can have multiple records for each gene id), or the 3 column file from SEED. By default, this script will inspect the file and guess, but you can force 'kegg', 'seed' or 'tab' with this option.")
-    pgroup.add_option("-p", "--parseStyle",
+    pgroup.add_argument("-M", "--mapStyle", default='auto', choices=['auto','kegg','tab','seed'],
+                      help="What type of mapping file are you using: simple tab separated list of IDs and kos/subsystems/domains, the genes_ko.list file from KEGG (which adds ko: to the K numbers and can have multiple records for each gene id), or the 3 column file from SEED. By default, this script will inspect the file and guess, but you can force 'kegg', 'seed' or 'tab' with this argument.")
+    pgroup.add_argument("-p", "--parseStyle",
                       default=defaults.get("parseStyle",HITID),
                       choices=[ACCS,GIS,KEGG,HITID,HITDESC],
                       help="What should be parsed from the hit table: accessions('accs'), 'gis', K numbers in description ('kegg'), the full hit name('hitid'), or the full hit description('hitdesc'). (defaults to '%s')" % (defaults.get("parseStyle",HITID)))
-    pgroup.add_option("-C", "--countMethod", dest="countMethod",
+    pgroup.add_argument("-C", "--countMethod", dest="countMethod",
             default=defaults.get("countMethod","first"),
             choices=choices.get('countMethod',('first','most','all','consensus')),
             help="How to deal with counts from multiple hits. (first, most: can return multiple hits, all: return every hit, consensus: return None unless all the same). Do not use most or consensus with more than one level at a time. Default is %s" % (defaults.get("countMethod","first")),
@@ -478,17 +477,17 @@ def addPathOptions(parser,defaults={},choices={}):
         action='store_true'
         default=False
         helpstr='Ignore hits with no entry in pathway map (-m). By default all hits are used and if the best hit(s) is(are) to sequences with no path, then the read will not be assigned to a path'
-    pgroup.add_option("-r","--filterForPath",action=action, dest="mappedHitsOnly",
+    pgroup.add_argument("-r","--filterForPath",action=action, dest="mappedHitsOnly",
             default=default, help=helpstr)
-    addPathwaysOption(pgroup, defaults)
-    parser.add_option_group(pgroup)
+    add_pathways_argument(pgroup, defaults)
+    parser.add_argument_group(pgroup)
 
-def addPathwaysOption(parser, defaults={}):
-    parser.add_option("-T", "--heirarchyType", 
+def add_pathways_argument(parser, defaults={}):
+    parser.add_argument("-T", "--heirarchyType", 
             default=defaults.get("heirarchyType",'kegg'),
             choices=['kegg','seed','cazy','cog','kegg_module'],
             help="What kind of functional heirarchy to use. 'kegg', seed', or 'cazy'. Defaults to '%s'" % (defaults.get("heirarchyType",'kegg')))
-    parser.add_option("-H", "--heirarchyFile", metavar="HEIRARCHY_FILE",
+    parser.add_argument("-H", "--heirarchyFile", metavar="HEIRARCHY_FILE",
                     default=defaults.get('heirarchyFile',None),
                   help="File containing pathway/subsystem/genefaimly heirarchy (either ko or ko00001.keg for KEGG or susbsys.txt for SEED). Defaults to %s" % (defaults.get('heirarchyFile', None)))
 

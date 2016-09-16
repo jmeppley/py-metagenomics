@@ -7,18 +7,17 @@ Takes a single hit table file and generates a table (or tables) of pathway/gene 
     NOTE: in KEGG (and SEED) a single ortholog (role) may belong to multiple pathways (subsystems). A hit to such an ortholog will result in extra assignment values for that query sequence (1 for each pathway it belongs to). 
 """
 
-from optparse import OptionParser
+import argparse
 import sys, re, logging
 from edl import redistribute, kegg, hits
-from edl.util import addUniversalOptions, setupLogging, parseMapFile, addIOOptions, inputIterator
+from edl.util import add_universal_arguments, setup_logging, parseMapFile, add_IO_arguments, inputIterator
 from edl.expressions import accessionRE, nrOrgRE
 
 def main():
-    usage = "usage: %prog [OPTIONS] BLAST_M8_FILE[S]"
     description = __doc__
-   parser = OptionParser(usage, description=description)
-    addIOOptions(parser)
-    parser.add_option("-l", "--level", dest="levels", default=None,
+    parser = argparse.ArgumentParser(description)
+    add_IO_arguments(parser)
+    parser.add_argument("-l", "--level", dest="levels", default=None,
                       metavar="LEVEL", action="append",
                       help=""" Level(s) to collect counts on. Use flag 
                       multiple times to specify multiple levels. If multiple 
@@ -30,95 +29,93 @@ def main():
                       get CAZy groups. Defaults to ortholog/role and 
                       levels 1, 2, and 3 for KEGG and SEED
                       and gene and group for CAZy and COG.""")
-    parser.add_option('-s','--squash',dest='splitForLevels',
+    parser.add_argument('-s','--squash',dest='splitForLevels',
             default=True, action='store_false',
             help="Don't split assignment rows if gene maps to multiple pathways, just squash them into one row using python list syntax")
 
     # format, ortholog heirarchy, and more
-    kegg.addPathOptions(parser)
+    kegg.add_path_arguments(parser)
 
     # log level and help
-    addUniversalOptions(parser)
-
-    (options, args) = parser.parse_args()
-
-    setupLogging(options, description)
+    add_universal_arguments(parser)
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
     # Set defaults and check for some conflicts
-    if options.levels is None and options.heirarchyFile is None:
+    if arguments.levels is None and arguments.heirarchyFile is None:
         # using hit names only
-        options.levels=[None]
+        arguments.levels=[None]
     else:
-        if options.heirarchyFile is None and options.heirarchyType != 'cazy':
-            logging.warn("Type: %s" % (options.heirarchyType))
+        if arguments.heirarchyFile is None and arguments.heirarchyType != 'cazy':
+            logging.warn("Type: %s" % (arguments.heirarchyType))
             parser.error("Cannot select levels without a heirarchy (ko) file")
-        if options.levels is None:
+        if arguments.levels is None:
             # set a default
-            if options.heirarchyType is 'kegg':
-                options.levels=['ko','1','2','pathway']
-            if options.heirarchyType is 'seed':
-                options.levels=['role','1','2','subsystem']
+            if arguments.heirarchyType is 'kegg':
+                arguments.levels=['ko','1','2','pathway']
+            if arguments.heirarchyType is 'seed':
+                arguments.levels=['role','1','2','subsystem']
             else:
-                options.levels=['gene','group']
+                arguments.levels=['gene','group']
 
         try:
             # Make sure the level list makes sense
-            options.levels=cleanLevels(options.levels)
+            arguments.levels=cleanLevels(arguments.levels)
         except Exception as e:
             parser.error(str(e))
 
     # only print to stdout if there is a single input file
-    if len(args)>1 and options.outfile is None:
+    if len(args)>1 and arguments.outfile is None:
         parser.error("STDOUT only works if a single input file is given!")
 
 
     # map reads to hits
-    if options.mapFile is not None:
-        if options.mapStyle == 'auto':
-            with open(options.mapFile) as f:
-                firstLine=f.next()
+    if arguments.mapFile is not None:
+        if arguments.mapStyle == 'auto':
+            with open(arguments.mapFile) as f:
+                firstLine=next(f)
                 while len(firstLine)==0 or firstLine[0]=='#':
-                    firstLine=f.next()
+                    firstLine=next(f)
             if koMapRE.search(firstLine):
-                options.mapStyle='kegg'
+                arguments.mapStyle='kegg'
             elif seedMapRE.search(firstLine):
-                options.mapStyle='seed'
+                arguments.mapStyle='seed'
             elif tabMapRE.search(firstLine):
-                options.mapStyle='tab'
-            #elif cogMapRE.search(firstLine):
-            #    options.mapStyle='cog'
+                arguments.mapStyle='tab'
+            elif cogMapRE.search(firstLine):
+                arguments.mapStyle='cog'
             else:
                 raise Exception("Cannot figure out map type from first line:\n%s" % (firstLine))
 
-        logging.info("Map file seems to be: %s" % (options.mapStyle))
-        if options.mapStyle=='kegg':
-            valueMap=kegg.parseLinkFile(options.mapFile)
-        elif options.mapStyle=='seed':
-            valueMap=kegg.parseSeedMap(options.mapFile)
-        #elif options.mapStyle=='cog':
-        #    valueMap=kegg.parseCogMap(options.mapFile)
+        logging.info("Map file seems to be: %s" % (arguments.mapStyle))
+        if arguments.mapStyle=='kegg':
+            valueMap=kegg.parseLinkFile(arguments.mapFile)
+        elif arguments.mapStyle=='seed':
+            valueMap=kegg.parseSeedMap(arguments.mapFile)
+        elif arguments.mapStyle=='cog':
+            valueMap=kegg.parseCogMap(arguments.mapFile)
         else:
-            if options.parseStyle == hits.GIS:
+            if arguments.parseStyle == hits.GIS:
                 keyType=int
             else:
                 keyType=None
-            valueMap = parseMapFile(options.mapFile,valueType=None,keyType=keyType)
+            valueMap = parseMapFile(arguments.mapFile,valueType=None,keyType=keyType)
         if len(valueMap)>0:
-            logging.info("Read %d items into map. EG: %s" % (len(valueMap),valueMap.iteritems().next()))
+            logging.info("Read %d items into map. EG: %s" % (len(valueMap),next(iter(valueMap.items()))))
         else:
             logging.warn("Read 0 items into value map!")
     else:
         valueMap=None
 
     # set up level mapping
-    levelMappers = [getLevelMapper(l,options) for l in options.levels]
+    levelMappers = [getLevelMapper(l,arguments) for l in arguments.levels]
 
     # parse input files
-    for (inhandle,outhandle) in inputIterator(args, options):
+    for (inhandle,outhandle) in inputIterator(args, arguments):
         logging.debug("Reading from %s and writing to %s" % (inhandle, outhandle))
-        hitMapIter = hits.parseM8FileIter(inhandle, valueMap, options.hitTableFormat, options.filterTopPct, options.parseStyle, options.countMethod, ignoreEmptyHits=options.mappedHitsOnly,sortReads=options.hitTableSortReads)
+        hitMapIter = hits.parseM8FileIter(inhandle, valueMap, arguments.hitTableFormat, arguments.filterTopPct, arguments.parseStyle, arguments.countMethod, ignoreEmptyHits=arguments.mappedHitsOnly)
 
-        outhandle.write("Read\t%s\n" % ('\t'.join(options.levels)))
+        outhandle.write("Read\t%s\n" % ('\t'.join(arguments.levels)))
         for read, hitIter in hitMapIter:
             assignments=[]
             for hit in hitIter:
@@ -129,7 +126,7 @@ def main():
                 assignments.append(assignment)
             logging.debug("Read %s has %d hits" % (read, len(assignments)))
             for assignment in assignments:
-                for assignmentList in handleMultipleMappings(assignment,options):
+                for assignmentList in handleMultipleMappings(assignment,arguments):
                     outhandle.write("%s\t%s\n" % (read, "\t".join(assignmentList)))
 
 def cleanLevels(levelList):
@@ -159,32 +156,32 @@ cogMapRE = re.compile(r'^\d+\t[KC]OG\d+\t')
 tabMapRE = re.compile(r'^[^\t]+\t[^\t+]')
 cazyRE = re.compile(r'([a-zA-Z]+)\d+')
 
-def getLevelMapper(level, options):
+def getLevelMapper(level, arguments):
     if level in koSyns:
         return lambda h: h
-    if options.heirarchyType == 'cazy':
+    if arguments.heirarchyType == 'cazy':
         return getCazyGroup
 
     lookupLevel = level if level not in level3Syns else '3'
 
-    if options.heirarchyType == 'kegg':
+    if arguments.heirarchyType == 'kegg':
         # Ideally, we'd be able to parse the heirachy once, but the current KEGG code just retuns simple mappings
-        logging.info("Reading KEGG level %s assignments from %s" % (level,options.heirarchyFile))
-        geneTranslation = kegg.readKEGGFile(options.heirarchyFile, lookupLevel)
+        logging.info("Reading KEGG level %s assignments from %s" % (level,arguments.heirarchyFile))
+        geneTranslation = kegg.readKEGGFile(arguments.heirarchyFile, lookupLevel)
     else:
         # SEED or COG/KOG
-        if options.heirarchyType == 'seed':
-            logging.info("Reading SEED subsystem assignments from %s" % (options.heirarchyFile))
-            seedTree = kegg.readSEEDTree(options.heirarchyFile)
-        elif options.heirarchyType == 'cog':
-            logging.info("Reading COG subsystem assignments from %s" % (options.heirarchyFile))
-            seedTree = kegg.readCogTree(options.heirarchyFile)
+        if arguments.heirarchyType == 'seed':
+            logging.info("Reading SEED subsystem assignments from %s" % (arguments.heirarchyFile))
+            seedTree = kegg.readSEEDTree(arguments.heirarchyFile)
+        elif arguments.heirarchyType == 'cog':
+            logging.info("Reading COG subsystem assignments from %s" % (arguments.heirarchyFile))
+            seedTree = kegg.readCogTree(arguments.heirarchyFile)
 
         geneTranslation = seedTree[lookupLevel]
     return lambda gene: geneTranslation.get(gene,gene)
 
-def handleMultipleMappings(assignmentList,options):
-    if options.splitForLevels:
+def handleMultipleMappings(assignmentList,arguments):
+    if arguments.splitForLevels:
         newAssignmentListArray=[assignmentList]
         for i in range(len(assignmentList)):
             item = assignmentList[i]
