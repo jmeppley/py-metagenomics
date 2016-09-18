@@ -1,76 +1,61 @@
 #! /usr/bin/python
 """
+Takes two tables of read hits. Produces a table of hit counts with hit types from the first file as rows and the hit types from the second file as columns.
 """
 
-from optparse import OptionParser
+import argparse
 import sys, re, urllib2, httplib
 from edl.hits import parseHits
-from edl.util import tupleIteratorToMap
+from edl.util import tupleIteratorToMap, add_universal_arguments, setup_logging
 
 def main():
-    usage = "usage: %prog TABLE_1 TABLE_2"
-    description = """
-Takes two tables of read hits. Produces a table of hit counts with hit types from the first file as rows and the hit types from the second file as columns.
-
-    """
-    parser = OptionParser(usage, description=description)
-    parser.add_option("-o", "--outfile", dest="outfile",
+    description = __doc__
+    parser = argparse.ArgumentParser(description)
+    parser.add_argument("input_files", nargs=2, 
+                        type=argparse.FileType('r'),
+                        metavar=("INPUT_TABLE_1","INPUT_TABLE_2"),
+                        help="Input files. Please supply two tables")
+    parser.add_argument("-o", "--outfile", dest="outfile",
                       metavar="OUTFILE", help="Write count table to OUTFILE")
-    parser.add_option("-v", "--verbose",
-                      action="store_true", dest="verbose", default=False,
-                      help="Print status messages to stderr")
-    parser.add_option("-H", "--hitCol1", dest="hitCol1", type="int", default=-1,
+    parser.add_argument("-L", "--long_output", default=False,
+            action="store_true",
+            help="Print one number per row (prefixed by two keys) instead of a table with one seet of keys as column names and one set as row names.")
+    parser.add_argument("-H", "--hitCol1", dest="hitCol1", type=int, default=-1,
             help="Index (starting at 0) of column in file 1 with hit name, -1 is default meaning all columns that are not the read name are hit names.",
                   metavar="HITCOL")
-    parser.add_option("-I", "--hitCol2", dest="hitCol2", type="int", default=-1,
+    parser.add_argument("-I", "--hitCol2", dest="hitCol2", type=int, default=-1,
             help="Index (starting at 0) of column in file 2 with hit name, -1 is default meaning all columns that are not the read name are hit names.",
                   metavar="HITCOL")
-    parser.add_option("-S", "--skipFirstRow", action="store_true", default=False, help="hit tables have a header row which needs to be skipped")
-    parser.add_option("-A", "--about",
-                      action="store_true", dest="about", default=False,
-                      help="Print description")
+    parser.add_argument("-S", "--skipFirstRow", action="store_true", default=False, help="hit tables have a header row which needs to be skipped")
 
-    (options, args) = parser.parse_args()
+    add_universal_arguments(parser)
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
-    # output for scripts page
-    if options.about:
-        print description
-        exit(0)
+    if len(arguments.input_files) != 2:
+        parser.error("Please supply two input files")
 
-    # check arguments
-    if options.verbose:
-        global verbose
-        verbose=True
-
-    if len(args) != 2:
-        options.error("Please supply two input files")
-
-    (file1,file2)=args
+    (file1,file2)=arguments.input_files
     log("reading hits from %s" % (file1))
-    fhandle = open(file1)
-    hits1=parseHits(fhandle,0,options.hitCol1,options.skipFirstRow, None)
+    hits1=parseHits(file1,0,arguments.hitCol1,arguments.skipFirstRow, None)
     log("reading hits from %s" % (file2))
-    fhandle = open(file2)
-    hits2=parseHits(fhandle,0,options.hitCol2,options.skipFirstRow, None)
+    hits2=parseHits(file2,0,arguments.hitCol2,arguments.skipFirstRow, None)
 
     hits1=tupleIteratorToMap(hits1)
     hits2=tupleIteratorToMap(hits2)
-
-    fhandle.close()
-    fhandle.close()
 
     log("counting hits")
     (table,cols) = combineCounts(hits1,hits2)
 
     # print out hit table
-    if options.outfile is None:
+    if arguments.outfile is None:
         log("printing table to stdout")
         outhandle = sys.stdout
     else:
-        log("printing table to options.outfile")
-        outhandle = open(options.outfile,'w')
+        log("printing table to arguments.outfile")
+        outhandle = open(arguments.outfile,'w')
 
-    printTable(outhandle,table,cols)
+    printTable(outhandle,table,cols, long_output=arguments.long_output)
 
 
 ##############
@@ -97,54 +82,61 @@ def die( msg ):
 def warn(msg):
     sys.stderr.write("WARNING: %s\n" % (msg))
 
-def combineCounts(hits1,hits2):
+def combineCounts(hits1,hits2, unmatched_1="Unknown", unmatched_2="Unknown"):
+    # compile counts into nested dicts
     counts={}
-    types2={}
-    for (read,hit1) in hits1.iteritems():
-        try:
-            hit2=hits2.pop(read)
-        except KeyError:
-            warn("%s not in file 2" % (read))
-            continue
 
-        if type(hit1) is not type([]):
-            hit1=[hit1,]
-            logging.warn('DEBUG: changing hit1 for %s to a list')
+    # keep track of all unique hit ids from set 2
+    types2=set()
 
-        if type(hit2) is not type([]):
-            hit2=[hit2,]
-            logging.warn('DEBUG: changing hit2 for %s to a list')
+    # Start by using reads from hits1 as index
+    for (read,hit_list1) in hits1.items():
+        hit_list2=hits2.pop(read, [unmatched_2,])
 
-        for h2 in hit2:
-            for h1 in hit1:
-                h1counts=counts.setdefault(h1,{})
-                h1counts[h2]=h1counts.setdefault(h2,0)+1
-            types2[h2]=1
+        for hit2 in hit_list2:
+            for hit1 in hit_list1:
+                h1counts=counts.setdefault(hit1,{})
+                h1counts[hit2]=h1counts.get(hit2,0)+1
+            types2.add(hit2)
 
-    return (counts,types2.keys())
+    # remaining reads in hits2 counted as Unknown
+    # we know these don't exist in hits1
+    h1counts = counts.setdefault(unmatched_1,{})
+    for read, hit_list2 in hits2.items():
+        for hit2 in hit_list2:
+            h1counts[hit2] = h1counts.get(hit2,0)+1
+            types2.add(hit2)
 
-def printTable(output, table, cols=None):
-    if cols==None:
-        cols=[]
-        for row in table.values():
-            cols.extend(row.keys())
-        cols=set(cols)
+    return (counts,types2)
 
-    cols=sorted(cols)
+def printTable(output, table, cols=None, long_output=False):
+    if long_output:
+        # print one row per value
+        for row_name, row in table.items():
+            for col_name, value in row.items():
+                output.write("\t".join([row_name, col_name, str(value)]) + "\n")
 
-    # print header row
-    output.write("\t")
-    output.write("\t".join(cols))
-    output.write("\n")
+    else:
+        # We need to know the column names up front
+        if cols==None:
+            cols = set.union(*[r.keys() for r in table.values()])
 
-    # print data
-    for key in sorted(table.keys()):
-        row = table[key]
-        output.write(key)
-        for col in cols:
-            output.write("\t")
-            output.write(str(row.get(col,"0")))
+        # Lets sort them
+        cols=sorted(cols)
+
+        # print header row
+        output.write("\t")
+        output.write("\t".join(cols))
         output.write("\n")
+
+        # print data
+        for key in sorted(table.keys()):
+            row = table[key]
+            output.write(key)
+            for col in cols:
+                output.write("\t")
+                output.write(str(row.get(col,"0")))
+            output.write("\n")
 
 if __name__ == '__main__':
     main()

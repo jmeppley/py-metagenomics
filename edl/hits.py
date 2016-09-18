@@ -1,7 +1,7 @@
 from edl.util import parseMapFile
 from edl.taxon import getNodeFromHit, getAncestorClosestToRank, readTaxonomy, add_taxonomy_dir_argument
 from edl.blastm8 import filterM8Stream, FilterParams, formatsWithNoDescription, add_hit_table_arguments
-from edl.expressions import accessionRE, nrOrgRE, koRE, giRE
+from edl.expressions import accessionRE, nrOrgRE, koRE, giRE, pfamRE
 import logging
 logger=logging.getLogger(__name__)
 
@@ -11,10 +11,11 @@ logger=logging.getLogger(__name__)
 ACCS='accs'
 ORGS='orgs'
 KEGG='kegg'
+PFAM='pfam'
 GIS='gis'
 HITID='hitid'
 HITDESC='hitdesc'
-parsingREs={ORGS: nrOrgRE, ACCS: accessionRE, KEGG: koRE, GIS: giRE}
+parsingREs={ORGS: nrOrgRE, ACCS: accessionRE, KEGG: koRE, GIS: giRE, PFAM: pfamRE}
 ALLEQ='all'
 FIRST='first'
 PORTION='portion'
@@ -201,7 +202,7 @@ def parseAndFilterM8Stream(inhandle, options):
     logger.info("Parsing hits")
 
     # since filter already parses hits, use that info
-    infoInDescription = options.parseStyle in [KEGG,ORGS]
+    infoInDescription = options.parseStyle in [KEGG,ORGS,PFAM]
     return parseM8Hits(inhandle, infoInDescription)
 
 def parseM8File(inhandle, hitStringMap, format, scorePct, parsingStyle, countMethod, taxonomy=None, rank=None, ignoreEmptyHits=True, sortReads=False):
@@ -243,9 +244,6 @@ def parseM8FileIter(inhandle, hitStringMap, format, scorePct, parsingStyle, coun
     # check filtering options
     if countMethod == 'first':
         scorePct=-1
-
-    # setup some variables
-    infoInDescription = parsingStyle in [KEGG,ORGS]
 
     # get map from reads to lists of hit strings
     logger.info("Parsing hits")
@@ -603,7 +601,7 @@ def getHitTranslator(hitStringMap=None, parseStyle=ORGS, taxonomy=None, rank=Non
         logger.info("Creating hit translator:\n default to None: %r\n map: %s\n parsing %s: %s\n taxa: %s\n rank: %s" % (defaultToNone, mapstr, parseStyle, exprstr, taxstr, rank))
 
     # set up variables
-    infoInDescription = parseStyle in [KEGG,ORGS]
+    infoInDescription = parseStyle in [KEGG,ORGS,PFAM]
     mappings=[]
     if defaultToNone:
         mapFunction = _simpleMapNoneFunction

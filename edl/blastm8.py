@@ -257,6 +257,7 @@ class Hit:
         self.read=cells[0]
         qlen=int(cells[2])
         self.hit=cells[3]
+        self.hitDesc=cells[4]
         hitLen=int(cells[5])
         self.evalue=float(cells[6])
         self.score=float(cells[7])

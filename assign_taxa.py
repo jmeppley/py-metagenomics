@@ -57,7 +57,7 @@ Takes a hit table (reads searched against a database) and assigns each read to a
         ##
         # print output
         # choose output method
-        if options.taxids:
+        if arguments.taxids:
             printer = taxidPrinter
         else:
             printer = defaultPrinter

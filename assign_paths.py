@@ -64,11 +64,6 @@ def main():
         except Exception as e:
             parser.error(str(e))
 
-    # only print to stdout if there is a single input file
-    if len(args)>1 and arguments.outfile is None:
-        parser.error("STDOUT only works if a single input file is given!")
-
-
     # map reads to hits
     if arguments.mapFile is not None:
         if arguments.mapStyle == 'auto':
@@ -111,10 +106,12 @@ def main():
     levelMappers = [getLevelMapper(l,arguments) for l in arguments.levels]
 
     # parse input files
-    for (inhandle,outhandle) in inputIterator(args, arguments):
+    for (inhandle,outhandle) in inputIterator(arguments):
         logging.debug("Reading from %s and writing to %s" % (inhandle, outhandle))
         hitMapIter = hits.parseM8FileIter(inhandle, valueMap, arguments.hitTableFormat, arguments.filterTopPct, arguments.parseStyle, arguments.countMethod, ignoreEmptyHits=arguments.mappedHitsOnly)
 
+        if arguments.levels == [None]:
+            arguments.levels = ['Hit']
         outhandle.write("Read\t%s\n" % ('\t'.join(arguments.levels)))
         for read, hitIter in hitMapIter:
             assignments=[]

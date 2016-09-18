@@ -450,7 +450,8 @@ def processBriteFile(pathway, desc, file1, kmap):
 
 def add_path_arguments(parser,defaults={},choices={}):
     # get format and filterPct arguments from blastm8
-    from edl.blastm8 import add_hit_table_arguments, HITID, ACCS, GIS, KEGG, HITDESC
+    from edl.hits import HITID, ACCS, GIS, KEGG, HITDESC, PFAM
+    from edl.blastm8 import add_hit_table_arguments
     add_hit_table_arguments(parser,defaults)
 
     # specific to pathway parsing:
@@ -462,7 +463,7 @@ def add_path_arguments(parser,defaults={},choices={}):
                       help="What type of mapping file are you using: simple tab separated list of IDs and kos/subsystems/domains, the genes_ko.list file from KEGG (which adds ko: to the K numbers and can have multiple records for each gene id), or the 3 column file from SEED. By default, this script will inspect the file and guess, but you can force 'kegg', 'seed' or 'tab' with this argument.")
     pgroup.add_argument("-p", "--parseStyle",
                       default=defaults.get("parseStyle",HITID),
-                      choices=[ACCS,GIS,KEGG,HITID,HITDESC],
+                      choices=[ACCS,GIS,KEGG,HITID,HITDESC,PFAM],
                       help="What should be parsed from the hit table: accessions('accs'), 'gis', K numbers in description ('kegg'), the full hit name('hitid'), or the full hit description('hitdesc'). (defaults to '%s')" % (defaults.get("parseStyle",HITID)))
     pgroup.add_argument("-C", "--countMethod", dest="countMethod",
             default=defaults.get("countMethod","first"),
