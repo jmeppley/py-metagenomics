@@ -1,5 +1,17 @@
-#DATE?=$(shell date +%Y%m%d)
-#KGVER:=$(DATE)
+##########################
+#
+# download_kegg.make
+#
+# Retrieves latest protein database and heirarchy from kegg.
+#
+# Provide KEGG account user/pass in with KEGG_USER= and KEGG_PASSWORD=
+#
+# Files are downloaded to ./KEGG (set with BUILD_ROOT=)
+# if BUILD_LASTDB is set to "True", 
+#  a version is compiled for lastal in ./lastdb (set with LASTDB_ROOT=)
+#
+###########################
+
 FTP_ROOT:=ftp://ftp.bioinformatics.jp/kegg
 KGVER:=$(shell curl --user $(KEGG_USER):$(KEGG_PASSWORD) $(FTP_ROOT)/RELEASE | head -1 | perl -pe 's/[^0-9]//g')
 KEGG_USER?=
@@ -29,6 +41,7 @@ LINKS=$(KGDIR)/links
 GENOME=$(KGDIR)/genome
 BRITE=$(KGDIR)/brite
 TAX=$(KGDIR)/taxonomy
+TAXR=$(KGDIR)/taxonomic_rank
 
 ifeq ($(BUILD_LASTDB),False)
 	LASTDB_DIR:=$(KGDIR)
@@ -49,7 +62,8 @@ FGENESMETA=$(FTP_ROOT)/genes/MD5.genes $(FTP_ROOT)/genes/README.genes $(FTP_ROOT
 FLINKS=$(FTP_ROOT)/genes/links/*gz
 FGENOME=$(FTP_ROOT)/genes/genome.tar.gz
 FKO=$(FTP_ROOT)/genes/ko.tar.gz
-FTAX=$(FTP_ROOT)/genes/taxonomy
+FTAX=$(FTP_ROOT)/genes/misc/taxonomy
+FTAXR=$(FTP_ROOT)/genes/misc/taxonomic_rank
 FBRITE=$(FTP_ROOT)/brite/*.tar.gz $(FTP_ROOT)/brite/brite* $(FTP_ROOT)/brite/*brite
 
 ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX)
@@ -121,6 +135,9 @@ $(GENOME): | $(KGDIR)
 	cd $(KGDIR) && $(WGET) $(FGENOME)
 	cd $(KGDIR) && tar -zxvf genome.tar.gz
 	rm $(KGDIR)/genome.tar.gz
+
+$(TAXR): | $(KGDIR)
+	cd $(KGDIR) && $(WGET) $(FTAXR)
 
 $(TAX): | $(KGDIR)
 	cd $(KGDIR) && $(WGET) $(FTAX)
