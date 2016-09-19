@@ -3,7 +3,9 @@
 FTP_ROOT:=ftp://ftp.arb-silva.de
 REL?=$(shell curl -s -l $(FTP_ROOT)/ | grep release_ | perl -pe 's/release_//' | sort -n -r | head -1)
 REL:=$(REL)
-REL_ROOT=$(basename $(REL))
+REL_ROOT=$(basename $(word 1,$(subst _, ,$(REL))))
+REL_TAX=$(subst _,.,$(REL))
+#REL_ROOT=$(basename $(REL))
 
 DB_SCRIPT_DIR?=.
 BUILD_ROOT?=./Silva
@@ -19,8 +21,9 @@ else
 	LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
 endif
 
-# The following is a hack to do do a greaterthan conditional in make
+# The following is a hack to do a greaterthan conditional in make
 PARSE_TAXONOMY:=$(shell if [ "$(REL_ROOT)" -gt "118" ]; then echo True; else echo False; fi)
+#PARSE_TAXONOMY:=True
 
 # The file names have changed over time, this works for releases 111 to 119
 FTP_BASE:=$(FTP_ROOT)/release_$(subst .,_,$(REL))/Exports
@@ -91,7 +94,7 @@ $(SSU_DBTAX): $(SSU_TAXFILE) $(SSU_FASTA) | $(SSU_LASTDB_DIR)
 	export PYTHONPATH=$(DB_SCRIPT_DIR)/..; python $(TAXSCRIPT) $^ $|
 
 report:
-	@echo Release: $(REL),  parse tax: $(PARSE_TAXONOMY)
+	@echo Release: $(REL), rel_root: $(REL_ROOT), parse tax: $(PARSE_TAXONOMY)
 	@echo FTP: $(FTP_BASE)
 	@echo SSU URL: $(SSUREF_URL)
 	@echo LSU URL: $(LSUREF_URL)
