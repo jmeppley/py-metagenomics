@@ -3,7 +3,7 @@
 Takes two tables of read hits. Produces a table of hit counts with hit types from the first file as rows and the hit types from the second file as columns.
 """
 
-import argparse
+import argparse, logging
 import sys, re, urllib2, httplib
 from edl.hits import parseHits
 from edl.util import tupleIteratorToMap, add_universal_arguments, setup_logging
@@ -11,12 +11,21 @@ from edl.util import tupleIteratorToMap, add_universal_arguments, setup_logging
 def main():
     description = __doc__
     parser = argparse.ArgumentParser(description)
-    parser.add_argument("input_files", nargs=2, 
+    parser.add_argument("-1","--input_file_1",
+                        default=None,
                         type=argparse.FileType('r'),
-                        metavar=("INPUT_TABLE_1","INPUT_TABLE_2"),
-                        help="Input files. Please supply two tables")
+                        metavar=("INPUT_TABLE_1"),
+                        help="Input table 1")
+    parser.add_argument("-2","--input_file_2",
+                        default=None,
+                        type=argparse.FileType('r'),
+                        metavar=("INPUT_TABLE_2"),
+                        help="Input table 2")
     parser.add_argument("-o", "--outfile", dest="outfile",
-                      metavar="OUTFILE", help="Write count table to OUTFILE")
+                        type=argparse.FileType('w'),
+                        default=sys.stdout,
+                        metavar="OUTFILE", 
+                        help="Write count table to OUTFILE. (Defaults to STDOUT")
     parser.add_argument("-L", "--long_output", default=False,
             action="store_true",
             help="Print one number per row (prefixed by two keys) instead of a table with one seet of keys as column names and one set as row names.")
@@ -32,31 +41,31 @@ def main():
     arguments = parser.parse_args()
     setup_logging(arguments)
 
-    if len(arguments.input_files) != 2:
+    if arguments.input_file_1 is None or arguments.input_file_2 is None:
         parser.error("Please supply two input files")
 
-    (file1,file2)=arguments.input_files
-    log("reading hits from %s" % (file1))
-    hits1=parseHits(file1,0,arguments.hitCol1,arguments.skipFirstRow, None)
-    log("reading hits from %s" % (file2))
-    hits2=parseHits(file2,0,arguments.hitCol2,arguments.skipFirstRow, None)
+    logging.info("reading hits from %s" % (arguments.input_file_1.name))
+    hits1=parseHits(arguments.input_file_1,
+                    0,
+                    arguments.hitCol1,
+                    arguments.skipFirstRow, 
+                    None)
+    logging.info("reading hits from %s" % (arguments.input_file_2.name))
+    hits2=parseHits(arguments.input_file_2,
+                    0,
+                    arguments.hitCol2,
+                    arguments.skipFirstRow, 
+                    None)
 
     hits1=tupleIteratorToMap(hits1)
     hits2=tupleIteratorToMap(hits2)
 
-    log("counting hits")
+    logging.info("counting hits")
     (table,cols) = combineCounts(hits1,hits2)
 
     # print out hit table
-    if arguments.outfile is None:
-        log("printing table to stdout")
-        outhandle = sys.stdout
-    else:
-        log("printing table to arguments.outfile")
-        outhandle = open(arguments.outfile,'w')
-
-    printTable(outhandle,table,cols, long_output=arguments.long_output)
-
+    logging.info("printing table to " + arguments.outfile.name)
+    printTable(arguments.outfile,table,cols, long_output=arguments.long_output)
 
 ##############
 # Classes    #
@@ -69,18 +78,9 @@ def main():
 #############
 # Functions #
 #############
-verbose=False
-def log(msg):
-    if verbose:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-
 def die( msg ):
     sys.stderr.write( "%s\n" % msg )
     sys.exit()
-
-def warn(msg):
-    sys.stderr.write("WARNING: %s\n" % (msg))
 
 def combineCounts(hits1,hits2, unmatched_1="Unknown", unmatched_2="Unknown"):
     # compile counts into nested dicts
