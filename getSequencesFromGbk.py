@@ -1,70 +1,70 @@
 #! /usr/bin/python
 """
+Reads one or more sequence files from stdin or the argument list and outputs a list of sequences.
 """
 
 from Bio import SeqIO, SeqRecord
 from Bio.Seq import Seq
 from Bio.Alphabet import IUPAC
-from optparse import OptionParser
+import argparse
 import sys, traceback
 
 def main():
-    usage = "usage: %prog [OPTIONS] GBK_FILE [GBK_FILE ...]"
-    description = """
-    Reads one or more sequence files from stdin or the argument list and outputs a list of sequences.
-    """
+    description = __doc__
 
-# command line options
-    parser = OptionParser(usage, description=description)
-    parser.add_option("-o", "--outfile", dest="outfile",
+    # command line options
+    parser = argparse.ArgumentParser(description)
+    parser.add_argument("-o", "--outfile", dest="outfile",
                       metavar="OUTFILE", help="Write output sequences to OUTFILE.")
-    parser.add_option("-f", "--formatIn", dest="formatIn", default="genbank",
+    parser.add_argument("-f", "--formatIn", dest="formatIn", default="genbank",
         help="Input sequence format (see biopython docs)", metavar="FORMAT")
-    parser.add_option("-F", "--formatOut", dest="formatOut", default="fasta",
+    parser.add_argument("-F", "--formatOut", dest="formatOut", default="fasta",
         help="Output sequence format (see biopython docs)", metavar="FORMAT")
-    parser.add_option("-c", "--codingSeq", dest="cds", default=False, action='store_true',
+    parser.add_argument("-c", "--codingSeq", dest="cds", default=False, action='store_true',
         help="Extract features of type CDS")
-    parser.add_option("-t", "--translate",
+    parser.add_argument("-t", "--translate",
                       default=False, action="store_true",
                       help="Translate output sequence to amino acids")
-    parser.add_option("-r", "--refseq", default=False, action='store_true',
+    parser.add_argument("-r", "--refseq", default=False, action='store_true',
             help="If input is GBK and output is FASTA, make record id look \
             like a proper RefSeq entry: 'gi|XXX|ref|XXX'")
-    parser.add_option("-v", "--verbose",
+    parser.add_argument("-v", "--verbose",
                       action="store_true", dest="verbose", default=False,
                       help="Print status messages to stderr")
-    parser.add_option("-A", "--about",
+    parser.add_argument("-A", "--about",
               action="store_true", dest="about", default=False,
               help="Print description")
+    parser.add_argument("args",nargs="*",metavar='FILENAME',
+            help="Files to process")
 
-    (options, args) = parser.parse_args()
+    arguments = parser.parse_args()
 
-    if options.about:
-        print description
+    if arguments.about:
+        print (description)
         exit(0)
 
-    if options.verbose:
+    if arguments.verbose:
         global verbose
         verbose=True
 
     # output
-    if options.outfile is None:
-        log("Writting %s sequences to STDOUT" % (options.formatOut))
+    if arguments.outfile is None:
+        log("Writting %s sequences to STDOUT" % (arguments.formatOut))
         outstream = sys.stdout
     else:
-        log("Writting %s sequences to %s" % (options.formatOut, options.outfile))
-        outstream = open(options.outfile,'w')
+        log("Writting %s sequences to %s" % (arguments.formatOut, arguments.outfile))
+        outstream = open(arguments.outfile,'w')
 
-    if len(args)==0:
+    if len(arguments.args)==0:
         log("reading sequences from STDIN")
         instream=sys.stdin
-        translateStream(instream,options.formatIn,outstream, options.formatOut, options.cds, options.translate, options.refseq)
+        translateStream(instream,arguments.formatIn,outstream, arguments.formatOut, arguments.cds, arguments.translate, arguments.refseq)
     else:
-        for name in args:
-            log("reading %s sequences from %s" % (options.formatIn, name))
+        for name in arguments.args:
+            log("reading %s sequences from %s" % (arguments.formatIn, name))
             instream = open(name, 'rU')
             try:
-                translateStream(instream,options.formatIn,outstream, options.formatOut, options.cds, options.translate, options.refseq)
+                translateStream(instream,arguments.formatIn,outstream, arguments.formatOut, arguments.cds, arguments.translate, arguments.refseq)
             except:
                 warn("Exception parsing %s:\n-----\n" % (name))
                 traceback.print_exc(file=sys.stderr)
