@@ -1,0 +1,138 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Data::Dumper;
+use Bio::SeqIO;
+use Bio::AlignIO;
+use File::Temp qw(tempdir);
+
+# prokka-cdd-to-hmm
+# from prokka:
+#  https://github.com/tseemann/prokka
+#  downloaded: 2016/09/20
+#  commit: 05f8e6418d998b18df0b7f7611340b48cbe3c517
+# Author: Torsten Seemann (https://github.com/tseemann)
+#
+# Modified by John Eppley (https://github.com/jmeppley)
+#   2016/09/20
+#
+#  removed system calls to hmmbuild etc so that this script jsut generates 
+#   stockholm alignments
+#
+my $HYPO = 'hypothetical protein';
+
+my(@Options, $verbose, $lib, $srcdir, $force);
+setOptions();
+
+-d $srcdir or die "bad --srcdir: $srcdir";
+
+my $annofile = "$srcdir/cddid_all.tbl.gz";
+-r $annofile or die "could not find file: $annofile";
+
+unless ($force) {
+  for my $ext (qw(aln hmm.ascii hmm)) {
+    -r "$lib.$ext" and die "Result file $lib.$ext already exists!";
+  }
+}
+
+my %desc;
+print STDERR "Parsing: $annofile\n";
+open CDD, "zcat -f '$annofile' |";
+while (<CDD>) {
+  chomp;
+  my @x = split m/\t/;
+  next unless $x[1] =~ m/^$lib\d+/; 
+  my $gene = $x[2] =~ m/^$lib/ ? '' : $x[2];
+  my $prod = $x[3];
+  $prod =~ s/^$lib\d+\s+//;
+#  $prod =~ s/\s*;.*?$// if $lib =~ m/PRK|PHA/;  # ....; Provisional
+  $prod =~ s/\s+\[.*?\]\s*$// if $lib eq 'COG'; # .... [COG group]
+  $prod =~ s/\s*;Provisional\s*$//i;
+  $prod =~ s/\s+$//;
+  $prod =~ s/\s+/ /g;
+  next unless $prod;
+  next if $prod eq $HYPO;
+  print STDERR "LINE: @x[0,1,2,3]\n" if $verbose;
+  print STDERR "GENE: $gene\nPROD: $prod\n\n" if $verbose;
+  $desc{$x[1]}{acc} = "cdd$x[0]";
+  $desc{$x[1]}{gene} = $gene || '';
+  $desc{$x[1]}{prod} = $prod ;
+}
+print STDERR Dumper(\%desc) if $verbose;
+printf STDERR "Loaded %d $lib descriptions from $annofile\n", scalar keys %desc;
+
+my $tarfile = "$srcdir/fasta.tar.gz";
+-r $tarfile or die "could not read file: $tarfile";
+
+my $tempdir = tempdir(CLEANUP=>1);
+print STDERR "Created temp dir to untar to: $tempdir\n";
+
+print STDERR "Untarring $lib files from: $tarfile\n";
+system("tar -C $tempdir -f $tarfile -z -x --wildcards '$lib*'");
+
+print STDERR "Creating $lib.aln file\n";
+my $out = Bio::AlignIO->new(-file=>">$lib.aln", -format=>'stockholm');
+
+for my $cid (sort keys %desc) {
+  my $faln = "$tempdir/$cid.FASTA";
+#  system("esl-reformat stockholm $tempdir/$cid.FASTA | grep -v lcl.consensus > $faln");
+  print STDERR "$cid | $faln >> $lib.aln\n";
+  my $in = Bio::AlignIO->new(-file=>$faln, -format=>'fasta');
+  while (my $aln = $in->next_aln) {
+#    $aln->set_displayname_flat(); # remove bioperl suffix: "/begin-end"
+#    my %seen = ('lcl|consensus'=>1);
+#    for my $seq ($aln->each_seq) {
+#      if ($seen{ $seq->id }++) {  # remove duplicates (why do they exist!?)
+#        $aln->remove_seq($seq);
+#      }
+#    }
+    my $desc = join '~~~', ('', $desc{$cid}{gene}, $desc{$cid}{prod});
+    print STDERR "$cid: $desc\n";
+    $aln->id($cid);
+    $aln->description($desc); # No /EC_number
+  #    $aln->accession($desc{$cid}{acc});
+  #    $aln->dblink("CDD:$cid");
+    $out->write_aln($aln);
+  }
+#  system("cat $faln $lib.aln");
+#  exit(-1);
+}
+
+print STDERR "Done.\n";
+
+#----------------------------------------------------------------------
+# Option setting routines
+
+sub setOptions {
+  use Getopt::Long;
+
+  @Options = (
+    {OPT=>"help",    VAR=>\&usage,             DESC=>"This help"},
+    {OPT=>"verbose!",  VAR=>\$verbose, DEFAULT=>0, DESC=>"Verbose output"},
+    {OPT=>"srcdir=s",  VAR=>\$srcdir, DEFAULT=>'/bio/data/cdd/latest/', DESC=>"CDD download dir"},    
+    {OPT=>"lib=s",  VAR=>\$lib, DEFAULT=>'COG', DESC=>"Subset of CDD to create"},
+    {OPT=>"force!",  VAR=>\$force, DEFAULT=>0, DESC=>"Force overwrite of output files: LIB.aln LIB.hmm"},
+  );
+
+  #(!@ARGV) && (usage());
+
+  &GetOptions(map {$_->{OPT}, $_->{VAR}} @Options) || usage();
+
+  # Now setup default values.
+  foreach (@Options) {
+    if (defined($_->{DEFAULT}) && !defined(${$_->{VAR}})) {
+      ${$_->{VAR}} = $_->{DEFAULT};
+    }
+  }
+}
+
+sub usage {
+  print "Usage: $0 [options]  # will write LIB.aln and LIB.hmm\n";
+  foreach (@Options) {
+    printf "  --%-13s %s%s.\n",$_->{OPT},$_->{DESC},
+           defined($_->{DEFAULT}) ? " (default '$_->{DEFAULT}')" : "";
+  }
+  exit(1);
+}
+ 
+#----------------------------------------------------------------------
