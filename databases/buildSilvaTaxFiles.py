@@ -8,57 +8,59 @@ For silva, the taxonomy text file is used to get the ranks for each taxon. Then 
 
 For PR2, the fasta file is all that's needed, but you can optionanly choose to simplify the hidids. If you specify an output fasta file, the first element (accession.start.end) is used, but if you don't, the mapping will use the original ID's which include the full taxonomy string. 
 """
-from optparse import OptionParser
+import argparse
 import sys, logging, os, re
-import edl.util, edl.taxon, edl.silva
+from edl.util import add_universal_arguments, setup_logging, parseMapFile, treeGenerator
+import edl.taxon, edl.silva
 
 ## Some ranks need to be renamed to work with existing scripts
 # superkingdom->major_clade: NCBI uses superkingdom for domain, so this has to be changed to a reasonable alternative
 rankMapping={"superkingdom":"major_clade"}
 
 def main():
-    usage = "usage: %prog [options] FASTA_FILE OUTPUT_DIR"
     description = __doc__
 
-    parser = OptionParser(usage, description=description)
-    parser.add_option("-t", "--taxfile", dest="taxfile",
+    parser = argparse.ArgumentParser(description)
+    parser.add_argument("-t", "--taxfile", dest="taxfile",
                       metavar="FILE", help="Read Silva ranks from FILE")
-    parser.add_option("-d","--dbType",default="silva",choices=['silva','pr2'],
+    parser.add_argument("-d","--dbType",default="silva",choices=['silva','pr2'],
             help="Which database are we importing: 'silva' (default) or 'pr2'")
-    parser.add_option("-f","--fastaout",default=None, metavar='FILE',
+    parser.add_argument("-f","--fastaout",default=None, metavar='FILE',
             help="Write fasta with modified headers to FILE. Only used for pr2")
-    parser.add_option("-i","--idStart", default=0, type=int,
+    parser.add_argument("-i","--idStart", default=0, type=int,
             help="Start taxid counting with this number")
+    parser.add_argument("-o", "--output_map", default="lastdb.tax",
+            help="File (relative to OUTPUT_DIR) to write id->taxid map to. Defaults to lastdb.tax")
+    parser.add_argument('silva_fasta', nargs=1, 
+            metavar='SILVA_FASTA')
+    parser.add_argument('output_dir', nargs=1, 
+            metavar="OUTPUT_DIR", help="Directory in which to create files")
 
     # logging and help
-    edl.util.addUniversalOptions(parser)
+    add_universal_arguments(parser)
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
-    (options, args) = parser.parse_args()
-
-    edl.util.setupLogging(options, description)
+    # name logger
     logger=logging.getLogger(sys.argv[0])
 
-    # command line arguments (this could be more robust...)
-    logger.debug(args)
-    if len(args)==3:
-        #hack to support old method for just Silva
-        options.taxfile = args.pop(0)
-    (fastafile, dumpDir) = args
+    fastafile = arguments.silva_fasta[0]
+    dumpDir = arguments.output_dir[0]
 
     # parse the input files
-    if options.dbType=='pr2':
+    if arguments.dbType=='pr2':
         rootNode, taxmap = buildPR2Tree(fastafile, 
-                                        fastaout=options.fastaout,
-                                        nextId=options.idStart,
+                                        fastaout=arguments.fastaout,
+                                        nextId=arguments.idStart,
                                         )
     else:
-        if options.taxfile is None:
+        if arguments.taxfile is None:
             parser.error("You must provide the tax file for Silva (-t)")
-        rootNode, taxmap = buildSilvaTree(options.taxfile, fastafile, logger)
+        rootNode, taxmap = buildSilvaTree(arguments.taxfile, fastafile, logger)
 
     nodesFile = os.path.sep.join((dumpDir, 'nodes.dmp'))
     namesFile = os.path.sep.join((dumpDir, 'names.dmp'))
-    taxFile = os.path.sep.join((dumpDir, 'lastdb.tax'))
+    taxFile = os.path.sep.join((dumpDir, arguments.output_map))
 
     logger.info("Writing taxonomy to %s and %s" % (nodesFile, namesFile))
     with open(nodesFile,'w') as nodeFile:
@@ -67,27 +69,17 @@ def main():
 
     logger.info("Writing taxid table to %s" % (taxFile))
     with open(taxFile,'w') as taxMapFile:
-        for (hitid, taxid) in taxmap.iteritems():
+        for (hitid, taxid) in taxmap.items():
             taxMapFile.write("%s\t%s\n" % (hitid, taxid))
-
-def treeGenerator(node, kidsFirst=False, **kwargs):
-    if not kidsFirst:
-        yield node
-    for kid in sorted(node.children,**kwargs):
-        if kid is not node:
-            for n in treeGenerator(kid, kidsFirst=kidsFirst, **kwargs):
-                yield n
-    if kidsFirst:
-        yield node
 
 def writeDumpFiles(rootNode, nodeStream, nameStream):
     for node in treeGenerator(rootNode):
         nid = node.id
         nname = node.name
         if node==rootNode:
-           nparent = node.id
+            nparent = node.id
         else:
-           nparent = node.parent.id
+            nparent = node.parent.id
         if node.rank == 'domain':
             nrank = 'superkingdom'
         elif node.rank in edl.taxon.ranks:
@@ -97,8 +89,8 @@ def writeDumpFiles(rootNode, nodeStream, nameStream):
         nodeStream.write("%s\t|\t%s\t|\t%s\t\n" % (nid,nparent,nrank))
         nameStream.write("%s\t|\t%s\t|\t\t|\tscientific name\t\n" % (nid,nname))
 
-def getOrgsFromSilvaFasta(fasta):
-    with open(fasta) as f:
+def getOrgsFromSilvaFasta(fasta_file):
+    with open(fasta_file) as f:
         for line in f:
             if len(line)>0 and line[0]=='>':
                 (read,desc) = line[1:].strip().split(None,1)
@@ -177,13 +169,13 @@ def buildSilvaTree(taxFile, fastaFile, logger):
     Given a text taxonomy file (lineage <tab> id <tab> rank) and a fasta file with full lineages as the description:
     Return the root node from a taxonomy of edl.taxon.Node objects and a mapping from fasta record IDs to taxids.
     """
-    rankMap=edl.util.parseMapFile(taxFile, keyCol=0, valueCol=2, skipFirst=0)
-    silvaTaxidMap=edl.util.parseMapFile(taxFile, keyCol=0, valueCol=1, valueType=int, skipFirst=0)
+    rankMap=parseMapFile(taxFile, keyCol=0, valueCol=2, skipFirst=0)
+    silvaTaxidMap=parseMapFile(taxFile, keyCol=0, valueCol=1, valueType=int, skipFirst=0)
     
     # create core of tree from taxonomy text file
     silvaTree={}
     maxTaxid=max(silvaTaxidMap.values())
-    for (lineage, rank) in rankMap.iteritems():
+    for (lineage, rank) in rankMap.items():
         node=edl.silva.SilvaTaxNode.addToTreeFromString(lineage.strip("; "), silvaTree)
         node.rank = rankMapping.get(rank,rank)
         node.ncbi_tax_id = silvaTaxidMap[lineage]
@@ -200,9 +192,9 @@ def buildSilvaTree(taxFile, fastaFile, logger):
 
     logger.info("Added nodes from fasta file for a total of %d" % (len(silvaTree)))
 
-    rootNode=silvaTree.itervalues().next().getRootNode()
+    rootNode=next(iter(silvaTree.values())).getRootNode()
     # make sure everything is OK
-    for node in edl.util.treeGenerator(rootNode):
+    for node in treeGenerator(rootNode):
         if not isinstance(node.id,int):
             if "ncbi_tax_id" in dir(node):
                 node.id = int(node.ncbi_tax_id)

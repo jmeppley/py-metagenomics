@@ -45,9 +45,19 @@ class TaxNode:
         self.name=""
         self.translation=None
         self.lineage=None
+        self.lineage_strings={}
 
     def __repr__(self):
         return "TaxNode(%s,%s,%s)" % (repr(self.id),repr(self.parentid),repr(self.rank))
+
+    def __key__(self):
+        return self.getLineageString(';')
+
+    def __lt__(self, other):
+        return self.__key__() < other.__key__()
+
+    def __eq__(self, other):
+        return self.__key__() == other.__key__()
 
     def __str__(self):
         if self.name == "":
@@ -203,10 +213,14 @@ class TaxNode:
             return (count,countedNodes)
 
     def getLineageString(self,sep):
-        if self.parent is None or self.parent is self:
-            return self.name
-        else:
-            return self.parent.getLineageString(sep) + sep + self.name
+        if sep not in self.lineage_strings:
+            if self.parent is None or self.parent is self:
+                self.lineage_strings[sep] = self.name
+            else:
+                self.lineage_strings[sep] = \
+                        sep.join((self.parent.getLineageString(sep),
+                                 self.name))
+        return self.lineage_strings[sep]
 
     def getLineage(self):
         """
@@ -214,10 +228,11 @@ class TaxNode:
         """
         if self.lineage is None:
             if self.parent is None or self.parent is self:
-                self.lineage = [self]
+                self.lineage = tuple([self,])
             else:
-                self.lineage = list(self.parent.getLineage())
-                self.lineage.append(self)
+                lineage = list(self.parent.getLineage())
+                lineage.append(self)
+                self.lineage=tuple(lineage)
         return self.lineage
 
     def compareRanks(self, comparisons):
