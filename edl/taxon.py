@@ -57,7 +57,7 @@ class TaxNode:
         return self.__key__() < other.__key__()
 
     def __eq__(self, other):
-        return self.__key__() == other.__key__()
+        return self.__key__() == other.__key__() if isinstance(other, self.__class__) else False
 
     def __str__(self):
         if self.name == "":
