@@ -19,6 +19,7 @@
 FTP_ROOT=ftp://ftp.ncbi.nlm.nih.gov/refseq/release
 REL?=$(shell curl $(FTP_ROOT)/RELEASE_NUMBER)
 REL:=$(REL)
+MAX_ATTEMPTS=10
 
 # where to put it
 DB_SCRIPT_DIR?=.
@@ -106,17 +107,15 @@ $(FAA): $(FAA_PREREQS)
 	@echo "==Compiling $@ from gz archives"
 	for FILE in $(RSDIR)/$(*F)/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/getSequencesFromGbk.py -F fasta -r > $@
 
-$(RSDIR)/complete/.download.complete.aa:
-	@echo "==Dowloading complete RefSeq proteins"
-	mkdir -p $(RSDIR)/complete
-	#cd $(RSDIR)/complete && wget -c $(FTP_ROOT)/complete/complete.nonredundant_protein.*.protein.gpff.gz
-	cd $(RSDIR)/complete && wget -c $(FTP_ROOT)/complete/complete.[0-9]*.protein.gpff.gz
-	touch $@
+$(RSDIR)/complete:
+	mkdir -p $@
 
-$(ACCTAXMAP).oldway: $(MDDIR) $(TAXDUMP_SOURCE) $(TAXMAPSCRIPT) 
-	# The catalog only has one taxid even for multispecies entries, so
-	# now we get the taxid maps from the gpff files
-	export PYTHONPATH=$(DB_SCRIPT_DIR)/.. && gunzip -c $(MDDIR)/RefSeq-release$(REL).catalog.gz | python $(TAXMAPSCRIPT) $(TAXDUMP_SOURCE) > $@
+$(RSDIR)/complete/complete.ftp.ls: | $(RSDIR)/complete
+	curl -s -l ${FTP_ROOT}/complete/ | grep "protein\.gpff" > $@
+
+$(RSDIR)/complete/.download.complete.aa: $(RSDIR)/complete/complete.ftp.ls
+	@echo "==Dowloading complete RefSeq proteins"
+	ATTEMPTS=0; ERRORS=1; while [ "$$ERRORS" -gt "0" ]; do find $(RSDIR)/complete -type f -empty -name "*.gz" -delete; if [ "$$ATTEMPTS" -gt "$(MAX_ATTEMPTS)" ]; then echo Retrying RefSeq protein download; fi; ERRORS=0; cat $^ | while read CPGZ; do CPGZ_PATH=$(RSDIR)/complete/$${CPGZ}; if [ ! -e $$CPGZ_PATH ]; then echo Downloadling $$CPGZ; curl -s $(FTP_ROOT)/complete/$${CPGZ} > $${CPGZ_PATH} || let ERRORS=ERRORS+1; fi; done; echo downloaded $$COUNT files with $$ERRORS errors; let ATTEMPTS=ATTEMPTS+1; if [ "$$ATTEMPTS" -gt "$(MAX_ATTEMPTS)" ]; then echo ERROR: Exceeded $(MAX_ATTEMPTS) tries when downloading RefSeq; ERRORS=0; fi; done; if [ "$$ATTEMPTS" -lt "$(MAX_ATTEMPTS)" ]; then touch $@; else exit 2; fi
 
 $(ACCTAXMAP): $(RSDIR)/complete/.download.complete.aa
 	# For some multispecies entries, you'll get multiple lines in the tax map
