@@ -62,7 +62,7 @@ ifeq ($(GET_COG),True)
 		CDD_DATE=$(shell curl -s $(CDD_README_URL) | grep -m 1 revised | perl -pe 's/^.+revised\s+//; s/ /_/g;')
 	endif
 endif
-COG_DIR=$(SEQDB_ROOT)/cdd/$(CDD_DATE)/COG
+CDD_DIR=$(SEQDB_ROOT)/cdd/$(CDD_DATE)/COG
 
 all: $(DBLIST)
 
@@ -99,7 +99,7 @@ $(TIGRFAM_DIR)/relnotes.txt: | $(TIGRFAM_DIR)
 
 $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME): $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).tar.gz | $(TIGRFAM_DIR)
 	rm -f $@
-	tar -tzvf $^ | xargs tar -zxOf $^ > $@
+	tar -tzvf $^ | sed -r 's/^.+\s(\S+)\s*$$/\1/' |  xargs tar -zxOf $^ > $@
 
 $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).tar.gz: | $(TIGRFAM_DIR)
 	curl -s $(TIGRFAM_FTP)/$(TIGRFAM_HMM_FILE) > $@
@@ -114,6 +114,9 @@ cog_version:
 
 $(CDD_DIR):
 	mkdir -p $(CDD_DIR)
+
+$(CDD_DIR)/README: | $(CDD_DIR)
+	curl -s $(CDD_README_URL) > $@
 
 $(CDD_DIR)/$(CDD_TABLE): | $(CDD_DIR)
 	curl -s $(CDD_TABLE_URL) > $@
