@@ -18,6 +18,7 @@
 #
 ###########################
 SEQDB_ROOT?=./seqdbs
+CDD_HMM_SCRIPT=./cdd-to-aln.prokka.pl
 
 DBLIST=
 
@@ -49,7 +50,7 @@ TIGRFAM_HMM_NAME=TIGRFAMS_HMM
 # CDD files for COG (And maybe others in the future?)
 CDD_README_URL=ftp://ftp.ncbi.nih.gov/pub/mmdb/cdd/README
 CDD_FASTA_URL=ftp://ftp.ncbi.nih.gov/pub/mmdb/cdd/fasta.tar.gz
-CDD_TBL_URL=ftp://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddid_all.tbl.gz
+CDD_TABLE_URL=ftp://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddid_all.tbl.gz
 CDD_TABLE=cddid_all.tbl.gz
 CDD_FASTA=fasta.tar.gz
 CDD_DATE=
@@ -62,10 +63,12 @@ ifeq ($(GET_COG),True)
 		CDD_DATE=$(shell curl -s $(CDD_README_URL) | grep -m 1 revised | perl -pe 's/^.+revised\s+//; s/ /_/g;')
 	endif
 endif
-CDD_DIR=$(SEQDB_ROOT)/cdd/$(CDD_DATE)/COG
+CDD_DIR=$(SEQDB_ROOT)/cdd/$(CDD_DATE)
+COG_DIR=$(CDD_DIR)/COG
 
 all: $(DBLIST)
 
+#PFAM
 pfam: pfam_version $(PFAM_DIR)/relnotes.txt $(PFAM_DIR)/$(PFAM_HMM_NAME).h3p $(PFAM_DIR)/$(PFAM_HMM_DAT_NAME)
 
 pfam_version:
@@ -88,6 +91,7 @@ $(PFAM_DIR)/$(PFAM_HMM_DAT_NAME): | $(PFAM_DIR)
 
 tigrfam: tigrfam_version $(TIGRFAM_DIR)/relnotes.txt $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).h3p
 
+#TIGRFAM
 tigrfam_version:
 	@echo TIGRFAM Release: $(TIGRFAM_RELEASE)
 
@@ -107,13 +111,12 @@ $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).tar.gz: | $(TIGRFAM_DIR)
 $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).h3p: $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME) | $(TIGRFAM_DIR)
 	hmmpress $^
 
-cog: cog_version $(CDD_DIR)/README $(CDD_DIR)/COG.hmm.h3p
-
-cog_version:
+# Generic CDD stuff
+cdd_version:
 	@echo CDD date: $(CDD_DATE)
 
 $(CDD_DIR):
-	mkdir -p $(CDD_DIR)
+	mkdir -p $@
 
 $(CDD_DIR)/README: | $(CDD_DIR)
 	curl -s $(CDD_README_URL) > $@
@@ -124,16 +127,22 @@ $(CDD_DIR)/$(CDD_TABLE): | $(CDD_DIR)
 $(CDD_DIR)/$(CDD_FASTA): | $(CDD_DIR)
 	curl -s $(CDD_FASTA_URL) > $@
 
-$(CDD_DIR)/COG.aln: $(CDD_DIR)/$(CDD_FASTA) $(CDD_DIR)/$(CDD_TABLE)
-	cd $(CDD_DIR) && $(CDD_HMM_SCRIPT) --srcdir . --lib COG
-	sed -i -r 's/([0-9])AC /\1 AC /' $(CDD_DIR)/COG.aln
+# COG
+cog: cdd_version $(CDD_DIR)/README $(COG_DIR)/COG.hmm.h3p
 
-$(CDD_DIR)/COG.hmm.ascii: $(CDD_DIR)/COG.aln
+$(COG_DIR):
+	mkdir -p $@
+
+$(COG_DIR)/COG.aln: $(CDD_DIR)/$(CDD_FASTA) $(CDD_DIR)/$(CDD_TABLE) | $(COG_DIR)
+	$(CDD_HMM_SCRIPT) --srcdir $(CDD_DIR) --lib COG --dstdir $(COG_DIR) 
+	sed -i -r 's/([0-9])AC /\1 AC /' $(COG_DIR)/COG.aln
+
+$(COG_DIR)/COG.hmm.ascii: $(COG_DIR)/COG.aln
 	hmmbuild $@ $^
 
-$(CDD_DIR)/COG.hmm: $(CDD_DIR)/COG.hmm.ascii
+$(COG_DIR)/COG.hmm: $(COG_DIR)/COG.hmm.ascii
 	hmmconvert -b $^ > $@
 
-$(CDD_DIR)/COG.hmm.h3p: $(CDD_DIR)/COG.hmm
+$(COG_DIR)/COG.hmm.h3p: $(COG_DIR)/COG.hmm
 	hmmpress $^
 

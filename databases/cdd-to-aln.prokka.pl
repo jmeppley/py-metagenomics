@@ -21,7 +21,7 @@ use File::Temp qw(tempdir);
 #
 my $HYPO = 'hypothetical protein';
 
-my(@Options, $verbose, $lib, $srcdir, $force);
+my(@Options, $verbose, $lib, $srcdir, $dstdir, $force);
 setOptions();
 
 -d $srcdir or die "bad --srcdir: $srcdir";
@@ -31,7 +31,7 @@ my $annofile = "$srcdir/cddid_all.tbl.gz";
 
 unless ($force) {
   for my $ext (qw(aln hmm.ascii hmm)) {
-    -r "$lib.$ext" and die "Result file $lib.$ext already exists!";
+    -r "$dstdir/$lib.$ext" and die "Result file $dstdir/$lib.$ext already exists!";
   }
 }
 
@@ -70,13 +70,13 @@ print STDERR "Created temp dir to untar to: $tempdir\n";
 print STDERR "Untarring $lib files from: $tarfile\n";
 system("tar -C $tempdir -f $tarfile -z -x --wildcards '$lib*'");
 
-print STDERR "Creating $lib.aln file\n";
-my $out = Bio::AlignIO->new(-file=>">$lib.aln", -format=>'stockholm');
+print STDERR "Creating $dstdir/$lib.aln file\n";
+my $out = Bio::AlignIO->new(-file=>">$dstdir/$lib.aln", -format=>'stockholm');
 
 for my $cid (sort keys %desc) {
   my $faln = "$tempdir/$cid.FASTA";
 #  system("esl-reformat stockholm $tempdir/$cid.FASTA | grep -v lcl.consensus > $faln");
-  print STDERR "$cid | $faln >> $lib.aln\n";
+  print STDERR "$cid | $faln >> $dstdir/$lib.aln\n";
   my $in = Bio::AlignIO->new(-file=>$faln, -format=>'fasta');
   while (my $aln = $in->next_aln) {
 #    $aln->set_displayname_flat(); # remove bioperl suffix: "/begin-end"
@@ -94,7 +94,7 @@ for my $cid (sort keys %desc) {
   #    $aln->dblink("CDD:$cid");
     $out->write_aln($aln);
   }
-#  system("cat $faln $lib.aln");
+#  system("cat $faln $dstdir/$lib.aln");
 #  exit(-1);
 }
 
@@ -109,6 +109,7 @@ sub setOptions {
   @Options = (
     {OPT=>"help",    VAR=>\&usage,             DESC=>"This help"},
     {OPT=>"verbose!",  VAR=>\$verbose, DEFAULT=>0, DESC=>"Verbose output"},
+    {OPT=>"dstdir=s",  VAR=>\$dstdir, DEFAULT=>'.', DESC=>"HMM destination dir"},    
     {OPT=>"srcdir=s",  VAR=>\$srcdir, DEFAULT=>'/bio/data/cdd/latest/', DESC=>"CDD download dir"},    
     {OPT=>"lib=s",  VAR=>\$lib, DEFAULT=>'COG', DESC=>"Subset of CDD to create"},
     {OPT=>"force!",  VAR=>\$force, DEFAULT=>0, DESC=>"Force overwrite of output files: LIB.aln LIB.hmm"},
