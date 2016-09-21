@@ -66,7 +66,7 @@ FTAX=$(FTP_ROOT)/genes/misc/taxonomy
 FTAXR=$(FTP_ROOT)/genes/misc/taxonomic_rank
 FBRITE=$(FTP_ROOT)/brite/*.tar.gz $(FTP_ROOT)/brite/brite* $(FTP_ROOT)/brite/*brite
 
-ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX)
+ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX) $(TAXR)
 ifeq ($(KEGG_USER),)
 	ALL_TARGETS:=nouser
 else
