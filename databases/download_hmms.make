@@ -14,7 +14,7 @@
 # the GET_DB variables. EG:
 #  GET_PFAM=False will skip PFAM
 #  GET_TIGR=True will get TIGR
-#  GET_COG=Fals will skip COG
+#  GET_COG=False will skip COG
 #
 ###########################
 SEQDB_ROOT?=./seqdbs
