@@ -166,23 +166,24 @@ report:
 # Download fasta and supporting files
 fasta: report $(SSU_FASTA) $(LSU_FASTA)
 
-$(SSU_FASTA):
-	@echo downloading SSU from $(SSUREF_URL)
+$(BUILDDIR):
 	@mkdir -p $(BUILDDIR)
+
+$(SSU_FASTA): | $(BUILDDIR)
+	@echo downloading SSU from $(SSUREF_URL)
 	curl $(SSUREF_URL) | gunzip -c | perl -ne 'if (m/^>/) { print; } else {tr/uU/tT/; print;}' > $(SSU_FASTA)
 
-$(LSU_FASTA):
+$(LSU_FASTA): | $(BUILDDIR)
 	@echo downloading LSU from $(LSUREF_URL)
-	@mkdir -p $(BUILDDIR)
 	curl $(LSUREF_URL) | gunzip -c | perl -ne 'if (m/^>/) { print; } else {tr/uU/tT/; print;}' > $(LSU_FASTA)
 
 # Download tax files and build custom taxdump for DB searches
 taxfiles: $(SSU_TAXFILE) $(LSU_TAXFILE)
 
-$(SSU_TAXFILE):
+$(SSU_TAXFILE): | $(BUILDDIR)
 	curl $(SSU_TAXFILE_URL) > $(SSU_TAXFILE)
 
-$(LSU_TAXFILE):
+$(LSU_TAXFILE): | $(BUILDDIR)
 	curl $(LSU_TAXFILE_URL) > $(LSU_TAXFILE)
 
 $(LSU_TAXIDMAP): $(LSU_TAXFILE) $(LSU_FASTA) | $(LSU_SEQDB_DIR)
