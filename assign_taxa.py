@@ -19,8 +19,6 @@ Takes a hit table (reads searched against a database) and assigns each read to a
      * Specifying a top score precent (-F) will force hits to be sorted by score within each read. However, it is assumed that the hits in the input table(s) are already grouped by read. This program does not attempt to sort the entire input.
     """
     parser = argparse.ArgumentParser(description)
-    parser.add_argument("-i", "--inputfile", dest="infile",
-                      metavar="INFILE", help="Read data table from INFILE. (this is here for legacy, you can also just put list file names without this options)"),
     add_IO_arguments(parser)
     parser.add_argument("-T", "--taxids", default=False, action="store_true",
                       help="Output taxids instead of names")
