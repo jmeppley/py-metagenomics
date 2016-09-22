@@ -1,0 +1,96 @@
+##########################
+#
+# download_eggnog.snake
+#
+# Retrieves latest protein HMMs from EGGNOG:
+#
+###########################
+import requests, re, os
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+
+HTTP = HTTPRemoteProvider()
+
+def get_eggnog_version(eggnog_url):
+    r=requests.get(eggnog_url)
+    version=None
+    for line in r.text.split('\n'):
+        m=re.search(r'eggnog_[0-9.]+', line)
+        if m:
+            v=m.group(0)
+            if version is None or v>version:
+                version=v
+
+    print("Version={}".format(v))
+    return v
+
+seqdb_root = config.get('seqdb_root','seqdbs')
+eggnog_url = config.get('eggnog_url','http://eggnogdb.embl.de/download/')
+eggnog_version = config.get('eggnog_version',get_eggnog_version(eggnog_url))
+eggnog_url = re.sub(r'^https?://','',eggnog_url) + eggnog_version
+print(eggnog_url)
+eggnog_dir = os.path.join(seqdb_root, 'EGGNOG', eggnog_version)
+
+nog_list=config.get('nogs',['NOG', 'bactNOG', 'arNOG', 'euNOG', 'Viruses']) 
+nog_url_subdir = {'Viruses':'viruses/Viruses'}
+
+metadata_files=[
+        'COG_functional_categories.txt',
+        'README.txt',
+        'eggnog4.core_species_info.txt',
+        'eggnog4.core_species_list.txt',
+        'eggnog4.functional_categories.txt',
+        #'eggnog4.proteins.all.fa.gz',
+        'eggnog4.species_list.txt',
+        'eggnog4.taxonomic_levels.txt',
+        ]
+
+rule all:
+    input:
+        expand(os.path.join(eggnog_dir, 'metadata','{mdfile}'),
+                mdfile=metadata_files),
+        expand(os.path.join(eggnog_dir, '{NOG}.hmm.h3p'), NOG=nog_list),
+        expand(os.path.join(eggnog_dir, '{NOG}.hmm.hmm_count'), NOG=nog_list),
+        # there is no stats.tt for viruses
+        expand(os.path.join(eggnog_dir, '{NOG}.stats.txt'), 
+               NOG=[n for n in nog_list if n[-3:]=='NOG'])
+
+rule metadata_download:
+    input:
+        lambda w: HTTP.remote(eggnog_url + '/' + w.mdfile, insecure=True, keep_local=True)
+    output:
+        '{location}/metadata/{mdfile}'
+    shell:
+        'mv {input} {output}'
+
+rule hmmpress:
+    input:
+        '{location}/{NOG}.hmm'
+    output:
+        '{location}/{NOG}.hmm.h3p'
+    shell:
+        "hmmpress {input}"
+
+rule hmm_count:
+    input:
+        '{location}/{NOG}.hmm'
+    output:
+        '{location}/{NOG}.hmm.hmm_count'
+    shell:
+        'grep -c "^HMMER" {input} > {output}'
+
+rule get_hmm:
+    input:
+        lambda w: HTTP.remote(eggnog_url + '/data/' + nog_url_subdir.get(w.NOG,w.NOG) + '/' + w.NOG + ".hmm.tar.gz", insecure=True)
+    output:
+        '{location}/{NOG}.hmm'
+    shell:
+        "tar -tzvf {input} | sed -r 's/^.+\s(\S+)\s*$/\\1/' |  xargs tar -zxOf {input} > {output}"
+
+rule get_stats:
+    input:
+        lambda w: HTTP.remote(eggnog_url + '/data/' + w.NOG + '/' + "stats.txt",
+                              keep_local=True, insecure=True)
+    output:
+        '{location}/{NOG}.stats.txt'
+    shell:
+        'mv {input} {output}'
