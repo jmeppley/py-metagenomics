@@ -63,7 +63,7 @@ ifeq ($(GET_COG),True)
 		CDD_DATE=$(shell curl -s $(CDD_README_URL) | grep -m 1 revised | perl -pe 's/^.+revised\s+//; s/ /_/g;')
 	endif
 endif
-CDD_DIR=$(SEQDB_ROOT)/cdd/$(CDD_DATE)
+CDD_DIR:=$(SEQDB_ROOT)/cdd/$(CDD_DATE)
 COG_DIR=$(CDD_DIR)/COG
 
 all: $(DBLIST)
