@@ -46,11 +46,8 @@ endif
 MDDIR:=$(RSDIR)/metadata
 TAXDUMP_SOURCE:=$(RSDIR)/taxdump
 
-COMPLETEFAA=$(RSDIR)/complete.protein.fasta
-
 # Final protein outputs
 FAA_NAME:=RefSeq-$(REL).AllProteins.faa
-FAA_PREREQS=$(COMPLETEFAA)
 FAA:=$(RSDIR)/$(FAA_NAME)
 
 # LAST database will be packaged in it's own directory
@@ -99,23 +96,22 @@ $(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
 	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
 
-$(FAA): $(FAA_PREREQS)
-	@echo "==Masking low complexity with tantan"
-	tantan -p $^ | perl -ne 'if (m/^>(?!gi\|\d+)(.*)$$/) { if (defined $$n) { $$n++; } else { $$n=10000000000; } print ">gi|$$n|loc|$$1\n"; } else { print; }' > $@
-
-%.protein.fasta: %/.download.complete.aa
+$(FAA): $(RSDIR)/complete/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
-	for FILE in $(RSDIR)/$(*F)/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/getSequencesFromGbk.py -F fasta -r > $@
+	@echo "... and masking low complexity with tantan"
+	for FILE in $(RSDIR)/$(*F)/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/getSequencesFromGbk.py -F fasta -r | tantan -p > $@
 
 $(RSDIR)/complete:
 	mkdir -p $@
 
+# Dowload directory listing tto file so we can make sure we got everything
 $(RSDIR)/complete/complete.ftp.ls: | $(RSDIR)/complete
 	curl -s -l ${FTP_ROOT}/complete/ | grep "protein\.gpff" > $@
 
+# This while loop tries up to (MAX_ATTEMPTS) times to download all files
 $(RSDIR)/complete/.download.complete.aa: $(RSDIR)/complete/complete.ftp.ls
 	@echo "==Dowloading complete RefSeq proteins"
-	ATTEMPTS=0; ERRORS=1; while [ "$$ERRORS" -gt "0" ]; do find $(RSDIR)/complete -type f -empty -name "*.gz" -delete; if [ "$$ATTEMPTS" -gt "$(MAX_ATTEMPTS)" ]; then echo Retrying RefSeq protein download; fi; ERRORS=0; cat $^ | while read CPGZ; do CPGZ_PATH=$(RSDIR)/complete/$${CPGZ}; if [ ! -e $$CPGZ_PATH ]; then echo Downloadling $$CPGZ; curl -s $(FTP_ROOT)/complete/$${CPGZ} > $${CPGZ_PATH} || let ERRORS=ERRORS+1; fi; done; echo downloaded $$COUNT files with $$ERRORS errors; let ATTEMPTS=ATTEMPTS+1; if [ "$$ATTEMPTS" -gt "$(MAX_ATTEMPTS)" ]; then echo ERROR: Exceeded $(MAX_ATTEMPTS) tries when downloading RefSeq; ERRORS=0; fi; done; if [ "$$ATTEMPTS" -lt "$(MAX_ATTEMPTS)" ]; then touch $@; else exit 2; fi
+	ATTEMPTS=0; ERRORS=1; while [ "$$ERRORS" -gt "0" ]; do ERRORS=0; if [ "$$ATTEMPTS" -gt "0" ]; then echo Retrying RefSeq protein download; fi; if [ "$$ATTEMPTS" -gt "$(MAX_ATTEMPTS)" ]; then echo ERROR: Exceeded $(MAX_ATTEMPTS) tries when downloading RefSeq; else cat $^ | while read CPGZ; do CPGZ_PATH=$(RSDIR)/complete/$${CPGZ}; if [ ! -s $$CPGZ_PATH ]; then let COUNT=COUNT+1; curl -s $(FTP_ROOT)/complete/$${CPGZ} > $${CPGZ_PATH}; fi; done; cat $^ | while read CPGZ; do CPGZ_PATH=$(RSDIR)/complete/$${CPGZ}; if [ ! -s $$CPGZ_PATH ]; then let ERRORS+=1; fi; done; echo downloaded $$COUNT files with $$ERRORS errors; let ATTEMPTS=ATTEMPTS+1; fi; done; if [ "$$ATTEMPTS" -lt "$(MAX_ATTEMPTS)" ]; then touch $@; else exit 2; fi
 
 $(ACCTAXMAP): $(RSDIR)/complete/.download.complete.aa
 	# For some multispecies entries, you'll get multiple lines in the tax map
