@@ -164,7 +164,7 @@ report:
 	@echo Build lastdb: $(BUILD_LASTDB)
 
 # Download fasta and supporting files
-fasta: report $(SSU_FASTA) $(LSU_FASTA)
+fasta: report $(SSU_FASTA).stats $(LSU_FASTA).stats
 
 $(BUILDDIR):
 	@mkdir -p $(BUILDDIR)
@@ -176,6 +176,9 @@ $(SSU_FASTA): | $(BUILDDIR)
 $(LSU_FASTA): | $(BUILDDIR)
 	@echo downloading LSU from $(LSUREF_URL)
 	curl $(LSUREF_URL) | gunzip -c | perl -ne 'if (m/^>/) { print; } else {tr/uU/tT/; print;}' > $(LSU_FASTA)
+
+%.fasta.stats: %.fasta
+	cat $^ | prinseq-lite.pl -fasta stdin -stats_len -stats_info > $@
 
 # Download tax files and build custom taxdump for DB searches
 taxfiles: $(SSU_TAXFILE) $(LSU_TAXFILE)

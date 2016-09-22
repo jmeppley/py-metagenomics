@@ -78,8 +78,8 @@ ALL_TARGETS:=$(ALL_TARGETS) $(TAXDUMP)
 
 all: report $(MDDIR) $(ALL_TARGETS)
 
-lastdb: $(LASTFILE) $(HITIDMAP)
-fasta: $(FAA)
+lastdb: $(LASTFILE) $(HITIDMAP) $(FAA).stats
+fasta: $(FAA).stats
 
 report:
 	@echo RefSeq release number is: $(REL)
@@ -96,10 +96,13 @@ $(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
 	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
 
+$(FAA).stats: $(FAA)
+	cat $^ | prinseq-lite.pl -fasta stdin -aa -stats_len -stats_info > $@
+
 $(FAA): $(RSDIR)/complete/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
 	@echo "... and masking low complexity with tantan"
-	for FILE in $(RSDIR)/$(*F)/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/getSequencesFromGbk.py -F fasta -r | tantan -p > $@
+	for FILE in $(RSDIR)/complete/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/getSequencesFromGbk.py -F fasta -r | tantan -p > $@
 
 $(RSDIR)/complete:
 	mkdir -p $@

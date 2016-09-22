@@ -66,7 +66,7 @@ FTAX=$(FTP_ROOT)/genes/misc/taxonomy
 FTAXR=$(FTP_ROOT)/genes/misc/taxonomic_rank
 FBRITE=$(FTP_ROOT)/brite/*.tar.gz $(FTP_ROOT)/brite/brite* $(FTP_ROOT)/brite/*brite
 
-ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX) $(TAXR)
+ALL_TARGETS:=$(KOKO) $(KOKEG) $(LINKS) $(GENOME) $(TAX) $(TAXR) stats
 ifeq ($(KEGG_USER),)
 	ALL_TARGETS:=nouser
 else
@@ -89,6 +89,7 @@ version:
 
 maps: $(KOMAP) $(HITIDMAP)
 links: $(LINKS)
+stats: $(KEGGGENES).stats $(EUKGENES).stats $(PRKGENES).stats
 
 $(KOMAP): $(LINKS) | $(LASTDB_DIR)
 	cp $(LINKS)/genes_ko.list $@
@@ -105,6 +106,12 @@ $(LASTDB_DIR):
 $(KEGGGENES): $(GENESMETA) $(PRKGENES) $(EUKGENES)
 	rm -f $(KEGGGENES)
 	gunzip -c $(PRKGENES) $(EUKGENES) | tantan -p > $(KEGGGENES)
+
+%.faa.stats: %.faa
+	cat $^ | prinseq-lite.pl -fasta stdin -aa -stats_len -stats_info > $@
+
+%.pep.gz.stats: %.pep.gz
+	gunzip -c $^ | prinseq-lite.pl -fasta stdin -aa -stats_len -stats_info > $@
 
 $(KGDIR):
 	mkdir -p $(KGDIR)

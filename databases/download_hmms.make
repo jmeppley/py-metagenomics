@@ -68,8 +68,12 @@ COG_DIR=$(CDD_DIR)/COG
 
 all: $(DBLIST)
 
+# universal rule
+%.hmm_counts: %
+	grep -c "^HMMER" $^ > $@
+
 #PFAM
-pfam: pfam_version $(PFAM_DIR)/relnotes.txt $(PFAM_DIR)/$(PFAM_HMM_NAME).h3p $(PFAM_DIR)/$(PFAM_HMM_DAT_NAME)
+pfam: pfam_version $(PFAM_DIR)/relnotes.txt $(PFAM_DIR)/$(PFAM_HMM_NAME).h3p $(PFAM_DIR)/$(PFAM_HMM_DAT_NAME) $(PFAM_DIR)/$(PFAM_HMM_NAME).hmm_counts
 
 pfam_version:
 	@echo PFAM Release: $(PFAM_RELEASE)
@@ -89,9 +93,9 @@ $(PFAM_DIR)/$(PFAM_HMM_NAME).h3p: $(PFAM_DIR)/$(PFAM_HMM_NAME) | $(PFAM_DIR)
 $(PFAM_DIR)/$(PFAM_HMM_DAT_NAME): | $(PFAM_DIR)
 	curl -s $(PFAM_FTP)/$(PFAM_HMM_DAT_NAME).gz | gunzip -c > $@
 
-tigrfam: tigrfam_version $(TIGRFAM_DIR)/relnotes.txt $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).h3p
-
 #TIGRFAM
+tigrfam: tigrfam_version $(TIGRFAM_DIR)/relnotes.txt $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).h3p $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).hmm_counts
+
 tigrfam_version:
 	@echo TIGRFAM Release: $(TIGRFAM_RELEASE)
 
@@ -128,7 +132,7 @@ $(CDD_DIR)/$(CDD_FASTA): | $(CDD_DIR)
 	curl -s $(CDD_FASTA_URL) > $@
 
 # COG
-cog: cdd_version $(CDD_DIR)/README $(COG_DIR)/COG.hmm.h3p
+cog: cdd_version $(CDD_DIR)/README $(COG_DIR)/COG.hmm.h3p $(COG_DIR)/COG.hmm.ascii.hmm_counts
 
 $(COG_DIR):
 	mkdir -p $@
