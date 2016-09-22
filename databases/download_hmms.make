@@ -68,9 +68,12 @@ COG_DIR=$(CDD_DIR)/COG
 
 all: $(DBLIST)
 
-# universal rule
+# universal rules
 %.hmm_counts: %
 	grep -c "^HMMER" $^ > $@
+
+%.hmm.h3p: %.hmm
+	hmmpress $^
 
 #PFAM
 pfam: pfam_version $(PFAM_DIR)/relnotes.txt $(PFAM_DIR)/$(PFAM_HMM_NAME).h3p $(PFAM_DIR)/$(PFAM_HMM_DAT_NAME) $(PFAM_DIR)/$(PFAM_HMM_NAME).hmm_counts
@@ -86,9 +89,6 @@ $(PFAM_DIR)/relnotes.txt: | $(PFAM_DIR)
 
 $(PFAM_DIR)/$(PFAM_HMM_NAME): | $(PFAM_DIR)
 	curl -s $(PFAM_FTP)/$(PFAM_HMM_NAME).gz | gunzip -c > $@
-
-$(PFAM_DIR)/$(PFAM_HMM_NAME).h3p: $(PFAM_DIR)/$(PFAM_HMM_NAME) | $(PFAM_DIR)
-	hmmpress $^
 
 $(PFAM_DIR)/$(PFAM_HMM_DAT_NAME): | $(PFAM_DIR)
 	curl -s $(PFAM_FTP)/$(PFAM_HMM_DAT_NAME).gz | gunzip -c > $@
@@ -111,9 +111,6 @@ $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME): $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).tar.gz | 
 
 $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).tar.gz: | $(TIGRFAM_DIR)
 	curl -s $(TIGRFAM_FTP)/$(TIGRFAM_HMM_FILE) > $@
-
-$(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).h3p: $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME) | $(TIGRFAM_DIR)
-	hmmpress $^
 
 # Generic CDD stuff
 cdd_version:
@@ -146,7 +143,4 @@ $(COG_DIR)/COG.hmm.ascii: $(COG_DIR)/COG.aln
 
 $(COG_DIR)/COG.hmm: $(COG_DIR)/COG.hmm.ascii
 	hmmconvert -b $^ > $@
-
-$(COG_DIR)/COG.hmm.h3p: $(COG_DIR)/COG.hmm
-	hmmpress $^
 
