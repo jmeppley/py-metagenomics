@@ -49,3 +49,5 @@ databases/RefSeq
 databases/KEGG
 databases/Silva
 databases/lastdb
+databases/seqdbs
+databases/.snakemake
