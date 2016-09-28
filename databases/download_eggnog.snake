@@ -80,11 +80,17 @@ rule hmm_count:
 
 rule get_hmm:
     input:
-        lambda w: HTTP.remote(eggnog_url + '/data/' + nog_url_subdir.get(w.NOG,w.NOG) + '/' + w.NOG + ".hmm.tar.gz", insecure=True)
+        lambda w: HTTP.remote(eggnog_url + '/data/' + nog_url_subdir.get(w.NOG,w.NOG) + '/' + w.NOG + ".hmm.tar.gz", insecure=True, keep_local=True)
     output:
         '{location}/{NOG}.hmm'
+    shadow: 
+        "shallow"
     shell:
-        "tar -tzvf {input} | sed -r 's/^.+\s(\S+)\s*$/\\1/' |  xargs tar -zxOf {input} > {output}"
+        """
+        tar -xzf {input}
+        find *hmm* -name "*.hmm" | xargs cat > {output}
+        rm -f {input}
+        """
 
 rule get_stats:
     input:
