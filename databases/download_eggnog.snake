@@ -33,6 +33,8 @@ eggnog_dir = os.path.join(seqdb_root, 'EGGNOG', eggnog_version)
 nog_list=config.get('nogs',['NOG', 'bactNOG', 'arNOG', 'euNOG', 'Viruses']) 
 nog_url_subdir = {'Viruses':'viruses/Viruses'}
 
+hmmdb_archive='hmmdb.euk_bact_arch.tar.gz'
+
 metadata_files=[
         'COG_functional_categories.txt',
         'README.txt',
@@ -52,7 +54,9 @@ rule all:
         expand(os.path.join(eggnog_dir, '{NOG}.hmm.hmm_count'), NOG=nog_list),
         # there is no stats.tt for viruses
         expand(os.path.join(eggnog_dir, '{NOG}.stats.txt'), 
-               NOG=[n for n in nog_list if n[-3:]=='NOG'])
+               NOG=[n for n in nog_list if n[-3:]=='NOG']),
+        os.path.join(eggnog_dir, 'hmmdb')
+    
 
 rule metadata_download:
     input:
@@ -78,13 +82,27 @@ rule hmm_count:
     shell:
         'grep -c "^HMMER" {input} > {output}'
 
+rule get_hmm_tarball:
+    input:
+        lambda w: HTTP.remote(eggnog_url + '/data/' + nog_url_subdir.get(w.NOG,w.NOG) + '/' + w.NOG + ".hmm.tar.gz", insecure=True, keep_local=True)
+    output:
+        '{location}/{NOG}.hmm.tgz'
+    shell:
+       "mv {input} {output}"
+
 rule get_hmm:
     input:
-        lambda w: HTTP.remote(eggnog_url + '/data/' + nog_url_subdir.get(w.NOG,w.NOG) + '/' + w.NOG + ".hmm.tar.gz", insecure=True)
+        '{location}/{NOG}.hmm.tgz'
     output:
         '{location}/{NOG}.hmm'
+    shadow:
+        "shallow"
     shell:
-        "tar -tzvf {input} | sed -r 's/^.+\s(\S+)\s*$/\\1/' |  xargs tar -zxOf {input} > {output}"
+        """
+        tar -xzf {input}
+        find *hmm* -name "*.hmm" | xargs cat > {output}
+        rm -f {input}
+        """
 
 rule get_stats:
     input:
@@ -94,3 +112,21 @@ rule get_stats:
         '{location}/{NOG}.stats.txt'
     shell:
         'mv {input} {output}'
+
+rule get_hmmdb:
+    input:
+        lambda w: HTTP.remote(eggnog_url + '/' + hmmdb_archive, 
+                              insecure=True, 
+                              keep_local=True)
+    output:
+        os.path.join(eggnog_dir, 'hmmdb','.done')
+    shadow:
+        "shallow"
+    params:
+        unpack_dir=eggnog_dir
+    shell:
+        """
+        tar -zx -f {input} -C {params.unpack_dir}
+        touch {output}
+        rm {input}
+        """
