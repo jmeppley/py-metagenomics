@@ -82,20 +82,12 @@ rule hmm_count:
     shell:
         'grep -c "^HMMER" {input} > {output}'
 
-rule get_hmm_tarball:
+rule get_hmm:
     input:
         lambda w: HTTP.remote(eggnog_url + '/data/' + nog_url_subdir.get(w.NOG,w.NOG) + '/' + w.NOG + ".hmm.tar.gz", insecure=True, keep_local=True)
     output:
-        '{location}/{NOG}.hmm.tgz'
-    shell:
-       "mv {input} {output}"
-
-rule get_hmm:
-    input:
-        '{location}/{NOG}.hmm.tgz'
-    output:
         '{location}/{NOG}.hmm'
-    shadow:
+    shadow: 
         "shallow"
     shell:
         """
