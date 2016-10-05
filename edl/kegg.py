@@ -448,7 +448,7 @@ def processBriteFile(pathway, desc, file1, kmap):
     except IOError:
         logging.warn("Cannot parse brite pathway: %s from %s" % (pathway,briteFile))
 
-def add_path_arguments(parser,defaults={},choices={}):
+def add_path_arguments(parser,defaults={},choices={},helps={}):
     # get format and filterPct arguments from blastm8
     from edl.hits import HITID, ACCS, GIS, KEGG, HITDESC, PFAM
     from edl.blastm8 import add_hit_table_arguments
@@ -468,7 +468,7 @@ def add_path_arguments(parser,defaults={},choices={}):
     pgroup.add_argument("-C", "--countMethod", dest="countMethod",
             default=defaults.get("countMethod","first"),
             choices=choices.get('countMethod',('first','most','all','consensus')),
-            help="How to deal with counts from multiple hits. (first, most: can return multiple hits, all: return every hit, consensus: return None unless all the same). Do not use most or consensus with more than one level at a time. Default is %s" % (defaults.get("countMethod","first")),
+            help=helps.get("countMethod","How to deal with counts from multiple hits. (first, most: can return multiple hits, all: return every hit, consensus: return None unless all the same). Do not use most or consensus with more than one level at a time. Default is %s" % (defaults.get("countMethod","first"))),
             metavar="COUNTMETHOD")
     if defaults.get("filterForPath",False):
         action='store_false'

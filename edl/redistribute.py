@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import quote_plus
 logger=logging.getLogger(__name__)
 
 import numpy as np
@@ -125,8 +126,8 @@ def pickBestHitByAbundance(m8stream,
 
     # loop over ambiguous hits (grouped by possible orgs) and pick one for each read
     ambiguousReads=0
-    #for orgs, hits in ambiguousHits.iteritems():
-    for orgs in sorted(ambiguousHits.iterkeys()):
+    #for orgs, hits in ambiguousHits.items():
+    for orgs in sorted(ambiguousHits.keys()):
         hits = ambiguousHits[orgs]
         for (hit,org) in assignHits(orgs,hits,orgCounts,winnerTakeAll):
             ambiguousReads+=1
@@ -244,7 +245,7 @@ def redistributeHits(hitMap, rank):
     redistributeHitsForNode(root, hits, rank)
 
     # generate new hitmap
-    for (node, nhits) in hits.iteritems():
+    for (node, nhits) in hits.items():
         if isinstance(nhits,list):
             for read in nhits:
                 hitMap[read]=[node,]
@@ -287,7 +288,7 @@ def redistributeHitsForNode(node, hits, rank):
     if nodeHitCount!=0:
         if total>0:
             # redistribute
-            logger.debug("Redistributing %d hits from %s to %s" % (nodeHitCount, node.name,[n.name for n in childCounts.iterkeys()]))
+            logger.debug("Redistributing %d hits from %s to %s" % (nodeHitCount, node.name,[n.name for n in childCounts.keys()]))
             logger.debug(str(childCounts))
             remainders={}
             for child in sorted(childCounts.keys(),key=lambda kid: childCounts[kid], reverse=True):
@@ -315,7 +316,7 @@ def redistributeHitsForNode(node, hits, rank):
                 hits.get(mostDeserving.pop(0),[]).append(nodeHits.pop(0))
 
     # Now call this method on all tthe children recursively
-    for child in childCounts.iterkeys():
+    for child in childCounts.keys():
         redistributeHitsForNode(child, hits, rank)
 
 def getTotalHits(node, hits):
@@ -324,14 +325,50 @@ def getTotalHits(node, hits):
         nodeHits+=getTotalHits(child, hits)
     return nodeHits
 
-def multipleFileWrapper(m8files, filterParams, **kwargs):
+def multipleFileWrapper(m8files, **kwargs):
     """
     return a generator over all lines in the given list of files. The generator will have an object variable (.fileDict) that maps read names back to the source file
-    """
-    readFileDict = {}
-    generator = _multipleFileGenerator(m8files, filterParams, readFileDict, **kwargs)
-    return (generator, readFileDict)
 
+    Read names are altered to have the url-enoded file name as a prefix. To get file name or tag from altered reads, use:
+        from urllib.parse import unquote_plus
+        encoded_tag, read_name = read_name.split('/',1)
+        tag = unquote_plus(encoded_tag)
+    """
+    return _multipleFileGeneratorPrefixed(m8files, **kwargs)
+
+def _multipleFileGeneratorPrefixed(m8files, returnLines=True):
+    """
+    Iterate over all lines in a given list of streams as a single stream of hits, but keep track of which read came from which file in the given dictionary by renaming reads (adding file name to start)
+    """
+    for m8file in m8files:
+        # allow for list of (file,tag) tuples
+        if isinstance(m8file,tuple):
+            m8file,fileTag=m8file
+        else:
+            fileTag=None
+
+        # get file stream
+        m8stream = M8Stream(m8file, file_tag=fileTag)
+
+        for line in m8stream:
+            yield line
+
+class M8Stream(blastm8.M8Stream):
+    """
+    Variant of M8Stream that encodes a file tag into the read names
+    """
+    def __init__(self, fileName, *args, file_tag=None):
+        blastm8.M8Stream.__init__(self, fileName, *args)
+        if file_tag:
+            self.file_tag=quote_plus(file_tag)
+        else:
+            self.file_tag=quote_plus(self.fileName)
+
+    def __next__(self):
+        line = self.file_tag + "/" + blastm8.M8Stream.__next__(self)
+        return line
+
+# old method
 def _multipleFileGenerator(m8files, filterParams, readFileDict, returnLines=True):
     """
     Iterate over all lines in a given list of streams as a single stream of hits, but keep track of which read came from which file in the given dictionary
@@ -358,4 +395,5 @@ def _multipleFileGenerator(m8files, filterParams, readFileDict, returnLines=True
                 yield hit.line
             else:
                 yield hit
+
 
