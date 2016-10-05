@@ -1,147 +1,109 @@
 #! /usr/bin/python
 """
 Count hits in a tabular blast output. By default, first hit for each read is used.
-
-usage: %prog [options]
-  -h, --help            show this help message and exit
-  -i FILE, --infile=FILE
-                        Read raw table from INFILE
-  -o OUTFILE, --outfile=OUTFILE
-                        Write collapsed table to OUTFILE
-  -d DELIM, --delim=DELIM
-                        Input table
-  -D DELIM, --delimOut=DELIM
-                        Output table delimiter
-  -F, --countFirst      Don't skip the first line, it's NOT a header
-  -R READCOL, --readColumn=READCOL
-                        Index (starting at 0) of column with read name, 0 is
-                        default
-  -H HITCOL, --hitColumn=HITCOL
-                        Index (starting at 0) of column with hit name (for
-                        counting), 2 is default, if less than zero, all (non-
-                        read) columns will be used as multiple hits
-  -s HITSEP, --hitSep=HITSEP
-                        Use this string to split multiple values in single hit
-                        cell. Default is 'None' to leave hits as is, use
-                        'eval' to parse as python repr strings
-  -C CLUSTERFILE, --clusterFile=CLUSTERFILE
-                        Location of cd-hit output. Use this to multiply hits
-                        to recreate counts of unclustered data.
-  -c CUTOFF, --cutoff=CUTOFF
-                        Cutoff for showing taxa. If a fractional count for a
-                        taxa is below this value, it will be folded up into
-                        its parent domain. Defaults to: 0
-  -a ALLMETHOD, --allMethod=ALLMETHOD
-                        'first' means +1 for every hit found for each read. 'all' means 1 to the first hit for each read. 'portion' means 1/(nhits) for all hits of each read. Defaults to 'all'
 """
 
-from optparse import OptionParser
-import sys, re, logging
-from edl.hits import addCountOptions, getAllMethod, addWeightOption
-from edl.util import addUniversalOptions, setupLogging
+import sys, re, logging, argparse
+from edl.hits import add_count_arguments, getAllMethod, add_weight_arguments
+from edl.util import add_universal_arguments, setup_logging
 
 # a habit that stuck in Perl
 die=sys.exit
 
 def main():
     ## set up CLI
-    usage = "usage: %prog [options]"
-    description = """
-    Count hits in a table with read and hit names.
-    """
+    description = __doc__
 
-    parser = OptionParser(usage, description=description)
-    parser.add_option("-i", "--infile", dest="infile",
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument("-i", "--infile", dest="infile",
                       metavar="FILE", help="Read raw table from INFILE")
-    parser.add_option("-o", "--outfile", dest="outfile",
+    parser.add_argument("-o", "--outfile", dest="outfile",
                       metavar="OUTFILE", help="Write collapsed table to OUTFILE")
-    parser.add_option("-d", "--delim", dest="delim", default="\t",
+    parser.add_argument("-d", "--delim", dest="delim", default="\t",
                       help="Input table delimiter", metavar="DELIM")
-    parser.add_option("-D", "--delimOut", dest="delimOut", default="\t",
+    parser.add_argument("-D", "--delimOut", dest="delimOut", default="\t",
                       help="Output table delimiter", metavar="DELIM")
-    parser.add_option('-F', '--countFirst', action='store_true', default=False,
+    parser.add_argument('-F', '--countFirst', action='store_true', default=False,
                        help="Don't skip the first line, it's NOT a header")
-    parser.add_option("-R", "--readColumn", dest="readCol", type="int", default=0,
+    parser.add_argument("-R", "--readColumn", dest="readCol", type=int, default=0,
                       help="Index (starting at 0) of column with read name, 0 is default",
                       metavar="READCOL")
-    parser.add_option("-H", "--hitColumn", dest="hitCol", type="int", default=2,
+    parser.add_argument("-H", "--hitColumn", dest="hitCol", type=int, default=2,
                       help="Index (starting at 0) of column with hit name (for counting), 2 is default, if less than zero, all (non-read) columns will be used as multiple hits",
                       metavar="HITCOL")
-    parser.add_option('-s', '--hitSep', default=None,
+    parser.add_argument('-s', '--hitSep', default=None,
                       help="Use this string to split multiple values in single hit cell. Default is 'None' to leave hits as is, use 'eval' to parse as python repr strings")
-    addWeightOption(parser, multiple=False)
-    parser.add_option("-T", "--total", default=False, action="store_true",
+    add_weight_arguments(parser, multiple=False)
+    parser.add_argument("-T", "--total", default=False, action="store_true",
                       help="Report 'Total' in the first row")
 
     # cutoff options
-    addCountOptions(parser,{'cutoff':0})
+    add_count_arguments(parser,{'cutoff':0})
 
-    # logging and help
-    addUniversalOptions(parser)
-
-    (options, args) = parser.parse_args()
-
-    setupLogging(options, description)
+    # log level and help
+    add_universal_arguments(parser)
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
     # make sure we have something to do
-    if (options.infile==None):
+    if (arguments.infile==None):
         logging.info("Reading table from: STDIN")
     else:
-        logging.info ("Reading table from: " + options.infile )
+        logging.info ("Reading table from: " + arguments.infile )
 
-    if (options.outfile==None):
+    if (arguments.outfile==None):
         logging.info("Writing counts to: STDOUT")
     else:
-        logging.info ("Writing counts to: " + options.outfile )
+        logging.info ("Writing counts to: " + arguments.outfile )
 
     # process arguments
-    takeFirst = (options.allMethod == 'first')
-    splitHits = (options.hitSep is not None and options.hitSep != 'None')
-    uncluster = (options.weights != None)
+    takeFirst = (arguments.allMethod == 'first')
+    splitHits = (arguments.hitSep is not None and arguments.hitSep != 'None')
+    uncluster = (arguments.weights != None)
 
-    if options.hitSep=='eval':
+    if arguments.hitSep=='eval':
         parser.error("Sorry, parsing with eval is not yet supported!")
 
     ## inform the curious user
-    logging.info ("Delimiter: '" + options.delim )
-    logging.info ("Read names in col: '" + str(options.readCol) )
-    logging.info ("Hit names in col: '" + str(options.hitCol) )
+    logging.info ("Delimiter: '" + arguments.delim )
+    logging.info ("Read names in col: '" + str(arguments.readCol) )
+    logging.info ("Hit names in col: '" + str(arguments.hitCol) )
     if splitHits:
-        logging.info("Splitting hits with: %s" % (options.hitSep))
+        logging.info("Splitting hits with: %s" % (arguments.hitSep))
         logging.warn("Splitting hits has not been tested yet! Let me know how it goes.")
     if takeFirst:
         logging.info("Taking first hit for each read.");
     else:
-        if options.allMethod == 'portion':
+        if arguments.allMethod == 'portion':
             logging.info ("Dividing count among all hits for each read.")
         else:
             logging.info ("Adding 1 to every hit for each read")
     if uncluster:
-        logging.info("Getting read cluster sizes from: %s" % (options.weights));
-    if options.countFirst:
+        logging.info("Getting read cluster sizes from: %s" % (arguments.weights));
+    if arguments.countFirst:
         logging.info("First line is data")
     else:
         logging.info("Skipping first line")
 
     # Do the counting!
     counts = {}
-    countHitsForRead=getAllMethod(options.allMethod)
+    countHitsForRead=getAllMethod(arguments.allMethod)
 
     clusteredReadCounts={}
     if uncluster:
-        clusteredReadCounts = parseMapFile(options.clusterFile, valueType=int)
+        clusteredReadCounts = parseMapFile(arguments.clusterFile, valueType=int)
 
     currentRead=''
     readCount=1
     hits=[]
 
-    if options.infile is None:
+    if arguments.infile is None:
         infile = sys.stdin
     else:
-        infile = open(options.infile)
+        infile = open(arguments.infile)
 
     # loop over lines
-    if not options.countFirst:
+    if not arguments.countFirst:
         # skip first line
         try:
             infile.next()
@@ -150,9 +112,9 @@ def main():
 
     for line in infile:
         line=line.rstrip('\r\n')
-        rowcells = line.split(options.delim)
+        rowcells = line.split(arguments.delim)
         # get read
-        read = rowcells[options.readCol]
+        read = rowcells[arguments.readCol]
 
         # if it's a new read, process previous read
         if currentRead=='':
@@ -173,14 +135,14 @@ def main():
             currentRead=read
 
         # get hit from this line
-        if options.hitCol>=0:
-            hit=rowcells[options.hitCol]
+        if arguments.hitCol>=0:
+            hit=rowcells[arguments.hitCol]
             if splitHits:
-                hits.extend(hit.split(options.hitSep))
+                hits.extend(hit.split(arguments.hitSep))
             else:
                 hits.append(hit)
         else:
-            rowcells.pop(options.readCol)
+            rowcells.pop(arguments.readCol)
             hits.extend(rowcells)
 
     # check last read!
@@ -193,27 +155,27 @@ def main():
     countHitsForRead(hits,counts,multiplier=multiplier)
 
     # apply cutoff
-    if options.cutoff>0:
-        applyFractionalCutoff(counts, threshold=options.cutoff*readCount)
+    if arguments.cutoff>0:
+        applyFractionalCutoff(counts, threshold=arguments.cutoff*readCount)
 
     # print output
-    if options.outfile is None:
+    if arguments.outfile is None:
         outhandle = sys.stdout
     else:
-        outhandle = open(options.outfile,'w')
+        outhandle = open(arguments.outfile,'w')
 
-    if options.total:
-        outhandle.write("Total%s%d\n" % (options.delimOut, readCount))
+    if arguments.total:
+        outhandle.write("Total%s%d\n" % (arguments.delimOut, readCount))
 
-    if options.allMethod=='portion':
+    if arguments.allMethod=='portion':
         outFmtString = "%s%s%f\n"
     else:
         outFmtString = "%s%s%d\n"
 
-    delimRE = re.compile(options.delimOut)
+    delimRE = re.compile(arguments.delimOut)
     for hit, count in counts.iteritems():
         hit=delimRE.sub('_',hit)
-        outhandle.write(outFmtString % (hit,options.delimOut,count))
+        outhandle.write(outFmtString % (hit,arguments.delimOut,count))
 
 if __name__ == '__main__':
     main()

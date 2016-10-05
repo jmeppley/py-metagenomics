@@ -88,7 +88,7 @@ def loadSequenceWeights(weightFiles):
         sequenceWeights = None
     return sequenceWeights
 
-def addWeightOption(parser,multiple=False):
+def add_weight_arguments(parser,multiple=False):
     action='store'
     default=None
     helpText="File listing counting weights by sequence id. This is used for clustered or assembled data where each read (or contig) could represent any number of raw reads. The file should be a simple two-column tab-separated table with sequence-ids in the first column and integer weights in the second. "
@@ -97,16 +97,16 @@ def addWeightOption(parser,multiple=False):
         default=[]
         helpText+="For multiple files, supply the flag (-w or --sequenceWeights) for each file name. Concatenating all tables into one file will have the same net result."
 
-    parser.add_option("-w","--sequenceWeights", dest='weights', 
+    parser.add_argument("-w","--sequenceWeights", dest='weights', 
             action=action, default=default, help=helpText)
 
-def addCountOptions(parser,defaults={}):
+def add_count_arguments(parser,defaults={}):
     default=defaults.get('cutoff',0.01)
-    parser.add_option("-c", "--cutoff", dest="cutoff", type="float", default=default,
+    parser.add_argument("-c", "--cutoff", dest="cutoff", type=float, default=default,
                       help="Cutoff for showing taxa. If a fractional count for a taxa is below this value, it will be folded up into its parent domain. Defaults to: %s" % default,
                   metavar="CUTOFF")
     default=defaults.get('allMethod',ALLEQ)
-    parser.add_option("-a", "--allMethod", dest="allMethod", default=default, choices=(FIRST,ALLEQ,PORTION),
+    parser.add_argument("-a", "--allMethod", dest="allMethod", default=default, choices=(FIRST,ALLEQ,PORTION),
                       help="%r means +1 for every hit found for each read. %r means +1 to the first hit for each read. %r means +1/(nhits) for all hits of each read. Defaults to %r" % (ALLEQ,FIRST,PORTION, default))
 
 def getAllMethod(allMethod):
