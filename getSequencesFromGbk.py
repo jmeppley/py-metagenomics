@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 """
 Reads one or more sequence files from stdin or the argument list and outputs a list of sequences.
 """
