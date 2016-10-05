@@ -9,6 +9,15 @@
     [ "$status" = 0 ]
 }
 
+@test "Testing sample naming" {
+    run python ./count_paths.py S1=test/data/sample.1.blastx.b50.m8 S2=test/data/sample.2.blastx.b50.m8 S3=test/data/sample.3.blastx.b50.m8 -o test/data/.tst.keggCounts.F0.acc.c0.tophit.named -c 0 -m test/data/acc.to.ko.protein.plus.filtered -C tophit -r -F 0 -p accs
+    [ "$status" = 0 ]
+}
+@test "Checking output from count_paths with sample naming" {
+    run diff test/data/keggCounts.F0.acc.c0.tophit.named test/data/.tst.keggCounts.F0.acc.c0.tophit.named
+    [ "$status" = 0 ]
+}
+
 @test "Testing count_paths with kegg map and multiple levels and a cutoff" {
     run python ./count_paths.py test/data/sample.?.kegg.blastx.b50.m8 -H test/data/kobrite/ko00001.keg -m test/data/ko.map.partial -c 0.15 -l ko -o test/data/.tst.small_files.kegg.c.15.out -l 2 -l 3
     [ "$status" = 0 ]

@@ -325,7 +325,7 @@ def getTotalHits(node, hits):
         nodeHits+=getTotalHits(child, hits)
     return nodeHits
 
-def multipleFileWrapper(m8files, **kwargs):
+def multipleFileWrapper(m8files):
     """
     return a generator over all lines in the given list of files. The generator will have an object variable (.fileDict) that maps read names back to the source file
 
@@ -334,9 +334,9 @@ def multipleFileWrapper(m8files, **kwargs):
         encoded_tag, read_name = read_name.split('/',1)
         tag = unquote_plus(encoded_tag)
     """
-    return _multipleFileGeneratorPrefixed(m8files, **kwargs)
+    return _multipleFileGeneratorPrefixed(m8files)
 
-def _multipleFileGeneratorPrefixed(m8files, returnLines=True):
+def _multipleFileGeneratorPrefixed(m8files):
     """
     Iterate over all lines in a given list of streams as a single stream of hits, but keep track of which read came from which file in the given dictionary by renaming reads (adding file name to start)
     """

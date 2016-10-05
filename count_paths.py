@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 """
     Takes hit tables (eg from blast, last, or hmmer) and generates a table (or tables) of hit counts for gene families,
 gene classes, or pathways. Multiple pathway or classification levels can be given. If they are, multiple output tables 
@@ -27,11 +27,10 @@ from edl.expressions import accessionRE, nrOrgRE
 def main():
     description = __doc__
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("input_files", nargs="*", 
-                        type=argparse.FileType('r'),
-                        default=[sys.stdin,],
+    parser.add_argument("input_files", nargs="+", 
+                        default=[],
                         metavar="INFILE",
-                        help="List of input files. Omit to read from STDIN")
+                        help="List of hit tables to process")
     parser.add_argument("-o", "--outfile", dest="output_file",
                       metavar="OUTFILE", help="Write count table to OUTFILE")
     parser.add_argument("-l", "--level", dest="levels", default=None,
@@ -145,8 +144,7 @@ def main():
     sortedLabels=[]
 
     # Allow for file names to be preceded with TAG=
-    for file_handle in arguments.input_files:
-        filename=file_handle.name
+    for filename in arguments.input_files:
         bits=filename.split("=",1)
         if len(bits) > 1:
             (filetag,filename)=bits
@@ -163,7 +161,7 @@ def main():
         # Process all files at once and use overall abundance to pick best hits
         from edl import redistribute
         params = FilterParams.create_from_arguments(arguments)
-        multifile = redistribute.multipleFileWrapper(fileLabels.keys())
+        multifile = redistribute.multipleFileWrapper(fileLabels.items())
 
         # don't give any hit translation, just use hit ids for redistribution
         readHits = redistribute.pickBestHitByAbundance(multifile,
