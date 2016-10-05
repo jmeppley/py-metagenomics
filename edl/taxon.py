@@ -47,6 +47,9 @@ class TaxNode:
         self.lineage=None
         self.lineage_strings={}
 
+    def __hash__(self):
+        return hash(self.getLineageString(';'))
+
     def __repr__(self):
         return "TaxNode(%s,%s,%s)" % (repr(self.id),repr(self.parentid),repr(self.rank))
 
