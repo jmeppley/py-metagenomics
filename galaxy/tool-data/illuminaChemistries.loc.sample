@@ -1,4 +1,0 @@
-#<unique_id>	<name>	<primerTemplatePath>
-nextera	Nextera	$PYMG_PATH/primerTemplates/nextera.2x.primers.fasta
-truseq	TruSeq	$PYMG_PATH/primerTemplates/truseq.1x.primers.fasta
-scriptseq	StriptSeq	$PYMG_PATH/primerTemplates/scripseq.1x.primers.fasta
