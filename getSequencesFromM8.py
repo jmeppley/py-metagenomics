@@ -1,74 +1,76 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 """
+    Parses a hit table and prints out a fasta database of the hits. Source fasta data must be supplied via STDIN or the -i flag.
 """
 
 from Bio import SeqIO, SeqRecord
-from optparse import OptionParser
-from edl.util import addUniversalOptions, setupLogging
-from edl.blastm8 import addHitTableOptions, FilterParams, filterM8Stream, M8Stream, GFF
+from edl.util import add_universal_arguments, setup_logging
+from edl.blastm8 import add_hit_table_arguments, FilterParams, filterM8Stream, M8Stream, GFF
+import argparse
 import sys, logging
 
 def main():
-    usage = "usage: %prog [OPTIONS] HIT_TABLE"
-    description = """
-    Parses a hit table and prints out a fasta database of the hits. Source fasta data must be supplied via STDIN or the -i flag.
-    """
+    description = __doc__
 
 # command line options
-    parser = OptionParser(usage, description=description, conflict_handler='resolve')
-    parser.add_option("-o", "--outfile", dest="outfile",
+    parser = argparse.ArgumentParser(description, conflict_handler='resolve')
+    parser.add_argument("input_files", nargs=1, 
+                        default=[], 
+                        metavar="INFILE",
+                        help="Hit table to process")
+    parser.add_argument("-o", "--outfile", dest="outfile",
                       metavar="OUTFILE", help="Write masked fasta output to OUTFILE (default is STDOUT).")
-    parser.add_option("-i", "--infile", dest="fasta",
+    parser.add_argument("-i", "--infile", dest="fasta",
         metavar="FILE", help=" File containing the fasta (defaults to STDIN)")
-    parser.add_option("-M", "--mask", dest="keep", default=True, 
+    parser.add_argument("-M", "--mask", dest="keep", default=True, 
             action="store_false", 
             help="Return unmatched sequence fragments instead of hits.")
-    parser.add_option("-m", "--minLength", dest="minLength",type="int",
+    parser.add_argument("-m", "--minLength", dest="minLength",type=int,
                       metavar="BASES", default=1,
                       help="minimum number of bases for sequences in output")
-    parser.add_option("-n", "--numbering_prefix", default=None, help="If given, name extracted sequence with this scring followed by a sinmple counting index of all extracted sequences. For example, -n "r" would add _r1 to the end of the first extracted sequence and _r2 to the second, and so on. By default, extracted sequences are named with start_end positions.") 
+    parser.add_argument("-n", "--numbering_prefix", default=None, help="If given, name extracted sequence with this scring followed by a sinmple counting index of all extracted sequences. For example, -n "r" would add _r1 to the end of the first extracted sequence and _r2 to the second, and so on. By default, extracted sequences are named with start_end positions.") 
 
-    parser.add_option("-t", "--translate", default=False, action='store_true',
+    parser.add_argument("-t", "--translate", default=False, action='store_true',
                      help="Transalte to Amino Acid sequences")
 
-    addUniversalOptions(parser)
-    addHitTableOptions(parser,flags='all')
+    add_hit_table_arguments(parser,flags='all')
 
-    (options, args) = parser.parse_args()
-
-    setupLogging(options, description)
+    # log level and help
+    add_universal_arguments(parser)
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
     # check that we have blast file as argument
-    if len(args) != 1:
-        options.error("Please supply the name of a hit table as the only argument")
-    blastFile=args[0]
+    if len(arguments.input_files) != 1:
+        parser.error("Please supply the name of a hit table as the only argument")
+    blastFile=arguments.input_files[0]
 
     # set up input/output streams
-    if options.fasta is None:
+    if arguments.fasta is None:
         fastaHandle = sys.stdin
         fastaStr='STDIN'
     else:
-        fastaHandle = open(options.fasta, "rU")
-        fastaStr=options.fasta
+        fastaHandle = open(arguments.fasta, "rU")
+        fastaStr=arguments.fasta
     logging.info("Extrating sequence fragments from %s based on hits in %s" % (fastaStr,blastFile))
 
-    if options.outfile is None:
+    if arguments.outfile is None:
         logging.info("Writing %s sequences to STDOUT" % ('fasta'))
         outputHandle = sys.stdout
     else:
-        logging.info("Writing %s sequences to %s" % ('fasta', options.outfile))
-        outputHandle = open(options.outfile,'w')
+        logging.info("Writing %s sequences to %s" % ('fasta', arguments.outfile))
+        outputHandle = open(arguments.outfile,'w')
 
     # load hit regions
-    if options.keep:
-        minHitLength=options.minLength
+    if arguments.keep:
+        minHitLength=arguments.minLength
     else:
         minHitLength=1
-    readHits = loadHitRegions(blastFile, minHitLength, options)
+    readHits = loadHitRegions(blastFile, minHitLength, arguments)
     logging.info("Found hits for %d reads" % (len(readHits)))
 
     # process the fasta file with hits
-    extractHits(fastaHandle, outputHandle, readHits, options.translate, options.minLength, options.keep, options.numbering_prefix)
+    extractHits(fastaHandle, outputHandle, readHits, arguments.translate, arguments.minLength, arguments.keep, arguments.numbering_prefix)
 
 #############
 # Functions #
@@ -85,7 +87,7 @@ def loadHitRegions(blastFile, minLength, options):
     Parse a hit table into a map from read names to lists of (start,end,annot)
     """
     hitMap={}
-    params=FilterParams.createFromOptions(options)
+    params=FilterParams.create_from_arguments(options)
     m8stream=M8Stream(blastFile)
     hitcount=0
     readcount=0
@@ -101,10 +103,11 @@ def loadHitRegions(blastFile, minLength, options):
             keepcount+=1
             if hit.format == GFF:
                 annot="# %d # %d # %s # %s;evalue=%s" % (hit.qstart, hit.qend, hit.strand, hit.hitDesc, hit.evalue)
-            elif hit.pctid is not None:
-                annot="%s [%d,%d] %0.1f%% %d bits" % (hit.hit, hit.hstart, hit.hend, hit.pctid, hit.score)
             else:
-                annot="%s [%d,%d] score: %d" % (hit.hit, hit.hstart, hit.hend, hit.score)
+                try:
+                    annot="%s [%d,%d] %0.1f%% %d bits" % (hit.hit, hit.hstart, hit.hend, hit.pctid, hit.score)
+                except AttributeError:
+                    annot="%s [%d,%d] score: %d" % (hit.hit, hit.hstart, hit.hend, hit.score)
 
             if hit.format == GFF:
                 reverse = hit.strand != "+"
@@ -202,14 +205,14 @@ def maskRead(record, hitSpans, minLength):
     logging.debug("Hits: %r" % (hitSpans))
     newSpans=[[1,len(record)],]
     # Start with the full span and chip away hits to reveal unhit spans
-    for i in reversed(range(len(hitSpans))):
+    for i in reversed(xrange(len(hitSpans))):
         (start,end)=hitSpans[i][0:2]
         if start>end:
             stemp=start
             start=end
             end=stemp
 
-        for j in reversed(range(len(newSpans))):
+        for j in reversed(xrange(len(newSpans))):
             (ustart,uend)=newSpans[j][0:2]
             if (ustart>end) or (uend<start):
                 # hit does not overlap this unmatched region
