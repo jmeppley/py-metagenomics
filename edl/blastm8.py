@@ -31,7 +31,10 @@ class M8Stream(LineCounter):
     """
     def __init__(self, fileName, *args):
         LineCounter.__init__(self, openInputFile(fileName, *args))
-        self.fileName=fileName
+        try:
+            self.fileName=fileName.name
+        except AttributeError:
+            self.fileName=fileName
 
     def close(self):
         """

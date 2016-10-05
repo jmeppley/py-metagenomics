@@ -343,10 +343,14 @@ def _multipleFileGenerator(m8files, filterParams, readFileDict, returnLines=True
         if isinstance(m8file,tuple):
             m8file,fileTag=m8file
         else:
-            fileTag=m8file
+            fileTag=None
 
         # get file stream
         m8stream = blastm8.M8Stream(m8file)
+        if fileTag is None:
+            # let M8Stream class work out the file name for tagging
+            fileTag = m8stream.fileName
+
         for hit in blastm8.getHitStream(m8stream, filterParams):
             # build map from reads to files/tags
             readFileDict[hit.read]=fileTag

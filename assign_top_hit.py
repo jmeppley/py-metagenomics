@@ -1,17 +1,5 @@
 #! /usr/bin/python
 """
-"""
-
-from optparse import OptionParser
-import sys, re, logging
-from edl import redistribute
-from edl.hits import *
-from edl.util import *
-from edl.blastm8 import M8Stream
-
-def main():
-    usage = "usage: %prog [OPTIONS] HIT_TABLE(S)"
-    description = """
 Takes an m8 blast and picks the best hit for each. 
 
 There are two count methods available, and these are not listed in the options below: 'tophit' and 'toporg'. The other count methods (first, most, etc) are unavailable.
@@ -21,38 +9,47 @@ First, only the best scores are used, but if there is a tie (aka ambiguous hit),
 If the -P or --proportinal flag is given, then ambiguous hits are resolved so that the overall proportion of hit (when using tophit) or taxon (for toporg) abundance is changed the least.
 
 FilterPct defaults to 0, but can be altered, but I don't recommend it.
-    """
-    parser = OptionParser(usage, description=description)
-    addIOOptions(parser)
-    addTaxonOptions(parser,defaults={'filterPct':0,'parseStyle':ACCS,'countMethod':'tophit'},choices={'countMethod':('tophit','toporg')})
-    addUniversalOptions(parser)
-    parser.add_option("-P","--proportional", dest="proportional", default=False, action="store_true", help="Assign reads that have multiple equal top hits to taxa such that the overal proportion of taxa is consistent with the unambiguious hits. This is meant for use with the 'toporg' count method.")
-    parser.add_option("-i","--individualFiles", dest="individual", default=False, action="store_true", help="Use this flag to process files independently. Normally, counts from all files are pooled for making choices.")
+"""
 
-    (options, args) = parser.parse_args()
+import sys, re, logging, argparse
+from edl import redistribute
+from edl.hits import *
+from edl.util import *
+from edl.blastm8 import M8Stream
 
-    setupLogging(options,description)
+def main():
+    usage = "usage: %prog [OPTIONS] HIT_TABLE(S)"
+    description = __doc__
+    parser = argparse.ArgumentParser(description=description)
+    add_IO_arguments(parser)
+    add_taxon_arguments(parser,defaults={'filterPct':0,'parseStyle':ACCS,'countMethod':'tophit'},choices={'countMethod':('tophit','toporg')})
+    parser.add_argument("-P","--proportional", dest="proportional", default=False, action="store_true", help="Assign reads that have multiple equal top hits to taxa such that the overal proportion of taxa is consistent with the unambiguious hits. This is meant for use with the 'toporg' count method.")
+    parser.add_argument("-i","--individualFiles", dest="individual", default=False, action="store_true", help="Use this flag to process files independently. Normally, counts from all files are pooled for making choices.")
+
+    add_universal_arguments(parser)
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
     # load necessary maps
-    params = FilterParams.createFromOptions(options)
-    if options.countMethod=='toporg':
-        (taxonomy,hitStringMap)=readMaps(options)
+    params = FilterParams.create_from_arguments(arguments)
+    if arguments.countMethod=='toporg':
+        (taxonomy,hitStringMap)=readMaps(arguments)
 
-    wta = not(options.proportional)
+    wta = not(arguments.proportional)
 
-    if len(args)<=1 or options.individual:
+    if len(arguments.input_files)<=1 or arguments.individual:
         # loop over input
-        for (inhandle,outhandle) in inputIterator(args, options):
+        for (inhandle,outhandle) in inputIterator(arguments):
             logging.debug("Reading from %s and writing to %s" % (inhandle, outhandle))
 
             m8stream=M8Stream(inhandle)
-            if options.countMethod == 'tophit':
+            if arguments.countMethod == 'tophit':
                 # don't give any taxonomy, just map to accessions for redistribution
                 readHits = redistribute.pickBestHitByAbundance(m8stream,
                                                       filterParams=params,
                                                       returnLines=True,
                                                       winnerTakeAll=wta,
-                                                      parseStyle=options.parseStyle)
+                                                      parseStyle=arguments.parseStyle)
             else:
                 # translate to organism before finding most abundant
                 readHits = redistribute.pickBestHitByAbundance(m8stream,
@@ -61,40 +58,41 @@ FilterPct defaults to 0, but can be altered, but I don't recommend it.
                                                           winnerTakeAll=wta,
                                                           taxonomy=taxonomy,
                                                           hitStringMap=hitStringMap,
-                                                          parseStyle=options.parseStyle)
+                                                          parseStyle=arguments.parseStyle)
 
             for line in readHits:
                 outhandle.write(line)
 
     else:
         # process all files at once
-        (multifile,readFileDict) = redistribute.multipleFileWrapper(args, params, returnLines=True)
+        (multifile,readFileDict) = redistribute.multipleFileWrapper(arguments.input_files, params, returnLines=True)
 
         # Build a map from input file name to output handle
         outputMap={}
-        for infileName in args:
-            if options.outfile is None:
-                outputMap[infileName]=sys.stdout
-            elif len(args)<=1:
-                outputMap[infileName]=open(options.outfile,'w')
+        for infile_handle in arguments.input_files:
+            infile_name = infile_handle.name
+            if arguments.output_file is None:
+                outputMap[infile_name]=sys.stdout
+            elif len(arguments.input_files)<=1:
+                outputMap[infile_name]=open(arguments.output_file,'w')
             else:
                 # use outfileName as suffix
-                if options.cwd:
+                if arguments.cwd:
                     # strip path info first
-                    (infilePath,infileFile)=os.path.split(infileName)
-                    outfile="./"+infileFile+options.outfile
+                    (infilePath,infileFile)=os.path.split(infile_name)
+                    outfile="./"+infileFile+arguments.output_file
                 else:
-                    outfile=infileName+options.outfile
-                outputMap[infileName]=open(outfile,'w')
+                    outfile=infile_name+arguments.output_file
+                outputMap[infile_name]=open(outfile,'w')
 
 
-        if options.countMethod == 'tophit':
+        if arguments.countMethod == 'tophit':
             # don't give any taxonomy, just map to accessions for redistribution
             readHits = redistribute.pickBestHitByAbundance(multifile,
                                                   filterParams=params,
                                                   returnLines=False,
                                                   winnerTakeAll=wta,
-                                                  parseStyle=options.parseStyle)
+                                                  parseStyle=arguments.parseStyle)
         else:
             # translate to organism before finding most abundant
             readHits = redistribute.pickBestHitByAbundance(multifile,
@@ -103,14 +101,14 @@ FilterPct defaults to 0, but can be altered, but I don't recommend it.
                                                       winnerTakeAll=wta,
                                                       taxonomy=taxonomy,
                                                       hitStringMap=hitStringMap,
-                                                      parseStyle=options.parseStyle)
+                                                      parseStyle=arguments.parseStyle)
 
 
         for (read, hit) in readHits:
             outhandle = outputMap[readFileDict[read]]
             outhandle.write(hit.line)
 
-        if options.outfile is not None:
+        if arguments.output_file is not None:
             for outhandle in outputMap.itervalues():
                 outhandle.close()
 
