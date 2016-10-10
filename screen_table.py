@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """
 Take list of reads (or any names) from file. Remove these (or all but these) from each of a list of text tables (e.g. m8 files).
 
