@@ -1,5 +1,5 @@
 import tempfile, re, os, logging, sys
-import numpy as np
+from math import floor, ceil, log10
 from edl.util import openInputFile
 
 def checkTmpDir(tmpDir,jobName):
@@ -19,19 +19,43 @@ def checkTmpDir(tmpDir,jobName):
     logging.debug("Created temporary directory: %s" % tmpDir)
     return tmpDir
 
-def fragmentInput(infile, options, tmpdir, fragmentBase, suffix='.in'):
+def fragmentInput(infile, options, tmpdir, fragmentBase, 
+        **kwargs):
     """
     Wraps the following methods into one:
         getFileType(options, infile)
         getSizePerChunk(infile, options.splits, fileType, splitOnSize=options.splitOnSize)
         fragmentInputBySize(infile, tmpdir, options.chunk, fileType, fragmentBase,   splitOnSize=options.splitOnSize, suffix=)
+
+    keyword "padding" sets the zero padding for fragment number in file names.
+    PAssed keyword is used first. If absent,
+    Use options.padding. If that is missing, 
+    Caclulate from options.splits, otherwise
+    Fall back to default (5)
+
     """
     fileType=getFileType(options, infile)
+
+    if "padding" not in kwargs:
+        try:
+            if options.padding is None:
+                raise AttributeError("No padding set")
+            kwargs['padding']=options.padding
+            logging.debug("setting padding to {} per options.padding".format(kwargs['padding']))
+        except AttributeError:
+            if options.splits is not None:
+                kwargs['padding']=get_padding(options.splits)
+                logging.debug("setting padding to {} based on splits={}".format(kwargs['padding'],options.splits))
+
     if options.chunk is None:
         if options.splits is None:
             sys.exit("Please tell me how many chunks (-N) or how big (-C)!")
         options.chunk=getSizePerChunk(infile, options.splits, fileType, splitOnSize=options.splitOnSize)
-    return fragmentInputBySize(infile, tmpdir, options.chunk, fileType, fragmentBase, splitOnSize=options.splitOnSize, suffix=suffix)
+    else:
+        if options.even_out_chunks:
+            options.chunk=even_out_chunks(infile, options.chunk, fileType, options.splitOnSize)
+
+    return fragmentInputBySize(infile, tmpdir, options.chunk, fileType, fragmentBase, splitOnSize=options.splitOnSize, **kwargs)
 
 def getFileType(options, infile):
     """
@@ -122,11 +146,32 @@ def get_total_size(inhandle, file_type, split_on_size=False):
 
     # loop through records
     total_size = 0
+    record_count = 0
     for record in file_type.recordStreamer(inhandle):
+        record_count+=1
         total_size+=recordSizer(record)
 
-    return total_size
+    return record_count, total_size
 
+def even_out_chunks(infile, chunk, fileType, splitOnSize=False):
+    """
+    Get total size of all records and return target size for each chunk to end up with similar sizes.
+
+    EG: if a 100 record file was to be broken in to chunks of size 40, this method would return a chunk size of 34 so that you'd have files with 34, 34, and 33 records instead of 40, 40, and 20.
+    """
+    if infile is None:
+        raise Exception("We cannot adjust chunk size for STDIN!")
+
+    inhandle = openInputFile(infile)
+    record_count, total_size = get_total_size(inhandle, fileType, split_on_size=splitOnSize)
+    inhandle.close()
+    logging.debug("Found {} records with a total size of {}".format(record_count, total_size))
+
+    splits = ceil(total_size/chunk)
+    new_chunk =  calculateChunkSize(total_size,record_count,splits)
+    logging.debug("Adjusting chunk size from %d to %d to get %d equal fragments" % (chunk, new_chunk, splits))
+
+    return new_chunk
 
 def getSizePerChunk(infile, splits, fileType, splitOnSize=False):
     """
@@ -136,16 +181,17 @@ def getSizePerChunk(infile, splits, fileType, splitOnSize=False):
         raise Exception("We cannot determine chunk size from STDIN!")
 
     inhandle = openInputFile(infile)
-    total_size = get_total_size(inhandle, fileType, split_on_size=splitOnSize)
+    record_count, total_size = get_total_size(inhandle, fileType, split_on_size=splitOnSize)
     inhandle.close()
 
-    return calculateChunkSize(totalSize,splits)
+    return calculateChunkSize(total_size,record_count,splits)
 
-def calculateChunkSize(size,splits):
+def calculateChunkSize(size,record_count,splits):
     """
     how big should the fragments be?
     """
-    chunk = int(np.ceil(size/float(splits)))
+    chunk = ceil(size/float(splits))
+
     logging.info("Setting chunk to: %d=ceil(%d/%d)" % (chunk,size,splits))
     return chunk
 
@@ -194,18 +240,18 @@ def gbRecordSizer(recordLines):
     record = SeqIO.read(recordLines,'genbank')
     return len(record)
 
-def fragmentInputBySize(infile, tmpdir, chunk, fileType, fragmentBase, splitOnSize=True, suffix='.in'):
+def fragmentInputBySize(infile, tmpdir, chunk, fileType, fragmentBase, splitOnSize=True, **kwargs):
     """
     Break up input into files of size chunk in tmpdir. Return number of fragments.
     """
-    logging.debug("Fragmenting input: %r" % ({'infile':infile,'tmpDir':tmpdir,'chunk':chunk,'base':fragmentBase}))
+    logging.debug("Fragmenting input: %r" % ({'infile':infile,'tmpDir':tmpdir,'chunk':chunk,'base':fragmentBase,'kwargs':kwargs}))
     inhandle = openInputFile(infile)
-    num = fragmentInputStreamBySize(inhandle, tmpdir, chunk, fileType, fragmentBase, splitOnSize=splitOnSize, suffix=suffix)
+    num = fragmentInputStreamBySize(inhandle, tmpdir, chunk, fileType, fragmentBase, splitOnSize=splitOnSize, **kwargs)
     if infile is not None:
         inhandle.close()
     return num
 
-def fragmentInputStreamBySize(inhandle, tmpdir, chunk, fileType, fragmentBase, splitOnSize=True, suffix='.in'):
+def fragmentInputStreamBySize(inhandle, tmpdir, chunk, fileType, fragmentBase, splitOnSize=True, **kwargs):
     if splitOnSize:
         # get a custom function that returns the size of this type of record
         recordSizer=fileType.sizer
@@ -215,7 +261,7 @@ def fragmentInputStreamBySize(inhandle, tmpdir, chunk, fileType, fragmentBase, s
 
     count=0
     num=1
-    tmpFileName=getFragmentPath(tmpdir,fragmentBase,num,suffix)
+    tmpFileName=getFragmentPath(tmpdir,fragmentBase,num,**kwargs)
     #logging.debug('Writing fragment (%d,%d,%d): %s' % (chunk,count,num,tmpFileName))
     tmpFile = open(tmpFileName, 'w')
     for record in fileType.recordStreamer(inhandle):
@@ -226,7 +272,7 @@ def fragmentInputStreamBySize(inhandle, tmpdir, chunk, fileType, fragmentBase, s
             # close previous chunk and open new one
             tmpFile.close
             num+=1
-            tmpFileName=getFragmentPath(tmpdir,fragmentBase,num,suffix)
+            tmpFileName=getFragmentPath(tmpdir,fragmentBase,num,**kwargs)
             #logging.debug('Writing fragment (%d,%d,%d): %s' % (chunk,count,num,tmpFileName))
             tmpFile = open(tmpFileName, 'w')
             count=recordSize
@@ -238,14 +284,17 @@ def fragmentInputStreamBySize(inhandle, tmpdir, chunk, fileType, fragmentBase, s
 
     return num
 
-def getFragmentPath(directory, base, index, suffix='.in'):
-    return "%s%s%s" % (directory, os.sep, getFragmentName(base,index,suffix=suffix))
+def getFragmentPath(directory, base, index, **kwargs):
+    return "%s%s%s" % (directory, os.sep, getFragmentName(base,index,**kwargs))
 
-def getFragmentName(base, index, suffix='.in'):
-    return "%s%05d%s" % (base, index, suffix)
+def getFragmentName(base, index, suffix='.in', padding=5): 
+    if padding is None:
+        padding=5
+    template = "%s.%0{}d%s".format(padding)
+    return template % (base, index, suffix)
 
-def getFragmentPrefix(base,index):
-    return getFragmentName(base,index,suffix='.pre')
+def get_padding(max_n): 
+    return 1+floor(log10(max_n))
 
 def formatCommand(command):
     """
@@ -302,13 +351,16 @@ def add_record_parsing_arguments(parser):
 
 def add_fragmenting_arguments(parser,defaults={"splits":400}):
     add_record_parsing_arguments(parser)
-    parser.add_argument("-C", "--chunkSize", type="int", dest='chunk',  metavar="FRAG_SIZE",
+    parser.add_argument("-C", "--chunkSize", type=int, dest='chunk',  metavar="FRAG_SIZE",
                       help="The number of records per fragment. Overrides NUM_FRAGS")
     default=defaults.get("splits",None)
-    parser.add_argument("-N", "--numChunks", dest='splits', type='int', metavar="NUM_FRAGS", default=default,
-                      help="The number of fragments to create (defaults to %default)")
+    parser.add_argument("-N", "--numChunks", dest='splits', type=int, metavar="NUM_FRAGS", default=default,
+                      help="The number of fragments to create (defaults to {default})".format(default=default))
     parser.add_argument("-s", "--splitOnSize",  default=False, action='store_true',
                       help="create chunks based on record size, not number of records. For known sequence types (fasta, fastq, gb), sequence length is used, otherwize the full size of the record text is counted")
+    parser.add_argument('-E','--even_out_chunks', 
+                        default=False, action='store_true',
+                        help="Adjust chunk size to minimize difference between size of fragments (measured by records or size depending on -s). This is used only if chunk size supplied and input not from STDIN")
 
 #################
 # Classes
