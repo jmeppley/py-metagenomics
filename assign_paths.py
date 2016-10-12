@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 """
 Takes a single hit table file and generates a table (or tables) of pathway/gene family assignments for the query sequences (aka 'reads'). Assignments can be for gene families, gene classes, or pathways. Multiple pathway or classification levels can be given. If they are, an assignment will be made at each level.
     This differs from assignPathsToReadsFromBlast.py in that: (1) it can handle CAZy and SEED, (2) it will output multiple levels in one file, (3) multiple assignments are always printed on multiple lines.
@@ -178,7 +178,12 @@ def getLevelMapper(level, arguments):
     return lambda gene: geneTranslation.get(gene,gene)
 
 def handleMultipleMappings(assignmentList,arguments):
+    """
+    given list of assignments where each element coresponds to a hierarchy level and can contain a sigle assignment or a list of assignments
+    return a list of data "rows"
+    """
     if arguments.splitForLevels:
+        # return a line for each possibility
         newAssignmentListArray=[assignmentList]
         for i in range(len(assignmentList)):
             item = assignmentList[i]
@@ -187,16 +192,16 @@ def handleMultipleMappings(assignmentList,arguments):
                 itemList = set(item)
                 tempList = []
                 for al in newAssignmentListArray:
-                    for item in itemList:
+                    for item in sorted(itemList):
                         al[i]=item
-                        tempList.append(list(al))
+                        tempList.append(sorted(list(al)))
                 newAssignmentListArray=tempList
         for al in newAssignmentListArray:
             for i in range(len(al)):
                 al[i] = str(al[i])
         return newAssignmentListArray
     else:
-        assignment = [str(a) if isinstance(a,str) or a is None else str(list(set(a))) for a in assignmentList]
+        assignment = [str(a) if isinstance(a,str) or a is None else str(sorted(list(set(a)))) for a in assignmentList]
         return [assignment,]
 
 

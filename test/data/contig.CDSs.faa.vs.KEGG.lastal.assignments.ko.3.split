@@ -1,8 +1,8 @@
 Read	ko	3
-Aaustralica_c1505_PROKKA_00001	K02031	02000 Transporters
-Aaustralica_c1505_PROKKA_00002	K02032	02000 Transporters
-Aaustralica_c1505_PROKKA_00003	K01480	00330 Arginine and proline metabolism
-Aaustralica_c1505_PROKKA_00003	K01480	01000 Enzymes
+Aaustralica_c1505_PROKKA_00001	02000 Transporters	K02031
+Aaustralica_c1505_PROKKA_00002	02000 Transporters	K02032
+Aaustralica_c1505_PROKKA_00003	00330 Arginine and proline metabolism	K01480
+Aaustralica_c1505_PROKKA_00003	01000 Enzymes	K01480
 Aaustralica_c1505_PROKKA_00004	None	None
 Aaustralica_c1508_PROKKA_00005	None	None
 Aaustralica_c1508_PROKKA_00006	None	None
@@ -10,28 +10,28 @@ Aaustralica_c1508_PROKKA_00007	None	None
 Aaustralica_c1512_PROKKA_00008	None	None
 Aaustralica_c1514_PROKKA_00009	None	None
 Aaustralica_c1516_PROKKA_00010	None	None
-Aaustralica_c1521_PROKKA_00013	K02408	02040 Flagellar assembly
-Aaustralica_c1521_PROKKA_00013	K02408	02035 Bacterial motility proteins
-Aaustralica_c1521_PROKKA_00014	K02388	02040 Flagellar assembly
-Aaustralica_c1521_PROKKA_00014	K02388	02035 Bacterial motility proteins
+Aaustralica_c1521_PROKKA_00013	02035 Bacterial motility proteins	K02408
+Aaustralica_c1521_PROKKA_00013	02040 Flagellar assembly	K02408
+Aaustralica_c1521_PROKKA_00014	02035 Bacterial motility proteins	K02388
+Aaustralica_c1521_PROKKA_00014	02040 Flagellar assembly	K02388
 Aaustralica_c1521_PROKKA_00015	None	None
-Aaustralica_c1547_PROKKA_00018	K02433	00970 Aminoacyl-tRNA biosynthesis
-Aaustralica_c1547_PROKKA_00018	K02433	01000 Enzymes
+Aaustralica_c1547_PROKKA_00018	00970 Aminoacyl-tRNA biosynthesis	K02433
+Aaustralica_c1547_PROKKA_00018	01000 Enzymes	K02433
 Aaustralica_c1553_PROKKA_00019	None	None
 Aaustralica_c1553_PROKKA_00020	K06997	K06997
 Aaustralica_c1553_PROKKA_00021	None	None
-Aaustralica_c1558_PROKKA_00027	K01875	03016 Transfer RNA biogenesis
-Aaustralica_c1558_PROKKA_00027	K01875	00970 Aminoacyl-tRNA biosynthesis
-Aaustralica_c1558_PROKKA_00027	K01875	01000 Enzymes
-Aaustralica_c1558_PROKKA_00027	K01875	01007 Amino acid related enzymes
+Aaustralica_c1558_PROKKA_00027	00970 Aminoacyl-tRNA biosynthesis	K01875
+Aaustralica_c1558_PROKKA_00027	01000 Enzymes	K01875
+Aaustralica_c1558_PROKKA_00027	01007 Amino acid related enzymes	K01875
+Aaustralica_c1558_PROKKA_00027	03016 Transfer RNA biogenesis	K01875
 Aaustralica_c1558_PROKKA_00028	K07109	K07109
-Aaustralica_c1558_PROKKA_00029	K03469	03030 DNA replication
-Aaustralica_c1558_PROKKA_00029	K03469	03032 DNA replication proteins
-Aaustralica_c1558_PROKKA_00029	K03469	01000 Enzymes
+Aaustralica_c1558_PROKKA_00029	01000 Enzymes	K03469
+Aaustralica_c1558_PROKKA_00029	03030 DNA replication	K03469
+Aaustralica_c1558_PROKKA_00029	03032 DNA replication proteins	K03469
 Aaustralica_c1560_PROKKA_00030	None	None
-Aaustralica_c1560_PROKKA_00031	K03561	02000 Transporters
+Aaustralica_c1560_PROKKA_00031	02000 Transporters	K03561
 Aaustralica_c1570_PROKKA_00040	None	None
-Aaustralica_c1570_PROKKA_00041	K01153	01000 Enzymes
+Aaustralica_c1570_PROKKA_00041	01000 Enzymes	K01153
 Aaustralica_c1572_PROKKA_00042	None	None
 Aaustralica_c1575_PROKKA_00043	K03310	K03310
 Aaustralica_c1587_PROKKA_00045	K07007	K07007
@@ -44,8 +44,8 @@ Aaustralica_c1621_PROKKA_00052	None	None
 Aaustralica_c1623_PROKKA_00053	None	None
 Aaustralica_c1623_PROKKA_00054	K07126	K07126
 Aaustralica_c1623_PROKKA_00055	None	None
-Aaustralica_c251_PROKKA_00001	K07091	02010 ABC transporters
-Aaustralica_c251_PROKKA_00001	K07091	02000 Transporters
+Aaustralica_c251_PROKKA_00001	02000 Transporters	K07091
+Aaustralica_c251_PROKKA_00001	02010 ABC transporters	K07091
 Aaustralica_c251_PROKKA_00002	None	None
 Aaustralica_c251_PROKKA_00003	None	None
 Aaustralica_c251_PROKKA_00004	None	None
