@@ -21,7 +21,7 @@ FIRST='first'
 PORTION='portion'
 
 def translateHits(hitMap, hitTranslation):
-    for (read,hit) in hitMap.iteritems():
+    for (read,hit) in hitMap.items():
         if type(hit)==type([]):
             newHits=[]
             for h in hit:
@@ -51,7 +51,7 @@ def binHits(hitMap):
     return map of assignments to list of reads
     """
     hits={}
-    for (read,hit) in hitMap.iteritems():
+    for (read,hit) in hitMap.items():
         if isinstance(hit,list):
             for h in hit:
                 hits.setdefault(h,[]).append(read)
@@ -120,7 +120,7 @@ def applyFractionalCutoff(counts, threshold=None, cutoff=None, label='Other'):
         if cutoff is None:
             logger.warn("Nothing to do for applyFractionalCutoff")
             return
-        threshold = float(cutoff) * sum(counts.itervalues())
+        threshold = float(cutoff) * sum(counts.values())
 
     osum=0
     for key in counts.keys():
@@ -181,7 +181,7 @@ def countHits(hitMap):
     total=0
     counts={}
     if isinstance(hitMap,dict):
-        hitIter=hitMap.iteritems()
+        hitIter=hitMap.items()
     else:
         hitIter=hitMap
     for (read,hit) in hitIter:
@@ -373,7 +373,7 @@ def _returnMostCommon(hits):
 
     bestCount=0
     bestHit=None
-    for (hit,count) in counts.iteritems():
+    for (hit,count) in counts.items():
         if count > bestCount:
             bestHit = [hit,]
             bestCount = count
@@ -443,7 +443,7 @@ def parseHits(inhandle, readCol, hitCol, skipFirst, hitSep):
             extractReadHits=_getReadHitsSimple
 
     if skipFirst:
-        inhandle.next()
+        next(inhandle)
 
     hitCount=0
     lineCount=0

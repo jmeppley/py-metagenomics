@@ -1,10 +1,10 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 """
 Takes two tables of read hits. Produces a table of hit counts with hit types from the first file as rows and the hit types from the second file as columns.
 """
 
 import argparse, logging
-import sys, re, urllib2, httplib
+import sys, re
 from edl.hits import parseHits
 from edl.util import tupleIteratorToMap, add_universal_arguments, setup_logging
 
@@ -112,8 +112,10 @@ def combineCounts(hits1,hits2, unmatched_1="Unknown", unmatched_2="Unknown"):
 def printTable(output, table, cols=None, long_output=False):
     if long_output:
         # print one row per value
-        for row_name, row in table.items():
-            for col_name, value in row.items():
+        for row_name in sorted(table.keys()):
+            row = table[row_name]
+            for col_name in sorted(row.keys()):
+                value = row[col_name]
                 output.write("\t".join([row_name, col_name, str(value)]) + "\n")
 
     else:
