@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 """
 Count hits in a tabular blast output. By default, first hit for each read is used.
 """
@@ -106,7 +106,7 @@ def main():
     if not arguments.countFirst:
         # skip first line
         try:
-            infile.next()
+            next(infile)
         except StopIteration:
             raise Exception("No lines in %s" % str(infile))
 
@@ -173,7 +173,8 @@ def main():
         outFmtString = "%s%s%d\n"
 
     delimRE = re.compile(arguments.delimOut)
-    for hit, count in counts.iteritems():
+    for hit in sorted(counts.keys()):
+        count = counts[hit]
         hit=delimRE.sub('_',hit)
         outhandle.write(outFmtString % (hit,arguments.delimOut,count))
 
