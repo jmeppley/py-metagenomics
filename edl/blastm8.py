@@ -678,16 +678,17 @@ def filterM8Stream(instream, options, returnLines=True):
                 if options.sort is not None:
                     sortHits(hits,options.sort)
                 if needsFilter:
-                    hits=filterHits(hits, options, returnLines=returnLines)
-                if returnLines:
-                    if needsFilter:
-                        for line in hits:
-                            yield line
+                    hits=list(filterHits(hits, options, returnLines=returnLines))
+                if len(hits)>0:
+                    if returnLines:
+                        if needsFilter:
+                            for line in hits:
+                                yield line
+                        else:
+                            for hit in hits:
+                                yield hit.line
                     else:
-                        for hit in hits:
-                            yield hit.line
-                else:
-                    yield (currentRead, hits)
+                        yield (currentRead, hits)
                 hits=[]
             currentRead=hit.read
         #logging.debug("%s -> %s" % (hit.read, hit.hit))
@@ -697,16 +698,17 @@ def filterM8Stream(instream, options, returnLines=True):
         if options.sort is not None:
             sortHits(hits,options.sort)
         if needsFilter:
-            hits=filterHits(hits, options,returnLines=returnLines)
-        if returnLines:
-            if needsFilter:
-                for line in hits:
-                    yield line
+            hits=list(filterHits(hits, options,returnLines=returnLines))
+        if len(hits)>0:
+            if returnLines:
+                if needsFilter:
+                    for line in hits:
+                        yield line
+                else:
+                    for hit in hits:
+                        yield hit.line
             else:
-                for hit in hits:
-                    yield hit.line
-        else:
-            yield (currentRead, hits)
+                yield (currentRead, hits)
 
 def sortHits(hits, sortType):
     """
@@ -745,7 +747,7 @@ def doWeNeedToFilter(options):
 
 def filterHits(hits, options, returnLines=True):
     if options.bad_refs:
-        hits = [h for h in hits if h not in options.bad_refs]
+        hits = [h for h in hits if h.hit not in options.bad_refs]
 
     # A topPct cutoff, requires finding the top score first
     if options.topPct >= 0:
