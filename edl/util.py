@@ -260,7 +260,7 @@ def inputIterator(arguments):
                 yield (inhandle,sys.stdout)
             else:
                 # use outfile_name as suffix
-                if options.cwd:
+                if arguments.cwd:
                     # strip path info first
                     (infile_path,infile_name)=os.path.split(infile_name)
                     infile_name="./"+infile_name

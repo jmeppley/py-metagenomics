@@ -5,10 +5,8 @@
 # based on stats/columnMaker.py
 # author: John Eppley
 import sys, re, os.path
-import traceback, logging
+import traceback, logging, argparse
 from edl.util import *
-
-from optparse import OptionParser
 
 def main():
 ## set up CLI
@@ -16,31 +14,31 @@ def main():
     This script takes a tab delimited text table and creates a new column from an existing one using an external translation table.
     """
 
-    parser = OptionParser(description=description)
-    addIOOptions(parser)
-    parser.add_option("-f", "--fillMissing", dest="fill",
+    parser = argparse.ArgumentParser(description=description)
+    add_IO_arguments(parser)
+    parser.add_argument("-f", "--fillMissing", dest="fill",
                       metavar="FILL", help="Put FILL in column when value not in map. If not used, entire line is skipped. If set to 'KEY', value in key column is used."),
-    parser.add_option("-m", "--mapFile", dest="mapFile",
+    parser.add_argument("-m", "--mapFile", dest="mapFile",
                       metavar="MAPFILE", help="Location of mapping table.")
-    parser.add_option("-c", "--column", dest="col", type="int", default=1,
+    parser.add_argument("-c", "--column", dest="col", type=int, default=1,
                       help="Column number (first column is 1)", metavar="COLUMN")
-    parser.add_option("-C", "--newColumn", dest="newcol", type="int", default=None,
+    parser.add_argument("-C", "--newColumn", dest="newcol", type=int, default=None,
                       help="Column number to insert new column after. Default is the after the source column. 0=>make it the first column. -1=>make it the last column.", metavar="COLUMN")
-    parser.add_option("-D", "--deleteColumn", dest="delcols", default=[], action='append',
+    parser.add_argument("-D", "--deleteColumn", dest="delcols", default=[], action='append',
                       metavar='COLUMN',
                       help="Delete this column (starting at 1, after new column inserted). May be used multiple times for multiple columns")
-    addUniversalOptions(parser)
 
-    (options, args) = parser.parse_args()
+    # log level and help
+    add_universal_arguments(parser)
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
-    setupLogging(options,description)
+    logging.info ("Value map from: " + arguments.mapFile)
+    logging.debug("Fill: '%s'" % (arguments.fill))
 
-    logging.info ("Value map from: " + options.mapFile)
-    logging.debug("Fill: '%s'" % (options.fill))
+    translation = parseMapFile(arguments.mapFile)
 
-    translation = parseMapFile(options.mapFile)
-
-    for (inhandle,outhandle) in inputIterator(args,options):
+    for (inhandle,outhandle) in inputIterator(arguments):
         # setup some counters
         ncols = 0
         total_lines = 0
@@ -61,38 +59,39 @@ def main():
                 if ncols==0:
                     # count columns and check requested column number
                     ncols = len(cells)
-                    if options.col>ncols:
-                        sys.exit( "first line has fewer columns (%d) than requested column number(%d)!" % (ncols,options.col))
+                    if arguments.col>ncols:
+                        sys.exit( "first line has fewer columns (%d) than requested column number(%d)!" % (ncols,arguments.col))
 
                 # get value from column
-                value = cells[options.col-1]
+                value = cells[arguments.col-1]
                 if value in translation:
                     newCol = translation[value]
                 else:
-                    if options.fill is not None:
-                        if options.fill == 'KEY':
+                    if arguments.fill is not None:
+                        if arguments.fill == 'KEY':
                             newCol = value
                         else:
-                            newCol = options.fill
+                            newCol = arguments.fill
                     else:
                         logging.debug( "skipping value not in translation: %s"% (value))
                         skipped_lines += 1
                         continue
 
                 # insert new value
-                if options.newcol is None:
-                    cells.insert(options.col,newCol)
-                elif options.newcol<0 or options.newcol>=ncols:
+                if arguments.newcol is None:
+                    cells.insert(arguments.col,newCol)
+                elif arguments.newcol<0 or arguments.newcol>=ncols:
                     cells.append(newCol)
                 else:
-                    cells.insert(options.newcol,newCol)
+                    cells.insert(arguments.newcol,newCol)
 
                 # perform any requested column deletions
-                for delcol in sorted([int(c) for c in options.delcols], reverse=True):
+                for delcol in sorted([int(c) for c in arguments.delcols], reverse=True):
                     cells.pop(delcol-1)
 
                 new_line = '\t'.join(cells)
-                print >> outhandle, new_line
+                #print >> outhandle, new_line
+                print(new_line, file=outhandle)
                 lines_kept += 1
             except:
                 logging.warn( "Unexpected error (%s): %s"% (sys.exc_info()[0],sys.exc_info()[1]))
@@ -104,15 +103,15 @@ def main():
                     invalid_line = line
 
         # set insertion column for logging
-        if options.newcol is None:
-            inserted = options.col+1
-        elif options.newcol<0 or options.newcol>=ncols:
+        if arguments.newcol is None:
+            inserted = arguments.col+1
+        elif arguments.newcol<0 or arguments.newcol>=ncols:
             inserted = ncols
         else:
-            inserted = options.newcol+1
+            inserted = arguments.newcol+1
 
         valid_lines = total_lines - skipped_lines
-        message="Processed: %s\nCreated column %d with mapfile %s applied to column %d" % ( inhandle, inserted, options.mapFile, options.col )
+        message="Processed: %s\nCreated column %d with mapfile %s applied to column %d" % ( inhandle, inserted, arguments.mapFile, arguments.col )
         if valid_lines > 0:
             message+= '\nkept %d of %d lines.' % ( lines_kept, total_lines )
         else:
