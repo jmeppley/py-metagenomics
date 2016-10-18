@@ -34,9 +34,10 @@ def main():
     if arguments.delim == 'None':
         arguments.delim=None
     elif arguments.delim != '\t':
-        arguments.delim=arguments.delim.decode('string-escape')
+        arguments.delim=bytes(arguments.delim,'utf-8').decode('unicode-escape')
+    logging.debug("Table delim: '%s'" % (arguments.delim))
     if arguments.listDelim is not None:
-        arguments.listDelim = arguments.listDelim.decode('string-escape')
+        arguments.listDelim = bytes(arguments.listDelim,'utf-8').decode('unicode-escape')
 
     # get read list
     logging.debug("List file: '%s'\nList delim: '%s'" % (arguments.listFile, arguments.listDelim))

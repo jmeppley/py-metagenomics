@@ -1,4 +1,8 @@
 #!/usr/bin/env bats
+@test "Testing screen_table compilation" {
+    run ./screen_table.py -h
+    [ "$status" = 0 ]
+}
 
 @test "Testing screen_table: intersection" {
     run python ./screen_table.py test/data/table.1 -k -l test/data/table.2 -o test/data/.tst.table.in.both -D "\t" -v
