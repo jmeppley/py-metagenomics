@@ -190,9 +190,15 @@ def calculateChunkSize(size,record_count,splits):
     """
     how big should the fragments be?
     """
-    chunk = ceil(size/float(splits))
+    avg_record_size = size/record_count
+    logging.info("Avg record size: %0.02f=%d/%d" % (avg_record_size,size,record_count))
+    chunk = floor(ceil(size/(splits*avg_record_size))*avg_record_size)
 
-    logging.info("Setting chunk to: %d=ceil(%d/%d)" % (chunk,size,splits))
+    logging.info("Setting chunk to: %d=floor(ceil(%d/(%d*%0.02f))*%0.02d)" % (chunk,
+                                                                              size,
+                                                                              splits,
+                                                                              avg_record_size,
+                                                                              avg_record_size))
     return chunk
 
 # Simply count records

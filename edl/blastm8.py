@@ -796,7 +796,7 @@ def filterHits(hits, options, returnLines=True):
             if options.pctid>0:
                 raise Exception("This hit type (%s) does not have a PCTID defined. You cannot filter by PCTID" % (hit.format))
 
-        if hit.mlen<options.length:
+        if abs(hit.mlen)<options.length:
             logger.debug("hit too short: %r" % hit.mlen)
             continue
         if options.aln is not None and hit.getAln()<options.aln:

@@ -9,7 +9,7 @@ This script takes any file that can be divided into records and breaks it up
   pre-defined types will use sequence length
 """
 
-from os import path
+from os import path, makedirs
 from edl.util import *
 from edl.batch import *
 
@@ -61,6 +61,7 @@ def main():
 
     if outdir.strip()=="":
         outdir='.'
+    makedirs(outdir,exist_ok=True)
     logging.debug("outdir: '%s' :: outpref: '%s' :: outsuff: '%s'" % (outdir, outpref, outsuff))
 
     # fragment!
