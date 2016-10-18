@@ -743,10 +743,13 @@ def doWeNeedToFilter(options):
         return True
     if options.nonoverlapping:
         return True
+    if options.bad_refs:
+        return True
     return False
 
 def filterHits(hits, options, returnLines=True):
     if options.bad_refs:
+        logger.debug("REmoving bad_refs from hits")
         hits = [h for h in hits if h.hit not in options.bad_refs]
 
     # A topPct cutoff, requires finding the top score first
