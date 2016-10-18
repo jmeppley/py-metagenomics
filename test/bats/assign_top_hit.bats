@@ -1,4 +1,8 @@
 #!/usr/bin/env bats
+@test "Testing assign_top_hit compilation" {
+    run ./assign_top_hit.py -h
+    [ "$status" = 0 ]
+}
 
 @test "Testing assign_top_hit by top acc abundance" {
     run ./assign_top_hit.py test/data/HOT186_25m_454DNA.vs.RefSeqMicrobesProteins.250records.blastx.b50.m8.NCyanos -C toporg -o test/data/.tst.HOT186_25m_454DNA.vs.RefSeqMicrobesProteins.250records.blastx.b50.m8.NCyanos.topHitByAcc
@@ -34,6 +38,8 @@
 @test "Checking output 1" {
     run diff <(sort test/data/sample.1.blastx.b50.m8.tophit) <(sort test/data/sample.1.blastx.b50.m8.tophit.tst.)
     [ "$status" = 0 ]
+    run diff <(cut -f 1 test/data/sample.1.blastx.b50.m8 | uniq | sort | uniq | grep -c .) <(grep -c . test/data/sample.1.blastx.b50.m8.tophit.tst.)
+    [ "$status" = 0 ]
 }
 @test "Checking output 2" {
     run diff <(sort test/data/sample.2.blastx.b50.m8.tophit) <(sort test/data/sample.2.blastx.b50.m8.tophit.tst.)
@@ -41,6 +47,8 @@
 }
 @test "Checking output 3" {
     run diff <(sort test/data/sample.3.blastx.b50.m8.tophit) <(sort test/data/sample.3.blastx.b50.m8.tophit.tst.)
+    [ "$status" = 0 ]
+    run diff <(cut -f 1 test/data/sample.3.blastx.b50.m8 | uniq | sort | uniq | grep -c .) <(grep -c . test/data/sample.3.blastx.b50.m8.tophit.tst.)
     [ "$status" = 0 ]
 }
 
