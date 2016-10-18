@@ -590,5 +590,3 @@ class ReservoirSamplingList(list):
     def extend(self, iterable):
         for item in iterable:
             self.add(item)
-
-

@@ -1,17 +1,24 @@
 from numpy import histogram
-import os, sys, numpy, argparse, logging, re, pandas
+import os
+import sys
+import numpy
+import argparse
+import logging
+import re
+import pandas
 from Bio import SeqIO, SeqUtils
-logger=logging.getLogger(__name__)
 if __name__ == '__main__':
     sys.path[0] += "/.."
 from edl.util import asciiHistogram
 import edl.blastm8
 
-###
-# hook for scriptifying
+logger = logging.getLogger(__name__)
+
+
 def main():
     """
-    Simple hook for running some of the functions below as a script. Only works with positional arguments that are strings.
+    Simple hook for running some of the functions below as a script.
+    Only works with positional arguments that are strings.
 
     Examples:
      python assembly.py contig_read_counts file_1
@@ -19,34 +26,32 @@ def main():
        """
 
     log_level = logging.WARN
-    while sys.argv[1]=='-v':
+    while sys.argv[1] == '-v':
         sys.argv.pop(1)
-        log_level-=10
+        log_level -= 10
     logger.setLevel(log_level)
     logger.debug("Log level: {}".format(log_level))
 
     function = eval(sys.argv[1])
-    args=[]
-    kwargs={}
+    args = []
+    kwargs = {}
     for arg in sys.argv[2:]:
         try:
-            param,value = arg.split("=",1)
+            param, value = arg.split("=", 1)
             try:
-                value=eval(value)
+                value = eval(value)
             except NameError:
                 pass
-            kwargs[param]=value
+            kwargs[param] = value
         except ValueError:
             args.append(arg)
 
     logger.debug("Function: {}\nArguments: {}\nKWArgs: {}".format(function,
                                                                   args,
                                                                   kwargs))
-    function(*args,**kwargs)
+    function(*args, **kwargs)
 
-###
-# Code for getting contig stats contigs file
-#
+
 def get_contig_stats(contigs_fasta,
                      contig_depth_file=None,
                      contig_read_counts_file=None,
@@ -56,22 +61,26 @@ def get_contig_stats(contigs_fasta,
     """
     Extracts GC and length from contigs fasta
 
-    CAn optionally merge with read counts and mapped coverage if
+    Can optionally merge with read counts and mapped coverage if
     samtools output files given.
 
-    provide a contig_stats_file location to write data to disk instead of just returning a pandas DataFrame.
+    provide a contig_stats_file location to write data to disk instead
+    of just returning a pandas DataFrame.
 
-    provide contig_histogram_file to produce a file with summary stats and histgrams for each metric. See contig_length_stats() and numpy.histogram() for additional kwargs that can be passed when using this option.
+    provide contig_histogram_file to produce a file with summary stats
+    and histgrams for each metric. See contig_length_stats() and numpy.
+    histogram() for additional kwargs that can be passed when using this
+    option.
     """
     # parse contigs fasta
     logger.info("Parsing contig fasta file: {}".format(contigs_fasta))
     contig_stats = get_stats_from_contigs(contigs_fasta)
-    
+
     # add other files if requested
     if contig_read_counts_file is not None:
         # read counts
-        logger.info("Parsing read count file: {}"\
-                            .format(contig_read_counts_file))
+        logger.info("Parsing read count file: {}"
+                     .format(contig_read_counts_file))
         read_count_table = pandas.read_table(contig_read_counts_file,delim_whitespace=True,names=['read count','contig']).set_index('contig')
         contig_stats=contig_stats.join(read_count_table,how='left')
 
