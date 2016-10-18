@@ -1,4 +1,8 @@
 #!/usr/bin/env bats
+@test "Testing count_taxa compilation" {
+    run ./count_taxa.py -h
+    [ "$status" = 0 ]
+}
 
 @test "Testing countTaxa: simplehit id counts" {
     run ./countTaxaFromBlasts.py S1=test/data/sample.1.kegg.blastx.b50.m8 S2=sample.2.kegg.blastx.b50.m8 S3=sample.3.kegg.blastx.b50.m8 -p hitid -F 0 -o test/data/.tst.sample.kegg.hitid.counts

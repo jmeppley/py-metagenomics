@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 """
 Takes an m8 blast and picks the best hit for each. 
 
@@ -16,6 +16,7 @@ from edl import redistribute
 from edl.hits import *
 from edl.util import *
 from edl.blastm8 import M8Stream
+from urllib.parse import unquote_plus
 
 def main():
     usage = "usage: %prog [OPTIONS] HIT_TABLE(S)"
@@ -65,7 +66,7 @@ def main():
 
     else:
         # process all files at once
-        (multifile,readFileDict) = redistribute.multipleFileWrapper(arguments.input_files, params, returnLines=True)
+        multifile = redistribute.multipleFileWrapper(arguments.input_files)
 
         # Build a map from input file name to output handle
         outputMap={}
@@ -105,11 +106,12 @@ def main():
 
 
         for (read, hit) in readHits:
-            outhandle = outputMap[readFileDict[read]]
-            outhandle.write(hit.line)
+            infile_name, read = read.split("/",1)
+            outhandle = outputMap[unquote_plus(infile_name)]
+            outhandle.write(hit.line.split("/",1)[1])
 
         if arguments.output_file is not None:
-            for outhandle in outputMap.itervalues():
+            for outhandle in outputMap.values():
                 outhandle.close()
 
 if __name__ == '__main__':
