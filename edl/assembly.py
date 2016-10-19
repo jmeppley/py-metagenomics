@@ -81,8 +81,11 @@ def get_contig_stats(contigs_fasta,
         # read counts
         logger.info("Parsing read count file: {}"
                     .format(contig_read_counts_file))
-        read_count_table = pandas.read_table(contig_read_counts_file, delim_whitespace=True, names=[
-                                             'read count', 'contig']).set_index('contig')
+        read_count_table = pandas.read_table(contig_read_counts_file,
+                                             delim_whitespace=True,
+                                             names=['read count',
+                                                    'contig'])\
+                                 .set_index('contig')
         contig_stats = contig_stats.join(read_count_table, how='left')
 
     if contig_depth_file is not None:
@@ -117,8 +120,8 @@ def get_contig_stats(contigs_fasta,
                 logger.info("Making report for contigs >= {}"
                             .format(min_length))
                 if i > 0:
-                    OUTF.write("\n==============================="
-                               + "================\n\n")
+                    OUTF.write("\n===============================\
+                                ================\n\n")
                 OUTF.write("CONTIGS longer or equal to {}bp:\n\n"
                            .format(min_length))
                 OUTF.write(contig_length_stats(contig_stats,
@@ -132,7 +135,8 @@ def get_contig_stats(contigs_fasta,
 
 def get_stats_from_contigs(contigs_fasta):
     """
-    Use BioPython parser and GC calculator to get contig lengths and GCs from contigs fasta
+    Use BioPython parser and GC calculator to get contig lengths and
+    GCs from contigs fasta
     """
 
     # initialize lists
@@ -152,7 +156,9 @@ def get_stats_from_contigs(contigs_fasta):
             gcs.append(SeqUtils.GC(sequence))
 
     # convert to DataFrame and return
-    return pandas.DataFrame({'contig': contigs, 'length': lengths, 'GC': gcs}).set_index('contig')
+    return pandas.DataFrame({'contig': contigs,
+                             'length': lengths,
+                             'GC': gcs}).set_index('contig')
 
 
 def get_samtool_depth_table(depth_file):
@@ -225,7 +231,14 @@ def get_samtool_depth_table_from_handle(depth_stream):
     mn_covs.append(min_depth)
     mx_covs.append(max_depth)
 
-    return pandas.DataFrame({'contig': contigs, 'av cov': av_covs, 'mx cov': mx_covs, 'mn cov': mn_covs}, columns=['contig', 'av cov', 'mn cov', 'mx cov']).set_index('contig')
+    return pandas.DataFrame({'contig': contigs,
+                             'av cov': av_covs,
+                             'mx cov': mx_covs,
+                             'mn cov': mn_covs},
+                            columns=['contig',
+                                     'av cov',
+                                     'mn cov',
+                                     'mx cov']).set_index('contig')
 
 ##
 # this evolved from (but now bears little resemblance to) the
@@ -380,7 +393,14 @@ def get_column_stats(data):
 # https://gist.github.com/tpoulsen/422b1a19cbd8c0f514fe/raw/assembly_quality_stats.py
 
 
-def calc_stats(file_in, return_type=None, txt_width=0, log=False, backend=None, format='fasta', minLength=0, **kwargs):
+def calc_stats(file_in,
+               return_type=None,
+               txt_width=0,
+               log=False,
+               backend=None,
+               format='fasta',
+               minLength=0,
+               **kwargs):
     """
     Given contigs in fastsa format:
      * calculate length stats (including N50)
@@ -486,49 +506,35 @@ def plot_assembly(sizes, file_in, length_data, backend=None, **kwargs):
         import matplotlib
         matplotlib.use(backend)
     from matplotlib import pyplot as plt
-    #import pylab
     h = plt.hist(sizes, **kwargs)
-    plt.title('%i %s sequences\nLengths %i to %i, Average contig length: %.2f' % (
-        num_contig, file_in, min_contig, max_contig, avg_contig))
+    plt.title('%i %s sequences\n\
+               Lengths %i to %i, \
+               Average contig length: %.2f' % (num_contig, file_in,
+                                               min_contig, max_contig,
+                                               avg_contig))
     plt.xlabel('Sequence length (bp)')
     plt.ylabel('Count')
     return h
 
-# Get the N50 of the contigs. This is the sequence length at which point
-# half of the bases in the entire assembly are contained in contigs of a
-# smaller size.
-
-
-def getN50_old(sizes):
-    bases = []
-    for read in sorted(sizes):
-        for i in range(read):
-            bases.append(read)
-    return numpy.median(bases)
-
 
 def getN50(sizes, N=50):
-
-    # if N==50:
-    #    # This adds a significant chunk of time and has yet to find an error...should we drop it?
-    #    try:
-    #        compare=getN50_old(sizes)
-    #    except:
-    #        compare=None
-
+    """
+    Get the N50 of the contigs. This is the sequence length at which point
+    half of the bases in the entire assembly are contained in contigs of a
+    smaller size.
+    """
     totalLength = sum(sizes)
     targetLength = float(totalLength) * N / 100.
     totalLength = 0
     for size in sorted(sizes, reverse=True):
         totalLength += size
         if totalLength >= targetLength:
-            # if N==50 and compare is not None:
-            #    if size != compare:
-            #        raise Exception("N50s don't match: %s != %s" % (size,compare))
             return size
     else:
-        raise Exception("Target length never reached!\nN=%d, target=%d, total=%d" % (
-            N, targetLength, totalLength))
+        raise Exception("Target length never reached!\
+                         \nN=%d, target=%d, total=%d" % (N,
+                                                         targetLength,
+                                                         totalLength))
 
 ######
 # A set of methods for plotting the quality of reseq hits to a set of contigs
@@ -541,10 +547,15 @@ def plotHitStats(axes, sequenceFile, hitsFile,
                  barcolor='b', baredgecolor='k', hcolor='r', params=None,
                  **kwargs):
     """
-    Given two or three matplotlib.axes.AxesSubplot objects create plot in each binned by sequence length:
-     * overlay a histogram of sequence lengths on the fraction of sequences in each bin that have a hit
-     * same bins as above, but use total sequence bases on top of fraction of bases covered by hits
-     * if fasta or lengths of reference hits given, plot (using same bins) fraction of reference bases used in hits
+    Given two or three matplotlib.axes.AxesSubplot objects create plot in
+    each binned by sequence length:
+
+     * overlay a histogram of sequence lengths on the fraction of sequences
+       in each bin that have a hit
+     * same bins as above, but use total sequence bases on top of fraction
+       of bases covered by hits
+     * if fasta or lengths of reference hits given, plot (using same bins)
+       fraction of reference bases used in hits
 
     Positional Arguments:
      * axes: length 2 list or tuple of ax objects
@@ -557,13 +568,16 @@ def plotHitStats(axes, sequenceFile, hitsFile,
       * **kwargs used to create FilterParams object if params object not given
      * sequence parsing
       * sequenceFormat='fasta'. Can be anything supported by BioPython
-      * referenceLengths=None: if give, create 3rd plot using given dictionary of hits. It can also just be the fasta of the reference sequences and the code will look up the lengths.
+      * referenceLengths=None: if give, create 3rd plot using given
+        dictionary of hits. It can also just be the fasta of the reference
+        sequences and the code will look up the lengths.
      * plotting:
       * bins=20 Number of length bins to divide sequence data into
       * barcolor='b' Color of data bars
       * baredgecolor='k' Color of data bar edges
       * hcolor='r' Color of histogram line and axis labels
-      * lengthRange=None Can be used to force the x axis to span a specific range 
+      * lengthRange=None Can be used to force the x axis to span a
+        specific range
       * hlog=False If set to True, histogram data plotted in log scale
     """
 
@@ -601,7 +615,9 @@ def getSequenceHits(hitsFile, params):
     sequenceHits = {}
     hitCount = 0
     m8stream = edl.blastm8.M8Stream(hitsFile)
-    for seqid, hits in edl.blastm8.filterM8Stream(m8stream, params, returnLines=False):
+    for seqid, hits in edl.blastm8.filterM8Stream(m8stream,
+                                                  params,
+                                                  returnLines=False):
         hits = list(hits)
         if len(hits) == 0:
             continue
@@ -625,7 +641,13 @@ def getSequenceLengths(sequenceFile, format='fasta'):
     return sequenceLengths
 
 
-def plotTranscriptHitRateByLengthBins(ax, lengths, hits, bins=20, lengthRange=None, barcolor='b', baredgecolor='k', hlog=False, hcolor='r'):
+def plotTranscriptHitRateByLengthBins(ax, lengths, hits,
+                                      bins=20,
+                                      lengthRange=None,
+                                      barcolor='b',
+                                      baredgecolor='k',
+                                      hlog=False,
+                                      hcolor='r'):
     """
     Given a dictionary of transcript lengths and a dictionary of hits,
     Produce a plot of hit rate by length bin.
@@ -637,9 +659,12 @@ def plotTranscriptHitRateByLengthBins(ax, lengths, hits, bins=20, lengthRange=No
 
     # Draw counts as steppted histogram
     ax2 = ax.twinx()
-    #transcriptCounts,boundaries=numpy.histogram(lengths.values(), bins=bins, range=lengthRange)
-    transcriptCounts, boundaries = ax2.hist(lengths.values(
-    ), bins=bins, range=lengthRange, histtype='step', log=hlog, color=hcolor)[:2]
+    transcriptCounts, boundaries = ax2.hist(lengths.values(),
+                                            bins=bins,
+                                            range=lengthRange,
+                                            histtype='step',
+                                            log=hlog,
+                                            color=hcolor)[:2]
     ax2.set_ylabel('counts', color=hcolor)
     for tl in ax2.get_yticklabels():
         tl.set_color(hcolor)
@@ -670,10 +695,18 @@ def plotTranscriptHitRateByLengthBins(ax, lengths, hits, bins=20, lengthRange=No
     ax.set_xlabel('transcript length')
 
 
-def plotTranscriptCoverageByLengthBins(ax, lengths, hits, bins=20, lengthRange=None, barcolor='b', baredgecolor='k', hlog=False, hcolor='r', includeMissed=True):
+def plotTranscriptCoverageByLengthBins(ax, lengths, hits,
+                                       bins=20,
+                                       lengthRange=None,
+                                       barcolor='b',
+                                       baredgecolor='k',
+                                       hlog=False,
+                                       hcolor='r',
+                                       includeMissed=True):
     """
     Given a dictionary of transcript lengths and a dictionary of hits,
-    Produce a plot of coverate rate by length bin. IE: What fracton of total transcript bases were matched.
+    Produce a plot of coverate rate by length bin. IE: What fracton of
+     total transcript bases were matched.
     """
 
     # Don't try to plot empty data
@@ -726,12 +759,24 @@ def plotTranscriptCoverageByLengthBins(ax, lengths, hits, bins=20, lengthRange=N
     ax.set_xlabel('transcript length')
 
 
-def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths, bins=20, lengthRange=None, barcolor='b', baredgecolor='k', hlog=False, hcolor='r', includeMissed=False):
+def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths,
+                                bins=20,
+                                lengthRange=None,
+                                barcolor='b',
+                                baredgecolor='k',
+                                hlog=False,
+                                hcolor='r',
+                                includeMissed=False):
     """
-    Given a dictionary of transcript lengths, a dictionary of hits, and a dict of reference sequence lengths...
-    Produce a plot of reference coverate rate by length bin. IE: What fracton of total residues in the reference sequences were matched.
+    Given a dictionary of transcript lengths, a dictionary
+     of hits, and a dict of reference sequence lengths...
+    Produce a plot of reference coverate rate by length bin.
+     IE: What fracton of total residues in the reference sequences were
+         matched.
 
-    The param referenceLengths can be a dictionary from hit names to lengths or a fasta file of sequences. The names in both should match the hit names in the "hits" dictionary.
+    The param referenceLengths can be a dictionary from hit names to
+    lengths or a fasta file of sequences. The names in both should
+    match the hit names in the "hits" dictionary.
     """
     import screed
 
@@ -748,9 +793,10 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths, bins=20, le
         if not os.path.exists("%s_screed" % (referenceLengths)):
             screed.read_fasta_sequences(referenceLengths)
         refScreed = screed.ScreedDB(referenceLengths)
-        getHitLength = lambda h: len(refScreed[h]['sequence'])
+
+        get_hit_length = lambda h: len(refScreed[h]['sequence'])
     else:
-        getHitLength = lambda h: referenceLengths[h]
+        get_hit_length = lambda h: referenceLengths[h]
 
     # count bases by bin
     hitBaseCounts = numpy.zeros(transcriptCounts.shape)
@@ -766,7 +812,8 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths, bins=20, le
         firstHit = hitList[0]
         hitLength = getHitLength(firstHit.hit)
         logger.debug("Hit of length %d goes from %d to %d" % (hitLength,
-                                                              firstHit.hstart, firstHit.hend))
+                                                              firstHit.hstart,
+                                                              firstHit.hend))
         referenceBaseCounts[index] += hitLength
         hitBaseCounts[index] += numpy.abs(firstHit.hend - firstHit.hstart) + 1
 
@@ -801,7 +848,10 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths, bins=20, le
     ax.set_xlabel('transcript length')
 
 
-def plotSortedContigLengths(ax, lengths, linecolor='b', log=False, minContigLength=500):
+def plotSortedContigLengths(ax, lengths,
+                            linecolor='b',
+                            log=False,
+                            minContigLength=500):
     """
     Given a list of contig lengths, create a stepped plot of ordered lengths.
     """
@@ -827,11 +877,14 @@ def longestHit(hits):
 
 def getSteppedBars(values, boundaries=None):
     """
-    return lists of x and y coordinates for a stepped line/bar plot given N values (bar heights) and N+1 boundaries (bar edges)
+    return lists of x and y coordinates for a stepped line/bar plot
+    given N values (bar heights) and N+1 boundaries (bar edges)
     """
     x = []
     y = []
-    translate = lambda b: b if numpy.isfinite(b) else 0
+
+    def translate(b):
+        return b if numpy.isfinite(b) else 0
 
     if boundaries is None:
         boundaries = range(len(values) + 1)
@@ -854,7 +907,8 @@ def getBin(value, binboundaries):
     Given a value and a set of N+1 ordered values defining N segments or bins,
     return the index of the bin containing value.
 
-    Note, this currently uses brute force and could be sped up with a simple dividing by two search
+    Note, this currently uses brute force and could be sped up with a
+    simple dividing by two search
     """
     if binboundaries[0] > value:
         raise ValueError("Value too low")
