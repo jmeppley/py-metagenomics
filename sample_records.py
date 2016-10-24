@@ -36,8 +36,8 @@ def main():
             metavar="POPULATION_SIZE",
             help="Number of records in file. An integer, should be greater \
                     than the SAMPLE_SIZE, except: \
-                    0 => do a separate pass to count records first \
-                    -1 (default) => reservoir sample to RAM on the fly")
+                    0 (default)=> do a separate pass to count records first \
+                    -1 => reservoir sample to RAM on the fly")
 
     add_universal_arguments(parser)
 
@@ -61,15 +61,15 @@ def main():
         logging.debug("Looking for %d records in %s" % (arguments.sample_size,
                                                         infilename))
         #if arguments.population_size<0:
-        #    # read file once with reservoir sampling
-        #    sampled_records, record_count = reservoirSample(record_iterator,
-        #                                                N=arguments.sample_size,
-        #                                                returnCount=True)
-        #else:
+        # indexed_sample_generator will only read file once 
+        #    using reservoir sampling
 
         # count records if asked to
         if arguments.population_size == 0:
-            arguments.population_size = get_total_size(inhandle, fileType)
+            record_count, total_size= get_total_size(inhandle.name, fileType)
+            arguments.population_size = record_count
+            logging.debug("setting population size to: {}"\
+                           .format(arguments.population_size))
 
         # get sampled record generator (will use reservoir if P is <0)
         sampled_records = indexed_sample_generator(record_iterator,

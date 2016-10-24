@@ -133,7 +133,7 @@ OR set the record separator pattern with '-p PATTERN' where PATTERN is a regular
 """ % (filename, fileExtensionMap.keys(), fileExtensionMap.keys()))
         sys.exit(65)
 
-def get_total_size(inhandle, file_type, split_on_size=False):
+def get_total_size(infile, file_type, split_on_size=False):
     """
     Get the total size of all records
     """
@@ -147,9 +147,10 @@ def get_total_size(inhandle, file_type, split_on_size=False):
     # loop through records
     total_size = 0
     record_count = 0
-    for record in file_type.recordStreamer(inhandle):
-        record_count+=1
-        total_size+=recordSizer(record)
+    with open(infile) as inhandle:
+        for record in file_type.recordStreamer(inhandle):
+            record_count+=1
+            total_size+=recordSizer(record)
 
     return record_count, total_size
 
@@ -162,9 +163,9 @@ def even_out_chunks(infile, chunk, fileType, splitOnSize=False):
     if infile is None:
         raise Exception("We cannot adjust chunk size for STDIN!")
 
-    inhandle = openInputFile(infile)
-    record_count, total_size = get_total_size(inhandle, fileType, split_on_size=splitOnSize)
-    inhandle.close()
+    record_count, total_size = get_total_size(infile,
+                                              fileType,
+                                              split_on_size=splitOnSize)
     logging.debug("Found {} records with a total size of {}".format(record_count, total_size))
 
     splits = ceil(total_size/chunk)
@@ -180,9 +181,9 @@ def getSizePerChunk(infile, splits, fileType, splitOnSize=False):
     if infile is None:
         raise Exception("We cannot determine chunk size from STDIN!")
 
-    inhandle = openInputFile(infile)
-    record_count, total_size = get_total_size(inhandle, fileType, split_on_size=splitOnSize)
-    inhandle.close()
+    record_count, total_size = get_total_size(infile,
+                                              fileType,
+                                              split_on_size=splitOnSize)
 
     return calculateChunkSize(total_size,record_count,splits)
 

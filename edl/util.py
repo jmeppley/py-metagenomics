@@ -460,7 +460,7 @@ def head(iterable, N=10):
 
 def indexed_sample_generator(records, N, P=None):
     """
-    Generate a random sample of N records from interator "records".
+    Generate a random sample of N records from iterator "records".
 
     If the total numer of records in terator (P) is not specified, 
     then reservoir sampling (storing entire sample in RAM) will be used!
@@ -468,11 +468,20 @@ def indexed_sample_generator(records, N, P=None):
     if P>0:
         # use random.sample to get list of indices ahead of time
         indexes_to_return = set(random.sample(range(P),N))
+        logger.debug("returning {} indices:\n{}"\
+                     .format(N, repr(indexes_to_return)))
 
         # return just records with tose indices
+        record_count=0
+        yield_count=0
         for i, record in enumerate(records):
+            record_count+=1
             if i in indexes_to_return:
+                yield_count+=1
                 yield record
+        logger.debug("Returned {} of {} records".format(yield_count,
+                                                        record_count))
+                                                        
     else:
         # We don't know how many records to expect, so use reservoir
         for record in reservoir_sample(records, N=N, return_count=False):
