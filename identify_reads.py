@@ -1,24 +1,21 @@
-#! /usr/bin/python
-#$ -S /usr/bin/python
-#$ -cwd
+#!/usr/bin/env python
 """
-identifyReads.py
+identify_reads.py
 
 Given two lists of taxids and one or more hit tables,
  print out (for each table) the reads that:
      have their best hits in taxid list 1
      have all other hits in either list
 """
-from optparse import OptionParser
+import argparse
 import sys, re, os, logging
 from edl.taxon import *
 from edl.blastm8 import filterM8Stream
 from edl.hits import *
-from edl.util import parseMapFile, addUniversalOptions, setupLogging, parse_list_to_map, inputIterator, addIOOptions
+from edl.util import add_universal_arguments, setup_logging, parseMapFile, add_IO_arguments, inputIterator, parse_list_to_set
 from edl.expressions import nrOrgRE
 
 def main():
-    usage = "usage: %prog -O ORTHOLOGY [OPTIONS] BLAST_M8_FILES"
     description = """
     Given two lists of taxids and one or more hit tables, identify reads that:
      (1) have their best hits in taxid list 1
@@ -28,67 +25,64 @@ def main():
 
     The countMethod (-C) option is not used.
     """
-    parser = OptionParser(usage, description=description)
-    addIOOptions(parser)
-    addTaxonOptions(parser,defaults={'mapFile':None,'parseStyle':ACCS,'filterPct':-1,'countMethod':'all','taxdir':None})
-    parser.add_option("-g", "--targetTaxonGroup", dest="group1", default=None, metavar="TAXON", action='append',
+    parser = argparse.ArgumentParser(description=description)
+    add_IO_arguments(parser)
+    add_taxon_arguments(parser,defaults={'mapFile':None,'parseStyle':ACCS,'filterPct':-1,'countMethod':'all','taxdir':None})
+    parser.add_argument("-g", "--targetTaxonGroup", dest="group1", default=None, metavar="TAXON", action='append',
                       help="Taxon to identify reads in. Top hits (as defined by --topHitPct) must be in this group. It can be a taxid, a name, or a file listing taxids. Use multiple times to specify a list of organisms. Use -a to specify whether all or at least one of the top hits must match.")
-    parser.add_option("-a","--any", default=False, action="store_true", help="If specified, accept reads where any top hit is to an organism in the target taxon/taxa. By default, all top hits must be in the target group.")
-    addUniversalOptions(parser)
-    parser.add_option('-t','--topHitPct', default=0, type='float',
-                      help='How close (as a %) to the best score a hit must be to qualify as a top hit. Default is 0, ie must have the best score. Use 100 to get all hits.')
-    parser.add_option("-G", "--outerTaxonGroup", dest="group2", default=None, metavar="TAXON", action="append",
+    parser.add_argument("-a","--any", default=False, action="store_true", help="If specified, accept reads where any top hit is to an organism in the target taxon/taxa. By default, all top hits must be in the target group.")
+    parser.add_argument('-t','--topHitPct', default=0, type=float,
+                      help='How close (as a percentage to the best score a hit must be to qualify as a top hit. Default is 0, ie must have the best score. Use 100 to get all hits.')
+    parser.add_argument("-G", "--outerTaxonGroup", dest="group2", default=None, metavar="TAXON", action="append",
                       help="Broader taxon to limit reads. All hits (use -F to limit these hits) must be in the target group or this group. Again, it can be a taxid, a name, or a file listing taxids. It can also be inkoved multiple times to choose multiple groups.")
-    parser.add_option('-r','--reads', default=False, action="store_true",
+    parser.add_argument('-r','--reads', default=False, action="store_true",
                       help="Output just read names. By default, print the relevant hit lines for each read")
 
-    (options, args) = parser.parse_args()
-
-    if options.about:
-        print description
-        exit(0)
+    # log level and help
+    add_universal_arguments(parser)
+    arguments = parser.parse_args()
+    setup_logging(arguments)
 
     # check args
-    setupLogging(options,description)
-    if options.group1 is None:
+    if arguments.group1 is None:
         parser.error("Please use -g to specify a target taxonomic group")
 
-    if options.taxdir is not None:
-        taxonomy = readTaxonomy(options.taxdir, namesMap=True)
+    if arguments.taxdir is not None:
+        taxonomy = readTaxonomy(arguments.taxdir, namesMap=True)
     else:
         taxonomy = None
 
-    group_1_set=get_group_set(options.group1,taxonomy)
-    group_2_set=get_group_set(options.group2,taxonomy)
+    group_1_set=get_group_set(arguments.group1,taxonomy)
+    group_2_set=get_group_set(arguments.group2,taxonomy)
     logging.debug("Group 1 has %d entries and 439482 in group1 is %s" % (len(group_1_set),439482 in group_1_set))
     if group_2_set is not None:
         logging.debug("Group 2 has %d entries and 439482 in group2 is %s" % (len(group_2_set),439482 in group_2_set))
 
     # map reads to hits
-    if options.parseStyle==GIS:
+    if arguments.parseStyle==GIS:
         keyType=int
     else:
         keyType=None
-    accToTaxMap = parseMapFile(options.mapFile,valueType=int,keyType=keyType)
+    accToTaxMap = parseMapFile(arguments.mapFile,valueType=int,keyType=keyType)
 
     # set up some function pointers
     global hitRE
-    hitRE=parsingREs.get(options.parseStyle,None)
-    if options.parseStyle == ORGS:
+    hitRE=parsingREs.get(arguments.parseStyle,None)
+    if arguments.parseStyle == ORGS:
         getTaxid=_getOrgTaxid
-    elif options.parseStyle == HITID:
+    elif arguments.parseStyle == HITID:
         getTaxid=_getHitidTaxid
-    elif options.parseStyle == HITDESC:
+    elif arguments.parseStyle == HITDESC:
         getTaxid=_getHitdescTaxid
     else:
         getTaxid=_getExprTaxid
 
     # for filtering:
-    filterParams = FilterParams.createFromOptions(options)
+    filterParams = FilterParams.create_from_arguments(arguments)
     logging.debug(repr(filterParams))
 
     # loop over hit tables
-    for (inhandle,outhandle) in inputIterator(args,options):
+    for (inhandle,outhandle) in inputIterator(arguments):
         readCount=0
         goodReadCount=0
         printCount=0
@@ -121,7 +115,7 @@ def main():
                 logging.debug("Checking best hits for %s (top score: %.1f)" % (read,bestScore))
                 all=True
                 recognized=[]
-                for hit,taxids in _getBestHitTaxids(hitTaxids,bestScore,options.topHitPct):
+                for hit,taxids in _getBestHitTaxids(hitTaxids,bestScore,arguments.topHitPct):
                     if _anyTaxidInGroup(taxids,group_1_set):
                         logging.debug("%s (%r)  is in group 1" % (hit,taxids))
 
@@ -133,14 +127,14 @@ def main():
                     # if none of the best are in our target list, next read
                     logging.debug("No best hits for %s are in group 1" % (read))
                     continue
-                if (not options.any) and (not all):
+                if (not arguments.any) and (not all):
                     # next read unless user said any or all hits are in list
                     logging.debug("Not all best hits for %s are in group 1" % (read))
                     continue
 
                 # if we get here, then the read is a match
                 goodReadCount+=1
-                if options.reads:
+                if arguments.reads:
                     logging.debug("Keeping %s" % (read))
                     outhandle.write(read)
                     outhandle.write('\n')
@@ -150,7 +144,7 @@ def main():
                         outhandle.write(hit.getLine(filterParams))
                         printCount+=1
 
-        if options.reads:
+        if arguments.reads:
             logging.info("Printed %d of %d reads" % (goodReadCount,readCount))
         else:
             logging.info("Printed %d lines for %d of %d reads" % (printCount,goodReadCount, readCount))
@@ -163,7 +157,7 @@ def _anyTaxidInGroup(taxids, group_set):
 
 def _getBestHitTaxids(hits, bestScore, pct):
     cutoff=bestScore - pct*bestScore
-    for (hit,taxids) in hits.iteritems():
+    for (hit,taxids) in hits.items():
         if hit.score >= cutoff:
             yield hit,taxids
 
