@@ -136,13 +136,13 @@ class FilterParams:
         self.bad_refs = None
 
     def __repr__(self):
-        return "FilterParams(format=%r, topPct=%r, bits=%r, evalue=%r, " +\
-                "pctid=%r, length=%r, aln=%r, hitsPerRead=%r, " + \
+        return ("FilterParams(format=%r, topPct=%r, bits=%r, evalue=%r, "
+                "pctid=%r, length=%r, aln=%r, hitsPerRead=%r, "
                 "hspsPerHit=%r, nonoverlapping=%r sort=%r, sortReads=%r)" % (
                         self.format, self.topPct, self.bits, self.evalue,
                         self.pctid, self.length, self.aln, self.hitsPerRead,
                         self.hspsPerHit, self.nonoverlapping, self.sort,
-                        self.sortReads)
+                        self.sortReads))
 
 
 class EmptyHitException(Exception):
