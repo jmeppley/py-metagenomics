@@ -1,14 +1,18 @@
-import re, logging
+import re
+import logging
 import numpy as np
 
-logger=logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 ##############
 # Classes    #
 ##############
+
+
 class Taxonomy:
     """
-    A container for taxonomy data: contains two maps: id to Node and name to Node
+    A container for taxonomy data: contains two maps: id to Node and name
+    to Node
     """
 
     def __init__(self, idMap, nameMap, realNameMap, path=None, rootNode=None):
@@ -18,40 +22,42 @@ class Taxonomy:
         self.path = path
         if rootNode is None:
             rootNode = next(iter(idMap.values())).getRootNode()
-        self.root=rootNode
+        self.root = rootNode
 
     def __str__(self):
-        return "Taxonomy with %d nodes"  % (len(self.idMap))
+        return "Taxonomy with %d nodes" % (len(self.idMap))
 
     def __repr__(self):
         return "Taxonomy(%s)" % (self.path)
+
 
 class TaxNode:
     """
     A node in a pylogenetic tree. This has a parent and many children
     """
-    domains=["Bacteria","Archaea","Eukaryota","Viruses","Viroids"]
-    namedNodes={}
+    domains = ["Bacteria", "Archaea", "Eukaryota", "Viruses", "Viroids"]
+    namedNodes = {}
 
-    def __init__(self, taxid,parentid, rank):
+    def __init__(self, taxid, parentid, rank):
         """
         """
         self.id = taxid
         self.taxid = taxid
-        self.parentid=parentid
+        self.parentid = parentid
         self.rank = rank
         self.parent = None
-        self.children=[]
-        self.name=""
-        self.translation=None
-        self.lineage=None
-        self.lineage_strings={}
+        self.children = []
+        self.name = ""
+        self.translation = None
+        self.lineage = None
+        self.lineage_strings = {}
 
     def __hash__(self):
         return hash(self.getLineageString(';'))
 
     def __repr__(self):
-        return "TaxNode(%s,%s,%s)" % (repr(self.id),repr(self.parentid),repr(self.rank))
+        return "TaxNode(%s,%s,%s)" % (
+            repr(self.id), repr(self.parentid), repr(self.rank))
 
     def __key__(self):
         return self.getLineageString(';')
@@ -60,7 +66,8 @@ class TaxNode:
         return self.__key__() < other.__key__()
 
     def __eq__(self, other):
-        return self.__key__() == other.__key__() if isinstance(other, self.__class__) else False
+        return self.__key__() == other.__key__() if isinstance(
+            other, self.__class__) else False
 
     def __str__(self):
         if self.name == "":
@@ -68,7 +75,7 @@ class TaxNode:
         else:
             if (self.isNameGeneric()):
                 if self is not self.parent:
-                    return "%s(%s)" % (self.name,str(self.parent))
+                    return "%s(%s)" % (self.name, str(self.parent))
         return self.name
 
     def setParent(self, parent):
@@ -91,49 +98,55 @@ class TaxNode:
         """
         if self in node.getLineage():
             if logger.getEffectiveLevel() <= logging.DEBUG:
-                lineageString=""
+                lineageString = ""
                 for n in node.getLineage():
-                    lineageString+=str(n)+','
-                logger.debug("%s found in [%s]" % (str(self),lineageString))
+                    lineageString += str(n) + ','
+                logger.debug("%s found in [%s]" % (str(self), lineageString))
             return self
         else:
             if self.parent is None or self.parent is self:
                 return self
             return self.parent.getLCA(node)
 
-    def transmogrify(self,rank,taxList):
+    def transmogrify(self, rank, taxList):
         """
         Given a rank string, and a list of taxa, return a single
         taxon name by the following rules:
 
-        1) if taxon or an ancestor matches a name in taxList, return matching name.
-        2) if taxon or an ancestor has the indicated rank, return matching taxon name.
+        1) if taxon or an ancestor matches a name in taxList, return
+            matching name.
+        2) if taxon or an ancestor has the indicated rank, return
+            matching taxon name.
         3) if taxon or a parent matches list of domains, return the domain
         4) print a warning and return None
         """
 
         if self.translation is None:
             if self.name in taxList:
-                self.translation=self.name
+                self.translation = self.name
                 logger.debug("%s in tax list" % (self.name))
                 return self.translation
 
             if self.parent is None or self.parent is self:
-                self.translation=self.name
+                self.translation = self.name
                 logger.debug("map to self %s" % (self.name))
                 return self.translation
 
-            parentTranslation = self.parent.transmogrify(rank,taxList)
+            parentTranslation = self.parent.transmogrify(rank, taxList)
 
             if self.rank == rank and parentTranslation not in taxList:
-                self.translation=self.name
-                logger.debug("%s is rank %s" % (self.name,rank))
+                self.translation = self.name
+                logger.debug("%s is rank %s" % (self.name, rank))
                 return self.translation
 
             self.translation = parentTranslation
-            logger.debug("%s is using parent's translation: %s" % (self.name, self.translation))
+            logger.debug(
+                "%s is using parent's translation: %s" %
+                (self.name, self.translation))
         else:
-            logger.debug("%s already translated to %s" % (self.name,self.translation))
+            logger.debug(
+                "%s already translated to %s" %
+                (self.name, self.translation))
         return self.translation
 
     def getAncestorClosestToRank(self, rank, **kwargs):
@@ -164,7 +177,7 @@ class TaxNode:
             return self
 
     def isNameGeneric(self):
-        name = spaceRE.sub(',',self.name)
+        name = spaceRE.sub(',', self.name)
         if name[0:10] == 'uncultured':
             return True
         if name[0:13] == 'environmental':
@@ -178,51 +191,61 @@ class TaxNode:
 
     def getCollapsedCounts(self, counts, cutoff, hitTranslations):
         """
-        walk the tree and fill hitTranslation hash with map from nodes under cutoff to node where counts should be aggregated
+        walk the tree and fill hitTranslation hash with map from nodes
+        under cutoff to node where counts should be aggregated
         """
-        count=0
-        countedNodes=[self]
+        count = 0
+        countedNodes = [self]
         if self in counts:
             # use value in counts if it's there
-            count=counts[self]
-            logger.debug("%s has %d hits" % (self,count))
+            count = counts[self]
+            logger.debug("%s has %d hits" % (self, count))
 
         # add sum of children (those under cutoff)
         for child in self.children:
             if child is self:
-                logger.warn("node %s(%s) is child of itself!" % (repr(self),str(self)))
+                logger.warn(
+                    "node %s(%s) is child of itself!" %
+                    (repr(self), str(self)))
                 continue
-            (kidCount,kidsCountedNodes) = child.getCollapsedCounts(counts, cutoff, hitTranslations)
+            (kidCount, kidsCountedNodes) = child.getCollapsedCounts(
+                counts, cutoff, hitTranslations)
             if kidCount is not None:
-                logging.debug("Adding %d to %s from %s" % (kidCount, child, self))
+                logging.debug(
+                    "Adding %d to %s from %s" %
+                    (kidCount, child, self))
                 count += kidCount
                 countedNodes.extend(kidsCountedNodes)
 
         # if this node has a generic name, defer to parent
         if self.isNameGeneric():
-            logger.debug("%s is too generic, giving %d hits to parent: %s" % (self.name,count,self.parent.name))
-            return (count,countedNodes)
+            logger.debug(
+                "%s is too generic, giving %d hits to parent: %s" %
+                (self.name, count, self.parent.name))
+            return (count, countedNodes)
 
         # if this node is over cutoff, add to counts
-        if count>=cutoff:
-            logger.info("keeping %d hits in %s (from %d nodes)" % (count,str(self),len(countedNodes)))
+        if count >= cutoff:
+            logger.info(
+                "keeping %d hits in %s (from %d nodes)" %
+                (count, str(self), len(countedNodes)))
             name = self.name
             for node in countedNodes:
-                hitTranslations[node]=self
-            return (None,[])
+                hitTranslations[node] = self
+            return (None, [])
         else:
             # otherwise return count for parent to use
-            logger.debug("Passing %d hits to parent from %s" % (count,self))
-            return (count,countedNodes)
+            logger.debug("Passing %d hits to parent from %s" % (count, self))
+            return (count, countedNodes)
 
-    def getLineageString(self,sep):
+    def getLineageString(self, sep):
         if sep not in self.lineage_strings:
             if self.parent is None or self.parent is self:
                 self.lineage_strings[sep] = self.name
             else:
                 self.lineage_strings[sep] = \
-                        sep.join((self.parent.getLineageString(sep),
-                                 self.name))
+                    sep.join((self.parent.getLineageString(sep),
+                              self.name))
         return self.lineage_strings[sep]
 
     def getLineage(self):
@@ -231,11 +254,11 @@ class TaxNode:
         """
         if self.lineage is None:
             if self.parent is None or self.parent is self:
-                self.lineage = tuple([self,])
+                self.lineage = tuple([self, ])
             else:
                 lineage = list(self.parent.getLineage())
                 lineage.append(self)
-                self.lineage=tuple(lineage)
+                self.lineage = tuple(lineage)
         return self.lineage
 
     def compareRanks(self, comparisons):
@@ -248,8 +271,8 @@ class TaxNode:
 
     def compareRank(self, ancestorRank, comparisons):
         if self.rank is not None and self.rank.strip() != "no rank":
-            compKey = (ancestorRank,self.rank)
-            comparisons[compKey] = comparisons.get(compKey,0) + 1
+            compKey = (ancestorRank, self.rank)
+            comparisons[compKey] = comparisons.get(compKey, 0) + 1
 
         for kid in self.children:
             if kid is self or kid is None:
@@ -265,21 +288,21 @@ class TaxNode:
     @staticmethod
     def getNamedNode(name):
         if name not in TaxNode.namedNodes:
-            node = TaxNode(name,None,None)
-            TaxNode.namedNodes[name]=node
+            node = TaxNode(name, None, None)
+            TaxNode.namedNodes[name] = node
         return TaxNode.namedNodes[name]
 
     @staticmethod
     def addToTreeFromString(taxString, tree={}):
         if 'root' not in tree:
-            if len(tree)>0:
+            if len(tree) > 0:
                 raise Error('tree must have root node!')
-            root =  TaxNode('root',None,None)
+            root = TaxNode('root', None, None)
             root.name = root.id
-            tree['root']=root
+            tree['root'] = root
 
         lineage = scRE.split(taxString)
-        logger.debug("parsing %s: %s"  % (taxString,str(lineage)))
+        logger.debug("parsing %s: %s" % (taxString, str(lineage)))
         lastNode = tree['root']
         for taxon in lineage:
             taxon = taxon.strip()
@@ -287,12 +310,11 @@ class TaxNode:
             if (taxon in tree) and (tree[taxon].parent is lastNode):
                 lastNode = tree[taxon]
             else:
-                #logger.debug("Adding %s as child to %s" % (taxon, lastNode.name))
                 newNode = TaxNode(taxon, lastNode.id, None)
                 newNode.name = newNode.id
                 newNode.setParent(lastNode)
                 tree[taxon] = newNode
-                lastNode=newNode
+                lastNode = newNode
         return lastNode
 
 ################
@@ -301,36 +323,72 @@ class TaxNode:
 cladeRE = re.compile(r'clade')
 parensRE = re.compile(r'\([^\(\)]+\)')
 lastSemicolonRE = re.compile(r'^.*;([^;]+)$')
-spaceRE=re.compile("\s")
-dotRE=re.compile("\.")
-scRE=re.compile(r';+')
-metagenomeRE=re.compile(r'metagenome')
+spaceRE = re.compile("\s")
+dotRE = re.compile("\.")
+scRE = re.compile(r';+')
+metagenomeRE = re.compile(r'metagenome')
 
 #############
 # Functions #
 #############
 
 # this is a list (in order) of the ranks in the ncbi tax dump
-ranks= ['forma', 'varietas', 'subspecies', 'species', 'species subgroup', 'species group', 'subgenus', 'genus', 'subtribe', 'tribe', 'subfamily', 'family', 'superfamily', 'parvorder', 'infraorder', 'suborder', 'order', 'superorder', 'infraclass', 'subclass', 'class', 'superclass', 'subphylum', 'phylum', 'superphylum', 'subkingdom', 'kingdom', 'superkingdom']
+ranks = [
+    'forma',
+    'varietas',
+    'subspecies',
+    'species',
+    'species subgroup',
+    'species group',
+    'subgenus',
+    'genus',
+    'subtribe',
+    'tribe',
+    'subfamily',
+    'family',
+    'superfamily',
+    'parvorder',
+    'infraorder',
+    'suborder',
+    'order',
+    'superorder',
+    'infraclass',
+    'subclass',
+    'class',
+    'superclass',
+    'subphylum',
+    'phylum',
+    'superphylum',
+    'subkingdom',
+    'kingdom',
+    'superkingdom']
 
-# The next few things were an attempt to automatically determine the order of the ranks from the taxonomic tree.
+# The next few things were an attempt to automatically determine the order
+# of the ranks from the taxonomic tree.
 """
 sortKey={}
 def getSortKey(rank):
     return sortKey.get(rank,len(rank))
 """
-comparisons={}
-def compareRanks(r1,r2):
-    r1anc = comparisons.get((r1,r2),0)
-    r2anc = comparisons.get((r2,r1),0)
+comparisons = {}
 
-    if r1anc>0 and r2anc>0:
-        logger.warn("ambiguos relationshp between %s and %s: (%d,%d)" % (r1,r2,r1anc,r2anc))
 
-    if r1anc==0 and r2anc==0:
-        logger.warn("no information for %s and %s: (%d, %d)" % (r1,r2,r1anc,r2anc))
+def compareRanks(r1, r2):
+    r1anc = comparisons.get((r1, r2), 0)
+    r2anc = comparisons.get((r2, r1), 0)
 
-    return cmp(r1anc,r2anc)
+    if r1anc > 0 and r2anc > 0:
+        logger.warn(
+            "ambiguos relationshp between %s and %s: (%d,%d)" %
+            (r1, r2, r1anc, r2anc))
+
+    if r1anc == 0 and r2anc == 0:
+        logger.warn(
+            "no information for %s and %s: (%d, %d)" %
+            (r1, r2, r1anc, r2anc))
+
+    return cmp(r1anc, r2anc)
+
 
 def deduceRankOrder(taxMap):
     import numpy as np
@@ -339,19 +397,22 @@ def deduceRankOrder(taxMap):
     root = next(iter(taxMap.values())).getRootNode()
 
     # this generates a map of tuples to counts
-    #  comparisons[(ranka,rankb)] == 4  means ranka was an ancestor to rankb 4 times
+    # comparisons[(ranka,rankb)] == 4  means ranka was an ancestor to rankb 4
+    # times
     global comparisons
     comparisons = {}
     root.compareRanks(comparisons)
 
-    logger.info("There are %d entries in the comparison map!" % (len(comparisons)))
+    logger.info(
+        "There are %d entries in the comparison map!" %
+        (len(comparisons)))
 
     # get list of all ranks
-    ranks=[]
+    ranks = []
     for key in comparisons:
         ranks.extend(key)
-    ranks=set(ranks)
-    logger.info("%d ranks: %s" % (len(ranks),ranks))
+    ranks = set(ranks)
+    logger.info("%d ranks: %s" % (len(ranks), ranks))
 
     """
     # some testing
@@ -366,7 +427,8 @@ def deduceRankOrder(taxMap):
 
         # just checking:
         if (key[1],key[0]) in comparisons:
-            logger.warn("%s is an ancestor of %s %d times and vice versa %d times!" %
+            logger.warn("%s is an ancestor of %s %d times and "
+                        "vice versa %d times!" %
                  (key[0],key[1],v,comparisons[(key[1],key[0])]))
 
     for rank in ranks:
@@ -381,17 +443,19 @@ def deduceRankOrder(taxMap):
         else:
             sortKey[rank]=np.arctan(float(aCounts[rank])/dCounts[rank])
 
-        logger.info("key for %s is %s (%d/%d)" % (rank,str(sortKey[rank]),aCounts.get(rank,1),dCounts.get(rank,0)))
+        logger.info("key for %s is %s (%d/%d)" % (rank,str(sortKey[rank]),
+                    aCounts.get(rank,1),dCounts.get(rank,0)))
     """
 
     # sort ranks
-    #ranks = sorted(ranks,key=getSortKey)
-    ranks = sorted(ranks,cmp=compareRanks)
+    ranks = sorted(ranks, cmp=compareRanks)
     logger.info("sorted ranks: %s" % str(ranks))
 
     return ranks
 
-_taxonomies={}
+_taxonomies = {}
+
+
 def readTaxonomy(taxDir, namesMap=False):
     """
     read the names.dmp and nodes.dmp files in this directory and build a tree
@@ -400,7 +464,7 @@ def readTaxonomy(taxDir, namesMap=False):
 
     if taxDir in _taxonomies:
         # if this taxonomy has already been parse, just re-use it
-        if not namesMap or len(_taxonomies[taxDir].nameMap)>0:
+        if not namesMap or len(_taxonomies[taxDir].nameMap) > 0:
             return _taxonomies[taxDir]
 
     logger.info("read nodes")
@@ -414,8 +478,8 @@ def readTaxonomy(taxDir, namesMap=False):
         taxid = int(cells[0].strip())
         parentid = int(cells[1].strip())
         rank = cells[2].strip()
-        node = TaxNode(taxid,parentid,rank)
-        taxMap[taxid]=node
+        node = TaxNode(taxid, parentid, rank)
+        taxMap[taxid] = node
 
     logger.info("link nodes")
 
@@ -425,7 +489,9 @@ def readTaxonomy(taxDir, namesMap=False):
         try:
             parent = taxMap[node.parentid]
         except:
-            logger.warn("Can't find parent (%s) for %s" % (node.parentid, node.id))
+            logger.warn(
+                "Can't find parent (%s) for %s" %
+                (node.parentid, node.id))
         else:
             node.setParent(parent)
 
@@ -436,55 +502,64 @@ def readTaxonomy(taxDir, namesMap=False):
         cells = line.split(r'|')
         taxid = int(cells[0].strip())
         name = cells[2].strip()
-        name2=cells[1].strip()
-        if name=="":
-            name=name2
-            name2=None
+        name2 = cells[1].strip()
+        if name == "":
+            name = name2
+            name2 = None
 
         quality = cells[3].strip()
-        if quality=="scientific name":
-            node=taxMap[taxid]
-            node.name=name
+        if quality == "scientific name":
+            node = taxMap[taxid]
+            node.name = name
             if namesMap:
-                realNameMap[simplifyString(name)]=node
+                realNameMap[simplifyString(name)] = node
         elif namesMap:
-            node=taxMap[taxid]
+            node = taxMap[taxid]
 
         if namesMap:
-            if name2 is None or name2==name:
-                names=[name,]
+            if name2 is None or name2 == name:
+                names = [name, ]
             else:
-                names=[name,name2]
+                names = [name, name2]
 
             for name in names:
-                name=simplifyString(name)
-                mapnode=nameMap.get(name,0)
-                if mapnode==0:
+                name = simplifyString(name)
+                mapnode = nameMap.get(name, 0)
+                if mapnode == 0:
                     # not in map, add it
-                    nameMap[name]=node
+                    nameMap[name] = node
                 elif mapnode is not None:
                     # already in map
                     if mapnode is not node:
                         # already in map with different taxon
-                        lca=node.getLCA(mapnode)
-                        #logger.debug("Name: %s already in map, mapping to LCA: %s.\n(%s:%r %s:%r)" % (name,lca.name,node.name,node,mapnode.name,mapnode))
-                        nameMap[name]=lca
+                        lca = node.getLCA(mapnode)
+                        nameMap[name] = lca
 
-    taxonomy = Taxonomy(taxMap,nameMap,realNameMap)
-    _taxonomies[taxDir]=taxonomy
+    taxonomy = Taxonomy(taxMap, nameMap, realNameMap)
+    _taxonomies[taxDir] = taxonomy
     return taxonomy
 
 
 def simplifyString(string):
-    return dotRE.sub("",removeSpaces(string.lower()))
+    return dotRE.sub("", removeSpaces(string.lower()))
+
 
 def removeSpaces(string):
-    return spaceRE.sub("",string)
+    return spaceRE.sub("", string)
 
-nameTranslations={'asaia lannensis': 'asaia lannaensis',
-                  'uncultured haptophyte': 'haptophyta',
-                  'acidisoma sibiricum': 'acidisoma sibirica'}
-methodCount={'sp':0,'par':0,'map':0,'raw':0,'none':0,'pre':0,'sub':0}
+nameTranslations = {'asaia lannensis': 'asaia lannaensis',
+                    'uncultured haptophyte': 'haptophyta',
+                    'acidisoma sibiricum': 'acidisoma sibirica'}
+methodCount = {
+    'sp': 0,
+    'par': 0,
+    'map': 0,
+    'raw': 0,
+    'none': 0,
+    'pre': 0,
+    'sub': 0}
+
+
 def getNodeFromHit(hit, nameMap, exhaustive=True):
     """
     Use a number of tricks to map the organism name given by 'hit' to
@@ -508,7 +583,7 @@ def getNodeFromHit(hit, nameMap, exhaustive=True):
     try:
         taxNode = nameMap[hit]
         if logger.getEffectiveLevel() <= logging.DEBUG:
-            methodCount['raw']+=1
+            methodCount['raw'] += 1
         return taxNode
     except KeyError:
         pass
@@ -516,11 +591,11 @@ def getNodeFromHit(hit, nameMap, exhaustive=True):
     # try to remove parens
     m = parensRE.search(hit)
     if m:
-        hit = parensRE.sub('',hit)
+        hit = parensRE.sub('', hit)
         try:
             taxNode = nameMap[hit]
             if logger.getEffectiveLevel() <= logging.DEBUG:
-                methodCount['par']+=1
+                methodCount['par'] += 1
             return taxNode
         except KeyError:
             pass
@@ -531,16 +606,16 @@ def getNodeFromHit(hit, nameMap, exhaustive=True):
         try:
             taxNode = nameMap[hit]
             if logger.getEffectiveLevel() <= logging.DEBUG:
-                methodCount['map']+=1
+                methodCount['map'] += 1
             return taxNode
         except KeyError:
             pass
 
     # replace clade with cluster
-    (newHit, count) = cladeRE.subn('cluster',hit)
-    if count>0:
+    (newHit, count) = cladeRE.subn('cluster', hit)
+    if count > 0:
         try:
-            taxNode=nameMap[newHit]
+            taxNode = nameMap[newHit]
             return taxNode
         except KeyError:
             pass
@@ -551,15 +626,15 @@ def getNodeFromHit(hit, nameMap, exhaustive=True):
         # or name that is found is start of hit
         hitLen = len(hit)
         for name in nameMap:
-            nameLen=len(name)
-            if hitLen<nameLen:
+            nameLen = len(name)
+            if hitLen < nameLen:
                 # except for cases like 'alteromonas sp.', ...
                 if hit[-2:] != 'sp':
                     # check to see if hit is substring of name
                     if name[0:hitLen] == hit:
-                        logger.debug ("%s changed to %s" % (hit, name))
+                        logger.debug("%s changed to %s" % (hit, name))
                         if logger.getEffectiveLevel() <= logging.DEBUG:
-                            methodCount['pre']+=1
+                            methodCount['pre'] += 1
                         return nameMap[name]
             else:
                 if hit[0:nameLen] == name:
@@ -571,17 +646,18 @@ def getNodeFromHit(hit, nameMap, exhaustive=True):
         else:
             # there was no 'pre' match, so take longest 'sub' match
             if startingName is not None:
-                logger.debug ('%s changed to %s' % (hit, startingName))
+                logger.debug('%s changed to %s' % (hit, startingName))
                 if logger.getEffectiveLevel() <= logging.DEBUG:
-                    methodCount['sub']+=1
+                    methodCount['sub'] += 1
                 return nameMap[startingName]
 
     logger.warn("Can't translate name: %s" % (hit))
     if logger.getEffectiveLevel() <= logging.DEBUG:
-        methodCount['none']+=1
+        methodCount['none'] += 1
     return None
 
-def getAncestorClosestToRank(node,rank,**kwargs):
+
+def getAncestorClosestToRank(node, rank, **kwargs):
     """
     This is an attempt to get something close to the requested rank even when
     the organism has no acnestral taxon with that exact rank
@@ -589,53 +665,67 @@ def getAncestorClosestToRank(node,rank,**kwargs):
     The named ranks on either side of our target are found
     (eg prehaps kingdom and class if phylum is missing)
     Then based on how many unranked items are in the lineage between these AND
-     the number of ranks skipped, interpolate which ancestral taxon is closest to
+     the number of ranks skipped, interpolate which ancestral taxon is
+     closest to
      the target rank
     """
     # Set the fall back (aka default) to starting node unless set by caller
-    default=kwargs.pop('default',node)
+    default = kwargs.pop('default', node)
 
     # Set behavior in special case:
     #  if the first ranked ancestor is beyond the target rank
     #  then use the child of that ancestor (ie the previous on in the lineage)
     #  if this is set to False, just return the 'default'
-    useChildOfFirstRankedAncestor=kwargs.pop('useChildOfFirstRankedAncestor',True)
+    useChildOfFirstRankedAncestor = kwargs.pop(
+        'useChildOfFirstRankedAncestor', True)
 
     # This only works on TaxNode objects
-    if not isinstance(node,TaxNode):
+    if not isinstance(node, TaxNode):
         logger.debug("Not a TaxNode (%r)" % (node))
         return default
 
-    ## Walk through the lineage and find ranked taxa as reference points
+    # Walk through the lineage and find ranked taxa as reference points
     # Get all the ancestors/parents of this Taxon
     lineage = list(node.getLineage())
     lineage.reverse()
-    if rank=='domain':
-        rank='superkingdom'
+    if rank == 'domain':
+        rank = 'superkingdom'
     targetIndex = ranks.index(rank)
-    logger.debug("looking for rank: %s (%d)" % (rank,targetIndex))
-    lastIndex=-1
-    lastIndexedAnc=None
-    lastAnc=node
+    logger.debug("looking for rank: %s (%d)" % (rank, targetIndex))
+    lastIndex = -1
+    lastIndexedAnc = None
+    lastAnc = node
     # For each ancestor/parent in this TaxNode's lineage
     for anc in lineage:
         try:
             # If it has a rank, where is that rank in the heirarchy?
             ancRankIndex = ranks.index(anc.rank)
-            logger.debug("rank of %s is %s(%d)" % (anc,anc.rank,ancRankIndex))
+            logger.debug(
+                "rank of %s is %s(%d)" %
+                (anc, anc.rank, ancRankIndex))
         except ValueError:
             # hard coded special cases
-            #  family: SAR11,SAR116,SAR324,SAR86,SAR406,SAR202,SUP05,SAR92,OMZ60,
-            if anc.id in [54526,62654,131190,62672,62680,648176,655184,745004,744996]:
+            # family:
+            # SAR11,SAR116,SAR324,SAR86,SAR406,SAR202,SUP05,SAR92,OMZ60,
+            if anc.id in [
+                    54526,
+                    62654,
+                    131190,
+                    62672,
+                    62680,
+                    648176,
+                    655184,
+                    745004,
+                    744996]:
                 ancRankIndex = ranks.index('family')
             else:
                 ancRankIndex = -1
 
-        if ancRankIndex>=0:
+        if ancRankIndex >= 0:
             # An exact match is easy, just return it
             if ancRankIndex is targetIndex:
-               logger.debug("MATCH!")
-               return anc
+                logger.debug("MATCH!")
+                return anc
             elif ancRankIndex > targetIndex:
 
                 # if we've hit the next rank without hitting any other ranks:
@@ -656,18 +746,23 @@ def getAncestorClosestToRank(node,rank,**kwargs):
                 # try to interpolate
                 ancIndex = lineage.index(anc)
                 lastAncIndex = lineage.index(lastIndexedAnc)
-                logger.debug("Trying to interpolate between %d and %d based on %d between %d and %d" % (ancIndex,lastAncIndex,targetIndex,ancRankIndex,lastIndex))
+                logger.debug(
+                    "Trying to interpolate between %d and %d based "
+                    "on %d between %d and %d" % (ancIndex, lastAncIndex,
+                                                 targetIndex, ancRankIndex,
+                                                 lastIndex))
                 ranksSkipped = ancRankIndex - lastIndex
                 ancsSkipped = ancIndex - lastAncIndex
                 rankAdjustment = ancRankIndex - targetIndex
-                ancAdjustment = (float(rankAdjustment)/ranksSkipped)*ancsSkipped
+                ancAdjustment = (
+                    float(rankAdjustment) / ranksSkipped) * ancsSkipped
                 logger.debug("rolling back by %s" % (str(ancAdjustment)))
-                return lineage[int(np.floor(ancIndex-ancAdjustment))]
+                return lineage[int(np.floor(ancIndex - ancAdjustment))]
 
-        if ancRankIndex>-1:
-            lastIndex=ancRankIndex
-            lastIndexedAnc=anc
-        lastAnc=anc
+        if ancRankIndex > -1:
+            lastIndex = ancRankIndex
+            lastIndexedAnc = anc
+        lastAnc = anc
 
     logger.debug("Nothing found close to %s" % rank)
     return default
@@ -675,16 +770,18 @@ def getAncestorClosestToRank(node,rank,**kwargs):
 ############
 # Tests
 ############
+
+
 def test():
     import sys
     global myAssertEq, myAssertIs
     from test import myAssertEq, myAssertIs
 
-    ndir=sys.argv[1]
-    if len(sys.argv)>2:
-        loglevel=logging.DEBUG
+    ndir = sys.argv[1]
+    if len(sys.argv) > 2:
+        loglevel = logging.DEBUG
     else:
-        loglevel=logging.WARN
+        loglevel = logging.WARN
     logging.basicConfig(stream=sys.stderr, level=loglevel)
 
     test_root_node()
@@ -694,143 +791,177 @@ def test():
     test_get_ancestor(ncbiTree)
     test_transmogrify(ncbiTree)
 
+
 def test_transmogrify(tree):
-    orgLists=[]
-    orgLists.append(['Bacteria <prokaryote>','Archaea','Prochlorales','Rickettsiales','Eukaryota'])
-    orgLists.append(['Gammaproteobacteria','Alphaproteobacteria','Deltaproteobacteria'])
-    ranks = ['phylum','superkingdom','genus']
-    ids = [439493,939841,655186,1046240,333146]
-    answers  = {439493:
-                {'phylum':
-                 {str(orgLists[0]): 'Rickettsiales',
-                  str(orgLists[1]): 'Alphaproteobacteria'},
-                 'superkingdom':
-                 {str(orgLists[0]): 'Rickettsiales',
-                  str(orgLists[1]): 'Alphaproteobacteria'},
-                 'genus':
-                 {str(orgLists[0]): 'Rickettsiales',
-                  str(orgLists[1]): 'Alphaproteobacteria'}},
-                939841:
-                {'phylum':
-                 {str(orgLists[0]): 'Prochlorales',
-                  str(orgLists[1]): 'Cyanobacteria'},
-                 'superkingdom':
-                 {str(orgLists[0]): 'Prochlorales',
-                  str(orgLists[1]): 'Bacteria <prokaryote>'},
-                 'genus':
-                 {str(orgLists[0]): 'Prochlorales',
-                  str(orgLists[1]): 'Prochlorococcus'}},
-                655186:
-                {'phylum':
-                 {str(orgLists[0]): 'Bacteria <prokaryote>',
-                  str(orgLists[1]): 'Gammaproteobacteria'},
-                 'superkingdom':
-                 {str(orgLists[0]): 'Bacteria <prokaryote>',
-                  str(orgLists[1]): 'Gammaproteobacteria'},
-                 'genus':
-                 {str(orgLists[0]): 'Bacteria <prokaryote>',
-                  str(orgLists[1]): 'Gammaproteobacteria'}},
-                1046240:
-                {'phylum':
-                 {str(orgLists[0]): 'Bacteria <prokaryote>',
-                  str(orgLists[1]): 'Gammaproteobacteria'},
-                 'superkingdom':
-                 {str(orgLists[0]): 'Bacteria <prokaryote>',
-                  str(orgLists[1]): 'Gammaproteobacteria'},
-                 'genus':
-                 {str(orgLists[0]): 'Bacteria <prokaryote>',
-                  str(orgLists[1]): 'Gammaproteobacteria'}},
-                333146:
-                {'phylum':
-                 {str(orgLists[0]): 'Archaea',
-                  str(orgLists[1]): 'Euryarchaeota'},
-                 'superkingdom':
-                 {str(orgLists[0]): 'Archaea',
-                  str(orgLists[1]): 'Archaea'},
-                 'genus':
-                 {str(orgLists[0]): 'Archaea',
-                  str(orgLists[1]): 'Ferroplasma'}}
+    orgLists = []
+    orgLists.append(['Bacteria <prokaryote>', 'Archaea',
+                     'Prochlorales', 'Rickettsiales', 'Eukaryota'])
+    orgLists.append(['Gammaproteobacteria',
+                     'Alphaproteobacteria',
+                     'Deltaproteobacteria'])
+    ranks = ['phylum', 'superkingdom', 'genus']
+    ids = [439493, 939841, 655186, 1046240, 333146]
+    answers = {439493:
+               {'phylum':
+                {str(orgLists[0]): 'Rickettsiales',
+                 str(orgLists[1]): 'Alphaproteobacteria'},
+                'superkingdom':
+                {str(orgLists[0]): 'Rickettsiales',
+                 str(orgLists[1]): 'Alphaproteobacteria'},
+                'genus':
+                {str(orgLists[0]): 'Rickettsiales',
+                 str(orgLists[1]): 'Alphaproteobacteria'}},
+               939841:
+               {'phylum':
+                {str(orgLists[0]): 'Prochlorales',
+                 str(orgLists[1]): 'Cyanobacteria'},
+                'superkingdom':
+                {str(orgLists[0]): 'Prochlorales',
+                 str(orgLists[1]): 'Bacteria <prokaryote>'},
+                'genus':
+                {str(orgLists[0]): 'Prochlorales',
+                 str(orgLists[1]): 'Prochlorococcus'}},
+               655186:
+               {'phylum':
+                {str(orgLists[0]): 'Bacteria <prokaryote>',
+                 str(orgLists[1]): 'Gammaproteobacteria'},
+                'superkingdom':
+                {str(orgLists[0]): 'Bacteria <prokaryote>',
+                 str(orgLists[1]): 'Gammaproteobacteria'},
+                'genus':
+                {str(orgLists[0]): 'Bacteria <prokaryote>',
+                 str(orgLists[1]): 'Gammaproteobacteria'}},
+               1046240:
+               {'phylum':
+                {str(orgLists[0]): 'Bacteria <prokaryote>',
+                 str(orgLists[1]): 'Gammaproteobacteria'},
+                'superkingdom':
+                {str(orgLists[0]): 'Bacteria <prokaryote>',
+                 str(orgLists[1]): 'Gammaproteobacteria'},
+                'genus':
+                {str(orgLists[0]): 'Bacteria <prokaryote>',
+                 str(orgLists[1]): 'Gammaproteobacteria'}},
+               333146:
+               {'phylum':
+                {str(orgLists[0]): 'Archaea',
+                 str(orgLists[1]): 'Euryarchaeota'},
+                'superkingdom':
+                {str(orgLists[0]): 'Archaea',
+                 str(orgLists[1]): 'Archaea'},
+                'genus':
+                {str(orgLists[0]): 'Archaea',
+                 str(orgLists[1]): 'Ferroplasma'}}
                }
 
     for orgs in orgLists:
         for rank in ranks:
             for node in tree.values():
-                node.translation=None
+                node.translation = None
 
             for taxid in ids:
                 node = tree[taxid]
                 try:
-                    assert node.transmogrify(rank,orgs) == answers[taxid][rank][str(orgs)]
+                    assert node.transmogrify(rank, orgs) == answers[
+                        taxid][rank][str(orgs)]
                 except AssertionError:
-                    logging.warn("%d:%s at rank %s%s goes to: %s, not %s" % (taxid,node.name,rank,str(orgs),node.transmogrify(rank,orgs),answers[taxid][rank][str(orgs)]))
+                    logging.warn(
+                        "%d:%s at rank %s%s goes to: %s, not %s" %
+                        (taxid, node.name, rank, str(orgs), node.transmogrify(
+                            rank, orgs), answers[taxid][rank][
+                            str(orgs)]))
+
 
 def test_get_ancestor(tree):
-    answers = ((112233,'order',30483),(654321,'order',4892),(1032926,'phylum',35493))
+    answers = ((112233, 'order', 30483), (654321, 'order', 4892),
+               (1032926, 'phylum', 35493))
     try:
         for data in answers:
-            assert tree[data[0]].getAncestorAtRank(data[1]).id==data[2]
+            assert tree[data[0]].getAncestorAtRank(data[1]).id == data[2]
     except AssertionError:
         for data in answers:
-            node=tree[data[0]]
-            ance=node.getAncestorAtRank(data[1])
-            "Ancestor of %d:%s at rank %s is %d:%s, not %d:%s(%s)" % (data[0],node.name, data[1], ance.id, ance.name, data[2],tree[data[2]].name)
+            node = tree[data[0]]
+            ance = node.getAncestorAtRank(data[1])
+            "Ancestor of %d:%s at rank %s is %d:%s, not %d:%s(%s)" % (
+                data[0], node.name, data[1], ance.id, ance.name,
+                data[2], tree[data[2]].name)
+
 
 def test_collapse_counts():
     from hits import countHits, translateHits
-    tree={}
-    node1 = TaxNode.addToTreeFromString('Bacteria;Cyanobacteria;Prochlorococcus',tree)
-    node2 = TaxNode.addToTreeFromString('Bacteria;Gammaproteobacteria;SUP05',tree)
-    node3 =  TaxNode.addToTreeFromString('Archaea;Thermoplasmata;Ferroplasma',tree)
+    tree = {}
+    node1 = TaxNode.addToTreeFromString(
+        'Bacteria;Cyanobacteria;Prochlorococcus', tree)
+    node2 = TaxNode.addToTreeFromString(
+        'Bacteria;Gammaproteobacteria;SUP05', tree)
+    node3 = TaxNode.addToTreeFromString(
+        'Archaea;Thermoplasmata;Ferroplasma', tree)
 
-    hits = {'1': node1, '2': node1,
-            '3': node2,
-            '4': node3, '5':node3, '6':node3, '7':node3, '8':node3, '9':node3}
-    (total,counts) = countHits(hits)
+    hits = {
+        '1': node1,
+        '2': node1,
+        '3': node2,
+        '4': node3,
+        '5': node3,
+        '6': node3,
+        '7': node3,
+        '8': node3,
+        '9': node3}
+    (total, counts) = countHits(hits)
     collapsedHits = {}
-    node1.getRootNode().getCollapsedCounts(counts, .3*9, collapsedHits)
-    translateHits(hits,collapsedHits)
-    (ctotal,collapsedCounts) = countHits(hits)
-    expectedCounts = {node3:6,node1.parent.parent:3}
+    node1.getRootNode().getCollapsedCounts(counts, .3 * 9, collapsedHits)
+    translateHits(hits, collapsedHits)
+    (ctotal, collapsedCounts) = countHits(hits)
+    expectedCounts = {node3: 6, node1.parent.parent: 3}
     try:
         assert collapsedCounts == expectedCounts
     except AssertionError:
-        print ( "total: %d, ctotal: %d" % (total,ctotal))
-        print ( str(counts))
-        print ( str(collapsedHits))
-        print ( str(collapsedCounts))
-        print ( str(expectedCounts))
+        print("total: %d, ctotal: %d" % (total, ctotal))
+        print(str(counts))
+        print(str(collapsedHits))
+        print(str(collapsedCounts))
+        print(str(expectedCounts))
         raise AssertionError
 
+
 def test_root_node():
-    tree={}
-    node1 = TaxNode.addToTreeFromString('Bacteria;Cyanobacteria;Prochlorococcus',tree)
-    node2 = TaxNode.addToTreeFromString('Bacteria;Gammaproteobacteria;SUP05',tree)
-    node3 =  TaxNode.addToTreeFromString('Archaea;Thermoplasmata;Ferroplasma',tree)
+    tree = {}
+    node1 = TaxNode.addToTreeFromString(
+        'Bacteria;Cyanobacteria;Prochlorococcus', tree)
+    node2 = TaxNode.addToTreeFromString(
+        'Bacteria;Gammaproteobacteria;SUP05', tree)
+    node3 = TaxNode.addToTreeFromString(
+        'Archaea;Thermoplasmata;Ferroplasma', tree)
 
     root = node1.getRootNode()
     assert root.name == 'root'
     assert root.parent is None or root.parent is root
 
+
 def test_get_lineage():
-    tree={}
+    tree = {}
     lineage = 'Bacteria;Cyanobacteria;Prochlorococcus'
-    node1 = TaxNode.addToTreeFromString(lineage,tree)
+    node1 = TaxNode.addToTreeFromString(lineage, tree)
     try:
         assert node1.getLineageString(';') == 'root;' + lineage
     except AssertionError:
-        logging.warn("%s is not %s" % (node1.getLineageString(';'),'root;'+lineage))
+        logging.warn(
+            "%s is not %s" %
+            (node1.getLineageString(';'), 'root;' + lineage))
         raise AssertionError
     lineage = 'Bacteria;Gammaproteobacteria;SUP05'
-    node2 = TaxNode.addToTreeFromString(lineage,tree)
+    node2 = TaxNode.addToTreeFromString(lineage, tree)
     try:
-        assert node2.getLineageString(';') == 'root;'+lineage
+        assert node2.getLineageString(';') == 'root;' + lineage
     except AssertionError:
-        logging.warn("%s is not %s" % (node2.getLineageString(';'),'root;'+lineage))
+        logging.warn(
+            "%s is not %s" %
+            (node2.getLineageString(';'), 'root;' + lineage))
         raise AssertionError
+
 
 def test_read_ncbi(ndir):
     taxNames = True
-    taxonomy = readTaxonomy(ndir,taxNames)
+    taxonomy = readTaxonomy(ndir, taxNames)
     taxIds = taxonomy.idMap
     taxNames = taxonomy.nameMap
     myAssertEq(len(taxIds), 783145)
@@ -838,15 +969,31 @@ def test_read_ncbi(ndir):
 
     # pick some random things to check
     myAssertEq(taxIds[123456].name, 'Psammomoya choretroides')
-    myAssertIs( taxNames[simplifyString('Psammomoya choretroides')] , taxIds[123456])
-    myAssertIs(taxNames[ simplifyString('Psammomoya choretroides (F.Muell.) Diels & Loes.')] , taxIds[123456])
-    myAssertEq( taxIds[123499].parent.id , 50537)
+    myAssertIs(
+        taxNames[
+            simplifyString('Psammomoya choretroides')],
+        taxIds[123456])
+    myAssertIs(taxNames[simplifyString('Psammomoya choretroides '
+                                       '(F.Muell.) Diels & Loes.')],
+               taxIds[123456])
+    myAssertEq(taxIds[123499].parent.id, 50537)
 
     return taxIds
 
+
 def add_taxonomy_dir_argument(parser, defaults={}):
-    parser.add_argument("-n", "--ncbiTaxDir", dest="taxdir", metavar="PATH", default=defaults.get("taxdir",None),
-                      help="Directory with unpacked ncbi tax dump (specifically names.dmp and nodes.dmp) and use to translate org names in desc, otherwise try to find lineage info in desc. Default is: %s" % (defaults.get("taxdir",None)))
+    parser.add_argument(
+        "-n",
+        "--ncbiTaxDir",
+        dest="taxdir",
+        metavar="PATH",
+        default=defaults.get(
+            "taxdir",
+            None),
+        help="Directory with unpacked ncbi tax dump (specifically names.dmp "
+             "and nodes.dmp) and use to translate org names in desc, "
+             "otherwise try to find lineage info in desc. Default is: %s" %
+             (defaults.get("taxdir", None)))
 
 
 if __name__ == '__main__':
