@@ -593,7 +593,7 @@ def indexed_sample_generator(records, N, P=None):
     """
     if P > 0:
         # use random.sample to get list of indices ahead of time
-        indexes_to_return = set(random.choice(range(P), N, replace=True))
+        indexes_to_return = set(random.choice(range(P), N, replace=False))
         logger.debug("returning {} indices:\n{}"
                      .format(N, repr(indexes_to_return)))
 
