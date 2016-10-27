@@ -102,6 +102,10 @@ def parseExp(string):
         return float('1' + string)
 
 
+def dict_lookup_default_to_query(dictionary):
+    return lambda x: dictionary.get(x, x)
+
+
 def passThrough(x):
     return x
 

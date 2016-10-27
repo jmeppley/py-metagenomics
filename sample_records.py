@@ -1,43 +1,54 @@
 #!/usr/bin/env python
+"""
+This script takes any file that can be divided into records and
+ returns N randomly selected records
 
-#################
-# This script takes any file that can be divided into records and 
-#  returns N randomly selected records
-#
-# Records can be fasta, fastq, genbank, or something described by a simple RegExp
-################
+Records can be fasta, fastq, genbank, or something described by a
+ simple RegExp
+"""
 
 from os import path
 from edl.util import *
 from edl.batch import *
 
-import re, sys, argparse
+import re
+import sys
+import argparse
+
 
 def main():
-## set up CLI
+    # set up CLI
     description = """
- This script takes any file that can be divided into records and 
-  returns N randomly selected records. 
+ This script takes any file that can be divided into records and
+  returns N randomly selected records.
 
-  NOTE: 
-  By default, all sampled records are stored in memory. This requires a good amount of RAM (depending on record size and sample size). To avoid this, specify the number of records or request a count using the -n (population_size) option.
+  NOTE:
+  By default, all sampled records are stored in memory. This requires a
+  good amount of RAM (depending on record size and sample size). To avoid
+  this, specify the number of records or request a count using the
+  -n (population_size) option.
 
-     Records can be fasta, fastq, genbank, or something described by a simple RegExp
+     Records can be fasta, fastq, genbank, or something described by a
+     simple RegExp
     """
 
     parser = argparse.ArgumentParser(description=description)
     add_IO_arguments(parser)
     add_record_parsing_arguments(parser)
 
-    parser.add_argument("-s", "--sample_size", default=1000000, type=int,
-            metavar="SAMPLE_SIZE",
-            help="Number of records to pull out. Defaults to 1 million.")
+    parser.add_argument(
+        "-s",
+        "--sample_size",
+        default=1000000,
+        type=int,
+        metavar="SAMPLE_SIZE",
+        help="Number of records to pull out. Defaults to 1 million.")
     parser.add_argument("-n", "--population_size", type=int, default=0,
-            metavar="POPULATION_SIZE",
-            help="Number of records in file. An integer, should be greater \
-                    than the SAMPLE_SIZE, except: \
-                    0 (default)=> do a separate pass to count records first \
-                    -1 => reservoir sample to RAM on the fly")
+                        metavar="POPULATION_SIZE",
+                        help="Number of records in file. An integer, should "
+                        "be greater than the SAMPLE_SIZE, except: 0 "
+                        "(default)=> do a separate pass to count records "
+                        "first; -1 => reservoir sample to RAM on the fly")
 
     add_universal_arguments(parser)
 
@@ -46,11 +57,15 @@ def main():
     setup_logging(arguments)
 
     # check arguments
-    if arguments.input_files == [sys.stdin,] and arguments.population_size == 0:
-        parser.error("We cannot count records from STDIN, please specify a \
-                positive population size or use reservoir sampling (-n -1)")
-    if arguments.population_size>0 and arguments.population_size<arguments.sample_size:
-        parser.error("We cannot sample more records then there are in the file!")
+    if arguments.input_files == [sys.stdin,
+                                 ] and arguments.population_size == 0:
+        parser.error("We cannot count records from STDIN, please specify a"
+                     "positive population size or use reservoir sampling "
+                     "(-n -1)")
+    if arguments.population_size > 0 and \
+            arguments.population_size < arguments.sample_size:
+        parser.error("We cannot sample more records then "
+                     "there are in the file!")
 
     for inhandle, outhandle in inputIterator(arguments):
         # We need the file name to ge the type, get from handle (if not stdin)
@@ -60,27 +75,27 @@ def main():
 
         logging.debug("Looking for %d records in %s" % (arguments.sample_size,
                                                         infilename))
-        #if arguments.population_size<0:
-        # indexed_sample_generator will only read file once 
+        # if arguments.population_size<0:
+        # indexed_sample_generator will only read file once
         #    using reservoir sampling
 
         # count records if asked to
         if arguments.population_size == 0:
-            record_count, total_size= get_total_size(inhandle.name, fileType)
+            record_count, total_size = get_total_size(inhandle.name, fileType)
             arguments.population_size = record_count
-            logging.debug("setting population size to: {}"\
-                           .format(arguments.population_size))
+            logging.debug("setting population size to: {}"
+                          .format(arguments.population_size))
 
         # get sampled record generator (will use reservoir if P is <0)
         sampled_records = indexed_sample_generator(record_iterator,
-                N = arguments.sample_size,
-                P = arguments.population_size)
+                                                   N=arguments.sample_size,
+                                                   P=arguments.population_size)
 
         # print out sampled records
-        count=0
+        count = 0
         for record in sampled_records:
             outhandle.writelines(record)
-            count+=1
+            count += 1
         logging.debug("Sampled %d records" % (count))
 
 if __name__ == '__main__':
