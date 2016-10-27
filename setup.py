@@ -26,7 +26,7 @@ setup(name=NAME,
       url=URL,
       download_url=DOWNLOAD_URL,
       license=LICENSE,
-      packages=['edl',],
+      packages=['edl', ],
       classifiers=[
           'Development Status :: 4 - Beta',
           'Environment :: Console',
