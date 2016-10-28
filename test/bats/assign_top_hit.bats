@@ -14,7 +14,7 @@
     [ "$status" = 0 ]
 }
 @test "Checking output from assignTopHit by top org abundance" {
-    run diff <(sort test/data/HOT186_25m_454DNA.vs.RefSeqMicrobesProteins.250records.blastx.b50.m8.NCyanos.topHitByOrg) <(sort test/data/.tst.HOT186_25m_454DNA.vs.RefSeqMicrobesProteins.250records.blastx.b50.m8.NCyanos.topHitByOrg)
+    run diff <(cut -f 1 test/data/HOT186_25m_454DNA.vs.RefSeqMicrobesProteins.250records.blastx.b50.m8.NCyanos.topHitByOrg | sort) <(cut -f 1 test/data/.tst.HOT186_25m_454DNA.vs.RefSeqMicrobesProteins.250records.blastx.b50.m8.NCyanos.topHitByOrg | sort)
     [ "$status" = 0 ]
 }
 

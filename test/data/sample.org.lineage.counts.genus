@@ -1,7 +1,7 @@
-Taxon	../../keggtaxa/files/H186x25M.300reads.vs.RefSeq.blastx.b50.m8	../../parse_m0/files/HOT100genesVfortyOneRefSeqs.blastp.b50.m8	../../parse_m0/files/HOT186_25m_454DNA.vs.RefSeqMicrobesProteins.250records.blastx.b50.m8
+Taxon	S1	S2	S3
 Archaea	1	0	0
 Bacteria <prokaryote>	128	0	37
-Bacteria <prokaryote>;Bacteroidetes;Psychroflexus	1	0	3
+Bacteria <prokaryote>;Bacteroidetes <phylum>;Psychroflexus	1	0	3
 Bacteria <prokaryote>;Cyanobacteria;Prochlorococcus	101	0	42
 Bacteria <prokaryote>;Proteobacteria;Candidatus Pelagibacter	55	0	17
 Bacteria <prokaryote>;Proteobacteria;alpha proteobacterium HIMB114	8	0	2

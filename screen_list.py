@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """
 Take list of sequence ids (eg read names) from file. Remove these (or all but these) from each of a list of sequences files. Sequence files may be fasta or fastq (or theoretically any biopython format with an 'id' field).
 """
