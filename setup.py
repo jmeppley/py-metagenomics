@@ -13,7 +13,7 @@ MAINTAINER_EMAIL = "jmeppley@mit.edu"
 URL = 'http://eddelong.mit.edu/'
 DOWNLOAD_URL = 'http://github.com/jmeppley/py-metagenomics'
 LICENSE = 'GPL'
-VERSION = '0.2.03'
+VERSION = '0.3.01'
 
 setup(name=NAME,
       version=VERSION,
@@ -33,5 +33,5 @@ setup(name=NAME,
           'Intended Audience :: Science/Research',
           'License :: OSI Approved :: GPL License',
           'Natural Language :: English',
-          'Programming Language :: Python :: 2.7'],
+          'Programming Language :: Python :: 3.5'],
       )
