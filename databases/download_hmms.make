@@ -45,7 +45,7 @@ ifeq ($(GET_TIGR),True)
 endif
 
 TIGRFAM_DIR=$(SEQDB_ROOT)/TIGRFAM/$(TIGRFAM_RELEASE)
-TIGRFAM_HMM_NAME=TIGRFAMS_HMM
+TIGRFAM_HMM_NAME=TIGRFAMS.hmm
 
 # CDD files for COG (And maybe others in the future?)
 CDD_README_URL=ftp://ftp.ncbi.nih.gov/pub/mmdb/cdd/README
@@ -66,6 +66,9 @@ endif
 CDD_DIR:=$(SEQDB_ROOT)/cdd/$(CDD_DATE)
 COG_DIR=$(CDD_DIR)/COG
 
+#######
+# rules
+#
 all: $(DBLIST)
 
 # universal rules
