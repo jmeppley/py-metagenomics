@@ -7,11 +7,6 @@ import logging
 import re
 import pandas
 from Bio import SeqIO, SeqUtils
-if __name__ == '__main__':
-    sys.path[0] += "/.."
-from edl.util import asciiHistogram
-import edl.blastm8
-
 logger = logging.getLogger(__name__)
 
 
@@ -24,6 +19,11 @@ def main():
      python assembly.py contig_read_counts file_1
        will run countig_read_counts("file_1")
        """
+
+    # This is a little hack to make this module runnable as a script
+    sys.path[0] += "/.."
+    from edl.util import asciiHistogram
+    import edl.blastm8
 
     log_level = logging.WARN
     while sys.argv[1] == '-v':
@@ -778,8 +778,6 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths,
     lengths or a fasta file of sequences. The names in both should
     match the hit names in the "hits" dictionary.
     """
-    import screed
-
     # Don't try to plot empty data
     if len(lengths) == 0:
         raise Exception("Lengths cannot be empty!")
@@ -787,16 +785,7 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths,
     transcriptCounts, boundaries = numpy.histogram(
         lengths.values(), bins=bins, range=lengthRange)
 
-    if isinstance(referenceLengths, str):
-        # assume we have the path to a fasta file
-        # has it been parsed by screed?
-        if not os.path.exists("%s_screed" % (referenceLengths)):
-            screed.read_fasta_sequences(referenceLengths)
-        refScreed = screed.ScreedDB(referenceLengths)
-
-        get_hit_length = lambda h: len(refScreed[h]['sequence'])
-    else:
-        get_hit_length = lambda h: referenceLengths[h]
+    get_hit_length = build_get_hit_length_function(referenceLengths)
 
     # count bases by bin
     hitBaseCounts = numpy.zeros(transcriptCounts.shape)
@@ -846,6 +835,30 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths,
     ax.set_ylim([0, 1])
     ax.set_ylabel('% reference matched')
     ax.set_xlabel('transcript length')
+
+
+def build_get_hit_length_function(referenceLengths):
+    """
+    Given the referenceLengths parameter return a lambda function that will
+    map a reference sequence id to its sequence length
+
+    The referenceLenths parameter may be either a python dict or a str name
+    of a fasta file. In the latter case, the file is parsed to get lengths
+    """
+    if isinstance(referenceLengths, str):
+        import screed
+        # assume we have the path to a fasta file
+        # has it been parsed by screed?
+        if not os.path.exists("%s_screed" % (referenceLengths)):
+            # TODO: just use Bio.SeqIO to get lengths if
+            #   screed module or screed index is missing.
+            #   screed is overkill here.
+            screed.read_fasta_sequences(referenceLengths)
+        refScreed = screed.ScreedDB(referenceLengths)
+
+        return lambda h: len(refScreed[h]['sequence'])
+    else:
+        return lambda h: referenceLengths[h]
 
 
 def plotSortedContigLengths(ax, lengths,

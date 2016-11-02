@@ -1,21 +1,36 @@
 #!/usr/bin/env python
 """
-Take list of sequence ids (eg read names) from file. Remove these (or all but these) from each of a list of sequences files. Sequence files may be fasta or fastq (or theoretically any biopython format with an 'id' field).
+Take list of sequence ids (eg read names) from file. Remove these (or all
+but these) from each of a list of sequences files. Sequence files may
+be fasta or fastq (or theoretically any biopython format with an 'id'
+field).
 """
 from Bio import SeqIO
-import re, sys, logging
+import re
+import sys
+import logging
 from edl.util import *
+
 
 def main():
     import argparse
 
-    ## set up CLI
+    # set up CLI
     description = __doc__
     parser = argparse.ArgumentParser(description=description)
     add_IO_arguments(parser)
     add_screen_arguments(parser, accs=True)
-    parser.add_argument("-f", "--formatIn", default='fasta', help="Any format string supported by biopython SeqIO. Default: fasta")
-    parser.add_argument("-F", "--formatOut", default=None, help="Any format string supported by biopython SeqIO. Default: same as input")
+    parser.add_argument(
+        "-f",
+        "--formatIn",
+        default='fasta',
+        help="Any format string supported by biopython SeqIO. Default: fasta")
+    parser.add_argument(
+        "-F",
+        "--formatOut",
+        default=None,
+        help="Any format string supported by biopython SeqIO. Default: "
+             "same as input")
 
     add_universal_arguments(parser)
     arguments = parser.parse_args()
@@ -23,40 +38,54 @@ def main():
 
     # check formats
     if arguments.formatOut is None:
-        arguments.formatOut=arguments.formatIn
-    logging.info("Reading %s and writing %s" % (arguments.formatIn, arguments.formatOut))
+        arguments.formatOut = arguments.formatIn
+    logging.info("Reading %s and writing %s" %
+                 (arguments.formatIn, arguments.formatOut))
     if arguments.accs:
         logging.info("Stripping everything out except accessions")
 
     # get read list
     read_set = get_screen_list(arguments, accs=arguments.accs)
-    numReads=len(read_set)
+    numReads = len(read_set)
     logging.info("Loaded list of %d reads" % (numReads))
 
-    for (fastaIn,fastaOut) in inputIterator(arguments):
-        scanFileForReads(read_set, fastaIn, fastaOut, arguments.keep, arguments.accs, arguments.formatIn, arguments.formatOut)
+    for (fastaIn, fastaOut) in inputIterator(arguments):
+        scanFileForReads(
+            read_set,
+            fastaIn,
+            fastaOut,
+            arguments.keep,
+            arguments.accs,
+            arguments.formatIn,
+            arguments.formatOut)
 
-    if len(read_set)>0:
-        #logging.info("(%s)" % (','.join(read_set.keys())))
-        logging.warn("%d of %d items in list were not found in fasta data" % (len(read_set),numReads))
+    if len(read_set) > 0:
+        logging.warn(
+            "%d of %d items in list were not found in fasta data" %
+            (len(read_set), numReads))
         logging.debug(read_set)
 
-verbose=False
+verbose = False
+
+
 def log(msg):
     if verbose:
         sys.stderr.write(msg)
         sys.stderr.write("\n")
 
-def die( msg ):
-    sys.stderr.write( "INFO: %s\n" % msg )
+
+def die(msg):
+    sys.stderr.write("INFO: %s\n" % msg)
     sys.exit(1)
+
 
 def warn(msg):
     sys.stderr.write("WARNING: %s\n" % (msg))
 
-readRE=re.compile(r'^(\S+)')
+readRE = re.compile(r'^(\S+)')
 
-def scanFileForReads(reads,fastaIn,fastaOut,keep,acc,formatIn,formatOut):
+
+def scanFileForReads(reads, fastaIn, fastaOut, keep, acc, formatIn, formatOut):
     """
     Given:
         a set of reads
@@ -66,8 +95,8 @@ def scanFileForReads(reads,fastaIn,fastaOut,keep,acc,formatIn,formatOut):
         output file and format
     Print records from input file to output file
     """
-    records = SeqIO.parse(fastaIn,formatIn)
-    count=0
+    records = SeqIO.parse(fastaIn, formatIn)
+    count = 0
     for record in records:
         read = record.id
 
@@ -78,16 +107,16 @@ def scanFileForReads(reads,fastaIn,fastaOut,keep,acc,formatIn,formatOut):
         # is read in list?
         try:
             reads.remove(read)
-            match=True
+            match = True
         except KeyError:
-            match=False
+            match = False
 
-        if match==keep:
-            count+=1
+        if match == keep:
+            count += 1
             # write line if either
             #  - read matches list AND keep is True
             #  - read not in list AND keep is False
-            SeqIO.write((record,),fastaOut, formatOut)
+            SeqIO.write((record,), fastaOut, formatOut)
 
     logging.info("Printed %d records" % count)
 
