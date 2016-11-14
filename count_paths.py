@@ -32,7 +32,8 @@ import argparse
 from urllib.parse import unquote_plus
 from edl import redistribute, kegg
 from edl.hits import add_weight_arguments, loadSequenceWeights, \
-        add_count_arguments, GIS, FilterParams, getHitTranslator
+        add_count_arguments, GIS, FilterParams, getHitTranslator, parseM8FileIter, \
+        countIterHits
 from edl.util import add_universal_arguments, setup_logging, parseMapFile, \
         dict_lookup_default_to_query, passThrough
 from edl.expressions import accessionRE, nrOrgRE
@@ -71,11 +72,20 @@ def main():
     kegg.add_path_arguments(
             parser,
             defaults={'countMethod': 'tophit'},
-            choices={'countMethod': ('tophit',)},
-            helps={'countMethod': "Currently the only supported method is "
-                                  "tophit: This breaks any ties by choosing "
-                                  "the most abundant hit based on other "
-                                  "unambiguous assignments."})
+            choices={'countMethod':
+            ('tophit',
+             'first',
+             'most',
+             'all',
+             'consensus')},
+            helps={'countMethod': 
+            			"How to deal with counts from multiple hits. ('first': " + \
+            			"just use the first hit, 'most': " + \
+			            "can return multiple hits, 'all': return every hit, " + \
+			            "consensus: return None unless all the same). Do not " + \
+			            "use most or consensus with more than one level at a time." + \
+			            " Default is 'tophit': This breaks any ties by choosing "
+                        "the most abundant hit based on other unambiguous assignments."})
 
     # log level and help
     add_universal_arguments(parser)
@@ -221,9 +231,30 @@ def main():
         logging.debug(str(totals))
 
     else:
-        # TODO: support for other methods
-        parser.error("Only tophit counting is supported at the moment. Sorry.")
+	    # Original way, just process each file separately
+        for (filename, filetag) in fileLabels.items():
+            infile = open(filename, 'rU')
 
+            hitIter = parseM8FileIter(infile,
+                                      valueMap,
+                                      arguments.hitTableFormat,
+                                      arguments.filterTopPct,
+                                      arguments.parseStyle,
+                                      arguments.countMethod)
+
+            (total, counts, hitMap) = \
+                countIterHits(hitIter,
+                              allMethod=arguments.allMethod,
+                              weights=sequenceWeights)
+            fileCounts[filetag] = counts
+            totals[filetag] = total
+
+            logging.info(
+                "parsed %d hits (%d unique) for %d reads from %s" %
+                (total, len(counts), len(hitMap), filename))
+
+            infile.close()		
+		
     logging.debug(repr(fileCounts))
     printCountTablesByLevel(fileCounts, totals, sortedLabels, arguments)
 
@@ -318,7 +349,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
             fileLevelCounts = levelCounts.setdefault(filename, {})
 
             fileTotal = 0
-            for gene in sorted(counts.keys()):
+            for gene in sorted(counts.keys(), key=lambda s: "" if s is None else s):
                 # get the counts from this node
                 geneCount = counts[gene]
                 fileTotal += geneCount
@@ -411,7 +442,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
             # Header for when level is a pathway or group
             outs.write("Pathway\t%s\n" % ('\t'.join(fileNames)))
 
-        for pathway in sorted(levelPaths.keys()):
+        for pathway in sorted(levelPaths.keys(), key=lambda s: "" if s is None else s):
             outs.write(str(pathway))
             for filename in fileNames:
                 outs.write("\t")

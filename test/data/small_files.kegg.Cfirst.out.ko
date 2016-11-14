@@ -1,0 +1,12 @@
+Gene	Description	test/data/sample.1.kegg.blastx.b50.m8	test/data/sample.2.kegg.blastx.b50.m8	test/data/sample.3.kegg.blastx.b50.m8
+K00606	['panB; 3-methyl-2-oxobutanoate hydroxymethyltransferase [EC:2.1.2.11]']	1	0	0
+K00615	['E2.2.1.1, tktA, tktB; transketolase [EC:2.2.1.1]']	0	1	0
+K01601	['rbcL; ribulose-bisphosphate carboxylase large chain [EC:4.1.1.39]']	1	1	0
+K02689	['psaA; photosystem I P700 chlorophyll a apoprotein A1']	0	1	0
+K02690	['psaB; photosystem I P700 chlorophyll a apoprotein A2']	0	0	1
+K02703	['psbA; photosystem II P680 reaction center D1 protein']	1	1	0
+K02885	['RP-L19e, RPL19; large subunit ribosomal protein L19e']	0	1	0
+K02888	['RP-L21, MRPL21, rplU; large subunit ribosomal protein L21']	1	0	0
+K11126	['TERT, EST2; telomerase reverse transcriptase [EC:2.7.7.49]']	1	0	0
+K16534	['DISC1; disrupted in schizophrenia 1 protein']	0	1	0
+None	None	3	0	3
