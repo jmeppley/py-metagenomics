@@ -106,7 +106,7 @@ $(LASTFILE): $(FAA) | $(LASTDIR)
 $(FAA): $(RSDIR)/complete/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
 	@echo "... and masking low complexity with tantan"
-	for FILE in $(RSDIR)/complete/complete.*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/get_sequences_from_gbk.py -F fasta -r | tantan -p > $@
+	for FILE in $(RSDIR)/complete/complete.*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/get_sequences_from_gb.py -F fasta -r | tantan -p > $@
 
 $(RSDIR)/complete:
 	mkdir -p $@
@@ -119,6 +119,7 @@ $(RSDIR)/complete/complete.ftp.ls: | $(RSDIR)/complete
 $(RSDIR)/complete/.download.complete.aa: $(RSDIR)/complete/complete.ftp.ls
 	@echo "==Dowloading complete RefSeq proteins"
 	ATTEMPTS=0; ERF=./.tmp.errs; CTF=./.tmp.cnts; for F in $$ERF $$CTF; do rm -f $$F; touch $$F; done; echo "start" > $$ERF; while [ -s $$ERF ]; do echo starting attempt $$ATTEMPTS; for F in $$ERF $$CTF; do rm -f $$F; touch $$F; done; if [ "$$ATTEMPTS" -gt "0" ]; then echo Retrying RefSeq protein download; fi; if [ "$$ATTEMPTS" -gt "10" ]; then    echo ERROR: Exceeded 10 tries when downloading RefSeq; else cat $(RSDIR)/complete/complete.ftp.ls | while read CPGZ; do  CPGZ_PATH=$(RSDIR)/complete/$${CPGZ};  if [ ! -s $$CPGZ_PATH ]; then   echo $$CPGZ_PATH>>$$CTF;   curl -s ftp://ftp.ncbi.nlm.nih.gov/refseq/release/complete/$${CPGZ} > $${CPGZ_PATH};  if [ ! -s $$CPGZ_PATH ]; then   echo $$CPGZ_PATH;    echo $$CPGZ_PATH>$$ERF;  fi; fi; done; echo downloaded `grep -c . $$CTF` files with `grep -c . $$ERF` errors; echo finished attempt $$ATTEMPTS; let ATTEMPTS=ATTEMPTS+1; fi; done
+	touch $@
 
 $(ACCPREFP): $(RSDIR)/complete/.download.complete.aa
 	# For some multispecies entries, you'll get multiple lines in the tax map
