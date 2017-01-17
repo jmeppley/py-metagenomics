@@ -727,7 +727,12 @@ def getUnsortedHitStream(instream, options):
     for line in instream:
         if len(line) == 0:
             continue
-        hit = Hit.getHit(line, options)
+        try:
+            hit = Hit.getHit(line, options)
+        except:
+            print("ERROR parsing line")
+            print(line)
+            raise
         if hit is not None:
             yield hit
 

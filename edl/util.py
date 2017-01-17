@@ -492,7 +492,7 @@ def pairwise(items, sortKey=returnSelf):
             yield itemList[i], itemList[j]
 
 
-def asciiHistogram(
+def ascii_histogram(
         histogram,
         log=False,
         width=60,

@@ -3,6 +3,28 @@
 Takes two tables of read hits. Produces a table of hit counts with hit
 types from the first file as rows and the hit types from the second file
 as columns.
+
+There are two output modes. by default, a full text table of hits is printed.
+The long-form output can be invoked with -L. This prints out a three column
+(double-index) table with the hit IDs from the two input files as the first
+two columns and the combined counts as the third column. EG:
+
+    org_a    gene_1   10
+    org_a    gene_2   20
+    org_b    gene_2    3
+
+The user can supply a multiplier file that supplies a mulitplier value for
+each read or gene in the input tables. This is useful for contig based counts where
+you have coverage or abundance data. The multiplier file is expected to be
+a two column tab-separated file.
+
+In long form, if a mlutiplier file is given, four columns are printed. The two
+data columns are the raw counts and multiplied counts. EG:
+
+    org_a    gene_1   10   35.0
+    org_a    gene_2   20   70.0
+    org_b    gene_2    3    6.0
+
 """
 
 import argparse
@@ -10,7 +32,10 @@ import logging
 import sys
 import re
 from edl.hits import parseHits
-from edl.util import tupleIteratorToMap, add_universal_arguments, setup_logging
+from edl.util import tupleIteratorToMap,\
+                     add_universal_arguments,\
+                     setup_logging,\
+                     parseMapFile
 
 
 def main():
@@ -26,6 +51,11 @@ def main():
                         type=argparse.FileType('r'),
                         metavar=("INPUT_TABLE_2"),
                         help="Input table 2")
+    parser.add_argument("-m", "--multiplier",
+                        default=None,
+                        metavar=("MULTIPLIER_TABLE"),
+                        help="Table of values to multiply each sequence. " + \
+                             "EG assembly coverages.")
     parser.add_argument(
         "-o",
         "--outfile",
@@ -93,21 +123,19 @@ def main():
     hits1 = tupleIteratorToMap(hits1)
     hits2 = tupleIteratorToMap(hits2)
 
+    if arguments.multiplier is not None:
+        multipliers = parseMapFile(arguments.multiplier, valueType=float)
+    else:
+        multipliers = None
+
     logging.info("counting hits")
-    (table, cols) = combineCounts(hits1, hits2)
+    (table, cols) = combineCounts(hits1, hits2, multipliers)
 
     # print out hit table
     logging.info("printing table to " + arguments.outfile.name)
-    printTable(arguments.outfile, table, cols,
+    printTable(arguments.outfile, table, cols, i
+               is_multiplied=multipliers is not None,
                long_output=arguments.long_output)
-
-##############
-# Classes    #
-##############
-
-################
-# compiled REs #
-################
 
 #############
 # Functions #
@@ -119,41 +147,59 @@ def die(msg):
     sys.exit()
 
 
-def combineCounts(hits1, hits2, unmatched_1="Unknown", unmatched_2="Unknown"):
+def combineCounts(hits1, hits2, multipliers=None, unmatched_1="Unknown", unmatched_2="Unknown"):
     # compile counts into nested dicts
     counts = {}
 
     # keep track of all unique hit ids from set 2
     types2 = set()
 
+    if multipliers is None:
+        def _update_hits(read, counts, hit1, hit2):
+            """ Just add 1 to get raw numbers """
+            h1counts = counts.setdefault(hit1, {})
+            h1counts[hit2] = h1counts.get(hit2, 0) + 1
+    else:
+        def _update_hits(read, counts, hit1, hit2):
+            """ count both raw numbers and multiplied """
+            h1counts = counts.setdefault(hit1, {})
+            count_tuple = h1counts.get(hit2, (0,0))
+            count_tuple = (count_tuple[0] + 1,
+                           count_tuple[1] + multipliers.get(read, 1))
+            h1counts[hit2] = count_tuple
+
     # Start by using reads from hits1 as index
     for (read, hit_list1) in hits1.items():
+        # remove hits from hits2 as we go, so we know what didn't match hits1
+        # default to umatched_2
         hit_list2 = hits2.pop(read, [unmatched_2, ])
 
         for hit2 in hit_list2:
             for hit1 in hit_list1:
-                h1counts = counts.setdefault(hit1, {})
-                h1counts[hit2] = h1counts.get(hit2, 0) + 1
+                _update_hits(read, counts, hit1, hit2)
             types2.add(hit2)
 
     # remaining reads in hits2 counted as Unknown
     # we know these don't exist in hits1
-    h1counts = counts.setdefault(unmatched_1, {})
+    hit1 = unmatched_1
     for read, hit_list2 in hits2.items():
         for hit2 in hit_list2:
-            h1counts[hit2] = h1counts.get(hit2, 0) + 1
+            _update_hits(read, counts, hit1, hit2)
             types2.add(hit2)
 
     return (counts, types2)
 
 
-def printTable(output, table, cols=None, long_output=False):
+def printTable(output, table, cols=None, is_multiplied=False, long_output=False):
     if long_output:
         # print one row per value
         for row_name in sorted(table.keys()):
             row = table[row_name]
             for col_name in sorted(row.keys()):
                 value = row[col_name]
+                if is_multiplied:
+                    # in long form we can report raw and multiplied counts
+                    value = '\t'.join([str(v) for v in value])
                 output.write(
                     "\t".join([row_name, col_name, str(value)]) + "\n")
 
@@ -176,7 +222,12 @@ def printTable(output, table, cols=None, long_output=False):
             output.write(key)
             for col in cols:
                 output.write("\t")
-                output.write(str(row.get(col, "0")))
+                if is_multiplied:
+                    # for the table, just print the multiplied value
+                    value = row.get(col, (0,0))
+                    output.write(str(value[1]))
+                else:
+                    output.write(str(row.get(col, "0")))
             output.write("\n")
 
 if __name__ == '__main__':

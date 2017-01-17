@@ -535,7 +535,7 @@ def _removeEmpty(hits):
     if len(hits) > 0:
         return hits
     else:
-        return None
+        return []
 
 
 def parseHits(inhandle, readCol, hitCol, skipFirst, hitSep):

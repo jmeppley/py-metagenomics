@@ -4,7 +4,9 @@
 #
 # Retrieves latest nonredundant protein database from refseq.
 #
-# to get an older version set the relese number with, eg: REL=75
+# to update an older version set the relese number with, eg: REL=75
+#  I don't think this can download an old version, but you can use it to 
+#  re-run the post-download processing.
 #
 # Files are downloaded to ./RefSeq (set with BUILD_ROOT=)
 # if BUILD_LASTDB is set to "True", 
@@ -69,26 +71,27 @@ TAXMAPSCRIPT=$(DB_SCRIPT_DIR)/buildRefSeqAccToTaxidMap.py
 ##
 # Build the arguments for all
 ifeq ($(BUILD_LASTDB),False)
-	ALL_TARGETS:=fasta $(ACCTAXMAP)
 	TAXDUMP=$(TAXDUMP_SOURCE)
+	TARGETS=fasta $(ACCTAXMAP) $(TAXDUMP)
 else
-	ALL_TARGETS:=lastdb $(ACCTAXMAPDB)
 	TAXDUMP=$(TAXDUMP_DB)
+	TARGETS=lastdb $(ACCTAXMAPDB) $(TAXDUMP)
 endif
-ALL_TARGETS:=$(ALL_TARGETS) $(TAXDUMP)
 
-all: report $(MDDIR) $(ALL_TARGETS)
+ALL_TARGETS=report $(MDDIR) $(TARGETS)
+all: $(ALL_TARGETS)
+	@echo all deps were $^
 
 lastdb: $(LASTFILE) $(HITIDMAP) $(FAA).stats
 fasta: $(FAA).stats
 
 report:
 	@echo RefSeq release number is: $(REL)
-	@echo Building database in: $(RSDIR)
+	@echo Downloading database in: $(RSDIR)
 	@echo "Output fasta is $(FAA)"
 	@echo "BUILD_LASTDB is $(BUILD_LASTDB)"
-	@echo "all target list is $(ALL_TARGETS)"
-	@if [ "$(BUILD_LASTDB)" != "False" ]; then echo Final database written to $(LASTDB_ROOT); else echo "Lastdb formatting will be skipped"; fi
+	@if [ "$(BUILD_LASTDB)" != "False" ]; then echo Final database written to $(LASTDB_DIR); else echo "Lastdb formatting will be skipped"; fi
+	@echo "target list is $(TARGETS)"
 
 $(LASTDIR):
 	mkdir -p $(LASTDIR)
@@ -97,13 +100,13 @@ $(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
 	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
 
-$(FAA).stats: $(FAA)
+%.stats: %
 	cat $^ | prinseq-lite.pl -fasta stdin -aa -stats_len -stats_info > $@
 
 $(FAA): $(RSDIR)/complete/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
 	@echo "... and masking low complexity with tantan"
-	for FILE in $(RSDIR)/complete/complete.[0-9]*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/getSequencesFromGbk.py -F fasta -r | tantan -p > $@
+	for FILE in $(RSDIR)/complete/complete.*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/get_sequences_from_gb.py -F fasta -r | tantan -p > $@
 
 $(RSDIR)/complete:
 	mkdir -p $@
@@ -115,11 +118,12 @@ $(RSDIR)/complete/complete.ftp.ls: | $(RSDIR)/complete
 # This while loop tries up to (MAX_ATTEMPTS) times to download all files
 $(RSDIR)/complete/.download.complete.aa: $(RSDIR)/complete/complete.ftp.ls
 	@echo "==Dowloading complete RefSeq proteins"
-	ATTEMPTS=0; ERRORS=1; while [ "$$ERRORS" -gt "0" ]; do ERRORS=0; if [ "$$ATTEMPTS" -gt "0" ]; then echo Retrying RefSeq protein download; fi; if [ "$$ATTEMPTS" -gt "$(MAX_ATTEMPTS)" ]; then echo ERROR: Exceeded $(MAX_ATTEMPTS) tries when downloading RefSeq; else cat $^ | while read CPGZ; do CPGZ_PATH=$(RSDIR)/complete/$${CPGZ}; if [ ! -s $$CPGZ_PATH ]; then let COUNT=COUNT+1; curl -s $(FTP_ROOT)/complete/$${CPGZ} > $${CPGZ_PATH}; fi; done; cat $^ | while read CPGZ; do CPGZ_PATH=$(RSDIR)/complete/$${CPGZ}; if [ ! -s $$CPGZ_PATH ]; then let ERRORS+=1; fi; done; echo downloaded $$COUNT files with $$ERRORS errors; let ATTEMPTS=ATTEMPTS+1; fi; done; if [ "$$ATTEMPTS" -lt "$(MAX_ATTEMPTS)" ]; then touch $@; else exit 2; fi
+	ATTEMPTS=0; ERF=$(RSDIR)/.tmp.errs; CTF=$(RSDIR)/.tmp.cnts; for F in $$ERF $$CTF; do rm -f $$F; touch $$F; done; echo "start" > $$ERF; while [ -s $$ERF ]; do echo starting attempt $$ATTEMPTS; for F in $$ERF $$CTF; do rm -f $$F; touch $$F; done; if [ "$$ATTEMPTS" -gt "0" ]; then echo Retrying RefSeq protein download; fi; if [ "$$ATTEMPTS" -gt "10" ]; then    echo ERROR: Exceeded 10 tries when downloading RefSeq; else cat $(RSDIR)/complete/complete.ftp.ls | while read CPGZ; do  CPGZ_PATH=$(RSDIR)/complete/$${CPGZ};  if [ ! -s $$CPGZ_PATH ]; then   echo $$CPGZ_PATH>>$$CTF;   curl -s ftp://ftp.ncbi.nlm.nih.gov/refseq/release/complete/$${CPGZ} > $${CPGZ_PATH};  if [ ! -s $$CPGZ_PATH ]; then   echo $$CPGZ_PATH;    echo $$CPGZ_PATH>$$ERF;  fi; fi; done; echo downloaded `grep -c . $$CTF` files with `grep -c . $$ERF` errors; echo finished attempt $$ATTEMPTS; let ATTEMPTS=ATTEMPTS+1; fi; done
+	touch $@
 
-$(ACCTAXMAP): $(RSDIR)/complete/.download.complete.aa
+$(ACCPREFP): $(RSDIR)/complete/.download.complete.aa
 	# For some multispecies entries, you'll get multiple lines in the tax map
-	gunzip -c $(RSDIR)/complete/complete.[0-9]*.protein.gpff.gz | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' > $@
+	gunzip -c $(RSDIR)/complete/complete.*.protein.gpff.gz | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' > $@
 
 $(ACCTAXMAPDB): $(ACCTAXMAP) | $(LASTDIR)
 	cp $< $@
