@@ -22,7 +22,7 @@ def main():
 
     # This is a little hack to make this module runnable as a script
     sys.path[0] += "/.."
-    from edl.util import asciiHistogram
+    from edl.util import ascii_histogram
     import edl.blastm8
 
     log_level = logging.WARN
@@ -199,46 +199,48 @@ def get_samtool_depth_table_from_handle(depth_stream):
             """
 
     # reading into lists is a fast way to build a big DataFrame
-    contigs, av_covs, mn_covs, mx_covs = [], [], [], []
+    contigs, av_covs, mn_covs, mx_covs, md_covs = [], [], [], [], []
 
     # loop over contig bases
-    current_contig = None
+    current_contig=None
+    depths=[]
     for line in depth_stream:
         contig, base, depth = line.split()
-        depth = int(depth)
-        if contig != current_contig:
+        depth=int(depth)
+        if contig!=current_contig:
             if current_contig is not None:
                 # end of contig, save numbers
                 contigs.append(current_contig)
-                av_covs.append(depths / bases)
-                mn_covs.append(min_depth)
-                mx_covs.append(max_depth)
-            bases = 0
-            depths = 0
-            max_depth = depth
-            min_depth = depth
+                depths = numpy.array(depths)
+                av_covs.append(depths.mean())
+                mn_covs.append(depths.min())
+                mx_covs.append(depths.max())
+                md_covs.append(numpy.median(depths))
+            depths=[]
             current_contig = contig
 
         # update contig numbers with current base
-        bases += 1
-        depths += depth
-        min_depth = min(depth, min_depth)
-        max_depth = max(depth, max_depth)
+        depths.append(depth)
 
     # end of final contig, save numbers
     contigs.append(current_contig)
-    av_covs.append(depths / bases)
-    mn_covs.append(min_depth)
-    mx_covs.append(max_depth)
+    depths = numpy.array(depths)
+    av_covs.append(depths.mean())
+    mn_covs.append(depths.min())
+    mx_covs.append(depths.max())
+    md_covs.append(numpy.median(depths))
 
-    return pandas.DataFrame({'contig': contigs,
-                             'av cov': av_covs,
-                             'mx cov': mx_covs,
-                             'mn cov': mn_covs},
+    return pandas.DataFrame({'contig':contigs,
+                             'av cov':av_covs,
+                             'mx cov':mx_covs,
+                             'mn cov':mn_covs,
+                             'md cov':md_covs},
                             columns=['contig',
                                      'av cov',
                                      'mn cov',
-                                     'mx cov']).set_index('contig')
+                                     'mx cov',
+                                     'md cov'],
+                           ).set_index('contig')
 
 ##
 # this evolved from (but now bears little resemblance to) the
@@ -284,7 +286,7 @@ def contig_length_stats(contig_stats, return_type=None,
             if txt_width > 0:
                 report_data[label]['log'] = "(log)" if log else ""
                 report_data[label]['histogram'] = \
-                    asciiHistogram(numpy.histogram(contig_stats[column],
+                    ascii_histogram(numpy.histogram(contig_stats[column],
                                                    **kwargs),
                                    log=log,
                                    width=txt_width)
@@ -426,7 +428,7 @@ def calc_stats(file_in,
     if txt_width > 0:
         if backend is None:
             h = histogram(sizes, **kwargs)
-        histogramText = asciiHistogram(h, log=log, width=txt_width)
+        histogramText = ascii_histogram(h, log=log, width=txt_width)
         if return_type != 'data':
             if log:
                 report += "\n\nContig length histogram (log):\n"
@@ -490,7 +492,7 @@ def mira_stats(contigStatsFile, minLength=0, bins=20, **kwargs):
     report += '\nHistograms:\n'
     for key in ['length', 'GC%', 'av.cov', 'mx.cov.', 'av.qual']:
         report += '\n'
-        report += edl.util.asciiHistogram(
+        report += edl.util.ascii_histogram(
             histogram(contigStats[key], bins=bins), label=key, **kwargs)
 
     return report

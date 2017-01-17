@@ -448,8 +448,6 @@ class M8Stream(blastm8.M8Stream):
         return line
 
 # old method
-
-
 def _multipleFileGenerator(
         m8files,
         filterParams,

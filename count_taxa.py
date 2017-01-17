@@ -416,10 +416,20 @@ def getTaxonFormatter(displayedRanks, leafRank):
         return lambda t: formatTaxon(t, displayedRanks, leafRank)
 
 
-def formatTaxon(taxon, displayedRanks, leafRank):
+def formatTaxon(taxon, displayedRanks, leafRank, delim=';'):
+    """
+    Generates lineage using all display ranks that are less than the 
+    leaf rank. This is probably ineffecient, as we have to figure out
+    which ranks to display for every item. 
+
+    This method is also used by assign_taxa.py!
+    """
     if taxon is None:
         logging.debug("Taxon is None")
         return 'None'
+    if isinstance(taxon,list):
+        raise Exception("taxon should not be a list:\n{}"\
+                         .format(repr(taxon)))
     if taxon is taxon.getRootNode():
         return str(taxon)
 
@@ -441,7 +451,7 @@ def formatTaxon(taxon, displayedRanks, leafRank):
             break
         if ancestor is None:
             ancestor = ""
-        lineage += str(ancestor) + ";"
+        lineage += str(ancestor) + delim
         logging.debug("Lineage: %s" % lineage)
     lineage += str(taxon)
     logging.debug("Lineage: %s" % lineage)
