@@ -20,52 +20,34 @@
 
 @test "Testing count_paths with kegg map and multiple levels and a cutoff" {
     run python ./count_paths.py test/data/sample.?.kegg.blastx.b50.m8 -H test/data/kobrite/ko00001.keg -m test/data/ko.map.partial -c 0.15 -l ko -o test/data/.tst.small_files.kegg.c.15.out -l 2 -l 3
-    [ "$status" = 0 ]
-}
-@test "Checking level 3 output from count_paths with kegg map" {
+    [ "$status" = 0 ]   # run
     run diff <(sort test/data/small_files.kegg.c.15.out.3) <(sort test/data/.tst.small_files.kegg.c.15.out.3)
-    [ "$status" = 0 ]
-}
-@test "Checking level 2 output from count_paths with kegg map" {
-    run diff test/data/small_files.kegg.c.15.out.2 test/data/.tst.small_files.kegg.c.15.out.2
-    [ "$status" = 0 ]
-}
-@test "Checking level ko output from count_paths with kegg map" {
+    [ "$status" = 0 ]   # level 3
+    run diff <(test/data/small_files.kegg.c.15.out.2) <(test/data/.tst.small_files.kegg.c.15.out.2)
+    [ "$status" = 0 ]   # level 2
     run diff test/data/small_files.kegg.c.15.out.ko test/data/.tst.small_files.kegg.c.15.out.ko
-    [ "$status" = 0 ]
+    [ "$status" = 0 ]   # level ko
 }
 
 @test "Testing count_paths with kegg map and multiple levels with no cutoff" {
     run python count_paths.py test/data/sample.?.kegg.blastx.b50.m8     -H test/data/kobrite/ko00001.keg -m test/data/ko.map.partial -c 0. -l ko -o test/data/.tst.small_files.kegg.out -l 2 -l 3
-    [ "$status" = 0 ]
-}
-@test "Checking level 3 output from count_paths with kegg map" {
+    [ "$status" = 0 ]   # run
     run diff <(sort test/data/small_files.kegg.out.3) <(sort test/data/.tst.small_files.kegg.out.3)
-    [ "$status" = 0 ]
-}
-@test "Checking level 2 output from count_paths with kegg map" {
+    [ "$status" = 0 ]   # level 3
     run diff test/data/small_files.kegg.out.2 test/data/.tst.small_files.kegg.out.2
-    [ "$status" = 0 ]
-}
-@test "Checking level 2 output from count_paths with kegg map" {
+    [ "$status" = 0 ]   # level 2
     run diff test/data/small_files.kegg.out.ko test/data/.tst.small_files.kegg.out.ko
-    [ "$status" = 0 ]
+    [ "$status" = 0 ]   # level ko
 }
 
 @test "Testing count_paths -C first with kegg map and multiple levels with no cutoff" {
     run python count_paths.py test/data/sample.?.kegg.blastx.b50.m8 -C first -H test/data/kobrite/ko00001.keg -m test/data/ko.map.partial -c 0. -l ko -o test/data/.tst.small_files.kegg.Cfirst.out -l 2 -l 3
-    [ "$status" = 0 ]
-}
-@test "Checking level 3 output from count_paths with kegg map" {
+    [ "$status" = 0 ]   # run
     run diff <(sort test/data/small_files.kegg.Cfirst.out.3) <(sort test/data/.tst.small_files.kegg.Cfirst.out.3)
-    [ "$status" = 0 ]
-}
-@test "Checking level 2 output from count_paths with kegg map" {
-    run diff test/data/small_files.kegg.Cfirst.out.2 test/data/.tst.small_files.kegg.Cfirst.out.2
-    [ "$status" = 0 ]
-}
-@test "Checking level 2 output from count_paths with kegg map" {
+    [ "$status" = 0 ]   # level 3
+    run diff <(test/data/small_files.kegg.Cfirst.out.2) <(test/data/.tst.small_files.kegg.Cfirst.out.2)
+    [ "$status" = 0 ]   # level 2
     run diff test/data/small_files.kegg.Cfirst.out.ko test/data/.tst.small_files.kegg.Cfirst.out.ko
-    [ "$status" = 0 ]
+    [ "$status" = 0 ]   # level ko
 }
 

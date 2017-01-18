@@ -133,7 +133,7 @@ def main():
 
     # print out hit table
     logging.info("printing table to " + arguments.outfile.name)
-    printTable(arguments.outfile, table, cols, i
+    printTable(arguments.outfile, table, cols, 
                is_multiplied=multipliers is not None,
                long_output=arguments.long_output)
 

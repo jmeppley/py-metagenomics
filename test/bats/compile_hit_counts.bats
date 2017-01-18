@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-@test "Testing count_hits.py compilation" {
+@test "Testing compile_hit_counts.py compilation" {
     run ./compile_hit_counts.py -h
     [ "$status" = 0 ]
 }
