@@ -49,6 +49,13 @@ each read to a taxon. Hit table may be specified with -i or piped to STDIN.
              "Will be ignored if beyond the rank of the taxa "
              "(IE We can't include species if the taxon being counted "
              "is genus)")
+    parser.add_argument(
+        "--no-header",
+        dest="no_header",
+        default=False,
+        action='store_true',
+        help="do not write header line")
+
     add_universal_arguments(parser)
     arguments = parser.parse_args()
     setup_logging(arguments)
@@ -103,11 +110,14 @@ each read to a taxon. Hit table may be specified with -i or piped to STDIN.
         # print output
         # choose output method
         if arguments.taxids:
+            hit_header = 'taxid'
             printer = taxidPrinter
         else:
             if arguments.printRanks is None:
+                hit_header = 'Hit(s)'
                 printer = defaultPrinter
             else:
+                hit_header = '\t'.join(arguments.printRanks)
                 def printer(read, hits):
                     return tax_table_printer(read,
                                              hits,
@@ -115,7 +125,8 @@ each read to a taxon. Hit table may be specified with -i or piped to STDIN.
                                              arguments.printRanks)
 
         # loop over reads
-        outhandle.write("Read\tHit\n")
+        if not arguments.no_header:
+            outhandle.write("Read\t{}\n".format(hit_header))
         for (read, hits) in hitIter:
             outhandle.write(printer(read, hits))
 

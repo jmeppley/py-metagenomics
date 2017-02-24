@@ -424,12 +424,17 @@ def formatTaxon(taxon, displayedRanks, leafRank, delim=';'):
 
     This method is also used by assign_taxa.py!
     """
+    if isinstance(taxon,list):
+        if len(taxon)==0:
+            taxon = None
+        elif len(taxon)==1:
+            taxon = taxon[0]
+        else:
+            raise Exception("taxon should not be a list:\n{}"\
+                             .format(repr(taxon)))
     if taxon is None:
         logging.debug("Taxon is None")
         return 'None'
-    if isinstance(taxon,list):
-        raise Exception("taxon should not be a list:\n{}"\
-                         .format(repr(taxon)))
     if taxon is taxon.getRootNode():
         return str(taxon)
 

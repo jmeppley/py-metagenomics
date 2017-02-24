@@ -34,7 +34,7 @@
     [ "$status" = 0 ]   # run
     run diff <(sort test/data/small_files.kegg.out.3) <(sort test/data/.tst.small_files.kegg.out.3)
     [ "$status" = 0 ]   # level 3
-    run diff test/data/small_files.kegg.out.2 test/data/.tst.small_files.kegg.out.2
+    run diff <(sort test/data/small_files.kegg.out.2) <(sort test/data/.tst.small_files.kegg.out.2)
     [ "$status" = 0 ]   # level 2
     run diff test/data/small_files.kegg.out.ko test/data/.tst.small_files.kegg.out.ko
     [ "$status" = 0 ]   # level ko
