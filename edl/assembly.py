@@ -9,6 +9,14 @@ import pandas
 from Bio import SeqIO, SeqUtils
 logger = logging.getLogger(__name__)
 
+try:
+    from edl.util import ascii_histogram
+    import edl.blastm8
+except:
+    # This is a little hack to make this module runnable as a script
+    sys.path[0] += "/.."
+    from edl.util import ascii_histogram
+    import edl.blastm8
 
 def main():
     """
@@ -19,11 +27,6 @@ def main():
      python assembly.py contig_read_counts file_1
        will run countig_read_counts("file_1")
        """
-
-    # This is a little hack to make this module runnable as a script
-    sys.path[0] += "/.."
-    from edl.util import ascii_histogram
-    import edl.blastm8
 
     log_level = logging.WARN
     while sys.argv[1] == '-v':
