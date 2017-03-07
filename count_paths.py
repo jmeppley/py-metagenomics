@@ -240,7 +240,9 @@ def main():
                                       arguments.hitTableFormat,
                                       arguments.filterTopPct,
                                       arguments.parseStyle,
-                                      arguments.countMethod)
+                                      arguments.countMethod,
+                                      ignoreEmptyHits=arguments.mappedHitsOnly,
+                                     )
 
             (total, counts, hitMap) = \
                 countIterHits(hitIter,
@@ -380,7 +382,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
         # logging.debug(repr(levelCounts))
         if logging.getLogger().level <= logging.DEBUG:
             for (filename, counts) in levelCounts.items():
-                logging.debug("File %s hs %d counts" %
+                logging.debug("File %s has %d counts" %
                               (filename, sum(counts.values())))
 
         # apply cutoff

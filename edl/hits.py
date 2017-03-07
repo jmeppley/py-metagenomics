@@ -356,9 +356,6 @@ def parseM8FileIter(
         taxonomy=taxonomy,
         rank=rank)
 
-    # debugKey="F4UZ9WW02HMBZJ"
-    # logger.debug("Hits for %s: %r" % (debugKey,hitMap[debugKey]))
-
     # apply count method
     hitIter = applyCountMethod(hitIter, countMethod, ignoreEmptyHits)
 
@@ -497,6 +494,7 @@ def _takeFirstHit(hits):
     if len(hits) > 0:
         return hits[0:1]
     else:
+        logger.debug("No hits!")
         return None
 
 
