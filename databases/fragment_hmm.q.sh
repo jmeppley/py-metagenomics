@@ -3,8 +3,12 @@
 #$ -V
 FRAGS=$1
 HMMDB=$2
+PYMG_PATH=${3:-`dirname $0`/..}
 EXT=${HMMDB##*\.}
-/global/homes/j/jmeppley/read-annotations/tools/pymg3/fragment_records.py -P "^HMMER" -N $FRAGS -i $HMMDB -o frag-$FRAGS/$HMMDB -v -v
-for H in frag-$FRAGS/*.${EXT}; do
+HMMNAME=`basename ${HMMDB}`
+HMMPATH=`dirname ${HMMDB}`
+echo ${PYMG_PATH}/fragment_records.py -P "^HMMER" -N $FRAGS -i $HMMDB -o ${HMMPATH}/frag-$FRAGS/$HMMNAME -v -v
+${PYMG_PATH}/fragment_records.py -P "^HMMER" -N $FRAGS -i $HMMDB -o ${HMMPATH}/frag-$FRAGS/$HMMNAME -v -v
+for H in ${HMMPATH}/frag-$FRAGS/*.${EXT}; do
     hmmpress $H
 done
