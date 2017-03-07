@@ -13,10 +13,10 @@ two columns and the combined counts as the third column. EG:
     org_a    gene_2   20
     org_b    gene_2    3
 
-The user can supply a multiplier file that supplies a mulitplier value for
-each read or gene in the input tables. This is useful for contig based counts where
-you have coverage or abundance data. The multiplier file is expected to be
-a two column tab-separated file.
+The user can supply a multiplier file that supplies a mulitplier
+value for each read or gene in the input tables. This is useful
+for contig based counts where you have coverage or abundance data.
+The multiplier file is expected to be a two column tab-separated file.
 
 In long form, if a mlutiplier file is given, four columns are printed. The two
 data columns are the raw counts and multiplied counts. EG:
@@ -30,7 +30,6 @@ data columns are the raw counts and multiplied counts. EG:
 import argparse
 import logging
 import sys
-import re
 from edl.hits import parseHits
 from edl.util import tupleIteratorToMap,\
                      add_universal_arguments,\
@@ -39,8 +38,8 @@ from edl.util import tupleIteratorToMap,\
 
 
 def main():
-    description = __doc__
-    parser = argparse.ArgumentParser(description)
+    """ set up the command line interface """
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("-1", "--input_file_1",
                         default=None,
                         type=argparse.FileType('r'),
@@ -54,8 +53,8 @@ def main():
     parser.add_argument("-m", "--multiplier",
                         default=None,
                         metavar=("MULTIPLIER_TABLE"),
-                        help="Table of values to multiply each sequence. " + \
-                             "EG assembly coverages.")
+                        help=("Table of values to multiply each sequence. "
+                              "EG assembly coverages."))
     parser.add_argument(
         "-o",
         "--outfile",
@@ -107,13 +106,13 @@ def main():
     if arguments.input_file_1 is None or arguments.input_file_2 is None:
         parser.error("Please supply two input files")
 
-    logging.info("reading hits from %s" % (arguments.input_file_1.name))
+    logging.info("reading hits from %s", arguments.input_file_1.name)
     hits1 = parseHits(arguments.input_file_1,
                       0,
                       arguments.hitCol1,
                       arguments.skipFirstRow,
                       None)
-    logging.info("reading hits from %s" % (arguments.input_file_2.name))
+    logging.info("reading hits from %s", arguments.input_file_2.name)
     hits2 = parseHits(arguments.input_file_2,
                       0,
                       arguments.hitCol2,
@@ -129,26 +128,25 @@ def main():
         multipliers = None
 
     logging.info("counting hits")
-    (table, cols) = combineCounts(hits1, hits2, multipliers)
+    (table, cols) = combine_counts(hits1, hits2, multipliers)
 
     # print out hit table
     logging.info("printing table to " + arguments.outfile.name)
-    printTable(arguments.outfile, table, cols, 
-               is_multiplied=multipliers is not None,
-               long_output=arguments.long_output)
+    print_table(arguments.outfile, table, cols,
+                is_multiplied=multipliers is not None,
+                long_output=arguments.long_output)
 
 #############
 # Functions #
 #############
 
 
-def die(msg):
-    sys.stderr.write("%s\n" % msg)
-    sys.exit()
-
-
-def combineCounts(hits1, hits2, multipliers=None, unmatched_1="Unknown", unmatched_2="Unknown"):
-    # compile counts into nested dicts
+def combine_counts(hits1,
+                   hits2,
+                   multipliers=None,
+                   unmatched_1="Unknown",
+                   unmatched_2="Unknown"):
+    """ compile counts into nested dicts """
     counts = {}
 
     # keep track of all unique hit ids from set 2
@@ -163,7 +161,7 @@ def combineCounts(hits1, hits2, multipliers=None, unmatched_1="Unknown", unmatch
         def _update_hits(read, counts, hit1, hit2):
             """ count both raw numbers and multiplied """
             h1counts = counts.setdefault(hit1, {})
-            count_tuple = h1counts.get(hit2, (0,0))
+            count_tuple = h1counts.get(hit2, (0, 0))
             count_tuple = (count_tuple[0] + 1,
                            count_tuple[1] + multipliers.get(read, 1))
             h1counts[hit2] = count_tuple
@@ -190,7 +188,12 @@ def combineCounts(hits1, hits2, multipliers=None, unmatched_1="Unknown", unmatch
     return (counts, types2)
 
 
-def printTable(output, table, cols=None, is_multiplied=False, long_output=False):
+def print_table(output,
+                table,
+                cols=None,
+                is_multiplied=False,
+                long_output=False):
+    """ Render the output """
     if long_output:
         # print one row per value
         for row_name in sorted(table.keys()):
@@ -224,7 +227,7 @@ def printTable(output, table, cols=None, is_multiplied=False, long_output=False)
                 output.write("\t")
                 if is_multiplied:
                     # for the table, just print the multiplied value
-                    value = row.get(col, (0,0))
+                    value = row.get(col, (0, 0))
                     output.write(str(value[1]))
                 else:
                     output.write(str(row.get(col, "0")))

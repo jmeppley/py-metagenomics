@@ -30,13 +30,13 @@ import re
 import logging
 import argparse
 from urllib.parse import unquote_plus
-from edl import redistribute, kegg
+from edl import kegg
 from edl.hits import add_weight_arguments, loadSequenceWeights, \
-        add_count_arguments, GIS, FilterParams, getHitTranslator, parseM8FileIter, \
+        add_count_arguments, GIS, FilterParams, getHitTranslator, \
+        parseM8FileIter, \
         countIterHits
 from edl.util import add_universal_arguments, setup_logging, parseMapFile, \
         dict_lookup_default_to_query, passThrough
-from edl.expressions import accessionRE, nrOrgRE
 
 
 def main():
@@ -70,22 +70,23 @@ def main():
 
     # format, ortholog heirarchy, and more
     kegg.add_path_arguments(
-            parser,
-            defaults={'countMethod': 'tophit'},
-            choices={'countMethod':
-            ('tophit',
-             'first',
-             'most',
-             'all',
-             'consensus')},
-            helps={'countMethod': 
-            			"How to deal with counts from multiple hits. ('first': " + \
-            			"just use the first hit, 'most': " + \
-			            "can return multiple hits, 'all': return every hit, " + \
-			            "consensus: return None unless all the same). Do not " + \
-			            "use most or consensus with more than one level at a time." + \
-			            " Default is 'tophit': This breaks any ties by choosing "
-                        "the most abundant hit based on other unambiguous assignments."})
+        parser,
+        defaults={'countMethod': 'tophit'},
+        choices={'countMethod':
+                 ('tophit',
+                  'first',
+                  'most',
+                  'all',
+                  'consensus')},
+        helps={'countMethod':
+               ("How to deal with counts from multiple hits. ('first': "
+                "just use the first hit, 'most': "
+                "can return multiple hits, 'all': return every hit, "
+                "consensus: return None unless all the same). Do not "
+                "use most or consensus with more than one level at a time. "
+                "Default is 'tophit': This breaks any ties by choosing "
+                "the most abundant hit based on other unambiguous "
+                "assignments.")})
 
     # log level and help
     add_universal_arguments(parser)
@@ -102,7 +103,7 @@ def main():
     else:
         if arguments.heirarchyFile is None \
                 and arguments.heirarchyType != 'cazy':
-            logging.warn("Type: %s" % (arguments.heirarchyType))
+            logging.warning("Type: %s", arguments.heirarchyType)
             parser.error("Cannot select levels without a heirarchy (ko) file")
         if arguments.levels is None:
             # set a default
@@ -148,7 +149,7 @@ def main():
                     "Cannot figure out map type from first line:\n%s" %
                     (firstLine))
 
-        logging.info("Map file seems to be: %s" % (arguments.mapStyle))
+        logging.info("Map file seems to be: %s", arguments.mapStyle)
         if arguments.mapStyle == 'kegg':
             valueMap = kegg.parseLinkFile(arguments.mapFile)
         elif arguments.mapStyle == 'seed':
@@ -165,8 +166,8 @@ def main():
                 valueType=None,
                 keyType=keyType)
         if len(valueMap) > 0:
-            logging.info("Read %d items into map. EG: %s" %
-                         (len(valueMap), next(iter(valueMap.items()))))
+            logging.info("Read %d items into map. EG: %s",
+                         len(valueMap), next(iter(valueMap.items())))
         else:
             logging.warn("Read 0 items into value map!")
     else:
@@ -221,8 +222,8 @@ def main():
             if gene is None:
                 gene = "None"
             logging.debug(
-                "READ: %s\t%s\t%s\t%s" %
-                (file_tag, read_name, hit.hit, gene))
+                "READ: %s\t%s\t%s\t%s",
+                file_tag, read_name, hit.hit, gene)
             genecount = fileCounts[file_tag].setdefault(gene, 0)
             if sequenceWeights is not None:
                 increment = sequenceWeights.get(read_name, 1)
@@ -231,7 +232,7 @@ def main():
         logging.debug(str(totals))
 
     else:
-	    # Original way, just process each file separately
+        # Original way, just process each file separately
         for (filename, filetag) in fileLabels.items():
             infile = open(filename, 'rU')
 
@@ -252,11 +253,11 @@ def main():
             totals[filetag] = total
 
             logging.info(
-                "parsed %d hits (%d unique) for %d reads from %s" %
-                (total, len(counts), len(hitMap), filename))
+                "parsed %d hits (%d unique) for %d reads from %s",
+                total, len(counts), len(hitMap), filename)
 
-            infile.close()		
-		
+            infile.close()
+
     logging.debug(repr(fileCounts))
     printCountTablesByLevel(fileCounts, totals, sortedLabels, arguments)
 
@@ -290,18 +291,18 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
 
     if options.heirarchyType == 'seed':
         logging.info(
-            "Reading SEED subsystem assignments from %s" %
-            (options.heirarchyFile))
+            "Reading SEED subsystem assignments from %s",
+            options.heirarchyFile)
         seedTree = kegg.readSEEDTree(options.heirarchyFile)
     elif options.heirarchyType == 'cog':
         logging.info(
-            "Reading COG subsystem assignments from %s" %
-            (options.heirarchyFile))
+            "Reading COG subsystem assignments from %s",
+            options.heirarchyFile)
         seedTree = kegg.readCogTree(options.heirarchyFile)
 
     # create an output table for each requested level
     for level in options.levels:
-        logging.debug("Processing level %s" % (level))
+        logging.debug("Processing level %s", level)
         translateToPaths = level not in koSyns
         descString = None
         if translateToPaths:
@@ -314,8 +315,8 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
                     # Ideally, we'd be able to parse the heirachy once, but the
                     # current KEGG code just retuns simple mappings
                     logging.info(
-                        "Reading KEGG level %s assignments from %s" %
-                        (level, options.heirarchyFile))
+                        "Reading KEGG level %s assignments from %s",
+                        level, options.heirarchyFile)
                     geneTranslation = kegg.readKEGGFile(
                         options.heirarchyFile, lookupLevel)
                 else:
@@ -327,7 +328,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
             # return descriptions if level explicitly set to ko (or syn.)
             descString = "Description"
             logging.info(
-                "Reading KO descriptions from %s" %
+                "Reading KO descriptions from %s",
                 options.heirarchyFile)
             geneTranslation = kegg.readKEGGFile(
                 options.heirarchyFile, "DESCRIPTION")
@@ -351,7 +352,8 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
             fileLevelCounts = levelCounts.setdefault(filename, {})
 
             fileTotal = 0
-            for gene in sorted(counts.keys(), key=lambda s: "" if s is None else s):
+            for gene in sorted(counts.keys(),
+                               key=lambda s: "" if s is None else s):
                 # get the counts from this node
                 geneCount = counts[gene]
                 fileTotal += geneCount
@@ -375,15 +377,15 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
                     levelPaths[indPathway] = True
 
             logging.debug(
-                "File %s has %d hits (had %d)" %
-                (filename, fileTotal, totals[filename]))
+                "File %s has %d hits (had %d)",
+                filename, fileTotal, totals[filename])
 
         # logging.debug(repr(levelPaths))
         # logging.debug(repr(levelCounts))
         if logging.getLogger().level <= logging.DEBUG:
             for (filename, counts) in levelCounts.items():
-                logging.debug("File %s has %d counts" %
-                              (filename, sum(counts.values())))
+                logging.debug("File %s has %d counts",
+                              filename, sum(counts.values()))
 
         # apply cutoff
         for pathway in list(levelPaths.keys()):
@@ -405,21 +407,21 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
 
         if logging.getLogger().level <= logging.DEBUG:
             for (filename, counts) in levelCounts.items():
-                logging.debug("File %s has %d counts" %
-                              (filename, sum(counts.values())))
+                logging.debug("File %s has %d counts",
+                              filename, sum(counts.values()))
                 missed = False
                 for path in counts.keys():
                     if path not in levelPaths:
                         missed = True
                         logging.debug(
-                            "Missing pathway %s has %d counts for %s" %
-                            (path, counts[path], filename))
+                            "Missing pathway %s has %d counts for %s",
+                            path, counts[path], filename)
                 if not missed:
                     logging.debug(
-                        "There are no missing pathways from %s" %
-                        (filename))
+                        "There are no missing pathways from %s",
+                        filename)
 
-        logging.debug("Final file counts: %r" % (fileLevelTotals))
+        logging.debug("Final file counts: %r", fileLevelTotals)
 
         # output file
         if options.output_file is None:
@@ -444,7 +446,8 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
             # Header for when level is a pathway or group
             outs.write("Pathway\t%s\n" % ('\t'.join(fileNames)))
 
-        for pathway in sorted(levelPaths.keys(), key=lambda s: "" if s is None else s):
+        for pathway in sorted(levelPaths.keys(),
+                              key=lambda s: "" if s is None else s):
             outs.write(str(pathway))
             for filename in fileNames:
                 outs.write("\t")
@@ -460,11 +463,11 @@ def getCazyGroup(gene):
     m = cazyRE.search(gene)
     if m:
         cazygroup = m.group(1)
-        logging.debug("Mapping %s to %s" % (gene, cazygroup))
+        logging.debug("Mapping %s to %s", gene, cazygroup)
     else:
         logging.debug(
-            "Could not parse group from %s with r'%s'" %
-            (gene, cazyRE.pattern))
+            "Could not parse group from %s with r'%s'",
+            gene, cazyRE.pattern)
         cazygroup = gene
     return cazygroup
 

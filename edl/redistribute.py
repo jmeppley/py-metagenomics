@@ -447,6 +447,7 @@ class M8Stream(blastm8.M8Stream):
         line = self.file_tag + "/" + blastm8.M8Stream.__next__(self)
         return line
 
+
 # old method
 def _multipleFileGenerator(
         m8files,

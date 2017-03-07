@@ -8,18 +8,21 @@ import argparse
 from numpy import histogram
 from edl.util import add_universal_arguments, setup_logging, ascii_histogram
 
+
 def main():
-    # set up CLI
+    """
+    Sets up the command line interface
+    """
     description = __doc__
 
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('infile', nargs='?', type=argparse.FileType('rU'),
-            default=sys.stdin,
-            help="Input file (defaults to STDIN) containing a value " + \
-                 "on each line")
+                        default=sys.stdin,
+                        help=("Input file (defaults to STDIN) containing " +
+                              "a value on each line"))
     parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'),
-            default=sys.stdout,
-            help="File to which to write histogram")
+                        default=sys.stdout,
+                        help="File to which to write histogram")
     parser.add_argument('-b', '--bins', type=int, default=50)
     parser.add_argument('-l', '--label', default="value")
     parser.add_argument('-w', '--width', default=75, type=int)
@@ -36,17 +39,19 @@ def main():
         try:
             values.append(float(line.strip()))
         except ValueError:
-            if len(line.strip())>0:
-                logging.warn("Skipping bad line:\n{}".format(line.strip()))
-    logging.info("Read in {} values".format(len(values)))
-    arguments.outfile.write(ascii_histogram(histogram(values,
-                                                      bins=arguments.bins),
-                                            label=arguments.label,
-                                            width=arguments.width,
-                                            log=arguments.log,
-                                            maxLabelWidth=\
-                                                    arguments.max_label_width
-                                           ))
+            if len(line.strip()) > 0:
+                logging.warning("Skipping bad line:\n%s",
+                                line.strip())
+    logging.info("Read in %d values", len(values))
+    arguments.outfile.write(
+        ascii_histogram(histogram(values,
+                                  bins=arguments.bins),
+                        label=arguments.label,
+                        width=arguments.width,
+                        log=arguments.log,
+                        maxLabelWidth=arguments.max_label_width,
+                       )
+    )
 
 if __name__ == "__main__":
     main()
