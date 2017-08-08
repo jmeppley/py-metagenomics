@@ -110,8 +110,20 @@ def write_annotations_to_files(hit_list_dicts, contigs_fasta_file,
             gff_output_handle.write(hit.line)
 
             # get naming informatoion from gff line and contig descritpion
-            length, coverage = re.search(r'length_(\d+)_cov_([0-9.]+)',
-                                         contig.description).groups()
+            # from spades:
+            m = re.search(r'length_(\d+)_cov_([0-9.]+)', contig.description)
+            if m:
+                length, coverage = m.groups()
+                contig_info_string = \
+                        "contig_length={};contig_cov={}".format(length,
+                                                                coverage)
+            else:
+                # megahit
+                m = re.search(r'\blen=(\d+)\b', contig.description)
+                if m:
+                    contig_info_string = "contig_length=" + m.group(1)
+                else:
+                    contig_info_string = ""
             source, feature_type, start, end, score, strand = \
                 hit.line.split('\t')[1:7]
             # name gene with contig name and index
@@ -124,8 +136,7 @@ def write_annotations_to_files(hit_list_dicts, contigs_fasta_file,
                         feature_type=feature_type, score=score,
                         strand=strand) + \
                 hit.hitDesc + \
-                "contig_length={length};contig_cov={coverage}" \
-                .format(length=length, coverage=coverage)
+                contig_info_string
 
             if hit.qstart <= hit.qend:
                 subsequence = contig.seq[hit.qstart - 1:hit.qend]
