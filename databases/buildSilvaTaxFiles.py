@@ -171,7 +171,7 @@ def buildSilvaTree(taxFile, fastaFile, logger):
     """
     rankMap=parseMapFile(taxFile, keyCol=0, valueCol=2, skipFirst=0)
     silvaTaxidMap=parseMapFile(taxFile, keyCol=0, valueCol=1, valueType=int, skipFirst=0)
-    
+
     # create core of tree from taxonomy text file
     silvaTree={}
     maxTaxid=max(silvaTaxidMap.values())
