@@ -8,7 +8,7 @@ import sys
 import re
 import logging
 import argparse
-from edl.hits import add_count_arguments, getAllMethod, add_weight_arguments
+from edl.hits import add_count_arguments, getAllMethod, add_weight_arguments, applyFractionalCutoff
 from edl.util import add_universal_arguments, setup_logging
 
 # a habit that stuck in Perl
