@@ -169,7 +169,7 @@ def applyFractionalCutoff(counts, threshold=None, cutoff=None, label='Other'):
         threshold = float(cutoff) * sum(counts.values())
 
     osum = 0
-    for key in counts.keys():
+    for key in list(counts.keys()):
         if key == label:
             continue
 
