@@ -350,6 +350,7 @@ ranks = [
     'parvorder',
     'infraorder',
     'suborder',
+    'cohort',
     'order',
     'superorder',
     'infraclass',

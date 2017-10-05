@@ -11,7 +11,7 @@ accessionRE = re.compile(
                             # dont include version suffix (eg .1 or .11)
         (?:\.\d+)?          # allow for version suffix outside of match
         (?:\||$)            # must end with bar (|) or nothing ($)
-        (?=(\s|$))          # either at end or before whitespace""",
+        (?=(?:\s|$))          # either at end or before whitespace""",
     re.X)
 nrOrgRE = re.compile(
     r'\[([^|\[\]]*(?:\[[^|\[\]]+\])?[^|\[\]]*)\]?\s*(?:(?=[a-z]{2,3}\|)|$)')
