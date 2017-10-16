@@ -98,7 +98,7 @@ $(LASTDIR):
 
 $(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
-	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
+	lastdb8 -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
 
 %.stats: %
 	cat $^ | prinseq-lite.pl -fasta stdin -aa -stats_len -stats_info > $@

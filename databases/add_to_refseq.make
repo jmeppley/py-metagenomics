@@ -77,7 +77,7 @@ $(LASTDIR):
 
 $(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
-	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
+	lastdb8 -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
 
 $(FAA): $(ADDFAA) $(COMPLETEFAA)
 	cat $^ > $@
