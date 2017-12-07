@@ -270,15 +270,18 @@ class Hit:
         self.astart = int(cells[3])
         self.aend = self.astart + alenh - 1
         self.qlen = len(cells[9])
-        if pctid is not None:
-            self.pctid = pctid
+        self.aln = float(self.mlen)/float(self.qlen)
+        self.score = None
         for tagstr in cells[11:]:
-            if len(tagstr) > 2 and tagstr[:2] == 'AS':
+            if tagstr.startswith('AS'):
                 self.score = float(tagstr.split(":")[2])
-                # for now, we only carea bout the score tag
-                break
-        else:
+            if tagstr.startswith('MD:Z:'):
+                if pctid == 0:
+                    pctid = get_alignment_percent_identity(tagstr[4:])
+        if self.score is None:
             raise Exception("No score (AS tag) found in line:\n%s" % (line))
+        if pctid != 0:
+            self.pctid = pctid
 
     # target name        accession   tlen query name           accession
     # qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias
@@ -1192,6 +1195,30 @@ def parseCigarString(cigar):
         pctid = matches / float(matches + mismatches)
     qend = qstart + alenq - 1
     return (alen, alenh, alenq, qstart, qend, pctid)
+
+
+capturing_digits_re = re.compile(r'(\d+)')
+def get_alignment_percent_identity(mdx_string):
+    """
+    Use the MD:Z string returned by BWA to get percent ID
+    """
+    matches = 0
+    mismatches = 0
+    for chunk in capturing_digits_re.split(mdx_string):
+        if len(chunk)==0:
+            # first and last elements are often empty strings. Ignore them
+            continue
+        if chunk.startswith('^'):
+            # this is an deletion, irrelevant for pctid
+            continue
+        try:
+            # is it an integer? it's the nuimber of matches
+            matches += int(chunk)
+        except ValueError:
+            # otherwise, it's the string of the reference that was mismatched
+            mismatches += len(chunk)
+    
+    return float(matches)/float(matches + mismatches)
 
 
 def setup_tests():
