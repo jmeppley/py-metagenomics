@@ -1,15 +1,77 @@
-import re
-import logging
-import sys
-import os
 import argparse
-import random
-from numpy import ceil, random
-from numpy import log as nplog, exp as npexp
+import glob
+import logging
+import os
+import re
+import sys
 from edl import __version__
 from edl.expressions import accessionRE
+from numpy import ceil, random
+from numpy import exp as npexp, log as nplog
 logger = logging.getLogger(__name__)
 VERSION = 'py-metagenomics-{}'.format(__version__)
+
+
+def find_matching_files(search_string, wildcard_constraints=None):
+    """
+    Looks for files matching a pattern and captures the variable bits and
+    yeilds
+    (file_path, wildcard_values) tuples.
+
+    For example:
+
+    dict(find_matching_files("/path/{subdir}/{key}.static.{extension}"))
+
+    returns
+
+    {'/path/dir1/sample1.static.txt': {'subdir':'dir1',
+                                       'key':'sample1',
+                                       'extension':'txt'},
+    {'/path/dir2/sample1.static.txt': {'subdir':'dir2',
+                                       ...}
+    ...
+    }
+
+    Like snakemake, you can specify constraints to limit what matches each
+    wildcard.
+
+    Unlike snakemake, a wildcard cannot cross the path separator. Each matched
+    item must be a folder or file name or a fragment of either.
+    """
+    wildcard_re = re.compile(r'\{(\w+)\}')
+
+    # replace wildcards with *'s for glob search
+    glob_string = wildcard_re.sub('*', search_string)
+
+    # get wildcard names
+    wildcard_keys = wildcard_re.findall(search_string)
+
+    # replace wildcards with (.+) or their constraints for rexp
+    if wildcard_constraints is None:
+        wildcard_constraints = {}
+
+    def wc_repl(match):
+        return "(" + wildcard_constraints.get(match.group(1), r'.+') + ")"
+    search_string = re.sub(r'\.', r'\.', search_string)
+    re_pattern = wildcard_re.sub(wc_repl, search_string)
+    glob_re = re.compile(re_pattern)
+
+    # use glob to filter files
+    for full_path in glob.glob(glob_string):
+        match = glob_re.match(full_path)
+        if match:
+            # It might not match if there are constraints
+            wildcards = {}
+            for wildcard, value in zip(wildcard_keys, match.groups()):
+                if wildcard in wildcards:
+                    # if a wc name is repeated, both values must match
+                    if value != wildcards[wildcard]:
+                        break
+                else:
+                    wildcards[wildcard] = value
+            else:
+                # only return if we didn't abort
+                yield full_path, wildcards
 
 
 class LineCounter():
@@ -56,16 +118,16 @@ def countBasesInFasta(fastaFile):
     """
     recordRE = re.compile(r'^>')
     whiteSpaceRE = re.compile(r'\s+')
-    totalBases = 0
-    totalSeqs = 0
+    total_bases = 0
+    total_seqs = 0
     with open(fastaFile) as f:
         for line in f:
             if recordRE.match(line):
-                totalSeqs += 1
+                total_seqs += 1
                 continue
-            totalBases += len(whiteSpaceRE.sub('', line))
+            total_bases += len(whiteSpaceRE.sub('', line))
 
-    return {'records': totalSeqs, 'bases': totalBases}
+    return {'records': total_seqs, 'bases': total_bases}
 
 urlRE = re.compile(r'[a-z]+\:\/\/')
 
