@@ -12,7 +12,9 @@ def test_accession_re():
 
     test_data = {
             'ref|YP_002498923.1|': 'YP_002498923',
+            'ref|YP_002498923.1': 'YP_002498923',
             'gi|109900248|ref|YP_663503.1|': 'YP_663503',
+            'YP_663503.1': 'YP_663503',
             }
     for data, acc in test_data.items():
         new_acc = accessionRE.search(data).group(1)

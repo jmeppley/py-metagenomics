@@ -15,6 +15,8 @@ DOWNLOAD_URL = 'http://github.com/jmeppley/py-metagenomics'
 LICENSE = 'GPL'
 VERSION = '0.3.01'
 
+import glob
+
 setup(name=NAME,
       version=VERSION,
       description=DESCRIPTION,
@@ -27,6 +29,7 @@ setup(name=NAME,
       download_url=DOWNLOAD_URL,
       license=LICENSE,
       packages=['edl', ],
+      scripts=list(glob.glob('*.py')),
       classifiers=[
           'Development Status :: 4 - Beta',
           'Environment :: Console',

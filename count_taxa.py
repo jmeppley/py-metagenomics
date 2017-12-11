@@ -6,22 +6,23 @@ given (the default), multiple output files are produced, each with the
 rank name appended to the output file name.
 """
 import sys
-import re
 import argparse
 import logging
 from urllib.parse import unquote_plus
-from edl.taxon import *
-from edl.hits import *
-from edl.util import add_universal_arguments, setup_logging, parseMapFile, \
-        checkNoneOption, parseMapFile, passThrough
-from edl.expressions import accessionRE, nrOrgRE
+from edl.taxon import ranks, getAncestorClosestToRank
+from edl.hits import add_count_arguments, add_weight_arguments, \
+        loadSequenceWeights, add_taxon_arguments, readMaps, \
+        countIterHits, parseM8FileIter, FilterParams, getHitTranslator, \
+        ACCS
+from edl.util import add_universal_arguments, setup_logging, \
+        checkNoneOption, passThrough
 
 ORG_RANK = 'organism'
 
 
 def main():
-    description = __doc__
-    parser = argparse.ArgumentParser(description=description)
+    """" Set up the CLI """
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input_files", nargs="+",
                         default=[],
                         metavar="INFILE",
@@ -91,7 +92,7 @@ def main():
     arguments.ranks = checkNoneOption(arguments.ranks)
     arguments.printRanks = checkNoneOption(arguments.printRanks)
 
-    logging.info("Printing out ranks: {}".format(arguments.ranks))
+    logging.info("Printing out ranks: %r", arguments.ranks)
 
     # Set defaults and check for some conflicts
     if arguments.ranks is None and arguments.taxdir is None:
@@ -126,8 +127,6 @@ def main():
     # only print to stdout if there is a single rank
     if len(arguments.ranks) > 1 and arguments.outfile is None:
         parser.error("STDOUT only works if a single rank is chosen!")
-
-    cutoff = arguments.cutoff
 
     # Because rank is used in parsing hits, we can only do multiple ranks for
     # certain kinds of count methods
@@ -198,7 +197,7 @@ def main():
                 winnerTakeAll=True,
                 taxonomy=taxonomy,
                 hitStringMap=hitStringMap,
-                parseStyle=hits.ACCS)
+                parseStyle=ACCS)
 
             # Organisms will be returned, make translator trivial:
             translateHit = passThrough
@@ -239,8 +238,8 @@ def main():
             totals[filetag] = total
 
             logging.info(
-                "parsed %d hits (%d unique) for %d reads from %s" %
-                (total, len(counts), len(hitMap), filename))
+                "parsed %d hits (%d unique) for %d reads from %s",
+                total, len(counts), len(hitMap), filename)
 
             infile.close()
 
@@ -265,7 +264,7 @@ def cleanRanks(rankList):
         if rank not in ranks:
             badRanks.append(rank)
     if len(badRanks) > 0:
-        parser.error("Unknown rank(s): %s" % (badRanks))
+        raise Exception("Unknown rank(s): %s" % (badRanks))
 
     # return ranks in proper order
     return sorted(rankList, key=ranks.index, reverse=True)
@@ -317,7 +316,8 @@ def printCountTablesByRank(fileCounts, totals, fileNames, options):
                             options.collapseToDomain))
                     if ranked is None:
                         # This shouldn't happen...
-                        logging.warn("getAncestorClosestRoRank return None!")
+                        logging.warning(
+                            "getAncestorClosestRoRank return None!")
                         # ...but if it doesn, leave unchanged
                         ranked = taxon
 
@@ -327,15 +327,15 @@ def printCountTablesByRank(fileCounts, totals, fileNames, options):
                 rankTaxa[ranked] = True
 
             logging.debug(
-                "File %s has %d hits (had %d)" %
-                (filename, fileTotal, totals[filename]))
+                "File %s has %d hits (had %d)",
+                filename, fileTotal, totals[filename])
 
         # logging.debug(repr(rankTaxa))
         # logging.debug(repr(rankCounts))
         if logging.getLogger().level <= logging.DEBUG:
             for (filename, counts) in rankCounts.items():
-                logging.debug("File %s hs %d ranked counts" %
-                              (filename, sum(counts.values())))
+                logging.debug("File %s hs %d ranked counts",
+                              filename, sum(counts.values()))
 
         # apply cutoff
         for taxon in list(rankTaxa.keys()):
@@ -366,21 +366,21 @@ def printCountTablesByRank(fileCounts, totals, fileNames, options):
 
         if logging.getLogger().level <= logging.DEBUG:
             for (filename, counts) in rankCounts.items():
-                logging.debug("File %s hs %d ranked counts" %
-                              (filename, sum(counts.values())))
+                logging.debug("File %s hs %d ranked counts",
+                              filename, sum(counts.values()))
                 missed = False
                 for taxa in counts.keys():
                     if taxa not in rankTaxa:
                         missed = True
                         logging.debug(
-                            "Missing taxon %s has %d counts for %s" %
-                            (taxa, counts[taxa], filename))
+                            "Missing taxon %s has %d counts for %s",
+                            taxa, counts[taxa], filename)
                 if not missed:
                     logging.debug(
-                        "There are no missing taxa from %s" %
-                        (filename))
+                        "There are no missing taxa from %s",
+                        filename)
 
-        logging.debug("Final file counts: %r" % (fileRankTotals))
+        logging.debug("Final file counts: %r", fileRankTotals)
 
         # output file
         if options.outfile is None:
@@ -418,43 +418,48 @@ def getTaxonFormatter(displayedRanks, leafRank):
 
 def formatTaxon(taxon, displayedRanks, leafRank, delim=';'):
     """
-    Generates lineage using all display ranks that are less than the 
+    Generates lineage using all display ranks that are less than the
     leaf rank. This is probably ineffecient, as we have to figure out
-    which ranks to display for every item. 
+    which ranks to display for every item.
 
     This method is also used by assign_taxa.py!
     """
+    if isinstance(taxon, list):
+        if len(taxon) == 0:
+            taxon = None
+        elif len(taxon) == 1:
+            taxon = taxon[0]
+        else:
+            raise Exception("taxon should not be a list:\n{}"
+                            .format(repr(taxon)))
     if taxon is None:
         logging.debug("Taxon is None")
         return 'None'
-    if isinstance(taxon,list):
-        raise Exception("taxon should not be a list:\n{}"\
-                         .format(repr(taxon)))
     if taxon is taxon.getRootNode():
         return str(taxon)
 
     lineage = ""
     logging.debug(
-        "Creating lineage with: %s, %s, %s" %
-        (taxon, displayedRanks, leafRank))
+        "Creating lineage with: %s, %s, %s",
+        taxon, displayedRanks, leafRank)
     for rank in displayedRanks:
         if ranks.index(rank) <= ranks.index(leafRank):
             logging.debug(
-                "Rank of %s (%d) is less than %s (%d)" %
-                (rank, ranks.index(rank), leafRank, ranks.index(leafRank)))
+                "Rank of %s (%d) is less than %s (%d)",
+                rank, ranks.index(rank), leafRank, ranks.index(leafRank))
             break
         ancestor = taxon.getAncestorAtRank(rank)
         if ancestor is taxon:
             logging.debug(
-                "ancestor at %s of %s is %s" %
-                (taxon, rank, ancestor))
+                "ancestor at %s of %s is %s",
+                taxon, rank, ancestor)
             break
         if ancestor is None:
             ancestor = ""
         lineage += str(ancestor) + delim
-        logging.debug("Lineage: %s" % lineage)
+        logging.debug("Lineage: %s", lineage)
     lineage += str(taxon)
-    logging.debug("Lineage: %s" % lineage)
+    logging.debug("Lineage: %s", lineage)
     return lineage
 
 if __name__ == '__main__':
