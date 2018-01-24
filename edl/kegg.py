@@ -509,7 +509,10 @@ def add_path_arguments(parser, defaults={}, choices={}, helps={}):
     # get format and filterPct arguments from blastm8
     from edl.hits import HITID, ACCS, GIS, KEGG, HITDESC, PFAM
     from edl.blastm8 import add_hit_table_arguments
-    add_hit_table_arguments(parser, defaults)
+    add_hit_table_arguments(parser, defaults, flags=['format', 
+                                                     'filterPct',
+                                                     'sort'
+                                                    ])
 
     # specific to pathway parsing:
     pgroup = parser.add_argument_group(

@@ -54,7 +54,7 @@ def main():
                       levels 1, 2, and 3 for KEGG and SEED
                       and gene and group for CAZy and COG.""")
     parser.add_argument(
-        '-s',
+        '-S',
         '--squash',
         dest='splitForLevels',
         default=True,
@@ -275,3 +275,4 @@ def handleMultipleMappings(assignmentList, arguments):
 
 if __name__ == '__main__':
     main()
+
