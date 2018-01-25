@@ -239,7 +239,7 @@ def main():
             hitIter = parseM8FileIter(infile,
                                       valueMap,
                                       arguments.hitTableFormat,
-                                      arguments.filterTopPct,
+                                      arguments.filter_top_pct,
                                       arguments.parseStyle,
                                       arguments.countMethod,
                                       ignoreEmptyHits=arguments.mappedHitsOnly,

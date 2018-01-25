@@ -150,7 +150,7 @@ def main():
             inhandle,
             valueMap,
             arguments.hitTableFormat,
-            arguments.filterTopPct,
+            arguments.filter_top_pct,
             arguments.parseStyle,
             arguments.countMethod,
             ignoreEmptyHits=arguments.mappedHitsOnly)

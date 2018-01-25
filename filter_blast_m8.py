@@ -92,24 +92,24 @@ def getOutputFile(infile, arguments):
     Use the requested arguments to name the output file
     """
     outfile = infile
-    if arguments.filterPctid > 0:
-        outfile += ".i%g" % arguments.filterPctid
-    if arguments.filterLength > 0:
-        outfile += ".l%d" % arguments.filterLength
-    if arguments.filterBits > 0:
-        outfile += ".b%g" % arguments.filterBits
-    if arguments.filterEvalue is not None:
-        outfile += ".e%g" % arguments.filterEvalue
-    if arguments.filterAln is not None and arguments.filterAln > 0:
-        outfile += ".a%g" % arguments.filterAln
-    if arguments.filterHspsPerHit != 1:
-        outfile += ".h%d" % arguments.filterHspsPerHit
-    if arguments.filterTopPct >= 0:
-        outfile += ".p%g" % arguments.filterTopPct
-    if arguments.filterNonoverlapping:
-        outfile += ".u"
-    if arguments.filterHitsPerRead > 0:
-        outfile += ".n%d" % arguments.filterHitsPerRead
+    if arguments.filter_pctid > 0:
+        outfile += ".I%g" % arguments.filter_pctid
+    if arguments.filter_length > 0:
+        outfile += ".L%d" % arguments.filter_length
+    if arguments.filter_bits > 0:
+        outfile += ".B%g" % arguments.filter_bits
+    if arguments.filter_evalue is not None:
+        outfile += ".E%g" % arguments.filter_evalue
+    if arguments.filter_aln is not None and arguments.filter_aln > 0:
+        outfile += ".N%g" % arguments.filter_aln
+    if arguments.filter_hsps_per_hit != 0:
+        outfile += ".P%d" % arguments.filter_hsps_per_hit
+    if arguments.filter_top_pct >= 0:
+        outfile += ".F%g" % arguments.filter_top_pct
+    if arguments.filter_nonoverlapping:
+        outfile += ".U"
+    if arguments.filter_hits_per_read > 0:
+        outfile += ".H%d" % arguments.filter_hits_per_read
 
     if outfile == infile:
         sys.exit("outfile and infile are the same!!\n%s" % infile)

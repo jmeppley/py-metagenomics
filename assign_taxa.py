@@ -98,7 +98,7 @@ each read to a taxon. Hit table may be specified with -i or piped to STDIN.
             inhandle,
             value_map,
             arguments.hitTableFormat,
-            arguments.filterTopPct,
+            arguments.filter_top_pct,
             arguments.parseStyle,
             arguments.countMethod,
             taxonomy=taxonomy,
