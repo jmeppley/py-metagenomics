@@ -1,11 +1,8 @@
 Taxon	S1	S2	S3
-Archaea	1	0	0
-Bacteria <prokaryote>	9	0	0
-Bacteria <prokaryote>;Acidobacteria <phylum>	9	0	3
-Bacteria <prokaryote>;Bacteroidetes <phylum>	18	0	6
-Bacteria <prokaryote>;Cyanobacteria	104	0	42
-Bacteria <prokaryote>;Firmicutes	12	0	1
-Bacteria <prokaryote>;Proteobacteria	144	0	49
-Eukaryota	0	0	1
+;cellular organisms	8	0	29
+Bacteria <prokaryote>	38	0	18
+Bacteria <prokaryote>;Actinobacteria <phylum>	135	0	28
+Bacteria <prokaryote>;Bacteroidetes <phylum>	13	0	4
+Bacteria <prokaryote>;Cyanobacteria	102	0	22
 Viruses	4	0	2
-root	2	0	0
+root	0	0	2

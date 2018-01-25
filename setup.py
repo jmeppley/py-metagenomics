@@ -1,3 +1,4 @@
+import glob
 try:
     from setuptools import setup
 except ImportError:
@@ -14,8 +15,6 @@ URL = 'http://eddelong.mit.edu/'
 DOWNLOAD_URL = 'http://github.com/jmeppley/py-metagenomics'
 LICENSE = 'GPL'
 VERSION = '0.3.01'
-
-import glob
 
 setup(name=NAME,
       version=VERSION,

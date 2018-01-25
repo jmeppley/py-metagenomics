@@ -1,8 +1,8 @@
 #! /usr/bin/python
-import sys
 import logging
 import re
-from edl.util import parseExp, LineCounter, openInputFile
+import sys
+from edl.util import LineCounter, openInputFile, parseExp
 logger = logging.getLogger(__name__)
 
 #############
@@ -270,7 +270,7 @@ class Hit:
         self.astart = int(cells[3])
         self.aend = self.astart + alenh - 1
         self.qlen = len(cells[9])
-        self.aln = float(self.mlen)/float(self.qlen)
+        self.aln = float(self.mlen) / float(self.qlen)
         self.score = None
         for tagstr in cells[11:]:
             if tagstr.startswith('AS'):
@@ -293,7 +293,7 @@ class Hit:
         self.read = cells[3]
         qlen = int(cells[5])
         self.hit = cells[0]
-        hitLen = int(cells[2])
+        # self.hlen = int(cells[2])
         self.evalue = float(cells[6])
         self.score = float(cells[7])
         self.hstart = int(cells[15])
@@ -328,7 +328,7 @@ class Hit:
         qlen = int(cells[2])
         self.hit = cells[3]
         self.hitDesc = cells[4]
-        hitLen = int(cells[5])
+        # self.hlen = int(cells[5])
         self.evalue = float(cells[6])
         self.score = float(cells[7])
         self.hstart = int(cells[15])
@@ -424,9 +424,9 @@ class Hit:
             self.qend = self.qstart - qmlen + 1
         self.aln = qmlen / float(qlen)
         if cells[9] == cells[4]:
-            strand = "+"
+            self.strand = "+"
         else:
-            strand = "-"
+            self.strand = "-"
 
         # some versions have evalues in the last few spots (eg: E=2.1e-09)
         self.evalue = float(cells[13][2:].strip()) if len(cells) > 13 else None
@@ -975,8 +975,8 @@ def add_hit_table_arguments(parser,
         sortReads (sort lines by read name)
 
     filtering options:
-        filter_top_pct (aka top_pct: minimum pct of best score for other scores.
-                    0, for best score only, 100 for all hits)
+        filter_top_pct (aka top_pct: minimum pct of best score for other
+                     scores. 0, for best score only, 100 for all hits)
         bits (minimum bit score)
         evalue
         pctid
@@ -1043,10 +1043,8 @@ def add_hit_table_arguments(parser,
                  "hit table is from last, it will be automatically sorted "
                  "by read. Sorting by read is slow and should be avoided "
                  "if you already have a sorted and filtered hit table "
-                 "(e.g. skip this option). Default is {}".format(
-                                                            defaults.get(
-                                                                "filter_top_pct",
-                                                                -1)))
+                 "(e.g. skip this option). Default is {}"
+                 .format(defaults.get("filter_top_pct", -1)))
     if flags == 'all' or 'bits' in flags:
         agroup.add_argument('-B', '--bitScore', dest='filter_bits',
                             type=int, default=defaults.get("bits", 0),
@@ -1128,7 +1126,8 @@ def add_hit_table_arguments(parser,
                 'evalue',
                 'pctid',
                 'score'],
-            help="sort hits for each read by 'evalue', 'pctid' or 'score' before "
+            help="sort hits for each read by 'evalue', 'pctid' or 'score' "
+                 "before "
                  "filtering. Secondarily sorted by hit id to make output "
                  "more deterministic")
     if flags == 'all' or 'sortReads' in flags:
@@ -1211,6 +1210,8 @@ def parseCigarString(cigar):
 
 
 capturing_digits_re = re.compile(r'(\d+)')
+
+
 def get_alignment_percent_identity(mdx_string):
     """
     Use the MD:Z string returned by BWA to get percent ID
@@ -1218,7 +1219,7 @@ def get_alignment_percent_identity(mdx_string):
     matches = 0
     mismatches = 0
     for chunk in capturing_digits_re.split(mdx_string):
-        if len(chunk)==0:
+        if len(chunk) == 0:
             # first and last elements are often empty strings. Ignore them
             continue
         if chunk.startswith('^'):
@@ -1231,7 +1232,7 @@ def get_alignment_percent_identity(mdx_string):
             # otherwise, it's the string of the reference that was mismatched
             mismatches += len(chunk)
 
-    return float(matches)/float(matches + mismatches)
+    return float(matches) / float(matches + mismatches)
 
 
 def setup_tests():
@@ -1353,6 +1354,7 @@ def test_gff():
     myAssertEq(hit.read, 'KM282-20-02a-100_c1')
     myAssertEq(hit.score, 53.3)
     myAssertEq(hit.hit, '1_2')
+
 
 if __name__ == '__main__':
     test()

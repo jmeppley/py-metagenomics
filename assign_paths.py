@@ -27,13 +27,11 @@ assignment values for that query sequence (1 for each pathway it belongs to).
 """
 
 import argparse
-import sys
-import re
 import logging
-from edl import redistribute, kegg, hits
-from edl.util import add_universal_arguments, setup_logging, parseMapFile, \
-        add_IO_arguments, inputIterator
-from edl.expressions import accessionRE, nrOrgRE
+import re
+from edl import hits, kegg
+from edl.util import add_IO_arguments, add_universal_arguments, \
+        inputIterator, parseMapFile, setup_logging
 
 
 def main():
@@ -196,6 +194,7 @@ def getCazyGroup(gene):
         cazygroup = gene
     return cazygroup
 
+
 # levels equivalent to returning just the ko/gene
 koSyns = [None, 'ko', 'gene', 'ortholog', 'family', 'role']
 level3Syns = ['subsystem', 'pathway', 'group']
@@ -275,4 +274,3 @@ def handleMultipleMappings(assignmentList, arguments):
 
 if __name__ == '__main__':
     main()
-

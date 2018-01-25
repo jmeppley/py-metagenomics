@@ -4,10 +4,10 @@ Library of methods and regular expressions for parsing files from the
 KEGG gene ontology
 """
 
-import sys
-import re
 import logging
 import os
+import re
+import sys
 logger = logging.getLogger(__name__)
 
 ##############
@@ -426,7 +426,8 @@ def readKeggFile(keggFile, keggLevel):
                 ko = m.group(1)
                 # make sure we have something to map to
                 if desc == '':
-                    die("Pathway info not found before ko: %s" % ko)
+                    raise Exception("Pathway info not found before ko: %s"
+                                    % ko)
                 try:
                     if desc not in kmap[ko]:
                         kmap[ko].append(desc)
@@ -509,7 +510,7 @@ def add_path_arguments(parser, defaults={}, choices={}, helps={}):
     # get format and filter_top_pct arguments from blastm8
     from edl.hits import HITID, ACCS, GIS, KEGG, HITDESC, PFAM
     from edl.blastm8 import add_hit_table_arguments
-    add_hit_table_arguments(parser, defaults, flags=['format', 
+    add_hit_table_arguments(parser, defaults, flags=['format',
                                                      'filter_top_pct',
                                                      'sort'
                                                     ])
@@ -709,7 +710,7 @@ def testReadKeggFile(keggFile):
     for k in k3map.keys():
         try:
             myAssertEq(k3map[k], k3mapQ[k])
-        except AsserionError:
+        except AssertionError:
             raise AssertionError(
                 "level 3 classes for %s do not match:\n%s\n%s" %
                 (k, k3map[k], k3mapQ[k]))
@@ -725,6 +726,7 @@ def testReadKoFile(koFile):
     kEmap = readKOFile(koFile, 'EC')
     myAssertEq(kEmap['K00397'], ['EC:1.8.99.-'])
     myAssertEq(kEmap['K00399'], ['EC:2.8.4.1'])
+
 
 if __name__ == '__main__':
     test()

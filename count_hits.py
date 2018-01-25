@@ -4,12 +4,14 @@ Count hits in a tabular blast output. By default, first hit for each read
 is used.
 """
 
-import sys
-import re
-import logging
 import argparse
-from edl.hits import add_count_arguments, getAllMethod, add_weight_arguments, applyFractionalCutoff
-from edl.util import add_universal_arguments, setup_logging
+import logging
+import re
+import sys
+from edl.hits import add_count_arguments, add_weight_arguments, \
+        applyFractionalCutoff, getAllMethod
+from edl.util import add_universal_arguments, setup_logging, \
+        parseMapFile
 
 # a habit that stuck in Perl
 die = sys.exit
@@ -211,6 +213,7 @@ def main():
         count = counts[hit]
         hit = delimRE.sub('_', hit)
         outhandle.write(outFmtString % (hit, arguments.delimOut, count))
+
 
 if __name__ == '__main__':
     main()
