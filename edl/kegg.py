@@ -506,11 +506,11 @@ def processBriteFile(pathway, desc, file1, kmap):
 
 
 def add_path_arguments(parser, defaults={}, choices={}, helps={}):
-    # get format and filterPct arguments from blastm8
+    # get format and filter_top_pct arguments from blastm8
     from edl.hits import HITID, ACCS, GIS, KEGG, HITDESC, PFAM
     from edl.blastm8 import add_hit_table_arguments
     add_hit_table_arguments(parser, defaults, flags=['format', 
-                                                     'filterPct',
+                                                     'filter_top_pct',
                                                      'sort'
                                                     ])
 
@@ -586,7 +586,7 @@ def add_path_arguments(parser, defaults={}, choices={}, helps={}):
                 "countMethod",
                 "first"))),
         metavar="COUNTMETHOD")
-    if defaults.get("filterForPath", False):
+    if defaults.get("filter_for_path", False):
         action = 'store_false'
         default = True
         helpstr = 'Consider all hits. By deafult, only hits with path \
@@ -599,7 +599,7 @@ all hits are used and if the best hit(s) is(are) to sequences with no path, \
 then the read will not be assigned to a path'
     pgroup.add_argument(
         "-r",
-        "--filterForPath",
+        "--filter_for_path",
         action=action,
         dest="mappedHitsOnly",
         default=default,

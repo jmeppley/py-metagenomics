@@ -242,8 +242,7 @@ def main():
                                       arguments.filter_top_pct,
                                       arguments.parseStyle,
                                       arguments.countMethod,
-                                      ignoreEmptyHits=arguments.mappedHitsOnly,
-                                     )
+                                      ignoreEmptyHits=arguments.mappedHitsOnly)
 
             (total, counts, hitMap) = \
                 countIterHits(hitIter,

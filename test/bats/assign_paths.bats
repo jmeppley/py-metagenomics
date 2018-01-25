@@ -6,7 +6,7 @@
 }
 
 @test "Testing assign_paths squash" {
-    run ./assign_paths.py -H test/data/kobrite/ko00001.keg -l ko -l 3  -m test/data/ko.map.partial -v -s test/data/contig.CDSs.faa.vs.KEGG.lastal -o test/data/.tst.contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash
+    run ./assign_paths.py -H test/data/kobrite/ko00001.keg -l ko -l 3  -m test/data/ko.map.partial -v -S test/data/contig.CDSs.faa.vs.KEGG.lastal -o test/data/.tst.contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash
     [ "$status" = 0 ]
 }
 @test "Checking assign_paths squash output" {

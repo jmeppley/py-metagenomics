@@ -39,7 +39,7 @@ def main():
         defaults={
             'mapFile': None,
             'parseStyle': ACCS,
-            'filter_pct': -1,
+            'filter_top_pct': -1,
             'countMethod': 'all',
             'taxdir': None})
     parser.add_argument(

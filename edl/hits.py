@@ -942,9 +942,9 @@ def _findAllREfunction(hit, expr):
 
 
 def add_taxon_arguments(parser, defaults={}, choices={}):
-    # get format and filterPct options from blastm8
+    # get format and filter_top_pct options from blastm8
     add_hit_table_arguments(parser, defaults,
-                            flags=['format', 'filterPct'])
+                            flags=['format', 'filter_top_pct'])
 
     # specific to taxon parsing:
     parser.add_argument(
