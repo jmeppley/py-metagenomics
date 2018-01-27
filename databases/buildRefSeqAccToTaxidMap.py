@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """
 Read RefSeq catalog from stdin:
     get taxid, name, accession from first three columns
@@ -32,7 +32,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if options.about:
-        print description
+        print (description)
         exit(0)
 
     # check args
@@ -86,7 +86,7 @@ def main():
             logging.debug("Changing %s to %s" % (taxid,node.id))
             taxid = node.id
             changes+=1
-        print '\t'.join([acc,str(taxid)])
+        print ('\t'.join([acc,str(taxid)]))
     logging.info("Changed %d taxon ids" % changes)
 
 if __name__ =='__main__':
