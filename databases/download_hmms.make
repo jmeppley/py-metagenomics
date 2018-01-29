@@ -18,7 +18,8 @@
 #
 ###########################
 SEQDB_ROOT?=./seqdbs
-CDD_HMM_SCRIPT=./cdd-to-aln.prokka.pl
+DB_SCRIPT_DIR?=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+CDD_HMM_SCRIPT=$(DB_SCRIPT_DIR)/cdd-to-aln.prokka.pl
 
 DBLIST=
 

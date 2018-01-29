@@ -25,8 +25,7 @@ MAX_ATTEMPTS=10
 
 # where to put it
 SEQDB_ROOT?=.
-DB_SCRIPT_DIR?=.
-SCRIPT_DIR?=..
+DB_SCRIPT_DIR?=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 BUILD_ROOT?=$(SEQDB_ROOT)/RefSeq
 RSDIR:=$(BUILD_ROOT)/$(REL)
 
@@ -66,8 +65,6 @@ ACCTAXMAPDB:=$(LASTP).tax
 HITIDMAP:=$(LASTP).ids
 ACCTAXMAP:=$(ACCPREFP)
 
-TAXMAPSCRIPT=$(DB_SCRIPT_DIR)/buildRefSeqAccToTaxidMap.py
-
 ##
 # Build the arguments for all
 ifeq ($(BUILD_LASTDB),False)
@@ -106,7 +103,7 @@ $(LASTFILE): $(FAA) | $(LASTDIR)
 $(FAA): $(RSDIR)/complete/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
 	@echo "... and masking low complexity with tantan"
-	for FILE in $(RSDIR)/complete/complete.*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/get_sequences_from_gb.py -F fasta -r | tantan -p > $@
+	for FILE in $(RSDIR)/complete/complete.*.protein.gpff.gz; do gunzip -c $$FILE; done | get_sequences_from_gb.py -F fasta -r | tantan -p > $@
 
 $(RSDIR)/complete:
 	mkdir -p $@

@@ -16,8 +16,6 @@ FTP_ROOT:=ftp://ftp.bioinformatics.jp/kegg
 KGVER:=$(shell curl --user $(KEGG_USER):$(KEGG_PASSWORD) $(FTP_ROOT)/RELEASE | head -1 | perl -pe 's/[^0-9]//g')
 KEGG_USER?=
 KEGG_PASSWORD?=
-
-DB_SCRIPT_DIR?=.
 BUILD_ROOT?=./KEGG
 KGDIR:=$(BUILD_ROOT)/$(KGVER)
 
