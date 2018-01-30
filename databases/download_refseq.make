@@ -33,14 +33,20 @@ BUILD_LASTDB:=True
 LASTDB_ROOT?=$(SEQDB_ROOT)
 LASTDB_DIR:=$(LASTDB_ROOT)/RefSeq/$(REL)
 LASTDBCHUNK?=
+LASTDBTHREADS?=
 
 # Most folks won't need to edit below this line
 
-# command line uption for running lastdb
+# command line options for running lastdb
 ifeq ($(LASTDBCHUNK),)
-	LASTDBCHUNK_OPTION:=
+    LASTDBCHUNK_OPTION:=
 else
-	LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+    LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+endif
+ifeq ($(LASTDBTHREADS),)
+    LASTDBTHREADS_OPTION:=
+else
+    LASTDBTHREADS_OPTION:= -P $(LASTDBTHREADS)
 endif
 
 # Define the layout of the build directory
@@ -94,7 +100,7 @@ $(LASTDIR):
 
 $(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
-	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
+    lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTDBTHREADS_OPTION) $(LASTP) $(FAA)
 
 %.stats: %
 	cat $^ | prinseq-lite.pl -fasta stdin -aa -stats_len -stats_info > $@
