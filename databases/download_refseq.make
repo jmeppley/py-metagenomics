@@ -24,8 +24,7 @@ REL:=$(REL)
 MAX_ATTEMPTS=10
 
 # where to put it
-SEQDB_ROOT?=.
-DB_SCRIPT_DIR?=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+SEQDB_ROOT?=./seqdbs
 BUILD_ROOT?=$(SEQDB_ROOT)/RefSeq
 RSDIR:=$(BUILD_ROOT)/$(REL)
 

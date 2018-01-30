@@ -4,8 +4,6 @@ FTP_ROOT=ftp://ftp.ncbi.nlm.nih.gov/refseq/release
 REL?=$(shell curl $(FTP_ROOT)/RELEASE_NUMBER)
 REL:=$(REL)
 
-DB_SCRIPT_DIR?=.
-SCRIPT_DIR?=..
 ROOT_DIR?=.
 BUILD_ROOT?=$(ROOT_DIR)/RefSeq
 RSDIR:=$(BUILD_ROOT)/$(REL)
@@ -53,8 +51,6 @@ PLUSACCMAPP=$(ACCPREFP).plus
 ACCTAXMAPDB:=$(LASTP).tax
 HITIDMAP:=$(LASTP).ids
 
-TAXMAPSCRIPT=$(DB_SCRIPT_DIR)/buildRefSeqAccToTaxidMap.py
-
 ##
 # Build the arguments for all
 ALL_TARGETS:=lastdb $(ACCTAXMAPDB)
@@ -85,15 +81,15 @@ $(FAA): $(ADDFAA) $(COMPLETEFAA)
 $(ADDFAA): $(ADDACCMAPP) $(ADDITIONS_FAA)
 	@echo "==Copying records from $@ that are included in $(ADDACCMAPP)"
 	@echo "==Also masking low complexity with tantan"
-	python $(SCRIPT_DIR)/screen_list.py -a -k -C 0 $(ADDITIONS_FAA) -l $(ADDACCMAPP) | tantan -p > $@
+	screen_list.py -a -k -C 0 $(ADDITIONS_FAA) -l $(ADDACCMAPP) | tantan -p > $@
 
 $(ADDITIONS_FILTER): $(ADDITIONS_TAXIDS) $(MDDIR)/release$(REL).taxon.new
 	#touch $(ADDITIONS_FILTER)
-	cut -f 2 $(ADDITIONS_TAXIDS) | uniq | python $(SCRIPT_DIR)/screen_table.py -l $(MDDIR)/release$(REL).taxon.new -k > $@
+	cut -f 2 $(ADDITIONS_TAXIDS) | uniq | screen_table.py -l $(MDDIR)/release$(REL).taxon.new -k > $@
 
 $(ADDACCMAPP): $(ADDITIONS_TAXIDS) $(ADDITIONS_FILTER)
 	@echo "==Importing taxid map for additions"
-	if [ -s $(ADDITIONS_FILTER) ]; then python $(SCRIPT_DIR)/screen_table.py $(ADDITIONS_TAXIDS) -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $< $@; fi
+	if [ -s $(ADDITIONS_FILTER) ]; then screen_table.py $(ADDITIONS_TAXIDS) -l $(ADDITIONS_FILTER) -c 1 -o $@; else cp $< $@; fi
 
 $(PLUSACCMAPP): $(ADDACCMAPP) $(ACCMAPP)
 	cat $(ADDACCMAPP) $(ACCMAPP) > $@
