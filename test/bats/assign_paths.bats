@@ -22,3 +22,22 @@
     run diff test/data/contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.split test/data/.tst.contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.split
     [ "$status" = 0 ]
 }
+
+@test "Testing assign_paths consensus" {
+	run ./assign_paths.py -f hmmsearchdom --sort score -C consensus -F 5 -r -p hitid test/data/reads.non-rRNA.vs.COG.tbl.reads.head50 -o test/data/.tst.reads.non-rRNA.vs.COG.tbl.reads.head50.COGs.consensus
+	[ "$status" = 0 ]
+}
+@test "Checking assign_paths consensus" {
+    run diff <(sort test/data/reads.non-rRNA.vs.COG.tbl.reads.head50.COGs.consensus) <(sort test/data/.tst.reads.non-rRNA.vs.COG.tbl.reads.head50.COGs.consensus)
+    [ "$status" = 0 ]
+}
+
+@test "Testing assign_paths most" {
+	run ./assign_paths.py -f hmmsearchdom --sort score -C most -F 5 -r -p hitid test/data/reads.non-rRNA.vs.COG.tbl.reads.head50 -o test/data/.tst.reads.non-rRNA.vs.COG.tbl.reads.head50.COGs.most
+	[ "$status" = 0 ]
+}
+@test "Checking assign_paths most" {
+    run diff <(sort test/data/reads.non-rRNA.vs.COG.tbl.reads.head50.COGs.most) <(sort test/data/.tst.reads.non-rRNA.vs.COG.tbl.reads.head50.COGs.most)
+    [ "$status" = 0 ]
+}
+
