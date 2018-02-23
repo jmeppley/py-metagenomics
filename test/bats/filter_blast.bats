@@ -26,6 +26,15 @@
     [ "$status" = 0 ]
 }
 
+@test "Testing filter_blast with non overlapping with buffer" {
+    OF='test/data/.tst.contigs.lastn.L100.U200.H1'
+    OFCOMP='test/data/contigs.lastn.L100.U200.H1'
+    run ./filter_blast_m8.py -f blast test/data/contigs.lastn --nonoverlapping 200 --sort pctid -L 100 -H 1 -o $OF
+    [ "$status" = 0 ]
+    run diff <(sort $OFCOMP) <(sort $OF)
+    [ "$status" = 0 ]
+}
+
 @test "Testing filter_blast auto output name" {
     OF=test/data/contigs.lastn.I80.L100.B50.P10.H1
     rm -f $OF

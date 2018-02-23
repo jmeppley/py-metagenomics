@@ -117,7 +117,7 @@ class FilterParams:
             aln=None,
             hits_per_read=0,
             hsps_per_hit=0,
-            nonoverlapping=False,
+            nonoverlapping=-1,
             sort=None,
             sortReads=None,
             bad_refs=None):
@@ -510,7 +510,7 @@ class Hit:
             sys.exit("Cannot calculate alignment percentage from"
                      "data in this m8 format")
 
-    def checkForOverlap(self, regions):
+    def checkForOverlap(self, regions, buffer):
         # make sure start is smaller than end
         start = min(self.qstart, self.qend)
         end = max(self.qstart, self.qend)
@@ -518,7 +518,7 @@ class Hit:
         for i in range(len(regions)):
             occupiedRange = regions[i]
             # hit cannot intersect an used range
-            if (start >= occupiedRange[1] or end <= occupiedRange[0]):
+            if (start >= occupiedRange[1] - buffer or end <= occupiedRange[0] + buffer):
                 # does not overlap this range (try next range)
                 continue
             else:
@@ -526,18 +526,21 @@ class Hit:
                 return ((start, end), occupiedRange)
         return ((start, end), None)
 
-    def checkForOverlapAndAdd(self, regions):
+    def checkForOverlapAndAdd(self, regions, buffer):
         """
         check to see if this hit overlaps any already hit region.
+
+        Regions must overlap by at least "buffer" bases to count.
+
         The regions array should be a list of (Start,end) pairs
-        indicating resiongs already hit.
+        indicating regions already hit.
         """
         logger.debug(
             "Looking for [%d,%d] in %s" %
             (self.qstart, self.qend, regions))
 
         # compare with all used ranges
-        hit_span, overlap_region = self.checkForOverlap(regions)
+        hit_span, overlap_region = self.checkForOverlap(regions, buffer)
         if overlap_region is not None:
             return None
 
@@ -862,7 +865,7 @@ def doWeNeedToFilter(options):
         return True
     if options.hsps_per_hit > 0:
         return True
-    if options.nonoverlapping:
+    if options.nonoverlapping >= 0:
         return True
     if options.bad_refs:
         return True
@@ -941,9 +944,10 @@ def filterHits(hits, options, returnLines=True):
             logger.debug("Too many HSPs")
             continue
 
-        if options.nonoverlapping:
+        if options.nonoverlapping >= 0:
             # check for previous overlapping hits
-            new_hit_regions = hit.checkForOverlapAndAdd(hit_regions)
+            new_hit_regions = hit.checkForOverlapAndAdd(hit_regions, 
+                                                        options.nonoverlapping)
             if new_hit_regions is not None:
                 hit_regions = new_hit_regions
             else:
@@ -1106,15 +1110,20 @@ def add_hit_table_arguments(parser,
             help="Maximum number of HSPs to keep per hit. 0 for all HSPs. "
                  "Default: %s" % (default))
     if flags == 'all' or 'nonoverlapping' in flags:
-        default = defaults.get("nonoverlapping", False)
+        default = defaults.get("nonoverlapping", -1)
         agroup.add_argument(
-            '-O',
+            '-U',
             '--nonoverlapping',
-            action='store_true',
+            nargs="?",
+            type=int,
+            const=0,
             default=default,
+            action='store',
             dest='filter_nonoverlapping',
-            help="Ignore hits which overlap higher scoring hits.Default: %s" %
-            (default))
+            help="Ignore hits which overlap higher scoring hits. Optional "
+                 "integer value may be specified to ignore small overlaps. "
+                 "A negative value allows all overlaps. "
+                 "Default: %s" % (default))
     if flags == 'all' or 'sort' in flags:
         default = defaults.get("sort", None)
         agroup.add_argument(
