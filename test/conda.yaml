@@ -5,6 +5,7 @@ dependencies:
         - python=3
         - bats
         - nose
+        - pycodestyle
         - numpy
         - biopython
         - pandas
