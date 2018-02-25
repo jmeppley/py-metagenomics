@@ -470,6 +470,7 @@ def getCazyGroup(gene):
         cazygroup = gene
     return cazygroup
 
+
 # levels equivalent to returning just the ko/gene
 koSyns = [None, 'ko', 'gene', 'ortholog', 'family', 'role']
 level3Syns = ['subsystem', 'pathway', 'group']

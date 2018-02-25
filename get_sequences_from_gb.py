@@ -103,10 +103,11 @@ def main():
                     arguments.cds,
                     arguments.translate,
                     arguments.refseq)
-            except:
+            except Exception:
                 warn("Exception parsing %s:\n-----\n" % (name))
                 traceback.print_exc(file=sys.stderr)
             instream.close()
+
 
 #############
 # Functions #
@@ -167,7 +168,7 @@ def translateStream(
 def getCodingSequences(record, makeRefSeq):
     try:
         org = " [%s]" % (record.annotations['organism'])
-    except:
+    except KeyError:
         org = None
 
     seqs = []
@@ -246,6 +247,7 @@ def getCodingSequences(record, makeRefSeq):
 def translateRecord(record):
     record.seq = record.seq.translate()
     return record
+
 
 if __name__ == '__main__':
     main()

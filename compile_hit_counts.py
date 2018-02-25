@@ -233,5 +233,6 @@ def print_table(output,
                     output.write(str(row.get(col, "0")))
             output.write("\n")
 
+
 if __name__ == '__main__':
     main()

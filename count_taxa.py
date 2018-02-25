@@ -462,5 +462,6 @@ def formatTaxon(taxon, displayedRanks, leafRank, delim=';'):
     logging.debug("Lineage: %s", lineage)
     return lineage
 
+
 if __name__ == '__main__':
     main()
