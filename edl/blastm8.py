@@ -161,7 +161,7 @@ class Hit:
             return Hit(line, options)
         except EmptyHitException:
             return None
-        except:
+        except Exception:
             logger.warn("Error parsing line:\n%s" % (line))
             raise
 
@@ -241,7 +241,7 @@ class Hit:
         self.hitDesc = cells[2]
         try:
             self.pctid = float(cells[3])
-        except:
+        except ValueError:
             # leave unset if it's not a float
             pass
         self.mlen = int(cells[4])
@@ -515,10 +515,14 @@ class Hit:
         start = min(self.qstart, self.qend)
         end = max(self.qstart, self.qend)
 
+        # adjust start/end to account for buffer
+        buf_st = start + buffer
+        buf_en = end - buffer
+
         for i in range(len(regions)):
             occupiedRange = regions[i]
             # hit cannot intersect an used range
-            if (start >= occupiedRange[1] - buffer or end <= occupiedRange[0] + buffer):
+            if (buf_st >= occupiedRange[1] or buf_en <= occupiedRange[0]):
                 # does not overlap this range (try next range)
                 continue
             else:
@@ -735,7 +739,7 @@ def getUnsortedHitStream(instream, options):
             continue
         try:
             hit = Hit.getHit(line, options)
-        except:
+        except Exception:
             print("ERROR parsing line")
             print(line)
             raise
@@ -946,7 +950,7 @@ def filterHits(hits, options, returnLines=True):
 
         if options.nonoverlapping >= 0:
             # check for previous overlapping hits
-            new_hit_regions = hit.checkForOverlapAndAdd(hit_regions, 
+            new_hit_regions = hit.checkForOverlapAndAdd(hit_regions,
                                                         options.nonoverlapping)
             if new_hit_regions is not None:
                 hit_regions = new_hit_regions

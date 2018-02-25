@@ -64,7 +64,7 @@ def main():
             "%d of %d items in list were not found in fasta data" %
             (len(read_set), numReads))
         logging.debug(read_set)
-        
+
 
 verbose = False
 

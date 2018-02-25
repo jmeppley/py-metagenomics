@@ -619,13 +619,13 @@ def _getReadHitsEval(cells, readCol, hitCol, hitSep):
     # try to evaluate expression
     try:
         hit = eval(hit)
-    except:
+    except Exception:
         logger.warn("exception from 'eval(%r)'" % (hit))
 
     # make it iterable if it's not
     try:
         getattr(hit, '__iter__')
-    except:
+    except AttributeError:
         hit = (hit,)
 
     return (read, hit)
@@ -1040,6 +1040,7 @@ def readIDMap(options):
             valueType = None
     return parseMapFile(options.mapFile, valueType=valueType, keyType=keyType)
 
+
 allMethods = {ALLEQ: _oneCountPerHit,
               FIRST: _countFirstHit,
               PORTION: _portionHitCount}
@@ -1118,6 +1119,7 @@ def testTranslateAndCountHits(hits):
                    'Candidatus Pelagibacter': 'Pelagibacter'})
     myAssertEq(hits['000178_2410_1152'], ['other'])
     myAssertEq(hits['000093_2435_2228'], ['Pelagibacter'])
+
 
 if __name__ == '__main__':
     test()

@@ -534,6 +534,7 @@ class FragmentableFileType:
     def recordStreamer(self, stream):
         return self._recordStreamer(self, stream)
 
+
 ##################
 # Constants
 ##################

@@ -129,6 +129,7 @@ def countBasesInFasta(fastaFile):
 
     return {'records': total_seqs, 'bases': total_bases}
 
+
 urlRE = re.compile(r'[a-z]+\:\/\/')
 
 
@@ -277,6 +278,7 @@ def parse_list_to_set(listFile, delim=None, keyType=None, col=None):
 
     return items
 
+
 ##
 # readClusterFile(file)
 # return dict from read name to cluster size
@@ -413,6 +415,7 @@ def add_universal_arguments(parser, addQuiet=True):
             const=0,
             help="Suppress warnings. Only print fatal messages")
 
+
 DEFAULT_LOGGER_FORMAT =\
     ':%(asctime)s::%(levelname)s:%(name)s:%(funcName)s:\n%(message)s'
 
@@ -480,6 +483,7 @@ def add_screen_arguments(parser, defaults={}, accs=False):
         parser.add_argument("-a", "--accs",
                             action="store_true", dest="accs", default=False,
                             help="parse accession from read name in fasta")
+
 
 dotRE = re.compile(r'(\.\d+)$')
 
@@ -595,6 +599,7 @@ def ascii_histogram(
         output += "%s|%s\n" % (rightPad(str(centers[i]), largestLabel),
                                getBarString(v, maxValue, plotWidth, log))
     return output
+
 
 logChars = ['-', '~', '=', '#']
 
