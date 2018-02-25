@@ -313,5 +313,6 @@ def maskRead(record, hitSpans, minLength):
 
     return records
 
+
 if __name__ == '__main__':
     main()

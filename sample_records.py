@@ -98,5 +98,6 @@ def main():
             count += 1
         logging.debug("Sampled %d records" % (count))
 
+
 if __name__ == '__main__':
     main()

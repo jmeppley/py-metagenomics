@@ -132,7 +132,7 @@ def main():
                 # print >> outhandle, new_line
                 print(new_line, file=outhandle)
                 lines_kept += 1
-            except:
+            except Exception:
                 logging.warn(
                     "Unexpected error (%s): %s" %
                     (sys.exc_info()[0], sys.exc_info()[1]))
@@ -168,6 +168,7 @@ applied to column %d" % (inhandle,
             logging.warn(
                 'Invalid lines found! EG line #%d: "%s"' %
                 (first_invalid_line, invalid_line))
+
 
 if (__name__ == '__main__'):
     main()
