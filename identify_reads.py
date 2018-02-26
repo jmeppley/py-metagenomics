@@ -309,7 +309,7 @@ def getTaxonFromArg(taxonomy, arg):
     """
     try:
         taxon = taxonomy.idMap[int(arg)]
-    except KeyError:
+    except Exception:
         taxon = getNodeFromHit(arg, taxonomy.nameMap)
         if taxon is None:
             raise "Cannot find taxon: %s"
