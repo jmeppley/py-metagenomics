@@ -106,7 +106,7 @@ def getOutputFile(infile, arguments):
         outfile += ".P%d" % arguments.filter_hsps_per_hit
     if arguments.filter_top_pct >= 0:
         outfile += ".F%g" % arguments.filter_top_pct
-    if arguments.filter_nonoverlappingi >= 0:
+    if arguments.filter_nonoverlapping >= 0:
         outfile += ".U"
         if arguments.filter_nonoverlapping >= 1:
             outfile += str(arguments.filter_nonoverlapping)
