@@ -14,7 +14,8 @@ MAINTAINER_EMAIL = "jmeppley@mit.edu"
 URL = 'http://eddelong.mit.edu/'
 DOWNLOAD_URL = 'http://github.com/jmeppley/py-metagenomics'
 LICENSE = 'GPL'
-VERSION = '0.3.01'
+import edl
+VERSION = edl.__version__
 
 setup(name=NAME,
       version=VERSION,
