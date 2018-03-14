@@ -17,9 +17,14 @@
 @test "Testing compile_hit_counts to two-index table for sparse data" {
     run ./compile_hit_counts.py -L -1 test/data/reads.annotations.taxon_rank.order.tsv -2 test/data/reads.annotations.gene_family.KEGG.tsv -o test/data/.tst.reads.annotations.order.KEGG.tsv -S -v
     [ "$status" = 0 ]
-}
-@test "Checking output from compile_hit_counts to two-index table for sparse data" {
     run diff test/data/reads.annotations.order.KEGG.tsv test/data/.tst.reads.annotations.order.KEGG.tsv
+    [ "$status" = 0 ]
+}
+
+@test "Testing compile_hit_counts to two-index table for sparse data with known read count" {
+    run ./compile_hit_counts.py -L -1 test/data/reads.annotations.taxon_rank.order.tsv -2 test/data/reads.annotations.gene_family.KEGG.tsv -o test/data/.tst.reads.annotations.order.KEGG.wUnk.tsv -S -T 900
+    [ "$status" = 0 ]
+    run diff test/data/reads.annotations.order.KEGG.wUnk.tsv test/data/.tst.reads.annotations.order.KEGG.wUnk.tsv
     [ "$status" = 0 ]
 }
 

@@ -55,6 +55,12 @@ def main():
                         metavar=("MULTIPLIER_TABLE"),
                         help=("Table of values to multiply each sequence. "
                               "EG assembly coverages."))
+    parser.add_argument("-T", "--total_reads",
+                        default=0,
+                        metavar="TOTAL_READS",
+                        type=int,
+                        help="Total number of reads to expect. (This allows "
+                             "the reporting of unknown read count)")
     parser.add_argument(
         "-o",
         "--outfile",
@@ -128,7 +134,8 @@ def main():
         multipliers = None
 
     logging.info("counting hits")
-    (table, cols) = combine_counts(hits1, hits2, multipliers)
+    (table, cols) = combine_counts(hits1, hits2, multipliers,
+                                   total_reads=arguments.total_reads)
 
     # print out hit table
     logging.info("printing table to " + arguments.outfile.name)
@@ -144,46 +151,72 @@ def main():
 def combine_counts(hits1,
                    hits2,
                    multipliers=None,
+                   total_reads=0,
                    unmatched_1="Unknown",
-                   unmatched_2="Unknown"):
+                   unmatched_2="Unknown",
+                  ):
     """ compile counts into nested dicts """
+    total_counted = 0
     counts = {}
 
     # keep track of all unique hit ids from set 2
     types2 = set()
 
     if multipliers is None:
-        def _update_hits(read, counts, hit1, hit2):
+        def _get_increment(read):
+            return 1
+
+        def _update_hits(increment, counts, hit1, hit2):
             """ Just add 1 to get raw numbers """
             h1counts = counts.setdefault(hit1, {})
-            h1counts[hit2] = h1counts.get(hit2, 0) + 1
+            h1counts[hit2] = h1counts.get(hit2, 0) + increment
     else:
-        def _update_hits(read, counts, hit1, hit2):
+        # if a mult table was given, use it to get total count
+        if total_reads == 0:
+            total_reads = len(multipliers)
+
+        def _get_increment(read):
+            """ get multiplier. Use pop to see leftovers """
+            return multipliers.pop(read, 1)
+
+        def _update_hits(increment, counts, hit1, hit2):
             """ count both raw numbers and multiplied """
             h1counts = counts.setdefault(hit1, {})
             count_tuple = h1counts.get(hit2, (0, 0))
             count_tuple = (count_tuple[0] + 1,
-                           count_tuple[1] + multipliers.get(read, 1))
+                           count_tuple[1] + increment)
             h1counts[hit2] = count_tuple
 
     # Start by using reads from hits1 as index
     for (read, hit_list1) in hits1.items():
         # remove hits from hits2 as we go, so we know what didn't match hits1
         # default to umatched_2
+        total_counted += 1
+        increment = _get_increment(read)
         hit_list2 = hits2.pop(read, [unmatched_2, ])
 
         for hit2 in hit_list2:
             for hit1 in hit_list1:
-                _update_hits(read, counts, hit1, hit2)
+                _update_hits(increment, counts, hit1, hit2)
             types2.add(hit2)
 
     # remaining reads in hits2 counted as Unknown
     # we know these don't exist in hits1
     hit1 = unmatched_1
     for read, hit_list2 in hits2.items():
+        total_counted += 1
+        increment = _get_increment(read)
         for hit2 in hit_list2:
-            _update_hits(read, counts, hit1, hit2)
+            _update_hits(increment, counts, hit1, hit2)
             types2.add(hit2)
+
+    # if a total was given
+    if total_reads > 0:
+        if multipliers is None:
+            counts[unmatched_1][unmatched_2] = total_reads - total_counted
+        else:
+            counts[unmatched_1][unmatched_2] = (total_reads - total_counted,
+                                                sum(multipliers.values()))
 
     return (counts, types2)
 
@@ -194,6 +227,7 @@ def print_table(output,
                 is_multiplied=False,
                 long_output=False):
     """ Render the output """
+    logging.debug([k for k in table.keys()])
     if long_output:
         # print one row per value
         for row_name in sorted(table.keys()):
