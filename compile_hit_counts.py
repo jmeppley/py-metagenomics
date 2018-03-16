@@ -212,11 +212,12 @@ def combine_counts(hits1,
 
     # if a total was given
     if total_reads > 0:
+        unknown_counts = counts.setdefault(unmatched_1, {})
         if multipliers is None:
-            counts[unmatched_1][unmatched_2] = total_reads - total_counted
+            unknown_counts[unmatched_2] = total_reads - total_counted
         else:
-            counts[unmatched_1][unmatched_2] = (total_reads - total_counted,
-                                                sum(multipliers.values()))
+            unknown_counts[unmatched_2] = (total_reads - total_counted,
+                                           sum(multipliers.values()))
 
     return (counts, types2)
 
