@@ -127,6 +127,7 @@ def main():
             valueMap = parseMapFile(
                 arguments.mapFile,
                 valueType=None,
+                valueDelim=arguments.tab_map_delim,
                 keyType=keyType)
         if len(valueMap) > 0:
             logging.info("Read %d items into map. EG: %s" %

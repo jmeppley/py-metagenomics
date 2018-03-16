@@ -546,6 +546,13 @@ def add_path_arguments(parser, defaults={}, choices={}, helps={}):
              "or the 3 column file from SEED. By default, this script "
              "will inspect the file and guess, but you can force 'kegg', "
              "'seed' or 'tab' with this argument.")
+    default = defaults.get('tab_map_delim', None)
+    pgroup.add_argument("--tab_map_delim",
+                        default=default,
+                        help="Delimiter to parse multiple assignments in "
+                        "map from ids to ko/path/fam. Only used for "
+                        "tabular mapping tables. Defaults to " +
+                        str(default))
     pgroup.add_argument(
         "-p",
         "--parseStyle",
