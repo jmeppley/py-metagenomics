@@ -174,9 +174,14 @@ def passThrough(x):
 
 
 def get_value_type_function(valueType, valueDelim):
+    logger.debug("get_value_type_function(%r, '%s')", valueType, valueDelim)
     if valueType is None:
-        return passThrough
+        if valueDelim is not None:
+            valueType = str
+        else:
+            return passThrough
     if valueDelim is not None:
+        logger.debug("mapped value delim is set to '%s'", valueDelim)
         baseValueType = valueType
         return lambda value_cell: [
             baseValueType(v) for v in value_cell.split(valueDelim)]
@@ -244,6 +249,7 @@ def parseMapFile(
             key = keyType(cells[keyCol].strip())
             value = valueType(cells[valueCol].strip())
             translation[key] = value
+            logger.debug("mapped %s to %s", key, value)
         else:
             badRows += 1
     if badRows > 0:
