@@ -1,2 +1,2 @@
 
-__version__ = '1.0.0-bugfix'
+__version__ = '1.1.0'
