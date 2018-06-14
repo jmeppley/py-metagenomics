@@ -1,3 +1,5 @@
+import glob
+import edl
 try:
     from setuptools import setup
 except ImportError:
@@ -13,9 +15,7 @@ MAINTAINER_EMAIL = "jmeppley@mit.edu"
 URL = 'http://eddelong.mit.edu/'
 DOWNLOAD_URL = 'http://github.com/jmeppley/py-metagenomics'
 LICENSE = 'GPL'
-VERSION = '0.3.01'
-
-import glob
+VERSION = edl.__version__
 
 setup(name=NAME,
       version=VERSION,
@@ -29,7 +29,8 @@ setup(name=NAME,
       download_url=DOWNLOAD_URL,
       license=LICENSE,
       packages=['edl', ],
-      scripts=list(glob.glob('*.py')),
+      scripts=[s for s in glob.glob('*.py')
+               if s != 'setup.py'],
       classifiers=[
           'Development Status :: 4 - Beta',
           'Environment :: Console',

@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 @test "Testing count_paths with acc map" {
-    run python ./count_paths.py test/data/sample.?.blastx.b50.m8 -o test/data/.tst.keggCounts.F0.acc.c0.tophit -c 0 -m test/data/acc.to.ko.protein.plus.filtered -C tophit -r -F 0 -p accs
+    run ./count_paths.py test/data/sample.?.blastx.b50.m8 -o test/data/.tst.keggCounts.F0.acc.c0.tophit -c 0 -m test/data/acc.to.ko.protein.plus.filtered -C tophit -r -F 0 -p accs
     [ "$status" = 0 ]
 }
 @test "Checking output from count_paths with acc map" {

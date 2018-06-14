@@ -1,8 +1,8 @@
 #! /usr/bin/python
-import sys
 import logging
 import re
-from edl.util import parseExp, LineCounter, openInputFile
+import sys
+from edl.util import LineCounter, openInputFile, parseExp
 logger = logging.getLogger(__name__)
 
 #############
@@ -62,17 +62,17 @@ class FilterParams:
         add_hit_table_arguments below into a FilterParams object.
         The attributes format, sort, and sortReads are expected
         to be in the arguments object with the 'hitTable' prefix.
-        The attributes bits, evalue, pctid, aln, length, hitsPerRead,
-        hspsPerHit, and nonoverlapping with the prefix 'filter'.
+        The attributes bits, evalue, pctid, aln, length, hits_per_read,
+        hsps_per_hit, and nonoverlapping with the prefix 'filter'.
         For example, arguments.hitTableFormat will be copied to
-        params.format and arguments.filterTopPct to params.topPct.
+        params.format and arguments.filter_top_pct to params.top_pct.
 
         translate= should be set to a dictionary mapping attributes
         of the arguments object to the desired attribuets of the
         FilterParams object.
 
         ignore= should be a list of the standard params to be skipped
-        (eg: filterTopPct).
+        (eg: filter_top_pct).
         """
         params = FilterParams()
 
@@ -88,11 +88,11 @@ class FilterParams:
             'pctid',
             'length',
             'aln',
-            'hitsPerRead',
-            'hspsPerHit',
+            'hits_per_read',
+            'hsps_per_hit',
             'nonoverlapping',
-                'topPct']:
-            oparam = 'filter' + param[0].upper() + param[1:]
+                'top_pct']:
+            oparam = 'filter_' + param
             if oparam not in ignore:
                 if hasattr(arguments, oparam):
                     setattr(params, param, getattr(arguments, oparam))
@@ -109,39 +109,39 @@ class FilterParams:
     def __init__(
             self,
             format=GENE,
-            topPct=-1,
+            top_pct=-1,
             bits=0.0,
             evalue=None,
             pctid=0.0,
             length=0,
             aln=None,
-            hitsPerRead=0,
-            hspsPerHit=0,
-            nonoverlapping=False,
+            hits_per_read=0,
+            hsps_per_hit=0,
+            nonoverlapping=-1,
             sort=None,
             sortReads=None,
             bad_refs=None):
         self.format = format
-        self.topPct = topPct
+        self.top_pct = top_pct
         self.bits = bits
         self.evalue = evalue
         self.pctid = pctid
         self.length = length
         self.aln = aln
-        self.hitsPerRead = hitsPerRead
-        self.hspsPerHit = hspsPerHit
+        self.hits_per_read = hits_per_read
+        self.hsps_per_hit = hsps_per_hit
         self.nonoverlapping = nonoverlapping
         self.sortReads = sortReads
         self.sort = sort
         self.bad_refs = None
 
     def __repr__(self):
-        return ("FilterParams(format=%r, topPct=%r, bits=%r, evalue=%r, "
-                "pctid=%r, length=%r, aln=%r, hitsPerRead=%r, "
-                "hspsPerHit=%r, nonoverlapping=%r sort=%r, sortReads=%r)" % (
-                        self.format, self.topPct, self.bits, self.evalue,
-                        self.pctid, self.length, self.aln, self.hitsPerRead,
-                        self.hspsPerHit, self.nonoverlapping, self.sort,
+        return ("FilterParams(format=%r, top_pct=%r, bits=%r, evalue=%r, "
+                "pctid=%r, length=%r, aln=%r, hits_per_read=%r, "
+                "hsps_per_hit=%r, nonoverlapping=%r sort=%r, sortReads=%r)" % (
+                        self.format, self.top_pct, self.bits, self.evalue,
+                        self.pctid, self.length, self.aln, self.hits_per_read,
+                        self.hsps_per_hit, self.nonoverlapping, self.sort,
                         self.sortReads))
 
 
@@ -161,7 +161,7 @@ class Hit:
             return Hit(line, options)
         except EmptyHitException:
             return None
-        except:
+        except Exception:
             logger.warn("Error parsing line:\n%s" % (line))
             raise
 
@@ -241,7 +241,7 @@ class Hit:
         self.hitDesc = cells[2]
         try:
             self.pctid = float(cells[3])
-        except:
+        except ValueError:
             # leave unset if it's not a float
             pass
         self.mlen = int(cells[4])
@@ -270,7 +270,7 @@ class Hit:
         self.astart = int(cells[3])
         self.aend = self.astart + alenh - 1
         self.qlen = len(cells[9])
-        self.aln = float(self.mlen)/float(self.qlen)
+        self.aln = float(self.mlen) / float(self.qlen)
         self.score = None
         for tagstr in cells[11:]:
             if tagstr.startswith('AS'):
@@ -293,7 +293,7 @@ class Hit:
         self.read = cells[3]
         qlen = int(cells[5])
         self.hit = cells[0]
-        hitLen = int(cells[2])
+        # self.hlen = int(cells[2])
         self.evalue = float(cells[6])
         self.score = float(cells[7])
         self.hstart = int(cells[15])
@@ -328,7 +328,7 @@ class Hit:
         qlen = int(cells[2])
         self.hit = cells[3]
         self.hitDesc = cells[4]
-        hitLen = int(cells[5])
+        # self.hlen = int(cells[5])
         self.evalue = float(cells[6])
         self.score = float(cells[7])
         self.hstart = int(cells[15])
@@ -424,9 +424,9 @@ class Hit:
             self.qend = self.qstart - qmlen + 1
         self.aln = qmlen / float(qlen)
         if cells[9] == cells[4]:
-            strand = "+"
+            self.strand = "+"
         else:
-            strand = "-"
+            self.strand = "-"
 
         # some versions have evalues in the last few spots (eg: E=2.1e-09)
         self.evalue = float(cells[13][2:].strip()) if len(cells) > 13 else None
@@ -510,15 +510,19 @@ class Hit:
             sys.exit("Cannot calculate alignment percentage from"
                      "data in this m8 format")
 
-    def checkForOverlap(self, regions):
+    def checkForOverlap(self, regions, buffer):
         # make sure start is smaller than end
         start = min(self.qstart, self.qend)
         end = max(self.qstart, self.qend)
 
+        # adjust start/end to account for buffer
+        buf_st = start + buffer
+        buf_en = end - buffer
+
         for i in range(len(regions)):
             occupiedRange = regions[i]
             # hit cannot intersect an used range
-            if (start >= occupiedRange[1] or end <= occupiedRange[0]):
+            if (buf_st >= occupiedRange[1] or buf_en <= occupiedRange[0]):
                 # does not overlap this range (try next range)
                 continue
             else:
@@ -526,18 +530,21 @@ class Hit:
                 return ((start, end), occupiedRange)
         return ((start, end), None)
 
-    def checkForOverlapAndAdd(self, regions):
+    def checkForOverlapAndAdd(self, regions, buffer):
         """
         check to see if this hit overlaps any already hit region.
+
+        Regions must overlap by at least "buffer" bases to count.
+
         The regions array should be a list of (Start,end) pairs
-        indicating resiongs already hit.
+        indicating regions already hit.
         """
         logger.debug(
             "Looking for [%d,%d] in %s" %
             (self.qstart, self.qend, regions))
 
         # compare with all used ranges
-        hit_span, overlap_region = self.checkForOverlap(regions)
+        hit_span, overlap_region = self.checkForOverlap(regions, buffer)
         if overlap_region is not None:
             return None
 
@@ -732,7 +739,7 @@ def getUnsortedHitStream(instream, options):
             continue
         try:
             hit = Hit.getHit(line, options)
-        except:
+        except Exception:
             print("ERROR parsing line")
             print(line)
             raise
@@ -747,7 +754,6 @@ def generate_hits(hit_table, format=BLASTPLUS, **filter_args):
     default format is BLAST, change with format=format
     See class FilterParams for other arguments
     """
-    annotations = {}
     m8stream = M8Stream(hit_table)
     params = FilterParams(format=format, **filter_args)
     for read, hits in filterM8Stream(m8stream,
@@ -766,10 +772,11 @@ def filterM8Stream(instream, options, returnLines=True):
 
     currentRead = None
     hits = []
+    logger.debug(repr(options))
     needsFilter = doWeNeedToFilter(options)
     logger.debug("Filtering" if needsFilter else "Not filtering")
-    for hit in getHitStream(instream, options):
-        if hit.read != currentRead:
+    for line_hit in getHitStream(instream, options):
+        if line_hit.read != currentRead:
             if currentRead is not None:
                 logger.debug(
                     "processing %d hits for %s" %
@@ -793,9 +800,9 @@ def filterM8Stream(instream, options, returnLines=True):
                     else:
                         yield (currentRead, hits)
                 hits = []
-            currentRead = hit.read
-        # logging.debug("%s -> %s" % (hit.read, hit.hit))
-        hits.append(hit)
+            currentRead = line_hit.read
+        # logging.debug("%s -> %s" % (line_hit.read, line_hit.hit))
+        hits.append(line_hit)
 
     if currentRead is not None:
         if options.sort is not None:
@@ -823,16 +830,22 @@ def sortHits(hits, sortType):
 
     # set up sort key
     if sortType == 'evalue':
-        sortKey = get_sort_by_evalue_key
+        sort_key = get_sort_by_evalue_key
+    elif sortType == 'pctid':
+        sort_key = get_sort_by_pctid_key
     else:
-        sortKey = get_sort_by_score_key
+        sort_key = get_sort_by_score_key
 
     # sort in place
-    hits.sort(key=sortKey)
+    hits.sort(key=sort_key)
 
 
 def get_sort_by_evalue_key(hit):
     return (hit.evalue, hit.hit)
+
+
+def get_sort_by_pctid_key(hit):
+    return (hit.pctid * -1, hit.hit)
 
 
 def get_sort_by_score_key(hit):
@@ -840,7 +853,9 @@ def get_sort_by_score_key(hit):
 
 
 def doWeNeedToFilter(options):
-    if options.topPct >= 0:
+    """ we can skip the filter step if we're going to let everything through
+    """
+    if options.top_pct >= 0:
         return True
     if options.bits > 0:
         return True
@@ -850,11 +865,11 @@ def doWeNeedToFilter(options):
         return True
     if options.length > 0:
         return True
-    if options.hitsPerRead > 0:
+    if options.hits_per_read > 0:
         return True
-    if options.hspsPerHit > 0:
+    if options.hsps_per_hit > 0:
         return True
-    if options.nonoverlapping:
+    if options.nonoverlapping >= 0:
         return True
     if options.bad_refs:
         return True
@@ -866,8 +881,8 @@ def filterHits(hits, options, returnLines=True):
         logger.debug("REmoving bad_refs from hits")
         hits = [h for h in hits if h.hit not in options.bad_refs]
 
-    # A topPct cutoff, requires finding the top score first
-    if options.topPct >= 0:
+    # A top_pct cutoff, requires finding the top score first
+    if options.top_pct >= 0:
         # get the best score in this set of hits
         bestScore = 0
         if options.sort == 'score':
@@ -878,20 +893,21 @@ def filterHits(hits, options, returnLines=True):
                 if hit.score > bestScore:
                     bestScore = hit.score
 
-        tpScore = bestScore - (options.topPct * bestScore / 100.0)
+        tpScore = bestScore - (options.top_pct * bestScore / 100.0)
         minScore = max((tpScore, options.bits))
         logger.debug(
             "Cutoff (%s) is max of bits(%s) and %d%% less than max(%s)" %
-            (minScore, options.bits, options.topPct, bestScore))
+            (minScore, options.bits, options.top_pct, bestScore))
     else:
         minScore = options.bits
 
     # apply filters
-    hitCount = 0
-    hspCounts = {}
-    hitRegions = []
+    counted_hits = set()
+    hit_count = 0
+    hsp_counts = {}
+    hit_regions = []
     for hit in hits:
-        hspCount = hspCounts.get(hit.hit, 0)
+        hsp_count = hsp_counts.get(hit.hit, 0)
         logger.debug("hit: %s::%s - score:%s" % (hit.read, hit.hit, hit.score))
 
         # Simple comparison tests
@@ -923,24 +939,28 @@ def filterHits(hits, options, returnLines=True):
         if options.aln is not None and hit.getAln() < options.aln:
             logger.debug("aln fraction too low: %r" % hit.getAln())
             continue
-        if options.hitsPerRead > 0 and hitCount >= options.hitsPerRead:
+        if options.hits_per_read > 0 \
+           and hit_count >= options.hits_per_read \
+           and hit.hit not in counted_hits:
             logger.debug("Too many hits")
             continue
-        if options.hspsPerHit > 0 and hspCount >= options.hspsPerHit:
+        if options.hsps_per_hit > 0 and hsp_count >= options.hsps_per_hit:
             logger.debug("Too many HSPs")
             continue
 
-        if options.nonoverlapping:
+        if options.nonoverlapping >= 0:
             # check for previous overlapping hits
-            newHitRegions = hit.checkForOverlapAndAdd(hitRegions)
-            if newHitRegions is not None:
-                hitRegions = newHitRegions
+            new_hit_regions = hit.checkForOverlapAndAdd(hit_regions,
+                                                        options.nonoverlapping)
+            if new_hit_regions is not None:
+                hit_regions = new_hit_regions
             else:
                 continue
 
         # increment hit counts
-        hspCounts[hit.hit] = hspCount + 1
-        hitCount += 1
+        hsp_counts[hit.hit] = hsp_count + 1
+        counted_hits.add(hit.hit)
+        hit_count = len(counted_hits)
 
         # print hit
         if returnLines:
@@ -951,30 +971,30 @@ def filterHits(hits, options, returnLines=True):
 
 def add_hit_table_arguments(parser,
                             defaults={},
-                            flags=['format', 'filterPct']):
+                            flags=['format', 'filter_top_pct']):
     """
     Set up command line arguments for parsing and filtering an m8 file.
-    By default, only the --format and --filterPct options are added, but
+    By default, only the --format and --filter_top_pct options are added, but
     any of the following can be enabled using the flags= keyword.
 
     general hit table handling:
         format (GENE, LIZ, BLASTPLUS, LAST, ...)
-        sort (sort hits by 'score' or 'evalue')
+        sort (sort hits by 'score', 'pctid', or 'evalue')
         sortReads (sort lines by read name)
 
     filtering options:
-        filterPct (aka topPct: minimum pct of best score for other scores.
-                    0, for best score only, 100 for all hits)
+        filter_top_pct (aka top_pct: minimum pct of best score for other
+                     scores. 0, for best score only, 100 for all hits)
         bits (minimum bit score)
         evalue
         pctid
         length (of the alignment)
         aln (fraction of query sequence aligned)
-        hitsPerRead
-        hspsPerHit
+        hits_per_read
+        hsps_per_hit
         nonoverlapping
 
-    For example, flags=['format','bits','filterPct'] would enable
+    For example, flags=['format','bits','filter_top_pct'] would enable
     filtering on bit score by cutoff or by percent of the top hit.
     flags='all', will turn everything on.
 
@@ -1016,13 +1036,13 @@ def add_hit_table_arguments(parser,
             help="Format of input table: blast, last, hmmer, gene, "
                  "yanmei, or liz. Default is %s" % (defaults.get("format",
                                                                  GENE)))
-    if flags == 'all' or 'filterPct' in flags:
+    if flags == 'all' or 'filter_top_pct' in flags:
         agroup.add_argument(
             '-F',
-            '--filterPct',
-            dest='filterTopPct',
+            '--filter_top_pct',
+            dest='filter_top_pct',
             default=defaults.get(
-                "filterPct",
+                "filter_top_pct",
                 -1),
             type=int,
             help="If a positive number is given, only allow hits within "
@@ -1031,17 +1051,15 @@ def add_hit_table_arguments(parser,
                  "hit table is from last, it will be automatically sorted "
                  "by read. Sorting by read is slow and should be avoided "
                  "if you already have a sorted and filtered hit table "
-                 "(e.g. skip this option). Default is {}".format(
-                                                            defaults.get(
-                                                                "filterPct",
-                                                                -1)))
+                 "(e.g. skip this option). Default is {}"
+                 .format(defaults.get("filter_top_pct", -1)))
     if flags == 'all' or 'bits' in flags:
-        agroup.add_argument('-B', '--bitScore', dest='filterBits',
+        agroup.add_argument('-B', '--bitScore', dest='filter_bits',
                             type=int, default=defaults.get("bits", 0),
                             help="Minimum bit score to allow. Default: \
                           {}".format(defaults.get('bits', 0)))
     if flags == 'all' or 'evalue' in flags:
-        agroup.add_argument('-E', '--evalue', dest='filterEvalue',
+        agroup.add_argument('-E', '--evalue', dest='filter_evalue',
                             type=float, default=defaults.get("evalue", None),
                             help="Maximum evalue to allow. Default: \
                           {}".format(defaults.get('evalue', None)))
@@ -1050,7 +1068,7 @@ def add_hit_table_arguments(parser,
         agroup.add_argument(
             '-I',
             '--pctid',
-            dest='filterPctid',
+            dest='filter_pctid',
             type=float,
             default=defVal,
             help="Minimum percent identity to allow. Default: %s" %
@@ -1060,7 +1078,7 @@ def add_hit_table_arguments(parser,
         agroup.add_argument(
             '-L',
             '--length',
-            dest='filterLength',
+            dest='filter_length',
             type=int,
             default=default,
             help="Minimum alignment length to allow. Default: %s" %
@@ -1070,41 +1088,46 @@ def add_hit_table_arguments(parser,
         agroup.add_argument(
             '-N',
             '--aln',
-            dest='filterAln',
+            dest='filter_aln',
             type=float,
             default=default,
             help="Minimum aligned fraction to allow. Default: %s" %
             (default))
-    if flags == 'all' or 'hitsPerRead' in flags:
-        default = defaults.get("hitsPerRead", 0)
+    if flags == 'all' or 'hits_per_read' in flags:
+        default = defaults.get("hits_per_read", 0)
         agroup.add_argument(
             '-H',
-            '--hitsPerRead',
-            dest='filterHitsPerRead',
+            '--hits_per_read',
+            dest='filter_hits_per_read',
             type=int,
             default=default,
             help="Maximum number of hits to allow per read. 0 for all hits. "
                  "Default: %s" % (default))
-    if flags == 'all' or 'hspsPerHit' in flags:
-        default = defaults.get("hspsPerHit", 1)
+    if flags == 'all' or 'hsps_per_hit' in flags:
+        default = defaults.get("hsps_per_hit", 0)
         agroup.add_argument(
             '-P',
-            '--hspsPerHit',
-            dest='filterHspsPerHit',
+            '--hsps_per_hit',
+            dest='filter_hsps_per_hit',
             type=int,
             default=default,
             help="Maximum number of HSPs to keep per hit. 0 for all HSPs. "
                  "Default: %s" % (default))
     if flags == 'all' or 'nonoverlapping' in flags:
-        default = defaults.get("nonoverlapping", False)
+        default = defaults.get("nonoverlapping", -1)
         agroup.add_argument(
-            '-O',
+            '-U',
             '--nonoverlapping',
-            action='store_true',
+            nargs="?",
+            type=int,
+            const=0,
             default=default,
-            dest='filterNonoverlapping',
-            help="Ignore hits which overlap higher scoring hits.Default: %s" %
-            (default))
+            action='store',
+            dest='filter_nonoverlapping',
+            help="Ignore hits which overlap higher scoring hits. Optional "
+                 "integer value may be specified to ignore small overlaps. "
+                 "A negative value allows all overlaps. "
+                 "Default: %s" % (default))
     if flags == 'all' or 'sort' in flags:
         default = defaults.get("sort", None)
         agroup.add_argument(
@@ -1114,8 +1137,10 @@ def add_hit_table_arguments(parser,
             default=default,
             choices=[
                 'evalue',
+                'pctid',
                 'score'],
-            help="sort hits for each read by 'evalue' or 'score' before "
+            help="sort hits for each read by 'evalue', 'pctid' or 'score' "
+                 "before "
                  "filtering. Secondarily sorted by hit id to make output "
                  "more deterministic")
     if flags == 'all' or 'sortReads' in flags:
@@ -1198,6 +1223,8 @@ def parseCigarString(cigar):
 
 
 capturing_digits_re = re.compile(r'(\d+)')
+
+
 def get_alignment_percent_identity(mdx_string):
     """
     Use the MD:Z string returned by BWA to get percent ID
@@ -1205,7 +1232,7 @@ def get_alignment_percent_identity(mdx_string):
     matches = 0
     mismatches = 0
     for chunk in capturing_digits_re.split(mdx_string):
-        if len(chunk)==0:
+        if len(chunk) == 0:
             # first and last elements are often empty strings. Ignore them
             continue
         if chunk.startswith('^'):
@@ -1217,8 +1244,8 @@ def get_alignment_percent_identity(mdx_string):
         except ValueError:
             # otherwise, it's the string of the reference that was mismatched
             mismatches += len(chunk)
-    
-    return float(matches)/float(matches + mismatches)
+
+    return float(matches) / float(matches + mismatches)
 
 
 def setup_tests():
@@ -1292,7 +1319,7 @@ def test():
 
     logging.info("Starting best test")
     m8stream = m8data.__iter__()
-    params = FilterParams(topPct=0.)
+    params = FilterParams(top_pct=0.)
     outs = filterM8Stream(m8stream, params)
     myAssertEq(next(outs), m8data[0])
     myAssertEq(next(outs), m8data[1])
@@ -1304,7 +1331,7 @@ def test():
 
     logging.info("Starting n1 test")
     m8stream = m8data.__iter__()
-    params = FilterParams(hitsPerRead=1)
+    params = FilterParams(hits_per_read=1)
     outs = filterM8Stream(m8stream, params)
     myAssertEq(next(outs), m8data[0])
     try:
@@ -1340,6 +1367,7 @@ def test_gff():
     myAssertEq(hit.read, 'KM282-20-02a-100_c1')
     myAssertEq(hit.score, 53.3)
     myAssertEq(hit.hit, '1_2')
+
 
 if __name__ == '__main__':
     test()

@@ -224,7 +224,7 @@ def main():
             hitIter = parseM8FileIter(infile,
                                       hitStringMap,
                                       arguments.hitTableFormat,
-                                      arguments.filterTopPct,
+                                      arguments.filter_top_pct,
                                       arguments.parseStyle,
                                       arguments.countMethod,
                                       taxonomy=taxonomy,
@@ -461,6 +461,7 @@ def formatTaxon(taxon, displayedRanks, leafRank, delim=';'):
     lineage += str(taxon)
     logging.debug("Lineage: %s", lineage)
     return lineage
+
 
 if __name__ == '__main__':
     main()

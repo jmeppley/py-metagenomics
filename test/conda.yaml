@@ -1,0 +1,13 @@
+channels:
+        - bioconda
+        - conda-forge
+dependencies:
+        - python=3
+        - bats
+        - nose
+        - pycodestyle
+        - numpy
+        - biopython
+        - pandas
+        - simplejson
+        - matplotlib

@@ -317,6 +317,7 @@ class TaxNode:
                 lastNode = newNode
         return lastNode
 
+
 ################
 # compiled REs #
 ################
@@ -454,6 +455,7 @@ def deduceRankOrder(taxMap):
 
     return ranks
 
+
 _taxonomies = {}
 
 
@@ -489,7 +491,7 @@ def readTaxonomy(taxDir, namesMap=False):
         parent = None
         try:
             parent = taxMap[node.parentid]
-        except:
+        except KeyError:
             logger.warn(
                 "Can't find parent (%s) for %s" %
                 (node.parentid, node.id))
@@ -547,6 +549,7 @@ def simplifyString(string):
 
 def removeSpaces(string):
     return spaceRE.sub("", string)
+
 
 nameTranslations = {'asaia lannensis': 'asaia lannaensis',
                     'uncultured haptophyte': 'haptophyta',

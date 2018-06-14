@@ -24,9 +24,7 @@ REL:=$(REL)
 MAX_ATTEMPTS=10
 
 # where to put it
-SEQDB_ROOT?=.
-DB_SCRIPT_DIR?=.
-SCRIPT_DIR?=..
+SEQDB_ROOT?=./seqdbs
 BUILD_ROOT?=$(SEQDB_ROOT)/RefSeq
 RSDIR:=$(BUILD_ROOT)/$(REL)
 
@@ -35,14 +33,20 @@ BUILD_LASTDB:=True
 LASTDB_ROOT?=$(SEQDB_ROOT)
 LASTDB_DIR:=$(LASTDB_ROOT)/RefSeq/$(REL)
 LASTDBCHUNK?=
+LASTDBTHREADS?=
 
 # Most folks won't need to edit below this line
 
-# command line uption for running lastdb
+# command line options for running lastdb
 ifeq ($(LASTDBCHUNK),)
-	LASTDBCHUNK_OPTION:=
+    LASTDBCHUNK_OPTION:=
 else
-	LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+    LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+endif
+ifeq ($(LASTDBTHREADS),)
+    LASTDBTHREADS_OPTION:=
+else
+    LASTDBTHREADS_OPTION:= -P $(LASTDBTHREADS)
 endif
 
 # Define the layout of the build directory
@@ -65,8 +69,6 @@ ACCPREFP=$(ACCPREF).protein
 ACCTAXMAPDB:=$(LASTP).tax
 HITIDMAP:=$(LASTP).ids
 ACCTAXMAP:=$(ACCPREFP)
-
-TAXMAPSCRIPT=$(DB_SCRIPT_DIR)/buildRefSeqAccToTaxidMap.py
 
 ##
 # Build the arguments for all
@@ -98,7 +100,8 @@ $(LASTDIR):
 
 $(LASTFILE): $(FAA) | $(LASTDIR)
 	@echo "==Formating last: $@"
-	lastdb8 -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(FAA)
+    #lastdb8 -v -c -p $(LASTDBCHUNK_OPTION) $(LASTDBTHREADS_OPTION) $(LASTP) $(FAA)
+    lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTDBTHREADS_OPTION) $(LASTP) $(FAA)
 
 %.stats: %
 	cat $^ | prinseq-lite.pl -fasta stdin -aa -stats_len -stats_info > $@
@@ -106,7 +109,7 @@ $(LASTFILE): $(FAA) | $(LASTDIR)
 $(FAA): $(RSDIR)/complete/.download.complete.aa
 	@echo "==Compiling $@ from gz archives"
 	@echo "... and masking low complexity with tantan"
-	for FILE in $(RSDIR)/complete/complete.*.protein.gpff.gz; do gunzip -c $$FILE; done | python $(SCRIPT_DIR)/get_sequences_from_gb.py -F fasta -r | tantan -p > $@
+	for FILE in $(RSDIR)/complete/complete.*.protein.gpff.gz; do gunzip -c $$FILE; done | get_sequences_from_gb.py -F fasta -r | tantan -p > $@
 
 $(RSDIR)/complete:
 	mkdir -p $@

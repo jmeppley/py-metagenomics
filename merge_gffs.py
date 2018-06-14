@@ -8,15 +8,12 @@ Outputs 3 files: a master gff, a matching fna of fastq seqs, and a faa of
 amino acid seqs of just the CDSs that don't overlap RNA.
 """
 
-import sys
-import re
-import os
-import glob
 import argparse
 import logging
+import re
+from Bio import SeqIO
 from edl.blastm8 import GFF, generate_hits
 from edl.util import add_universal_arguments, setup_logging
-from Bio import SeqIO
 
 
 def main():
@@ -115,8 +112,8 @@ def write_annotations_to_files(hit_list_dicts, contigs_fasta_file,
             if m:
                 length, coverage = m.groups()
                 contig_info_string = \
-                        "contig_length={};contig_cov={}".format(length,
-                                                                coverage)
+                    "contig_length={};contig_cov={}" \
+                    .format(length, coverage)
             else:
                 # megahit
                 m = re.search(r'\blen=(\d+)\b', contig.description)
@@ -199,6 +196,7 @@ def merge_regions(regions, new_regions):
     """
     regions.extend(new_regions)
     return regions
+
 
 if __name__ == "__main__":
     main()

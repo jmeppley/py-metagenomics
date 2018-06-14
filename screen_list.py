@@ -65,6 +65,7 @@ def main():
             (len(read_set), numReads))
         logging.debug(read_set)
 
+
 verbose = False
 
 
@@ -81,6 +82,7 @@ def die(msg):
 
 def warn(msg):
     sys.stderr.write("WARNING: %s\n" % (msg))
+
 
 readRE = re.compile(r'^(\S+)')
 
@@ -119,6 +121,7 @@ def scanFileForReads(reads, fastaIn, fastaOut, keep, acc, formatIn, formatOut):
             SeqIO.write((record,), fastaOut, formatOut)
 
     logging.info("Printed %d records" % count)
+
 
 if __name__ == "__main__":
     main()

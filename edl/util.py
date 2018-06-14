@@ -129,6 +129,7 @@ def countBasesInFasta(fastaFile):
 
     return {'records': total_seqs, 'bases': total_bases}
 
+
 urlRE = re.compile(r'[a-z]+\:\/\/')
 
 
@@ -173,9 +174,14 @@ def passThrough(x):
 
 
 def get_value_type_function(valueType, valueDelim):
+    logger.debug("get_value_type_function(%r, '%s')", valueType, valueDelim)
     if valueType is None:
-        return passThrough
+        if valueDelim is not None:
+            valueType = str
+        else:
+            return passThrough
     if valueDelim is not None:
+        logger.debug("mapped value delim is set to '%s'", valueDelim)
         baseValueType = valueType
         return lambda value_cell: [
             baseValueType(v) for v in value_cell.split(valueDelim)]
@@ -243,6 +249,7 @@ def parseMapFile(
             key = keyType(cells[keyCol].strip())
             value = valueType(cells[valueCol].strip())
             translation[key] = value
+            logger.debug("mapped %s to %s", key, value)
         else:
             badRows += 1
     if badRows > 0:
@@ -276,6 +283,7 @@ def parse_list_to_set(listFile, delim=None, keyType=None, col=None):
     logger.debug("Read %d items from list: %s" % (len(items), listFile))
 
     return items
+
 
 ##
 # readClusterFile(file)
@@ -413,6 +421,7 @@ def add_universal_arguments(parser, addQuiet=True):
             const=0,
             help="Suppress warnings. Only print fatal messages")
 
+
 DEFAULT_LOGGER_FORMAT =\
     ':%(asctime)s::%(levelname)s:%(name)s:%(funcName)s:\n%(message)s'
 
@@ -480,6 +489,7 @@ def add_screen_arguments(parser, defaults={}, accs=False):
         parser.add_argument("-a", "--accs",
                             action="store_true", dest="accs", default=False,
                             help="parse accession from read name in fasta")
+
 
 dotRE = re.compile(r'(\.\d+)$')
 
@@ -595,6 +605,7 @@ def ascii_histogram(
         output += "%s|%s\n" % (rightPad(str(centers[i]), largestLabel),
                                getBarString(v, maxValue, plotWidth, log))
     return output
+
 
 logChars = ['-', '~', '=', '#']
 

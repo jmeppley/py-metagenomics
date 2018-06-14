@@ -25,7 +25,7 @@ REL:=$(REL)
 REL_ROOT=$(basename $(word 1,$(subst _, ,$(REL))))
 REL_TAX=$(subst _,.,$(REL))
 
-DB_SCRIPT_DIR?=.
+DB_SCRIPT_DIR?=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 BUILD_ROOT?=./Silva
 BUILDDIR:=$(BUILD_ROOT)/Silva-$(REL)
 
@@ -190,10 +190,10 @@ $(LSU_TAXFILE): | $(BUILDDIR)
 	curl $(LSU_TAXFILE_URL) > $(LSU_TAXFILE)
 
 $(LSU_TAXIDMAP): $(LSU_TAXFILE) $(LSU_FASTA) | $(LSU_SEQDB_DIR)
-	export PYTHONPATH=$(DB_SCRIPT_DIR)/..; python $(TAXSCRIPT) -o $(TAXIDMAP) -t $(LSU_TAXFILE) $(LSU_FASTA) $(LSU_SEQDB_DIR)
+	$(TAXSCRIPT) -o $(TAXIDMAP) -t $(LSU_TAXFILE) $(LSU_FASTA) $(LSU_SEQDB_DIR)
 
 $(SSU_TAXIDMAP): $(SSU_TAXFILE) $(SSU_FASTA) | $(SSU_SEQDB_DIR)
-	export PYTHONPATH=$(DB_SCRIPT_DIR)/..; python $(TAXSCRIPT) -o $(TAXIDMAP) -t $(SSU_TAXFILE) $(SSU_FASTA) $(SSU_SEQDB_DIR)
+	$(TAXSCRIPT) -o $(TAXIDMAP) -t $(SSU_TAXFILE) $(SSU_FASTA) $(SSU_SEQDB_DIR)
 
 # Initialize DB dirs and create supporting files
 
