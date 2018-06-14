@@ -2,10 +2,12 @@
 A collection of methods and classes to simplify interactive parsing of
 hit tables
 """
-from edl.blastm8 import *
-from edl.hits import *
-import numpy as np
 import logging
+from edl.blastm8 import GENE
+from edl.hits import ACCS, ALLEQ, countIterHits, parseM8FileIter
+from edl.taxon import readTaxonomy
+from edl.util import parseMapFile
+import numpy as np
 import pandas
 logger = logging.getLogger(__name__)
 
@@ -18,7 +20,7 @@ def countHits(infile, **kwargs):
         hitStringMap (None): dictionary (or file) mapping hit IDs to
         something else
         format (GENE): hit table format
-        filterPct (0): only consider hits within this % of top score for
+        filter_top_pct (0): only consider hits within this % of top score for
         each read
         parseStyle (ACCS): how to process hit data into an identifying string
         countMethod ('all'): how to resolve hits to multiple sequences
@@ -52,7 +54,7 @@ def countHits(infile, **kwargs):
     hitIter = parseM8FileIter(inhandle,
                               hitStringMap,
                               kwargs.pop('format', GENE),
-                              kwargs.pop('filterPct', 0),
+                              kwargs.pop('filter_top_pct', 0),
                               kwargs.pop('parseStyle', ACCS),
                               kwargs.pop('countMethod', 'all'),
                               taxonomy=taxonomy,
@@ -87,8 +89,8 @@ def countRefSeqHits(filename, **kwargs):
 
     Plus the defaults set in countHits:
         format (GENE): hit table format
-        filterPct (0): only consider hits within this % of top score for each
-        read
+        filter_top_pct (0): only consider hits within this % of top score
+                            for each read
         parseStyle (ACCS): how to process hit data into an identifying string
         countMethod ('all'): how to resolve hits to multiple sequences
         rank (None): Maximum rank to resolve hits

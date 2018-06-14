@@ -39,7 +39,7 @@ def main():
         defaults={
             'mapFile': None,
             'parseStyle': ACCS,
-            'filterPct': -1,
+            'filter_top_pct': -1,
             'countMethod': 'all',
             'taxdir': None})
     parser.add_argument(
@@ -309,11 +309,12 @@ def getTaxonFromArg(taxonomy, arg):
     """
     try:
         taxon = taxonomy.idMap[int(arg)]
-    except:
+    except Exception:
         taxon = getNodeFromHit(arg, taxonomy.nameMap)
         if taxon is None:
             raise "Cannot find taxon: %s"
     return taxon
+
 
 if __name__ == '__main__':
     main()

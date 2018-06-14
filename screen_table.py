@@ -110,5 +110,6 @@ def scanFileForReads(reads, inhandle, keep, outhandle, delim, col, accs):
 
     logging.info("Kept %d of %d lines" % (matchCount, lineCount))
 
+
 if __name__ == "__main__":
     main()

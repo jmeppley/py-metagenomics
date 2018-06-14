@@ -271,7 +271,7 @@ def longestPctid(alignment):
             longestPctid = hsp.pctid
     return longestPctid
 
-BEST_PCTID='pctid'
+BEST_PCTID='best_pctid'
 bestPctid = lambda a: max([h.pctid for h in a.hsps])
 
 AVG_PCTID = 'total_pctid'

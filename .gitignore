@@ -51,3 +51,6 @@ databases/Silva
 databases/lastdb
 databases/seqdbs
 databases/.snakemake
+
+# test environment
+test/conda.env

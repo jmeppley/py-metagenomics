@@ -27,13 +27,11 @@ assignment values for that query sequence (1 for each pathway it belongs to).
 """
 
 import argparse
-import sys
-import re
 import logging
-from edl import redistribute, kegg, hits
-from edl.util import add_universal_arguments, setup_logging, parseMapFile, \
-        add_IO_arguments, inputIterator
-from edl.expressions import accessionRE, nrOrgRE
+import re
+from edl import hits, kegg
+from edl.util import add_IO_arguments, add_universal_arguments, \
+        inputIterator, parseMapFile, setup_logging
 
 
 def main():
@@ -129,6 +127,7 @@ def main():
             valueMap = parseMapFile(
                 arguments.mapFile,
                 valueType=None,
+                valueDelim=arguments.tab_map_delim,
                 keyType=keyType)
         if len(valueMap) > 0:
             logging.info("Read %d items into map. EG: %s" %
@@ -150,7 +149,7 @@ def main():
             inhandle,
             valueMap,
             arguments.hitTableFormat,
-            arguments.filterTopPct,
+            arguments.filter_top_pct,
             arguments.parseStyle,
             arguments.countMethod,
             ignoreEmptyHits=arguments.mappedHitsOnly)
@@ -195,6 +194,7 @@ def getCazyGroup(gene):
             (gene, cazyRE.pattern))
         cazygroup = gene
     return cazygroup
+
 
 # levels equivalent to returning just the ko/gene
 koSyns = [None, 'ko', 'gene', 'ortholog', 'family', 'role']
@@ -275,4 +275,3 @@ def handleMultipleMappings(assignmentList, arguments):
 
 if __name__ == '__main__':
     main()
-

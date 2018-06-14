@@ -16,19 +16,23 @@ FTP_ROOT:=ftp://ftp.bioinformatics.jp/kegg
 KGVER:=$(shell curl --user $(KEGG_USER):$(KEGG_PASSWORD) $(FTP_ROOT)/RELEASE | head -1 | perl -pe 's/[^0-9]//g')
 KEGG_USER?=
 KEGG_PASSWORD?=
-
-DB_SCRIPT_DIR?=.
 BUILD_ROOT?=./KEGG
 KGDIR:=$(BUILD_ROOT)/$(KGVER)
 
 BUILD_LASTDB:=True
 LASTDB_ROOT?=./lastdb
 LASTDBCHUNK?=
+LASTDBTHREADS?=
 
 ifeq ($(LASTDBCHUNK),)
 	LASTDBCHUNK_OPTION:=
 else
 	LASTDBCHUNK_OPTION:= -s $(LASTDB_CHUNK)
+endif
+ifeq ($(LASTDBTHREADS),)
+    LASTDBTHREADS_OPTION:=
+else
+    LASTDBTHREADS_OPTION:= -P $(LASTDBTHREADS)
 endif
 
 KOKEG=$(KGDIR)/ko00001.keg
@@ -98,7 +102,7 @@ $(HITIDMAP): $(KEGGGENES) | $(LASTDB_DIR)
 	grep ">" $< | perl -pe 's/^>(\S+)\s+(\S.*)/\1\t\2/' > $@
 
 $(LASTFILE): $(KEGGGENES) | $(LASTDB_DIR)
-	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTP) $(KEGGGENES)
+    lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTDBTHREADS_OPTION) $(LASTP) $(KEGGGENES)
 
 $(LASTDB_DIR):
 	mkdir -p $(LASTDB_DIR)

@@ -4,10 +4,10 @@ Library of methods and regular expressions for parsing files from the
 KEGG gene ontology
 """
 
-import sys
-import re
 import logging
 import os
+import re
+import sys
 logger = logging.getLogger(__name__)
 
 ##############
@@ -426,7 +426,8 @@ def readKeggFile(keggFile, keggLevel):
                 ko = m.group(1)
                 # make sure we have something to map to
                 if desc == '':
-                    die("Pathway info not found before ko: %s" % ko)
+                    raise Exception("Pathway info not found before ko: %s"
+                                    % ko)
                 try:
                     if desc not in kmap[ko]:
                         kmap[ko].append(desc)
@@ -506,11 +507,11 @@ def processBriteFile(pathway, desc, file1, kmap):
 
 
 def add_path_arguments(parser, defaults={}, choices={}, helps={}):
-    # get format and filterPct arguments from blastm8
+    # get format and filter_top_pct arguments from blastm8
     from edl.hits import HITID, ACCS, GIS, KEGG, HITDESC, PFAM
     from edl.blastm8 import add_hit_table_arguments
-    add_hit_table_arguments(parser, defaults, flags=['format', 
-                                                     'filterPct',
+    add_hit_table_arguments(parser, defaults, flags=['format',
+                                                     'filter_top_pct',
                                                      'sort'
                                                     ])
 
@@ -545,6 +546,13 @@ def add_path_arguments(parser, defaults={}, choices={}, helps={}):
              "or the 3 column file from SEED. By default, this script "
              "will inspect the file and guess, but you can force 'kegg', "
              "'seed' or 'tab' with this argument.")
+    default = defaults.get('tab_map_delim', None)
+    pgroup.add_argument("--tab_map_delim",
+                        default=default,
+                        help="Delimiter to parse multiple assignments in "
+                        "map from ids to ko/path/fam. Only used for "
+                        "tabular mapping tables. Defaults to " +
+                        str(default))
     pgroup.add_argument(
         "-p",
         "--parseStyle",
@@ -586,7 +594,7 @@ def add_path_arguments(parser, defaults={}, choices={}, helps={}):
                 "countMethod",
                 "first"))),
         metavar="COUNTMETHOD")
-    if defaults.get("filterForPath", False):
+    if defaults.get("filter_for_path", False):
         action = 'store_false'
         default = True
         helpstr = 'Consider all hits. By deafult, only hits with path \
@@ -599,7 +607,7 @@ all hits are used and if the best hit(s) is(are) to sequences with no path, \
 then the read will not be assigned to a path'
     pgroup.add_argument(
         "-r",
-        "--filterForPath",
+        "--filter_for_path",
         action=action,
         dest="mappedHitsOnly",
         default=default,
@@ -709,7 +717,7 @@ def testReadKeggFile(keggFile):
     for k in k3map.keys():
         try:
             myAssertEq(k3map[k], k3mapQ[k])
-        except AsserionError:
+        except AssertionError:
             raise AssertionError(
                 "level 3 classes for %s do not match:\n%s\n%s" %
                 (k, k3map[k], k3mapQ[k]))
@@ -725,6 +733,7 @@ def testReadKoFile(koFile):
     kEmap = readKOFile(koFile, 'EC')
     myAssertEq(kEmap['K00397'], ['EC:1.8.99.-'])
     myAssertEq(kEmap['K00399'], ['EC:2.8.4.1'])
+
 
 if __name__ == '__main__':
     test()

@@ -164,6 +164,7 @@ def main():
             valueMap = parseMapFile(
                 arguments.mapFile,
                 valueType=None,
+                valueDelim=arguments.tab_map_delim,
                 keyType=keyType)
         if len(valueMap) > 0:
             logging.info("Read %d items into map. EG: %s",
@@ -239,11 +240,10 @@ def main():
             hitIter = parseM8FileIter(infile,
                                       valueMap,
                                       arguments.hitTableFormat,
-                                      arguments.filterTopPct,
+                                      arguments.filter_top_pct,
                                       arguments.parseStyle,
                                       arguments.countMethod,
-                                      ignoreEmptyHits=arguments.mappedHitsOnly,
-                                     )
+                                      ignoreEmptyHits=arguments.mappedHitsOnly)
 
             (total, counts, hitMap) = \
                 countIterHits(hitIter,
@@ -470,6 +470,7 @@ def getCazyGroup(gene):
             gene, cazyRE.pattern)
         cazygroup = gene
     return cazygroup
+
 
 # levels equivalent to returning just the ko/gene
 koSyns = [None, 'ko', 'gene', 'ortholog', 'family', 'role']

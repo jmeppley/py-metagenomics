@@ -5,9 +5,9 @@ A simplified taxon assignment script.
 
 import argparse
 import logging
-from edl.taxon import ranks, TaxNode
-from edl import hits as edlhits, util
 from count_taxa import cleanRanks, formatTaxon
+from edl import hits as edlhits, util
+from edl.taxon import TaxNode, ranks
 
 
 def main():
@@ -98,7 +98,7 @@ each read to a taxon. Hit table may be specified with -i or piped to STDIN.
             inhandle,
             value_map,
             arguments.hitTableFormat,
-            arguments.filterTopPct,
+            arguments.filter_top_pct,
             arguments.parseStyle,
             arguments.countMethod,
             taxonomy=taxonomy,
@@ -118,6 +118,7 @@ each read to a taxon. Hit table may be specified with -i or piped to STDIN.
                 hit_header = '\t'.join(arguments.printRanks)
 
                 def printer(read, hits):
+                    " Inline function to reduce number of arguments "
                     return tax_table_printer(read,
                                              hits,
                                              arguments.rank,
@@ -175,7 +176,8 @@ def tax_table_printer(read, hit, leaf_rank, displayed_ranks):
         line_string += read + "\t"
         line_string += formatTaxon(h, displayed_ranks, leaf_rank,
                                    delim="\t")
-        line_string += '\t'*(1 + len(displayed_ranks) - line_string.count('\t'))
+        line_string += '\t' * (1 + len(displayed_ranks) -
+                               line_string.count('\t'))
         line_string += "\n"
 
     return line_string

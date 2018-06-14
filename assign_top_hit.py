@@ -16,29 +16,30 @@ If the -P or --proportinal flag is given, then ambiguous hits are resolved
 so that the overall proportion of hit (when using tophit) or taxon (for
 toporg) abundance is changed the least.
 
-FilterPct defaults to 0, but can be altered, but I don't recommend it.
+filter_top_pct defaults to 0, but can be altered, but I don't recommend it.
 """
 
-import sys
-import re
-import logging
 import argparse
-from edl import redistribute
-from edl.hits import *
-from edl.util import *
-from edl.blastm8 import M8Stream
+import logging
+import os
+import sys
 from urllib.parse import unquote_plus
+from edl import redistribute
+from edl.blastm8 import M8Stream
+from edl.hits import ACCS, FilterParams, add_taxon_arguments, \
+        readMaps
+from edl.util import add_IO_arguments, add_universal_arguments, \
+        inputIterator, setup_logging
 
 
 def main():
-    usage = "usage: %prog [OPTIONS] HIT_TABLE(S)"
     description = __doc__
     parser = argparse.ArgumentParser(description=description)
     add_IO_arguments(parser)
     add_taxon_arguments(
         parser,
         defaults={
-            'filterPct': 0,
+            'filter_top_pct': 0,
             'parseStyle': ACCS,
             'countMethod': 'tophit'},
         choices={
@@ -156,6 +157,7 @@ def main():
         if arguments.output_file is not None:
             for outhandle in outputMap.values():
                 outhandle.close()
+
 
 if __name__ == '__main__':
     main()

@@ -23,14 +23,24 @@ def get_eggnog_version(eggnog_url):
     print("Version={}".format(v))
     return v
 
+## Configurable params
+#
+# where to put the downloaded files:
 seqdb_root = config.get('seqdb_root','seqdbs')
+#
+# where to get the files from
 eggnog_url = config.get('eggnog_url','http://eggnogdb.embl.de/download/')
 eggnog_version = config.get('eggnog_version',get_eggnog_version(eggnog_url))
 eggnog_url = re.sub(r'^https?://','',eggnog_url) + eggnog_version
 print(eggnog_url)
-eggnog_dir = os.path.join(seqdb_root, 'EGGNOG', eggnog_version)
-
+#
+# get list of NOGs to download (can be list or comma separated string)
 nog_list=config.get('nogs',['NOG', 'bactNOG', 'arNOG', 'euNOG', 'Viruses']) 
+if isinstance(nog_list, str):
+    nog_list = [s.strip() for s in nog_list.split(',')]
+##
+
+eggnog_dir = os.path.join(seqdb_root, 'EGGNOG', eggnog_version)
 nog_url_subdir = {'Viruses':'viruses/Viruses'}
 
 hmmdb_archive='hmmdb.euk_bact_arch.tar.gz'
@@ -55,7 +65,7 @@ rule all:
         # there is no stats.tt for viruses
         expand(os.path.join(eggnog_dir, '{NOG}.stats.txt'), 
                NOG=[n for n in nog_list if n[-3:]=='NOG']),
-        os.path.join(eggnog_dir, 'hmmdb')
+        #os.path.join(eggnog_dir, 'hmmdb')
     
 
 rule metadata_download:
@@ -72,7 +82,10 @@ rule hmmpress:
     output:
         '{location}/{NOG}.hmm.h3p'
     shell:
-        "hmmpress {input}"
+        """
+        rm -f {input}.h3?
+        hmmpress {input}
+        """
 
 rule hmm_count:
     input:

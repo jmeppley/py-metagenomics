@@ -11,7 +11,7 @@ from Bio import SeqIO, SeqUtils
 try:
     from edl.util import ascii_histogram
     import edl.blastm8
-except:
+except ImportError:
     # This is a little hack to make this module runnable as a script
     sys.path[0] += "/.."
     from edl.util import ascii_histogram
@@ -936,7 +936,6 @@ def getBin(value, binboundaries):
             return i
     raise ValueError("Value too high")
 
-#
 
 sequenceRE = re.compile(r'^Sequence\s+:\s+(\S+)')
 dnaRE = re.compile(r'^DNA\s+:\s+(\S+)')
@@ -991,6 +990,7 @@ def getContigLengthsFromCAF(cafFile):
         cafHandle.close()
 
     return lengths
+
 
 if __name__ == '__main__':
     main()
