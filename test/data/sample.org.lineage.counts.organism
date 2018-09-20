@@ -1,11 +1,16 @@
 Taxon	S1	S2	S3
-;;cellular organisms	8	0	29
-Bacteria <prokaryote>	79	0	29
-Bacteria <prokaryote>;Cyanobacteria	42	0	5
-Bacteria <prokaryote>;Cyanobacteria;Prochlorococcus marinus	57	0	15
-Bacteria <prokaryote>;Deferribacteres <phylum>	18	0	8
-Bacteria <prokaryote>;Proteobacteria;Alphaproteobacteria	41	0	6
-Bacteria <prokaryote>;Proteobacteria;Alteromonadales	39	0	4
-Bacteria <prokaryote>;Proteobacteria;Candidatus Pelagibacter	12	0	5
+Archaea	1	0	0
+Bacteria <prokaryote>	127	0	39
+Bacteria <prokaryote>;Bacteroidetes <phylum>;Psychroflexus torquis ATCC 700755	1	0	3
+Bacteria <prokaryote>;Cyanobacteria;Prochlorococcus marinus	48	0	20
+Bacteria <prokaryote>;Cyanobacteria;Prochlorococcus marinus str. AS9601	21	0	8
+Bacteria <prokaryote>;Cyanobacteria;Prochlorococcus marinus str. MIT 9301	13	0	6
+Bacteria <prokaryote>;Cyanobacteria;Prochlorococcus marinus str. MIT 9312	13	0	6
+Bacteria <prokaryote>;Proteobacteria;Alteromonadales	9	0	1
+Bacteria <prokaryote>;Proteobacteria;Candidatus Pelagibacter	8	0	4
+Bacteria <prokaryote>;Proteobacteria;Candidatus Pelagibacter sp. HTCC7211	27	0	9
+Bacteria <prokaryote>;Proteobacteria;Candidatus Pelagibacter ubique	18	0	3
+Bacteria <prokaryote>;Proteobacteria;alpha proteobacterium HIMB114	8	0	2
+Eukaryota	0	0	1
 Viruses	4	0	2
-root	0	0	2
+root	2	0	0
