@@ -50,9 +50,10 @@ timestamp = config.get(
                 get_file_date(hostname, remote_db_path, password, username)
             )
 
+
 # Where to put the downloaded and formatted files
 db_dir = os.path.join(seqdb_root, db_group)
-db_base = os.path.join(db_dir, db_name + "_" + timestamp)
+db_base = os.path.join(db_dir, db_name, db_name + "_" + timestamp)
 db_fasta = db_base + ".fasta"
 
 # other options
@@ -76,6 +77,18 @@ for db_formatter in config.get('formatters', ['last8',]):
     db_loc = db_base + fcnf['base']
     db_fmt_file = db_loc + "." + fcnf['suff']
     outputs.add(db_fmt_file)
+
+# taxonomy
+# ftp://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz
+# ftp://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/prot.accession2taxid.gz
+# for nucl: nucl_X.accession2taxid.gz for X in est, gb, gss, wgs
+tax_prefixes = ['prot'] if is_prot \
+               else ['nucl_' + x for x in ['est', 'gb', 'gss', 'wgs']]
+remote_tax_prefix = '/pub/taxonomy'
+local_tax = 'taxdump'
+tax_map_files = ['{}/accession2taxid/{}.accession2taxid'.format(local_tax, p) for p in tax_prefixes]
+remote_taxdump = hostname + remote_tax_prefix + '/taxdump.tar.gz'
+local_tax_files = os.path.join(db_group, 'taxdump')
 
 rule all:
     input: outputs
