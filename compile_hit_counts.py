@@ -92,8 +92,7 @@ def main():
         "--hitCol2",
         dest="hitCol2",
         type=int,
-        default=-
-        1,
+        default=-1,
         help="Index (starting at 0) of column in file 2 with hit name, -1 "
              "is default meaning all columns that are not the read name "
              "are hit names.",

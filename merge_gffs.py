@@ -127,7 +127,7 @@ def write_annotations_to_files(hit_list_dicts, contigs_fasta_file,
             gene_name = contig.id + "_{n}".format(n=n)
             # put everything else in the description
             gene_desc =\
-                ("source={source};type={feature_type};score={score};" +
+                ("source={source};type={feature_type};score={score};"
                  "strand={strand};start={start};end={end};") \
                 .format(source=source, start=start, end=end,
                         feature_type=feature_type, score=score,

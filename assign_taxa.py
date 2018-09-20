@@ -175,8 +175,8 @@ def tax_table_printer(read, hit, leaf_rank, displayed_ranks):
         line_string += read + "\t"
         line_string += formatTaxon(h, displayed_ranks, leaf_rank,
                                    delim="\t")
-        line_string += '\t' * (1 + len(displayed_ranks) -
-                               line_string.count('\t'))
+        line_string += \
+            '\t' * (1 + len(displayed_ranks) - line_string.count('\t'))
         line_string += "\n"
 
     return line_string

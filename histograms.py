@@ -18,7 +18,7 @@ def main():
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('infile', nargs='?', type=argparse.FileType('rU'),
                         default=sys.stdin,
-                        help=("Input file (defaults to STDIN) containing " +
+                        help=("Input file (defaults to STDIN) containing "
                               "a value on each line"))
     parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'),
                         default=sys.stdout,
