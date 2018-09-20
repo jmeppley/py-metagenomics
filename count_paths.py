@@ -193,11 +193,11 @@ def main():
         fileCounts[filetag] = {}
         totals[filetag] = 0
 
+    params = FilterParams.create_from_arguments(arguments)
     # TODO: incorporate weights into tophit algorithm!
     if arguments.countMethod == 'tophit':
         # Process all files at once and use overall abundance to pick best hits
         from edl import redistribute
-        params = FilterParams.create_from_arguments(arguments)
         multifile = redistribute.multipleFileWrapper(fileLabels.items())
 
         # don't give any hit translation, just use hit ids for redistribution
@@ -239,8 +239,9 @@ def main():
 
             hitIter = parseM8FileIter(infile,
                                       valueMap,
-                                      arguments.hitTableFormat,
-                                      arguments.filter_top_pct,
+                                      params,
+                                      #arguments.hitTableFormat,
+                                      #arguments.filter_top_pct,
                                       arguments.parseStyle,
                                       arguments.countMethod,
                                       ignoreEmptyHits=arguments.mappedHitsOnly)

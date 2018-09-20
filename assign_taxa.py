@@ -97,8 +97,9 @@ each read to a taxon. Hit table may be specified with -i or piped to STDIN.
         hit_iter = edlhits.parseM8FileIter(
             inhandle,
             value_map,
-            arguments.hitTableFormat,
-            arguments.filter_top_pct,
+            edlhits.FilterParams.create_from_arguments(arguments),
+            #arguments.hitTableFormat,
+            #arguments.filter_top_pct,
             arguments.parseStyle,
             arguments.countMethod,
             taxonomy=taxonomy,

@@ -261,14 +261,16 @@ def parseAndFilterM8Stream(inhandle, options):
 def parseM8File(
         inhandle,
         hitStringMap,
-        format,
-        scorePct,
+        options,
+        #format,
+        #scorePct,
         parsingStyle,
         countMethod,
         taxonomy=None,
         rank=None,
         ignoreEmptyHits=True,
-        sortReads=False):
+        #sortReads=False,
+        ):
     """
     Wrapper method that combines filterM8, parseHits, and process hits to:
         filter hits using format and scorePct
@@ -284,14 +286,16 @@ def parseM8File(
     hitIter = parseM8FileIter(
         inhandle,
         hitStringMap,
-        format,
-        scorePct,
+        options,
+        #format,
+        #scorePct,
         parsingStyle,
         countMethod,
         taxonomy=taxonomy,
         rank=rank,
         ignoreEmptyHits=ignoreEmptyHits,
-        sortReads=sortReads)
+        #sortReads=sortReads,
+        )
 
     hitMap = {}
     for (read, hits) in hitIter:
@@ -301,18 +305,19 @@ def parseM8File(
 
     return hitMap
 
-
 def parseM8FileIter(
         inhandle,
         hitStringMap,
-        format,
-        scorePct,
+        options,
+        #format,
+        #scorePct,
         parsingStyle,
         countMethod,
         taxonomy=None,
         rank=None,
         ignoreEmptyHits=True,
-        sortReads=False):
+        #sortReads=False,
+        ):
     """
     Wrapper method that combines filterM8, parseHits, and process hits to:
         filter hits using format and scorePct
@@ -325,25 +330,10 @@ def parseM8FileIter(
     Return an iterator over (read,hits) tuples.
     """
 
-    # check filtering options
-    if countMethod == 'first':
-        scorePct = -1
-
     # get map from reads to lists of hit strings
     logger.info("Parsing hits")
-    options = FilterParams()
-    options.format = format
-    if scorePct >= 0 or sortReads:
-        # filter hits on score if requested
-        if scorePct >= 0:
-            logger.info(
-                "Filtering for scores within %s pct of best" %
-                scorePct)
-            options.topPct = scorePct
-            options.sort = 'score'
-        options.sortReads = sortReads
-        # filters and parses
-    options.parseStyle = parsingStyle
+    # filters and parses
+    #options.parseStyle = parsingStyle
     hitIter = filterM8Stream(inhandle, options, returnLines=False)
 
     # apply org or acc translation

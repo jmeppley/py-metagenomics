@@ -41,3 +41,11 @@
     [ "$status" = 0 ]
 }
 
+@test "Checking assign_paths with sort by evalue" {
+    run ./assign_paths.py -f hmmsearchdom -s evalue -C first test/data/genes.v.tigr.tbl -o test/data/.tst.genes.v.tigr.tbl.paths
+    [ "$status" = 0 ]
+}
+@test "Checking assign_paths output from sort by evalue" {
+    run diff test/data/genes.v.tigr.tbl.paths test/data/.tst.genes.v.tigr.tbl.paths
+    [ "$status" = 0 ]
+}

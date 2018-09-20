@@ -3,7 +3,7 @@ A collection of methods and classes to simplify interactive parsing of
 hit tables
 """
 import logging
-from edl.blastm8 import GENE
+from edl.blastm8 import GENE, FilterParams
 from edl.hits import ACCS, ALLEQ, countIterHits, parseM8FileIter
 from edl.taxon import readTaxonomy
 from edl.util import parseMapFile
@@ -53,8 +53,10 @@ def countHits(infile, **kwargs):
     # get iterator over reads that will parse hits
     hitIter = parseM8FileIter(inhandle,
                               hitStringMap,
-                              kwargs.pop('format', GENE),
-                              kwargs.pop('filter_top_pct', 0),
+                              FilterParams(
+                                  format=kwargs.pop('format', GENE),
+                                  top_pct=kwargs.pop('filter_top_pct', 0),
+                                  )
                               kwargs.pop('parseStyle', ACCS),
                               kwargs.pop('countMethod', 'all'),
                               taxonomy=taxonomy,
