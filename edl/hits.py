@@ -262,14 +262,11 @@ def parseM8File(
         inhandle,
         hitStringMap,
         options,
-        #format,
-        #scorePct,
         parsingStyle,
         countMethod,
         taxonomy=None,
         rank=None,
         ignoreEmptyHits=True,
-        #sortReads=False,
         ):
     """
     Wrapper method that combines filterM8, parseHits, and process hits to:
@@ -287,14 +284,11 @@ def parseM8File(
         inhandle,
         hitStringMap,
         options,
-        #format,
-        #scorePct,
         parsingStyle,
         countMethod,
         taxonomy=taxonomy,
         rank=rank,
         ignoreEmptyHits=ignoreEmptyHits,
-        #sortReads=sortReads,
         )
 
     hitMap = {}
@@ -309,14 +303,11 @@ def parseM8FileIter(
         inhandle,
         hitStringMap,
         options,
-        #format,
-        #scorePct,
         parsingStyle,
         countMethod,
         taxonomy=None,
         rank=None,
         ignoreEmptyHits=True,
-        #sortReads=False,
         ):
     """
     Wrapper method that combines filterM8, parseHits, and process hits to:
