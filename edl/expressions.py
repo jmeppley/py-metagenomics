@@ -15,5 +15,5 @@ accessionRE = re.compile(
     re.X)
 nrOrgRE = re.compile(
     r'\[([^|\[\]]*(?:\[[^|\[\]]+\])?[^|\[\]]*)\]?\s*(?:(?=[a-z]{2,3}\|)|$)')
-giRE = re.compile('^gi\|(\d+)\|.*$')
+giRE = re.compile(r'^gi\|(\d+)\|.*$')
 pfamRE = re.compile(r'\b((?:COG|PF|TIGR)\d+)\.\d+\b')

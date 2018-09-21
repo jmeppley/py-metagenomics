@@ -56,7 +56,7 @@ def countHits(infile, **kwargs):
                               FilterParams(
                                   format=kwargs.pop('format', GENE),
                                   top_pct=kwargs.pop('filter_top_pct', 0),
-                                  )
+                              ),
                               kwargs.pop('parseStyle', ACCS),
                               kwargs.pop('countMethod', 'all'),
                               taxonomy=taxonomy,
@@ -103,8 +103,7 @@ def countRefSeqHits(filename, **kwargs):
         '/common/FASTA/NCBI/RefSeq/LATEST/')
     kwargs.setdefault(
         'hitStringMap',
-        parseFilePrefix +
-        'acc.to.taxid.protein.plus')
+        parseFilePrefix + 'acc.to.taxid.protein.plus')
     kwargs.setdefault('taxonomy', parseFilePrefix + 'taxdump')
 
     return countHits(filename, **kwargs)

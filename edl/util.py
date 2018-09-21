@@ -508,7 +508,7 @@ def get_screen_list(arguments, accs=False):
     Use the listFile, listDelim, and listColumn fields in arguments to
     parse a text file into a dict of names all mapped to True
 
-    If accs==True, remove version (s/\.\d+$//) from accessions.
+    If accs==True, remove version (s/\\.\\d+$//) from accessions.
 
     Uses parse_list_to_set() to do the actual parsing
     """
@@ -584,8 +584,8 @@ def ascii_histogram(
 
     plotWidth = width - largestLabel + 1
 
-    midPoint = npexp((nplog(maxValue) - nplog(.5)) /
-                     2) if log else maxValue / 2
+    midPoint = npexp((nplog(maxValue) - nplog(.5)) / 2) \
+        if log else maxValue / 2
     midPointStr = str(int(midPoint))
     padding_a_width = int(plotWidth / 2) - len(midPointStr) - len("count")
     padding_a = "".join([" " for i in range(padding_a_width)])

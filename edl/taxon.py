@@ -324,8 +324,8 @@ class TaxNode:
 cladeRE = re.compile(r'clade')
 parensRE = re.compile(r'\([^\(\)]+\)')
 lastSemicolonRE = re.compile(r'^.*;([^;]+)$')
-spaceRE = re.compile("\s")
-dotRE = re.compile("\.")
+spaceRE = re.compile(r'\s')
+dotRE = re.compile(r'\.')
 scRE = re.compile(r';+')
 metagenomeRE = re.compile(r'metagenome')
 

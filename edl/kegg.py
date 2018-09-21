@@ -270,7 +270,7 @@ def readKOFile(kofile, keggLevel):
     koMap = {}
     reString = keggLevel
 
-    nameRE = re.compile("^%s\s+(\S.*\S)\s*$" % (reString))
+    nameRE = re.compile(r'^%s\s+(\S.*\S)\s*$' % (reString))
     nameSep = None
     nameIndex = None
     if keggLevel == 'NAME':
@@ -549,10 +549,10 @@ def add_path_arguments(parser, defaults={}, choices={}, helps={}):
     default = defaults.get('tab_map_delim', None)
     pgroup.add_argument("--tab_map_delim",
                         default=default,
-                        help="Delimiter to parse multiple assignments in "
-                        "map from ids to ko/path/fam. Only used for "
-                        "tabular mapping tables. Defaults to " +
-                        str(default))
+                        help=("Delimiter to parse multiple assignments in "
+                              "map from ids to ko/path/fam. Only used for "
+                              "tabular mapping tables. Defaults to {}"
+                              .format(str(default))))
     pgroup.add_argument(
         "-p",
         "--parseStyle",

@@ -258,16 +258,15 @@ def parseAndFilterM8Stream(inhandle, options):
     return parseM8Hits(inhandle, infoInDescription)
 
 
-def parseM8File(
-        inhandle,
-        hitStringMap,
-        options,
-        parsingStyle,
-        countMethod,
-        taxonomy=None,
-        rank=None,
-        ignoreEmptyHits=True,
-        ):
+def parseM8File(inhandle,
+                hitStringMap,
+                options,
+                parsingStyle,
+                countMethod,
+                taxonomy=None,
+                rank=None,
+                ignoreEmptyHits=True,
+               ):
     """
     Wrapper method that combines filterM8, parseHits, and process hits to:
         filter hits using format and scorePct
@@ -280,16 +279,15 @@ def parseM8File(
     Return a dict from read to hits
     """
 
-    hitIter = parseM8FileIter(
-        inhandle,
-        hitStringMap,
-        options,
-        parsingStyle,
-        countMethod,
-        taxonomy=taxonomy,
-        rank=rank,
-        ignoreEmptyHits=ignoreEmptyHits,
-        )
+    hitIter = parseM8FileIter(inhandle,
+                              hitStringMap,
+                              options,
+                              parsingStyle,
+                              countMethod,
+                              taxonomy=taxonomy,
+                              rank=rank,
+                              ignoreEmptyHits=ignoreEmptyHits,
+                             )
 
     hitMap = {}
     for (read, hits) in hitIter:
@@ -299,16 +297,16 @@ def parseM8File(
 
     return hitMap
 
-def parseM8FileIter(
-        inhandle,
-        hitStringMap,
-        options,
-        parsingStyle,
-        countMethod,
-        taxonomy=None,
-        rank=None,
-        ignoreEmptyHits=True,
-        ):
+
+def parseM8FileIter(inhandle,
+                    hitStringMap,
+                    options,
+                    parsingStyle,
+                    countMethod,
+                    taxonomy=None,
+                    rank=None,
+                    ignoreEmptyHits=True,
+                   ):
     """
     Wrapper method that combines filterM8, parseHits, and process hits to:
         filter hits using format and scorePct
@@ -324,7 +322,7 @@ def parseM8FileIter(
     # get map from reads to lists of hit strings
     logger.info("Parsing hits")
     # filters and parses
-    #options.parseStyle = parsingStyle
+    # options.parseStyle = parsingStyle
     hitIter = filterM8Stream(inhandle, options, returnLines=False)
 
     # apply org or acc translation

@@ -470,8 +470,8 @@ def add_record_parsing_arguments(parser):
         dest='infileType',
         default=None,
         choices=fileTypeMap.keys(),
-        help='Type of input file. Otherwise, choose by extension.' +
-             'Known types are: %s' % (", ".join(fileTypeMap.keys())))
+        help=('Type of input file. Otherwise, choose by extension.'
+              'Known types are: %s' % (", ".join(fileTypeMap.keys()))))
 
 
 def add_fragmenting_arguments(parser, defaults={"splits": 400}):
@@ -498,18 +498,19 @@ def add_fragmenting_arguments(parser, defaults={"splits": 400}):
         "--splitOnSize",
         default=False,
         action='store_true',
-        help="create chunks based on record size, not number of" +
-        "records. For known sequence types (fasta, fastq, gb)," +
-        "sequence length is used, otherwize the full size of the" +
-        "record text is counted")
+        help=("create chunks based on record size, not number of"
+              "records. For known sequence types (fasta, fastq, gb),"
+              "sequence length is used, otherwize the full size of the"
+              "record text is counted"))
     parser.add_argument(
         '-E',
         '--even_out_chunks',
         default=False,
         action='store_true',
-        help="Adjust chunk size to minimize difference between size" +
-        "of fragments (measured by records or size depending on -s)." +
-        "This is used only if chunk size supplied and input not from STDIN")
+        help=("Adjust chunk size to minimize difference between size "
+              "of fragments (measured by records or size depending "
+              "on -s). This is used only if chunk size supplied and "
+              "input not from STDIN"))
 
 #################
 # Classes
