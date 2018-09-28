@@ -30,7 +30,7 @@ seqdb_root = config.get('seqdb_root','seqdbs')
 #
 # where to get the files from
 eggnog_url = config.get('eggnog_url','http://eggnogdb.embl.de/download/')
-eggnog_version = config.get('eggnog_version',get_eggnog_version(eggnog_url))
+eggnog_version = str(config.get('eggnog_version',get_eggnog_version(eggnog_url)))
 eggnog_url = re.sub(r'^https?://','',eggnog_url) + eggnog_version
 print(eggnog_url)
 #
@@ -60,7 +60,7 @@ rule all:
     input:
         expand(os.path.join(eggnog_dir, 'metadata','{mdfile}'),
                 mdfile=metadata_files),
-        expand(os.path.join(eggnog_dir, '{NOG}.hmm.h3p'), NOG=nog_list),
+        # expand(os.path.join(eggnog_dir, '{NOG}.hmm.h3p'), NOG=nog_list),
         expand(os.path.join(eggnog_dir, '{NOG}.hmm.hmm_count'), NOG=nog_list),
         # there is no stats.tt for viruses
         expand(os.path.join(eggnog_dir, '{NOG}.stats.txt'), 

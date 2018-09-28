@@ -102,7 +102,7 @@ $(HITIDMAP): $(KEGGGENES) | $(LASTDB_DIR)
 	grep ">" $< | perl -pe 's/^>(\S+)\s+(\S.*)/\1\t\2/' > $@
 
 $(LASTFILE): $(KEGGGENES) | $(LASTDB_DIR)
-    lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTDBTHREADS_OPTION) $(LASTP) $(KEGGGENES)
+	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTDBTHREADS_OPTION) $(LASTP) $(KEGGGENES)
 
 $(LASTDB_DIR):
 	mkdir -p $(LASTDB_DIR)
