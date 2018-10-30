@@ -92,8 +92,10 @@ def main():
     arguments = parser.parse_args()
     setup_logging(arguments)
 
-    if arguments.proportional and arguments.countMethod not in ['tophit','toporg']:
-        parser.error("--proportinal only has meaning if using tophit or toporg")
+    if arguments.proportional and \
+            arguments.countMethod not in ['tophit', 'toporg']:
+        parser.error("--proportinal only has meaning "
+                     "if using tophit or toporg")
 
     if len(arguments.input_files) == 0:
         parser.error("Must supply at least one m8 file to parse")
