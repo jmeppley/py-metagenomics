@@ -25,9 +25,9 @@ def main():
 
     parser = argparse.ArgumentParser(description=description)
     util.add_IO_arguments(parser)
-    parser.add_argument("-l", "--level", dest="level", 
+    parser.add_argument("-l", "--level", dest="level",
                         default="PATHWAY",
-                        metavar="LEVEL", action="append",
+                        metavar="LEVEL",
                         help=""" Level to collect counts on. Level can
                         be one of:
                           NAME, PATHWAY, EC, DEFINITION,
@@ -69,14 +69,14 @@ def main():
     parser.add_argument(
             "-s", "--sep",
             dest='sep',
-            default=';',
+            default='\t',
             help="""Character separating table cells. Default is tab""")
     parser.add_argument(
             "-S", "--ko_sep",
             dest='ko_sep',
             default=';',
             help="""Character separating multiple KO values in iput table
-            and used to separate multiple values in output column. 
+            and used to separate multiple values in output column.
             Default is ";". Ignored for output if --longOutput
             requested""")
 
@@ -89,7 +89,7 @@ def main():
     logging.debug("Fill: '%s'" % (arguments.fill))
 
     translation = kegg.readKEGGFile(arguments.ko_file,
-                                  arguments.level)
+                                    arguments.level)
 
     # switch to zero indexing
     if arguments.new_column:
@@ -97,18 +97,18 @@ def main():
     arguments.ko_column -= 1
 
     for (inhandle, outhandle) in util.inputIterator(arguments):
-        for new_line in translate_ko_column(inhandle,
-                                        sep=arguments.sep,
-                                        ko_sep=arguments.ko_sep,
-                                        ko_column=arguments.ko_column,
-                                        new_column=arguments.new_column,
-                                        translation=translation,
-                                        default=arguments.fill,
-                                        long_out=arguments.long_output,
-                                        ):
+        for new_line in translate_ko_column(
+                inhandle,
+                sep=arguments.sep,
+                ko_sep=arguments.ko_sep,
+                ko_column=arguments.ko_column,
+                new_column=arguments.new_column,
+                translation=translation,
+                default=arguments.fill,
+                long_out=arguments.long_output, ):
             outhandle.write(new_line)
 
- 
+
 def translate_ko_column(line_iter,
                         sep='\t',
                         ko_sep=';',
@@ -122,35 +122,38 @@ def translate_ko_column(line_iter,
     """
     Given a table with a KO column
     add a column of translated KOs. EG: A list of pathway names
-    
+
     Parameters:
 
- * translation({}): dictionary mapping KOs to new values (EG Pathways). New value entries should be lists.
+ * translation({}): dictionary mapping KOs to new values (EG Pathways).
+                    New value entries should be lists.
  * sep('\t'): The value delimiter in the table
  * ko_sep(';'): The separtor delimiting multiple KOs in one cell
  * ko_column(1): column with KO values
- * new_column(None): where to insert the translated values. A column number or None(=>after KO column). 
- * default('No Pathway'): The value to be inserted if the KO(s) is/are not in the translation table.
+ * new_column(None): where to insert the translated values.
+                     A column number or None(=>after KO column).
+ * default('No Pathway'): The value to be inserted
+                     if the KO(s) is/are not in the translation table.
  * drop_empty(False): If true drop lines with no KO
     """
-    comment_lines=0
-    dropped_lines=0
-    ncols=0
-    
+    comment_lines = 0
+    dropped_lines = 0
+    ncols = 0
+
     # loop over table lines
     for i, line in enumerate(line_iter):
-        line = line.rstrip( '\r\n' )
-        if not line or line.startswith( '#' ):
+        line = line.rstrip('\r\n')
+        if not line or line.startswith('#'):
             comment_lines += 1
             continue
         cells = line.split(sep)
-        if ncols==0:
+        if ncols == 0:
             # count columns and check requested column number
             ncols = len(cells)
 
         # get value from column
         values = cells[ko_column].strip().split(ko_sep)
-        if len(values)==0 and drop_empty:
+        if len(values) == 0 and drop_empty:
             # skip this line
             dropped_lines += 1
             continue
@@ -158,18 +161,19 @@ def translate_ko_column(line_iter,
         # translate values, account for mappings to multiple things
         added_values = set()
         for value in values:
-            translated_values=translation.get(value,[default,])
-            if isinstance(translated_values,str):
-                translated_values=(translated_values,)
+            translated_values = translation.get(value, [default, ])
+            if isinstance(translated_values, str):
+                translated_values = (translated_values,)
             for translated_value in translated_values:
                 added_values.add(translated_value)
 
-        # insert new value
+        # sort added values so tests are reproducible
+        added_values = sorted(added_values)
 
-
+        # insert new value(s)
         if not long_out:
             # make it a one element list with all values concatenated
-            added_values = [ko_sep.join(added_values),]
+            added_values = [ko_sep.join(added_values), ]
 
         # generate a line for each element in list
         for added_value in added_values:
@@ -177,14 +181,16 @@ def translate_ko_column(line_iter,
             new_cells = list(cells)
             if new_column is None:
                 new_cells.insert(ko_column + 1, added_value)
-            elif new_column<0 or new_column>=ncols:
+            elif new_column < 0 or new_column >= ncols:
                 new_cells.append(added_value)
             else:
                 new_cells.insert(new_column, added_value)
 
             yield sep.join(new_cells) + '\n'
-    
-    logging.info("Skipped %d comments and %d empty lines out of %d" % (comment_lines,dropped_lines,i+1))
+
+    logging.info("Skipped %d comments and %d empty lines out of %d",
+                 comment_lines, dropped_lines, i + 1)
+
 
 if __name__ == '__main__':
     main()
