@@ -52,6 +52,13 @@ def main():
              "assigned to Cyanobactia, will be lumped in with all "
              "other bacteria")
     parser.add_argument(
+            "--proportional",
+            dest="proportional",
+            default=False,
+            action="store_true",
+            help="""When using tophit or toporg, redistribute proportionally
+            instead of winner take all""")
+    parser.add_argument(
         "-R",
         "--printRank",
         dest="printRanks",
@@ -84,6 +91,9 @@ def main():
     add_universal_arguments(parser)
     arguments = parser.parse_args()
     setup_logging(arguments)
+
+    if arguments.proportional and arguments.countMethod not in ['tophit','toporg']:
+        parser.error("--proportinal only has meaning if using tophit or toporg")
 
     if len(arguments.input_files) == 0:
         parser.error("Must supply at least one m8 file to parse")
@@ -177,7 +187,7 @@ def main():
                 multifile,
                 filterParams=params,
                 returnLines=False,
-                winnerTakeAll=True,
+                winnerTakeAll=not arguments.proportional,
                 parseStyle=arguments.parseStyle,
                 sequenceWeights=sequenceWeights)
             # define method to turn Hits into orgnaisms
@@ -194,7 +204,7 @@ def main():
                 filterParams=params,
                 returnLines=False,
                 returnTranslations=True,
-                winnerTakeAll=True,
+                winnerTakeAll=not arguments.proportional,
                 taxonomy=taxonomy,
                 hitStringMap=hitStringMap,
                 parseStyle=ACCS)
