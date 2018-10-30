@@ -67,6 +67,16 @@ def main():
         action='store_true',
         help="Insert new duplicate rows if KO maps to multiple values")
     parser.add_argument(
+            "-H", "--header",
+            default=None,
+            metavar='HEADER',
+            help="Put HEADER in first row instead of trying to translate")
+    parser.add_argument(
+            "-Q", "--quotes",
+            default=False,
+            action="store_true",
+            help="Encase translated values in double quotes")
+    parser.add_argument(
             "-s", "--sep",
             dest='sep',
             default='\t',
@@ -105,6 +115,8 @@ def main():
                 new_column=arguments.new_column,
                 translation=translation,
                 default=arguments.fill,
+                quotes=arguments.quotes,
+                header=arguments.header,
                 long_out=arguments.long_output, ):
             outhandle.write(new_line)
 
@@ -118,6 +130,8 @@ def translate_ko_column(line_iter,
                         default='No Pathway',
                         long_out=False,
                         drop_empty=False,
+                        header=None,
+                        quotes=False,
                        ):
     """
     Given a table with a KO column
@@ -141,6 +155,7 @@ def translate_ko_column(line_iter,
     ncols = 0
 
     # loop over table lines
+    first_line = True
     for i, line in enumerate(line_iter):
         line = line.rstrip('\r\n')
         if not line or line.startswith('#'):
@@ -151,24 +166,29 @@ def translate_ko_column(line_iter,
             # count columns and check requested column number
             ncols = len(cells)
 
-        # get value from column
-        values = cells[ko_column].strip().split(ko_sep)
-        if len(values) == 0 and drop_empty:
-            # skip this line
-            dropped_lines += 1
-            continue
+        # don't translate header line (if asked)
+        if first_line and header:
+            added_values = [header, ]
+        else:
+            # get value from column
+            values = [c.strip('" ') for c in cells[ko_column].split(ko_sep)]
+            if len(values) == 0 and drop_empty:
+                # skip this line
+                dropped_lines += 1
+                continue
 
-        # translate values, account for mappings to multiple things
-        added_values = set()
-        for value in values:
-            translated_values = translation.get(value, [default, ])
-            if isinstance(translated_values, str):
-                translated_values = (translated_values,)
-            for translated_value in translated_values:
-                added_values.add(translated_value)
+            # translate values, account for mappings to multiple things
+            added_values = set()
+            for value in values:
+                translated_values = translation.get(value, [default, ])
+                if isinstance(translated_values, str):
+                    translated_values = (translated_values,)
+                for translated_value in translated_values:
+                    added_values.add(translated_value)
 
-        # sort added values so tests are reproducible
-        added_values = sorted(added_values)
+            # sort added values so tests are reproducible
+            added_values = sorted(added_values)
+        first_line = False
 
         # insert new value(s)
         if not long_out:
@@ -178,6 +198,8 @@ def translate_ko_column(line_iter,
         # generate a line for each element in list
         for added_value in added_values:
             # slow, but safe. Revisit if we have performance issues
+            if quotes:
+                added_value = '"{}"'.format(added_value)
             new_cells = list(cells)
             if new_column is None:
                 new_cells.insert(ko_column + 1, added_value)

@@ -6,7 +6,7 @@
 }
 
 @test "Testing add_kegg_pathways" {
-    run ./add_kegg_pathways.py -k test/data/kobrite/ko00001.keg -l PATHWAY test/data/contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash -c 2 -o test/data/.tst.contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash.add_path
+    run ./add_kegg_pathways.py -k test/data/kobrite/ko00001.keg -l PATHWAY test/data/contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash -c 2 -H Pathway -o test/data/.tst.contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash.add_path
     [ "$status" = 0 ]
 }
 @test "Checking add_kegg_pathways output" {
