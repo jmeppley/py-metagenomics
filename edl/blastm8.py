@@ -144,6 +144,13 @@ class FilterParams:
                         self.hsps_per_hit, self.nonoverlapping, self.sort,
                         self.sortReads))
 
+    """
+    def __setattr__(self, name, value):
+        if name == 'pctid' and value > 1:
+            logger.warning("requested PCTID filter is grater than 1, so we're scaling it down by 100x")
+            value = value / 100
+        super().__setattr__(name, value)
+    """
 
 class EmptyHitException(Exception):
     pass
@@ -1071,7 +1078,7 @@ def add_hit_table_arguments(parser,
             dest='filter_pctid',
             type=float,
             default=defVal,
-            help="Minimum percent identity to allow. Default: %s" %
+            help="Minimum percent identity to allow in range 0 to 100. Default: %s" %
             (defVal))
     if flags == 'all' or 'length' in flags:
         default = defaults.get("length", 0)
@@ -1245,7 +1252,7 @@ def get_alignment_percent_identity(mdx_string):
             # otherwise, it's the string of the reference that was mismatched
             mismatches += len(chunk)
 
-    return float(matches) / float(matches + mismatches)
+    return 100 * float(matches) / float(matches + mismatches)
 
 
 def setup_tests():
