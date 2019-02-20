@@ -8,7 +8,11 @@ About
 -----
 This is a collection of python (3.5) modules and scripts for metagenomic analyses for use on the command-line or in [http://ipython.org/](iPython).
 
-For use in Galaxy, look at the python2 (py2) branch. I hope to have a separate galaxy repository set up eventually, but I don't have time for that at the moment. Please feel free to ask for help (meppley@hawaii.edu) if you would like to try it for yourself.
+The primary scripts are useful for filtering sequence search results from common bioinformatics tools (blast, last, hmmer, etc) by hit metadata.
+
+Additionally, there are tools to turn hits against common reference databases (EG RefSeq or KEGF) into taxonomic or functional annotations.
+
+For use in Galaxy, look at the python2 (py2) branch. I hope to have a separate galaxy repository set up eventually, but I don't have time for that at the moment. Please feel free to ask for help (jmeppley@hawaii.edu) if you would like to try it for yourself.
 
 Differences from the Python2 version
 ------------------------------------
