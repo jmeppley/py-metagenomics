@@ -147,10 +147,12 @@ class FilterParams:
     """
     def __setattr__(self, name, value):
         if name == 'pctid' and value > 1:
-            logger.warning("requested PCTID filter is grater than 1, so we're scaling it down by 100x")
+            logger.warning("requested PCTID filter is grater than 1, "
+                           "so we're scaling it down by 100x")
             value = value / 100
         super().__setattr__(name, value)
     """
+
 
 class EmptyHitException(Exception):
     pass
@@ -1078,8 +1080,9 @@ def add_hit_table_arguments(parser,
             dest='filter_pctid',
             type=float,
             default=defVal,
-            help="Minimum percent identity to allow in range 0 to 100. Default: %s" %
-            (defVal))
+            help=("Minimum percent identity to allow in range 0 to 100. "
+                  "Default: %s" % (defVal))
+        )
     if flags == 'all' or 'length' in flags:
         default = defaults.get("length", 0)
         agroup.add_argument(
