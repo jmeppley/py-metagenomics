@@ -257,11 +257,11 @@ $(SSU_BWADB_TAXIDMAP): $(SSU_TAXIDMAP)
 
 $(LSU_BT2DB_FILE): $(LSU_FASTA) | $(LSU_SEQDB_DIR)
 	@echo Formatting database for bowtie2 searches
-	bowtie-build $(LSU_FASTA) $(LSU_BT2DB)
+	bowtie2-build $(LSU_FASTA) $(LSU_BT2DB)
 
 $(SSU_BT2DB_FILE): $(SSU_FASTA) | $(SSU_SEQDB_DIR)
 	@echo Formatting database for bowtie2 searches
-	bowtie-build $(SSU_FASTA) $(SSU_BT2DB)
+	bowtie2-build $(SSU_FASTA) $(SSU_BT2DB)
 
 $(LSU_BT2DB_HITIDMAP): $(LSU_HITIDMAP)
 	ln -s $^ $@
