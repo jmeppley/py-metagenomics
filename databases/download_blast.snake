@@ -1,0 +1,116 @@
+##########################
+#
+# download_blast.snake
+#
+# Retrieves latest blast formatted nr or nt database from NCBI
+#
+###########################
+import ftplib, re, os, datetime, getpass
+from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
+
+FTP = FTPRemoteProvider()
+
+def get_file_date(host, path,
+                  password=None,
+                  username='ftp',
+                  fmt_string="%Y%m%d"):
+    """ Return modify time of file on FTP server """
+    if password is None:
+        raise Exception("Please supply a password for the FTP server!")
+
+    connection = ftplib.FTP(host=host,
+                            user=username,
+                            passwd=password)
+    mdtm_string = connection.sendcmd("MDTM " + path)
+    return datetime.datetime.strptime(mdtm_string.split()[-1], "%Y%m%d%H%M%S") \
+                            .strftime(fmt_string)
+
+
+## Configurable params
+#
+# where to put the downloaded files:
+seqdb_root = config.get('seqdb_root','seqdbs')
+#
+# where to get the files from
+hostname = config.get('hostname', 'ftp.ncbi.nlm.nih.gov')
+username = config.get('username', 'ftp')
+password = config.get('email', '{}@hawaii.edu'.format(getpass.getuser()))
+
+# files to download
+db_name = config.get('database', 'nt')
+db_group = config.get('db_group', 'NCBI')
+
+#remote_db_template = '/blast/db/{db}.{{number}}.tar.gz'.format(db=db_name)
+# The FTP wildcard glob does't work with the wildcard in the middle of the file
+#  name so we'll get all the chunks and filter for our db
+remote_db_template = '/blast/db/{db_chunk}.tar.gz'
+db_url_template = hostname + remote_db_template
+
+# get every db chunk
+db_chunks, = FTP.glob_wildcards(db_url_template)
+total_found = len(db_chunks))
+# and filter for this db
+db_chunks = [c for c in db_chunks if c.startswith(db_name)]
+print("downloading {} of {} blast db chunks". format(
+    len(db_chunks)),
+    total_found
+)
+
+# use modification time of 0th chunk as a version
+timestamp = config.get(
+                'timestamp',
+                get_file_date(hostname,
+                              remote_db_template.format(db_chunk=db_name + '.00'),
+                              password,
+                              username)
+            )
+
+# Where to put the downloaded and formatted files
+db_dir = os.path.join(seqdb_root, db_group)
+db_base = os.path.join(db_dir, db_name, db_name + "_" + timestamp)
+
+# configure output files
+outputs = set()
+# the db index
+db_root = db_base + ".blast/"
+pal_file = db_root + db_name + ".pal"
+outputs.add(pal_file + ".complete")
+
+
+rule all:
+    input: outputs
+
+rule pal_file:
+    """ makes sure all the components are unpacked """
+    input: expand(db_root + "{db_chunk}.phd", \
+                  db_chunk=db_chunks)
+    output: pal_file + ".complete"
+    shell: "touch {output}"
+
+rule unpack_chunk:
+    input:
+        tarball=db_root + "{db_chunk}.tar.gz",
+        md5=db_root + "{db_chunk}.tar.gz.md5",
+    output:
+        phd=db_root + "{db_chunk}.phd"
+    shell: "cd $(dirname {output}) && tar -zxf {input.tarball}"
+
+rule get_db_chunk:
+    input: FTP.remote(db_url_template, keep_local=True)
+    output: temp(db_root + "{db_chunk}.tar.gz")
+    shadow: "shallow"
+    shell: "mv {input} {output}"
+
+rule hash:
+    input:
+        db=db_root + "{db_chunk}.tar.gz",
+        hash=FTP.remote(db_url_template + '.md5', keep_local=True)
+    output:
+        hash=db_root + "{db_chunk}.tar.gz.md5",
+    shell:
+        """
+        mv {input.hash} {output.hash}
+        cat {output.hash}
+        md5sum --check {output.hash}
+        """
+
