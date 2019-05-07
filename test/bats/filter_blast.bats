@@ -35,6 +35,19 @@
     [ "$status" = 0 ]
 }
 
+@test "Testing sam pctid filtering" {
+    SAMF=test/data/ALOHA_XVII_500_SSU_hits.sam
+    OF=test/data/.tst.ALOHA_XVII_500_SSU_hits.filtered
+    run ./filter_blast_m8.py -f sam $SAMF -o $OF -L 70
+    [ "$status" = 0 ]
+    run grep -c . $OF
+    [ "$output" = 355 ]
+    run ./filter_blast_m8.py -f sam $SAMF -o $OF -L 70 -I 97
+    [ "$status" = 0 ]
+    run grep -c . $OF
+    [ "$output" = 265 ]
+}
+
 @test "Testing filter_blast auto output name" {
     OF=test/data/contigs.lastn.I80.L100.B50.P10.H1
     rm -f $OF

@@ -1,0 +1,60 @@
+Read	ko	Pathway	3
+Aaustralica_c1505_PROKKA_00001	K02031	02000 Transporters	['02000 Transporters']
+Aaustralica_c1505_PROKKA_00002	K02032	02000 Transporters	['02000 Transporters']
+Aaustralica_c1505_PROKKA_00003	K01480	00330 Arginine and proline metabolism;01000 Enzymes	['00330 Arginine and proline metabolism', '01000 Enzymes']
+Aaustralica_c1505_PROKKA_00004	None	No Pathway	None
+Aaustralica_c1508_PROKKA_00005	None	No Pathway	None
+Aaustralica_c1508_PROKKA_00006	None	No Pathway	None
+Aaustralica_c1508_PROKKA_00007	None	No Pathway	None
+Aaustralica_c1512_PROKKA_00008	None	No Pathway	None
+Aaustralica_c1514_PROKKA_00009	None	No Pathway	None
+Aaustralica_c1516_PROKKA_00010	None	No Pathway	None
+Aaustralica_c1521_PROKKA_00013	K02408	02035 Bacterial motility proteins;02040 Flagellar assembly	['02035 Bacterial motility proteins', '02040 Flagellar assembly']
+Aaustralica_c1521_PROKKA_00014	K02388	02035 Bacterial motility proteins;02040 Flagellar assembly	['02035 Bacterial motility proteins', '02040 Flagellar assembly']
+Aaustralica_c1521_PROKKA_00015	None	No Pathway	None
+Aaustralica_c1547_PROKKA_00018	K02433	00970 Aminoacyl-tRNA biosynthesis;01000 Enzymes	['00970 Aminoacyl-tRNA biosynthesis', '01000 Enzymes']
+Aaustralica_c1553_PROKKA_00019	None	No Pathway	None
+Aaustralica_c1553_PROKKA_00020	K06997	No Pathway	K06997
+Aaustralica_c1553_PROKKA_00021	None	No Pathway	None
+Aaustralica_c1558_PROKKA_00027	K01875	00970 Aminoacyl-tRNA biosynthesis;01000 Enzymes;01007 Amino acid related enzymes;03016 Transfer RNA biogenesis	['00970 Aminoacyl-tRNA biosynthesis', '01000 Enzymes', '01007 Amino acid related enzymes', '03016 Transfer RNA biogenesis']
+Aaustralica_c1558_PROKKA_00028	K07109	No Pathway	K07109
+Aaustralica_c1558_PROKKA_00029	K03469	01000 Enzymes;03030 DNA replication;03032 DNA replication proteins	['01000 Enzymes', '03030 DNA replication', '03032 DNA replication proteins']
+Aaustralica_c1560_PROKKA_00030	None	No Pathway	None
+Aaustralica_c1560_PROKKA_00031	K03561	02000 Transporters	['02000 Transporters']
+Aaustralica_c1570_PROKKA_00040	None	No Pathway	None
+Aaustralica_c1570_PROKKA_00041	K01153	01000 Enzymes	['01000 Enzymes']
+Aaustralica_c1572_PROKKA_00042	None	No Pathway	None
+Aaustralica_c1575_PROKKA_00043	K03310	No Pathway	K03310
+Aaustralica_c1587_PROKKA_00045	K07007	No Pathway	K07007
+Aaustralica_c1590_PROKKA_00046	None	No Pathway	None
+Aaustralica_c1597_PROKKA_00047	None	No Pathway	None
+Aaustralica_c1598_PROKKA_00048	None	No Pathway	None
+Aaustralica_c1598_PROKKA_00049	None	No Pathway	None
+Aaustralica_c1611_PROKKA_00050	None	No Pathway	None
+Aaustralica_c1621_PROKKA_00052	None	No Pathway	None
+Aaustralica_c1623_PROKKA_00053	None	No Pathway	None
+Aaustralica_c1623_PROKKA_00054	K07126	No Pathway	K07126
+Aaustralica_c1623_PROKKA_00055	None	No Pathway	None
+Aaustralica_c251_PROKKA_00001	K07091	02000 Transporters;02010 ABC transporters	['02000 Transporters', '02010 ABC transporters']
+Aaustralica_c251_PROKKA_00002	None	No Pathway	None
+Aaustralica_c251_PROKKA_00003	None	No Pathway	None
+Aaustralica_c251_PROKKA_00004	None	No Pathway	None
+Aaustralica_c251_PROKKA_00006	None	No Pathway	None
+Aaustralica_c251_PROKKA_00007	None	No Pathway	None
+Aaustralica_c251_PROKKA_00008	None	No Pathway	None
+Aaustralica_c251_PROKKA_00009	None	No Pathway	None
+Aaustralica_c251_PROKKA_00010	None	No Pathway	None
+Aaustralica_c251_PROKKA_00011	None	No Pathway	None
+Aaustralica_c251_PROKKA_00012	None	No Pathway	None
+Aaustralica_c251_PROKKA_00013	None	No Pathway	None
+Aaustralica_c252_PROKKA_00015	None	No Pathway	None
+Aaustralica_c252_PROKKA_00024	None	No Pathway	None
+Aaustralica_c253_PROKKA_00028	None	No Pathway	None
+Aaustralica_c253_PROKKA_00029	None	No Pathway	None
+Aaustralica_c253_PROKKA_00030	None	No Pathway	None
+Aaustralica_c253_PROKKA_00031	None	No Pathway	None
+Aaustralica_c253_PROKKA_00032	None	No Pathway	None
+Aaustralica_c253_PROKKA_00033	None	No Pathway	None
+Aaustralica_c253_PROKKA_00034	None	No Pathway	None
+Aaustralica_c253_PROKKA_00035	None	No Pathway	None
+Aaustralica_c253_PROKKA_00036	None	No Pathway	None
