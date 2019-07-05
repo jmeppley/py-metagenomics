@@ -72,7 +72,13 @@ formatter_config = {
     'bwa': {'base': '.bwa/bwadb', 'suff': 'bwt', 'nucl_only':True}
 }
 
-for db_formatter in config.get('formatters', ['last8',]):
+# how should the db be formatted?
+db_fmt_list = config.get('formatters', ['last8',])
+if isinstance(db_fmt_list, str):
+    # allow for semicolon separated list
+    db_fmt_list = db_fmt_list.split(';')
+
+for db_formatter in db_fmt_list:
     fcnf = formatter_config[db_formatter]
     if is_prot and fcnf.get('nucl_only', False):
         raise Exception("Cant format protein DB for " + db_formatter)
@@ -122,7 +128,7 @@ rule bwadb:
     params:
         db='{db_root}' + formatter_config['bwa']['base']
     threads: fmt_threads
-    shell: "bwa index -T {threads} {input} {params.db}"}
+    shell: "bwa index -T {threads} {input} {params.db}"
 
 rule diamondb:
     input: '{db_root}.fasta'
@@ -159,11 +165,14 @@ rule hash:
         hash=FTP.remote(db_url + '.md5', keep_local=True)
     output:
         hash=db_fasta + ".gz.md5",
+    params:
+        # the md5 file contains a different file
     shell:
         """
         mv {input.hash} {output.hash}
-        cat {output.hash}
-        md5sum --check {output.hash}
+	# our filename is different than the name in the md5 file
+        cat {output.hash} | perl -pe 's/.gz$/_{timestamp}.fasta.gz/' > {output.hash}.fixed
+        cd $(dirname {output.hash}) && md5sum --check $(basename {output.hash}.fixed)
         """
 
 rule make_fasta:
@@ -173,4 +182,4 @@ rule make_fasta:
     output: db_fasta
     params:
         prot="-p" if is_prot else "",
-    shell: "gunzip -c {input} | tantan {params.prot} > {output}"
+    shell: "gunzip -c {input.db} | tantan {params.prot} > {output}"
