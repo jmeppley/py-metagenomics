@@ -33,7 +33,12 @@ BUILD_LASTDB:=True
 LASTDB_ROOT?=$(SEQDB_ROOT)
 LASTDB_DIR:=$(LASTDB_ROOT)/RefSeq/$(REL)
 LASTDBCHUNK?=
-LASTDBTHREADS?=
+LASTDBTHREADS?=10
+
+# compile for Diamond?
+BUILD_DMNDDB:=True
+DMNDDB_FILE:=$(LASTDB_DIR)/$(FAA_NAME).dmndb
+DMNDDBTHREADS?=10
 
 # Most folks won't need to edit below this line
 
