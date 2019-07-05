@@ -1,0 +1,55 @@
+##########################
+#
+# download_gtdb.snake
+#
+# Retrieves latest GTDB database from ecogenomic.org along with metadata
+#
+# follow up with format_gtdb.snake to generate annotated dbs
+#
+###########################
+import ftplib, re, os, datetime, getpass
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+HTTPS = HTTPRemoteProvider()
+
+## Configurable params
+
+# where to put the downloaded files:
+seqdb_root = config.get('seqdb_root','seqdbs')
+
+# where to get the files from
+#  https://data.ace.uq.edu.au/public/gtdb/data/releases/
+hostname = config.get('hostname', 'data.ace.uq.edu.au')
+
+# version number
+release = config.get('release', '89.0')
+
+## end configurable params
+
+# destination
+out_dir = os.path.join(seqdb_root, 'GTDB', release)
+
+# variables for downloading
+remote_db_path = config.get('remote_db_path', '/public/gtdb/data/releases')
+rel = release.split(".")[0]
+remote_base = \
+    '{hostname}{remote_db_path}/release{rel}/{release}' \
+    .format(**locals())
+
+# files to download
+file_list = [out_dir + "/" + f.format(rel=rel) \
+             for f in ['gtdbtk_r{rel}_data.tar.gz', \
+                       'sp_clusters_r{rel}.tsv', \
+                       'VERSION', \
+                       'RELEASE_NOTES', \
+                       'ssu_r{rel}.tsv', \
+                       'metadata_field_desc.tsv', \
+                       'FILE_DESCRIPTIONS']]
+
+rule outputs:
+    input: file_list
+
+
+rule download_file:
+    input: HTTPS.remote(remote_base + '/{filename}')
+    output: out_dir + '/{filename}'
+    shell: 'mv {input} {output}'

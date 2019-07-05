@@ -1,0 +1,11 @@
+name: seqdbs
+channels:
+ - conda-forge
+ - bioconda
+dependencies:
+ - snakemake
+ - last
+ - wget
+ - curl
+ - diamond
+ - bwa

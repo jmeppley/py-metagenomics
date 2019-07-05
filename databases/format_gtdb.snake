@@ -1,0 +1,9 @@
+##########################
+#
+# format_gtdb.snake
+#
+# Formats the latest GTDB database for last and/or diamond
+#
+# first run download_gtdb.snake to get the necessary files
+##########################
+
