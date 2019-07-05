@@ -5,5 +5,95 @@
 # Formats the latest GTDB database for last and/or diamond
 #
 # first run download_gtdb.snake to get the necessary files
+#
+# a large number of files are written to the working directory in
+# "GTDB/{release}"
 ##########################
+import re
+import pandas
 
+# where to put the downloaded files:
+seqdb_root = config.get('seqdb_root','seqdbs')
+download_root = config.get('download_root', seqdb_root)
+
+# version number
+release = config.get('release', '89.0')
+rel = release.split(".")[0]
+fmt_threads = config.setdefault('fmt_threads', 20)
+
+# already downloaded files
+download_dir = os.path.join(download_root, 'GTDB', release)
+seqdb_dir = os.path.join(seqdb_root, 'GTDB', release)
+gtdb_tarball = "{download_dir}/gtdbtk_r{rel}_data.tar.gz".format(**locals())
+
+# get list of genomes
+tax_table = download_dir + "/sp_clusters_r89.tsv"
+genome_taxonomy = pandas.read_csv(tax_table, \
+                                  sep='\t', \
+                                  index_col=0, \
+                                  usecols=[0,2], \
+                                  names=['genome','lineage'], \
+                                  header=0).lineage.to_dict()
+orgid_to_genome = {re.sub(r'\.\d+$', '', g):g \
+                   for g in genome_taxonomy}
+"""
+genome_set = set(pandas.read_csv(tax_table, \
+                                 sep='\t', \
+                                 usecols=[0,], \
+                                 index_col=0).index)
+orgids = [re.sub(r'\.\d+$', '', g) for g in genome_set]
+"""
+
+# file names
+work_dir = "GTDB/" + release
+name_root = seqdb_dir + "/gtdb_r" + release
+faa_file = name_root + ".faa"
+
+# formatting for last and diamond happends here
+config['dbs'] = {'GTDB': {'fasta': faa_file}}
+include: 'format_dbs.snake'
+
+# taonomy files
+outputs = config.setdefault('outputs', set())
+##TODO
+
+rule outputs:
+    input: outputs
+
+rule genes_faa:
+    input: expand(work_dir + "/prokka/{orgid}/{orgid}.faa", \
+                  orgid = orgid_to_genome.keys(), **locals())
+    output: faa_file
+    shell: "cat {input} > {output}"
+
+def get_domain(wildcards):
+    return genome_taxonomy[orgid_to_genome[wildcards.orgid]] \
+            .split(";")[0].split("__")[1]
+
+rule prokka:
+    input: lambda w: \
+        "{work_dir}/release{rel}/fastani/database/{genome}_genomic.fna" \
+        .format(genome=orgid_to_genome[w.orgid], work_dir=work_dir, rel=rel)
+    output: work_dir + "/prokka/{orgid}/{orgid}.faa"
+    params:
+        kingdom=get_domain,
+        outdir=lambda w: "{work_dir}/prokka/{w.orgid}".format(**locals)
+    threads: config.get("prokka_threads", 10)
+    shell: """
+        prokka --outdir={params.outdir} --prefix {wildcards.orgid} \
+               --kingdom={params.kingdom} """
+
+rule gunzip:
+    input: "{gzroot}_genomic.fna..gz"
+    output: "{gzroot}_genomic.fna"
+    shell:
+        "gunzip {input}"
+
+rule unpack:
+    input: gtdb_tarball
+    output: expand( \
+        "{work_dir}/release{rel}/fastani/database/{genome}_genomic.fna", \
+        genome=genome_taxonomy.keys(), **locals())
+    shell:
+        "cd {work_dir} && tar -zxvf {input}"
+ 

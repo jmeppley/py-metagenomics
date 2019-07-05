@@ -1,0 +1,110 @@
+##########################
+#
+# format_ds.snake
+#
+#  Rules for formatting db files
+#
+#  The following must be defined in config:
+#   dbs: 
+#     db_name:
+#       fasta: /path/to/fasta
+#       is_prot: True
+#       fmts: [...]
+#   db_fmts: [last8, diamond]
+#   fmt_threads: 20
+#
+#   only fasta: is required, the rest default to above
+#   fmts one of: blast, last, last8, diamond, bwa
+#   db specific fmt list overrides global list
+#
+#   files to create are added to config['outputs']
+###########################
+
+# other options
+fmt_threads = config.setdefault('fmt_threads', 20)
+
+formatter_config = {
+    'last8': {'base':'.ldb8/lastdb', 'suff': 'prj'},
+    'last': {'base':'.ldb/lastdb', 'suff': 'prj'},
+    'diamond': {'base':'', 'suff': 'dmndb'},
+    'blast': {'base':'.bdb/blastdb', 'suff': 'pal'},
+    'bwa': {'base': '.bwa/bwadb', 'suff': 'bwt', 'nucl_only':True}
+}
+
+# how should the db be formatted?
+default_fmts = config.setdefault('db_fmts', ['last8','diamond'])
+if isinstance(default_fmts, str):
+    # allow for semicolon separated list
+    db_fmt_list = db_fmt_list.split(';')
+
+# set up databases
+outputs = config.setdefault('outputs', set())
+for database in config.get('dbs'):
+    dbinfo = config['dbs'][database]
+    is_prot = dbinfo.get('is_prot')
+    fasta_file = dbinfo['fasta']
+    # count records
+    outputs.add(fasta_file + ".prinseq.stats")
+    # format
+    for db_formatter in dbinfo.get('fmts', default_fmts):
+        fcnf = formatter_config[db_formatter]
+        if is_prot and fcnf.get('nucl_only', False):
+            raise Exception("Cant format protein DB for " + db_formatter)
+        db_loc = fasta_file + fcnf['base']
+        db_fmt_file = db_loc + "." + fcnf['suff']
+        outputs.add(db_fmt_file)
+
+rule all:
+    input: outputs
+
+rule lastdb:
+    input: '{db_root}'
+    output: '{db_root}' + formatter_config['last']['base'] \
+                  + "." + formatter_config['last']['suff']
+    params:
+        prot="-p" if is_prot else "",
+        db='{db_root}' + formatter_config['last']['base']
+    threads: fmt_threads
+    shell: "lastdb -c -v -P {threads} {params.prot} {input} {params.db}"
+
+rule lastdb8:
+    input: '{db_root}'
+    output: '{db_root}' + formatter_config['last8']['base'] \
+                  + "." + formatter_config['last8']['suff']
+    params:
+        prot="-p" if is_prot else "",
+        db='{db_root}' + formatter_config['last']['base']
+    threads: fmt_threads
+    shell: "lastdb8 -c -v -P {threads} {params.prot} {input} {params.db}"
+
+rule bwadb:
+    input: '{db_root}'
+    output: '{db_root}' + formatter_config['bwa']['base'] \
+                  + "." + formatter_config['bwa']['suff']
+    params:
+        db='{db_root}' + formatter_config['bwa']['base']
+    threads: fmt_threads
+    shell: "bwa index -T {threads} {input} {params.db}"
+
+rule diamondb:
+    input: '{db_root}'
+    output: '{db_root}' + formatter_config['diamond']['base'] \
+                  + "." + formatter_config['diamond']['suff']
+    threads: fmt_threads
+    shell: "diamond makedb --in {input} --db {output}"
+
+rule blastdb:
+    input: '{db_root}'
+    output: '{db_root}' + formatter_config['blast']['base'] \
+                  + "." + formatter_config['blast']['suff']
+    params:
+        type="prot" if is_prot else "nucl",
+        db='{db_root}' + formatter_config['blast']['base']
+    threads: fmt_threads
+    shell: "makeblastdb -in {input} -dbtype {params.type} -parse_seqids -db {params.db}"
+
+rule count:
+    input: '{db_root}'
+    output: '{db_root}.prinseq.stats'
+    shell: 'prinsiq-lite.pl -fasta {input} -stats_len -stats_info \
+             > {output}'
