@@ -85,7 +85,7 @@ rule rename_faa:
             for gene in SeqIO.parse(input.faa, 'fasta'):
                 gene_count += 1
                 gene_id, function = gene.description.split(None, 1)
-                gene_no = int(gene.split("_", 1)[1])
+                gene_no = int(gene.id.split("_", 1)[1])
                 gene.id = '{org}_{N:07d}'.format(org=wildcards.orgid, N=gene_no)
                 gene.description = '{tax} {function}' \
                     .format(tax=lineage, function=function)
