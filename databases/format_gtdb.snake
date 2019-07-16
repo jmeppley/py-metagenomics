@@ -13,6 +13,7 @@
 import re
 import pandas
 from Bio import SeqIO
+from edl.gtdb import generate_taxdump
 
 # where to put the downloaded files:
 seqdb_root = config.get('seqdb_root','seqdbs')
@@ -30,16 +31,16 @@ gtdb_tarball = "{download_dir}/gtdbtk_r{rel}_data.tar.gz".format(**locals())
 
 # get list of genomes
 tax_table = download_dir + "/sp_clusters_r89.tsv"
-genome_taxonomy = pandas.read_csv(tax_table, \
-                                  sep='\t', \
-                                  skiprows=config.get('skiprows', None),
-                                  nrows=config.get('nrows', None),
-                                  index_col=0, \
-                                  usecols=[0,2], \
-                                  names=['genome','lineage'], \
-                                  header=0).lineage.to_dict()
-genome_taxonomy = {re.sub(r'^(RS|GB)_', '', g):t \
-                   for g,t in genome_taxonomy.items()}
+genome_tax_table = pandas.read_csv(tax_table, \
+                                   sep='\t', \
+                                   skiprows=config.get('skiprows', None),
+                                   nrows=config.get('nrows', None),
+                                   index_col=0, \
+                                   usecols=[0,1,2], \
+                                   names=['genome','species','lineage'], \
+                                   header=0)
+genome_taxonomy = {re.sub(r'^(RS|GB)_', '', g):t + ";" + s \
+                   for g,s,t in genome_tax_table.itertuples()}
 orgid_to_genome = {re.sub(r'\.\d+$', '', g):g \
                    for g in genome_taxonomy}
 """
@@ -51,26 +52,64 @@ orgids = [re.sub(r'\.\d+$', '', g) for g in genome_set]
 """
 
 # file names
+outputs = config.setdefault('outputs', set())
 work_dir = "GTDB/" + release
 name_root = seqdb_dir + "/gtdb_r" + release
 faa_file = name_root + ".faa"
+header_file = name_root + ".headers"
+
+# taxonomy files
+tax_map_file = seqdb_dir + "/taxdump/gtdb.acc.to.taxid"
+names_dmp = seqdb_dir + "/taxdump/names.dmp"
+nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
 
 # formatting for last and diamond happends here
-config['dbs'] = {'GTDB': {'fasta': faa_file}}
+config['dbs'] = {'GTDB': {'fasta': faa_file, \
+                          'is_prot': True,
+                          'links': {'.tax': tax_map_file, \
+                                    '.ids': header_file, \
+                                    'names.dmp': names_dmp, \
+                                    'nodes.dmp': nodes_dmp}}}
 include: 'format_dbs.snake'
-
-# taonomy files
-outputs = config.setdefault('outputs', set())
-##TODO
 
 rule outputs:
     input: outputs
+
+rule taxonomy:
+    input:
+        genes=faa_file
+    output:
+        names=names_dmp,
+        nodes=nodes_dmp,
+        tax_map=tax_map_file
+    benchmark:
+        'benchmarks/{}/taxonomy.time'.format(release)
+    run:
+        logger.debug("generate_taxdump('{input.genes}')")
+        generate_taxdump(fasta=input.genes, \
+                         dump=os.path.join(seqdb_dir, 'taxdump'))
+
+rule genes_headers:
+    input: faa_file
+    output: header_file
+    shell: """
+        grep "^>" {input} | perl -pe 's/^>(\\S+)\\s+/\\1\\t/' > {output}
+        """
 
 rule genes_faa:
     input: expand(work_dir + "/prokka/{orgid}/{orgid}.renamed.faa", \
                   orgid = orgid_to_genome.keys(), **locals())
     output: faa_file
-    shell: "cat {input} > {output}"
+    benchmark: 'benchmarks/concatenate_faa.time'
+    #shell: "rm {output}; for F in {input} ; do echo $F >> {output}; done"
+    run:
+        if len(input) == 0:
+            raise Exception("There are no input files!!!")
+        input_iter = iter(input)
+        input_file = next(input_iter)
+        shell("cat {input_file} > {output}")
+        for input_file in input_iter:
+            shell("cat {input_file} >> {output}")
 
 rule rename_faa:
     input:
@@ -80,6 +119,7 @@ rule rename_faa:
     run:
         # the tax table has already been parsed, so let's not re-do it here
         lineage = genome_taxonomy[orgid_to_genome[wildcards.orgid]]
+        lineage = re.sub(' ','_',lineage)
         with open(output[0], 'wt') as out_handle:
             gene_count = 0
             for gene in SeqIO.parse(input.faa, 'fasta'):
