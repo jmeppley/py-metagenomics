@@ -44,7 +44,8 @@ prot_dict = {}
 for database in config.get('dbs'):
     dbinfo = config['dbs'][database]
     is_prot = dbinfo.get('is_prot', False)
-    fasta_file = dbinfo['fasta']
+    fasta_file = os.path.abspath(dbinfo['fasta'])
+    dbinfo['fasta'] = fasta_file
     # count records
     outputs.add(fasta_file + ".prinseq.stats")
     # format
@@ -74,7 +75,7 @@ rule lastdb:
     input: '{db_root}'
     output: '{db_root}' + formatter_config['last']['base'] \
                   + "." + formatter_config['last']['suff']
-    benchmark: 'benchmarks/{db_root}.lastdb.time'
+    benchmark: 'benchmarks{db_root}.lastdb.time'
     params:
         prot=lambda w: "-p" if prot_dict[w.db_root] else "",
         db='{db_root}' + formatter_config['last']['base']
@@ -85,7 +86,7 @@ rule lastdb8:
     input: '{db_root}'
     output: '{db_root}' + formatter_config['last8']['base'] \
                   + "." + formatter_config['last8']['suff']
-    benchmark: 'benchmarks/{db_root}.lastdb8.time'
+    benchmark: 'benchmarks{db_root}.lastdb8.time'
     params:
         prot=lambda w: "-p" if prot_dict[w.db_root] else "",
         db='{db_root}' + formatter_config['last8']['base']
@@ -96,7 +97,7 @@ rule bwadb:
     input: '{db_root}'
     output: '{db_root}' + formatter_config['bwa']['base'] \
                   + "." + formatter_config['bwa']['suff']
-    benchmark: 'benchmarks/{db_root}.bwadb.time'
+    benchmark: 'benchmarks{db_root}.bwadb.time'
     params:
         db='{db_root}' + formatter_config['bwa']['base']
     threads: fmt_threads
@@ -106,7 +107,7 @@ rule diamondb:
     input: '{db_root}'
     output: '{db_root}' + formatter_config['diamond']['base'] \
                   + "." + formatter_config['diamond']['suff']
-    benchmark: 'benchmarks/{db_root}.diamond.time'
+    benchmark: 'benchmarks{db_root}.diamond.time'
     threads: fmt_threads
     shell: "diamond makedb --in {input} --db {input}"
 
@@ -114,7 +115,7 @@ rule blastdb:
     input: '{db_root}'
     output: '{db_root}' + formatter_config['blast']['base'] \
                   + "." + formatter_config['blast']['suff']
-    benchmark: 'benchmarks/{db_root}.blast.time'
+    benchmark: 'benchmarks{db_root}.blast.time'
     params:
         type=lambda w: "prot" if prot_dict[w.db_root] else "nucl",
         db='{db_root}' + formatter_config['blast']['base']
@@ -124,7 +125,7 @@ rule blastdb:
 rule count:
     input: '{db_root}'
     output: '{db_root}.prinseq.stats'
-    benchmark: 'benchmarks/{db_root}.stats.time'
+    benchmark: 'benchmarks{db_root}.stats.time'
     shell: 'prinseq-lite.pl -fasta {input} -stats_len -stats_info \
              > {output}'
 
