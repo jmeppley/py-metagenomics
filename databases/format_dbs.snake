@@ -32,8 +32,8 @@ formatter_config = {
 }
 
 # how should the db be formatted?
-default_fmts = config.setdefault('db_fmts', ['last8','diamond'])
-if isinstance(default_fmts, str):
+db_fmt_list = config.setdefault('db_fmts', ['last8','diamond'])
+if isinstance(db_fmt_list, str):
     # allow for semicolon separated list
     db_fmt_list = db_fmt_list.split(';')
 
@@ -49,7 +49,7 @@ for database in config.get('dbs'):
     # count records
     outputs.add(fasta_file + ".prinseq.stats")
     # format
-    for db_formatter in dbinfo.get('fmts', default_fmts):
+    for db_formatter in dbinfo.get('fmts', db_fmt_list):
         fcnf = formatter_config[db_formatter]
         if is_prot and fcnf.get('nucl_only', False):
             raise Exception("Cant format protein DB for " + db_formatter)
@@ -78,7 +78,7 @@ rule lastdb:
     benchmark: 'benchmarks{db_root}.lastdb.time'
     params:
         prot=lambda w: "-p" if prot_dict[w.db_root] else "",
-        db='{db_root}' + formatter_config['last']['base']
+        db='{db_root}' + formatter_config['last']['base'],
         chunk=f'-s {config["last_chunk"]}' if 'last_chunk' in config else "",
     threads: fmt_threads
     shell: "lastdb -c -v -P {threads} \
@@ -130,8 +130,13 @@ rule count:
     input: '{db_root}'
     output: '{db_root}.prinseq.stats'
     benchmark: 'benchmarks{db_root}.stats.time'
-    shell: 'prinseq-lite.pl -fasta {input} -stats_len -stats_info \
+    shell: """
+        prinseq-lite.pl -fasta {input} -stats_len -stats_info \
              > {output}'
+        # print to screen in case someone's watching
+        echo {output}
+        head -5 {output}
+        """
 
 # To prevent link rule from matchin every file on earth:
 #  dynamically generate overly specific regex constraint that lists all file names
