@@ -1,0 +1,116 @@
+##########################
+#
+# format_phyloDB.snake
+#
+# Formats the latest PhyloDB database for last and/or diamond
+#  Uses prokka to predict and annotate genes
+#
+# first run download_phylodb.snake to get the necessary files
+#
+# a large number of files are written to the working directory in
+# "PhyloDB/{release}"
+##########################
+import re
+import pandas
+import gzip
+from Bio import SeqIO
+from edl.gtdb import generate_taxdump, PHYLODB
+
+# where to put the downloaded files:
+seqdb_root = config.get('seqdb_root','seqdbs')
+download_root = config.get('download_root', seqdb_root)
+
+# version number
+release = config.get('release', '1.076')
+rel = re.sub(r'\.', '_', release)
+fmt_threads = config.setdefault('fmt_threads', 20)
+
+# already downloaded files
+download_dir = os.path.join(download_root, 'PhyloDB', release)
+seqdb_dir = os.path.join(seqdb_root, 'PhyloDB', release)
+
+# raw files
+pref = "phylodb_" + release
+dl_faa_gz = download_dir + "/" + pref + ".pep.fa.gz"
+dl_annot_gz = download_dir + "/" + pref + ".annotations.txt.gz"
+dl_tax_gz = download_dir + "/" + pref + ".taxonomy.txt.gz"
+
+# output files
+faa_file = seqdb_dir + "/" + pref + ".faa"
+tax_map_file = seqdb_dir + "/taxdump/" + pref + ".id.to.tax"
+header_file = seqdb_dir + "/" + pref + ".ids"
+names_dmp = seqdb_dir + "/taxdump/names.dmp"
+nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
+
+# formatting for last and diamond happends here
+config['dbs'] = {'PhyloDB': {'fasta': faa_file,
+                             'is_prot': True,
+                             'links': {'.tax': tax_map_file, \
+                                       '.ids': header_file, \
+                                       'names.dmp': names_dmp, \
+                                       'nodes.dmp': nodes_dmp}}}
+include: 'format_dbs.snake'
+
+# taonomy files
+outputs = config.setdefault('outputs', set())
+
+rule outputs:
+    input: outputs
+
+rule taxonomy:
+    """ Uses the GTDB code for now. This requires an input file in the proper format.
+        For now, I'm rewriting the header ot match my GTDB style. 
+    """ 
+    input:
+        genes=faa_file
+    output:
+        names=names_dmp,
+        nodes=nodes_dmp,
+        tax_map=tax_map_file
+    benchmark:
+        'benchmarks/{}/taxonomy.time'.format(release)
+    run:
+        logger.debug("generate_taxdump('{input.genes}')")
+        generate_taxdump(fasta=input.genes, \
+                         style=PHYLODB,
+                         map_file_name=os.path.basename(output.tax_map),
+                         dump=os.path.join(seqdb_dir, 'taxdump'))
+
+rule genes_headers:
+    input: faa_file
+    output: header_file
+    shell: """
+        grep "^>" {input} | perl -pe 's/^>(\\S+)\\s+/\\1\\t/' > {output}
+        """
+
+rule genes_faa:
+    """ Injects lineages into the faa header, a la GTDB """
+    input:
+        faa_gz=dl_faa_gz,
+        tax_gz=dl_tax_gz,
+        annot_gz=dl_annot_gz
+    output:
+        faa=faa_file
+    run:
+        lineage_map = {}
+        with gzip.open(input.tax_gz, 'rt') as TAX:
+            for line in TAX:
+                org, pep_count, lineage = line.rstrip('\n\r').split('\t')
+                lineage_map[org] = lineage
+
+        annot_map = {}
+        with gzip.open(input.annot_gz, 'rt') as ANNOT:
+            for line in ANNOT:
+                gene_id, hash, org, function = line.rstrip('\n\r').split('\t')
+                annot_map[gene_id] = function
+
+        with open(output.faa, 'wt') as OUT:
+            with gzip.open(input.faa_gz, 'rt') as IN:
+                for gene in SeqIO.parse(IN, 'fasta'):
+                    gene_id, hash, org = gene.description.split('\t')
+                    gene.description = "\t".join((gene_id,
+                                                  lineage_map[org],
+                                                  annot_map[gene_id]))
+                    OUT.write(gene.format('fasta'))
+
+ 
