@@ -79,8 +79,10 @@ rule lastdb:
     params:
         prot=lambda w: "-p" if prot_dict[w.db_root] else "",
         db='{db_root}' + formatter_config['last']['base']
+        chunk=f'-s {config["last_chunk"]}' if 'last_chunk' in config else "",
     threads: fmt_threads
-    shell: "lastdb -c -v -P {threads} {params.prot} {params.db} {input}"
+    shell: "lastdb -c -v -P {threads} \
+            {params.chunk} {params.prot} {params.db} {input}"
 
 rule lastdb8:
     input: '{db_root}'
@@ -89,9 +91,11 @@ rule lastdb8:
     benchmark: 'benchmarks{db_root}.lastdb8.time'
     params:
         prot=lambda w: "-p" if prot_dict[w.db_root] else "",
-        db='{db_root}' + formatter_config['last8']['base']
+        db='{db_root}' + formatter_config['last8']['base'],
+        chunk=f'-s {config["last8_chunk"]}' if 'last8_chunk' in config else "",
     threads: fmt_threads
-    shell: "lastdb8 -c -v -P {threads} {params.prot} {params.db} {input}"
+    shell: "lastdb8 -c -v -P {threads} \
+            {params.chunk} {params.prot} {params.db} {input}"
 
 rule bwadb:
     input: '{db_root}'

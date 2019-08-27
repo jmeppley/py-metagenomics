@@ -71,7 +71,7 @@ rule merge_taxonomies:
     output:
         names=names_dmp,
         nodes=nodes_dmp,
-        plist=seqdb_dir + "/taxdump/pdb.taxids",
+        plist=seqdb_dir + "/taxdump/pdb.keep.taxids",
     benchmark: 'benchmarks/merge_taxonomies.time'
     run:
         from edl.taxon import readTaxonomy
@@ -91,7 +91,6 @@ rule merge_taxonomies:
 
             for child in taxon.children:
                 curr_max_id = update_taxids(child, curr_max_id, changed_ids)
-                child.setParent(taxon)
 
             return curr_max_id
         # map of old ids to new
@@ -125,13 +124,13 @@ rule get_pdb_tax_map:
     """ use translate_column to pull out seqids w/renamed taxa
     and create new tax id table """
     input:
-        plist=seqdb_dir + "/taxdump/pdb.taxids",
+        plist=seqdb_dir + "/taxdump/pdb.keep.taxids",
         pmap=pdb_tax_map_file
     output:
         ptaxmap=seqdb_dir + "/taxdump/pdb.keep.id.to.tax",
     benchmark: 'benchmarks/get_pdb_tax_map.time'
     shell:
-        "translate_column.py -m {input.pmap} -c 2 {input.plist} \
+        "translate_column.py -m {input.plist} -c 2 -D 2 {input.pmap} \
           > {output.ptaxmap}"
         
 rule cat_tax_maps:
