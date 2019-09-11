@@ -9,3 +9,4 @@ dependencies:
  - curl
  - diamond
  - bwa
+ - tantan
