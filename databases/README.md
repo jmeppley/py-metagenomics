@@ -5,28 +5,33 @@ Instructions for downloading and building local copies of RefSeq, Silva, or KEGG
 
 Overview
 --------
-In this folder is a makefile for each database. You should be able to simply `make` each database with the command:
+In this folder is a makefile for each database. You should be able to simply `make` each database with the commands:
 
-    make -f download_XXX.make
+    make -f download_XXX.make SEQDB_ROOT=/path/in/which/to/create/seqdbs
 
+or
+
+    snakemake -s download_XXX.snake --config seqdb_root=/path/in/which/to/create/seqdbs
+
+Two databases (GTDB and PhyloDB) require a second step:
+
+    snakemake -s format_XXX.snake
+	
 If you are impatient and are working on a multi-core computer, you can add "-j N" to the command to use N threads when possible.
+
+## Requirements ##
 
 You need to have a number of things installed for this to work properly, including:
  
- * gnu make
+ * gnu make or snakemake
  * perl
  * lastal/lastdb
  * tantan
  * python with modules: biopython, numpy
 
-The above (except for make and perl, which are standard on most systems) will be installed already if you installe py-metagenomics using conda.
+The above (except for make and perl, which are standard on most systems) will be installed already if you installe py-metagenomics using conda or if you use the provied conda.yml file:
 
-# LASTDBCHUNK #
-Unless you have a lot of RAM available (>100GB), you should limit the size of the generated last databases so they fit into memory. To do so, set the make variable: LASTDBCHUNK=50G (or whatever is appropriate for your system).
-
-Larger chunks will be processed faster, but there is a architectural size limit
-of about 100GB. The lastal8 and lastdb8 binaries can work around this limit, but
-that's not yet in the makefiles.
+    conda env create -p ./conda.env -f conda.yaml
 
 # DB specific options #
 ## KEGG ##
@@ -47,19 +52,6 @@ To generate the RefSeq mapping, set BUILD_KO_MAP=True (either in the makefile, t
 
 One of the nice things about the `make` program is that you can re-run the database build command with the new setting, and only the newly requested files will be processed. It won'e try to download and build the RefSeq sequences again.
 
-## RefSeq Additions ##
-The add_to_refseq.make makefile will create a version of the RefSeq database
-with added genomes. Added genomes must be in two files:
-
-  - additions.protein.fasta: fasta file of protein sequences
-  - acc.to.taxid.protein.additions: map from sequence ids to taxid
-
-Run with
-
-    make -f add_to_refseq.make ADDITIONS_SOURCE=${ADDITIONS_FOLDER}
-
-...where ADDITIONS_FOLDER is the folder containing the two files mentioned
-above.
 
 ## HMMs ##
 The hmm makefile will download PFAM HMMs by default and can also download TIGR
@@ -67,3 +59,5 @@ and COG with, EG:
 
     make -f download_hmms.make GET_TIGR=True
 
+# GTDB and PhyloDB #
+You can generate a merged GTDB (prokaryotes) and PhyloDB (everything else) db using format_mergedb.snake.
