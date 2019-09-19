@@ -12,9 +12,10 @@ from edl.util import treeGenerator
 
 logger = logging.getLogger(__name__)
 
-GTDB='gtdb'
-GTDBTAB='gtdb_table'
-PHYLODB='phylodb'
+GTDB = 'gtdb'
+GTDBTAB = 'gtdb_table'
+PHYLODB = 'phylodb'
+
 
 def generate_taxdump(fasta=None, table=None, dump=".", **kwargs):
     """ convert a GTDB faa file to ncbi style taxdumps """
@@ -27,11 +28,12 @@ def generate_taxdump(fasta=None, table=None, dump=".", **kwargs):
     else:
         raise Exception("Please supply 'fasta' or 'table' file")
 
-    tax_args = {k:v for k,v in kwargs.items() if k in ['style']}
+    tax_args = {k: v for k, v in kwargs.items() if k in ['style']}
     taxonomy = parse_lineages(tax_file, fmt, **tax_args)
 
-    dump_args = {k:v for k,v in kwargs.items() if k in ['map_file_name']}
+    dump_args = {k: v for k, v in kwargs.items() if k in ['map_file_name']}
     dump_taxonomy(taxonomy, dump, **dump_args)
+
 
 def generate_gtdb_lineages_from_table(tax_file):
     """ return acc,lineage tuple from file """
@@ -43,9 +45,10 @@ def generate_gtdb_lineages_from_table(tax_file):
             raise Exception("Table is empty!\n" + tax_file)
         for line in table_h:
             org, _species, lineage = \
-                    [x.strip() \
+                    [x.strip()
                      for x in line.split('\t', 4)[:3]]
             yield (org, lineage)
+
 
 def generate_gtdb_lineages(fasta_file):
     """ return acc,lineage tuple from file """
@@ -56,6 +59,7 @@ def generate_gtdb_lineages(fasta_file):
                 acc, lineage = line[1:].split(None, 2)[:2]
                 yield (acc, lineage)
 
+
 def generate_phylodb_lineages(fasta_file):
     """ return acc,lineage tuple from file """
     with open(fasta_file) as fasta_h:
@@ -64,6 +68,7 @@ def generate_phylodb_lineages(fasta_file):
                 # in GTDB headers, lineage is second chunk
                 acc, lineage = line[1:].split("\t", 2)[:2]
                 yield (acc, lineage)
+
 
 def parse_lineages(tax_file, fmt='fasta', style=GTDB):
     """ returns taxonomy object """
@@ -99,8 +104,11 @@ def parse_lineages(tax_file, fmt='fasta', style=GTDB):
 
     return Taxonomy(id_map, None, None, tax_file, root)
 
+
 RANK_LIST = ['domain', 'phylum', 'class',
              'order', 'family', 'genus', 'species']
+
+
 def add_phylodb_lineage_to_tree(lineage, tree):
     """ parse given lineage
         create new TaxNode objects as needed
@@ -110,7 +118,7 @@ def add_phylodb_lineage_to_tree(lineage, tree):
     sub_lineage = []
     if lineage.startswith('Euk'):
         # There is an extra entr in the PhyloDB Euk lineages
-        ranks = [RANK_LIST[0], None,] + RANK_LIST[1:]
+        ranks = [RANK_LIST[0], None] + RANK_LIST[1:]
     else:
         ranks = RANK_LIST
     for rank, taxon_string in zip(ranks, lineage.split(';')):
@@ -126,8 +134,10 @@ def add_phylodb_lineage_to_tree(lineage, tree):
             last_node = new_node
     return last_node
 
+
 RANK_DICT = {'d': 'domain', 'p': 'phylum', 'c': 'class',
              'o': 'order', 'f': 'family', 'g': 'genus', 's': 'species'}
+
 
 def add_gtdb_lineage_to_tree(lineage, tree):
     """ parse given lineage
@@ -157,6 +167,7 @@ def add_gtdb_lineage_to_tree(lineage, tree):
             last_node = new_node
     return last_node
 
+
 def dump_taxonomy(taxonomy, dump_path, map_file_name='gtdb.acc.to.taxid'):
     """ generate nodes.dmp and names.dmp """
 
@@ -174,6 +185,7 @@ def dump_taxonomy(taxonomy, dump_path, map_file_name='gtdb.acc.to.taxid'):
               'w') as acc_map_h:
         for (hitid, tax_node) in taxonomy.idMap.items():
             acc_map_h.write("%s\t%d\n" % (hitid, tax_node.id))
+
 
 if __name__ == '__main__':
     """ convert a GTDB faa file to ncbi style taxdumps
