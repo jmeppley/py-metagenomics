@@ -4,7 +4,7 @@ import os
 import logging
 import sys
 from math import floor, ceil, log10
-from edl.util import openInputFile
+from edl.util import open_input_file
 
 
 def checkTmpDir(tmpDir, jobName):
@@ -333,7 +333,7 @@ def fragmentInputBySize(infile, tmpdir, chunk, fileType,
             'chunk': chunk,
             'base': fragmentBase,
             'kwargs': kwargs}))
-    inhandle = openInputFile(infile)
+    inhandle = open_input_file(infile)
     num = fragmentInputStreamBySize(
         inhandle,
         tmpdir,

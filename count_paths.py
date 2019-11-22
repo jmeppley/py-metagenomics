@@ -204,7 +204,7 @@ def main():
         readHits = redistribute.pickBestHitByAbundance(
             multifile,
             filterParams=params,
-            returnLines=False,
+            return_lines=False,
             winnerTakeAll=True,
             parseStyle=arguments.parseStyle,
             sequenceWeights=sequenceWeights)

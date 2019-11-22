@@ -152,7 +152,7 @@ def main():
                 hits) in filterM8Stream(
                 inhandle,
                 filterParams,
-                returnLines=False):
+                return_lines=False):
             readCount += 1
             bestScore = 0
             hitTaxids = {}

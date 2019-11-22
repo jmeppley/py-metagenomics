@@ -25,7 +25,6 @@ import os
 import sys
 from urllib.parse import unquote_plus
 from edl import redistribute
-from edl.blastm8 import M8Stream
 from edl.hits import ACCS, FilterParams, add_taxon_arguments, \
         readMaps
 from edl.util import add_IO_arguments, add_universal_arguments, \
@@ -83,22 +82,21 @@ def main():
                 "Reading from %s and writing to %s" %
                 (inhandle, outhandle))
 
-            m8stream = M8Stream(inhandle)
             if arguments.countMethod == 'tophit':
                 # don't give any taxonomy, just map to accessions for
                 # redistribution
                 readHits = redistribute.pickBestHitByAbundance(
-                    m8stream,
+                    inhandle,
                     filterParams=params,
-                    returnLines=True,
+                    return_lines=True,
                     winnerTakeAll=wta,
                     parseStyle=arguments.parseStyle)
             else:
                 # translate to organism before finding most abundant
                 readHits = redistribute.pickBestHitByAbundance(
-                    m8stream,
+                    inhandle,
                     filterParams=params,
-                    returnLines=True,
+                    return_lines=True,
                     winnerTakeAll=wta,
                     taxonomy=taxonomy,
                     hitStringMap=hitStringMap,
@@ -113,8 +111,7 @@ def main():
 
         # Build a map from input file name to output handle
         outputMap = {}
-        for infile_handle in arguments.input_files:
-            infile_name = infile_handle.name
+        for infile_name in arguments.input_files:
             if arguments.output_file is None:
                 outputMap[infile_name] = sys.stdout
             elif len(arguments.input_files) <= 1:
@@ -135,7 +132,7 @@ def main():
             readHits = redistribute.pickBestHitByAbundance(
                 multifile,
                 filterParams=params,
-                returnLines=False,
+                return_lines=False,
                 winnerTakeAll=wta,
                 parseStyle=arguments.parseStyle)
         else:
@@ -143,7 +140,7 @@ def main():
             readHits = redistribute.pickBestHitByAbundance(
                 multifile,
                 filterParams=params,
-                returnLines=False,
+                return_lines=False,
                 winnerTakeAll=wta,
                 taxonomy=taxonomy,
                 hitStringMap=hitStringMap,

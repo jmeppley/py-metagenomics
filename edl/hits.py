@@ -250,7 +250,7 @@ def parseAndFilterM8Stream(inhandle, options):
     runs the input stream through m8 filtering
     and then through parseM8Hits to get map from each read to all hits
     """
-    inhandle = filterM8Stream(inhandle, options, returnLines=False)
+    inhandle = filterM8Stream(inhandle, options, return_lines=False)
     logger.info("Parsing hits")
 
     # since filter already parses hits, use that info
@@ -323,7 +323,7 @@ def parseM8FileIter(inhandle,
     logger.info("Parsing hits")
     # filters and parses
     # options.parseStyle = parsingStyle
-    hitIter = filterM8Stream(inhandle, options, returnLines=False)
+    hitIter = filterM8Stream(inhandle, options, return_lines=False)
 
     # apply org or acc translation
     # apply map of hit names if given'

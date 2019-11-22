@@ -1,5 +1,6 @@
 import argparse
 import glob
+import io
 import logging
 import os
 import re
@@ -74,26 +75,92 @@ def find_matching_files(search_string, wildcard_constraints=None):
                 yield full_path, wildcards
 
 
-class LineCounter():
+class InputFile():
     """
-    File-like wrapper for a file-like object that counts the number of
-    lines returned.
+    Simple line iterator from file or file handle that will count lines
+
+    USes open_input_file() to handle:
+        file names (incl gzipped or bzipped)
+        already open handles
+        None (implying stdin)
     """
 
-    def __init__(self, stream):
-        self.rawStream = stream
+    def __init__(self, input_data, *args):
+        # use open_input_file to handle different input types
+        self.raw_data = open_input_file(input_data, *args)
+        # setup counting
         self.lines = 0
+        self.enum = enumerate(self.raw_data, start=1)
 
+        # save file name and whether we need to close anything
+        self.close_me = False
+        try:
+            # if the file was already open, get name from property
+            self.name = input_data.name
+        except AttributeError:
+            # we had to open it
+            self.name = input_data
+            if input_data is not None:
+                # None would have given us stdin which we don't want to close
+                self.close_me = True
+
+    # define iter/next for line iteration
     def __iter__(self):
         return self
 
     def __next__(self):
-        line = next(self.rawStream)
-        self.lines += 1
+        self.lines, line = next(self.enum)
         return line
 
     def next(self):
         return self.__next__()
+
+    # define enter/exit to behave as context manager
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
+    def close(self):
+        if self.close_me:
+            self.raw_data.close()
+
+
+def iterable_to_stream(iterable,
+                       str_to_bytes=True,
+                       buffer_size=io.DEFAULT_BUFFER_SIZE):
+    """
+    Lets you use an iterable (e.g. a generator)
+    that yields bytestrings as a read-only
+    input stream.
+
+    The stream implements Python 3's newer I/O API
+    (available in Python 2's io module).
+    For efficiency, the stream is buffered.
+    """
+
+    if str_to_bytes:
+        # encode strings as bytes
+        iterable = (s.encode('utf-8') for s in iterable)
+
+    class IterStream(io.RawIOBase):
+        def __init__(self):
+            self.leftover = None
+
+        def readable(self):
+            return True
+
+        def readinto(self, b):
+            try:
+                length = len(b)  # We're supposed to return at most this much
+                chunk = self.leftover or next(iterable)
+                output, self.leftover = chunk[:length], chunk[length:]
+                b[:len(output)] = output
+                return len(output)
+            except StopIteration:
+                return 0    # indicate EOF
+    return io.BufferedReader(IterStream(), buffer_size=buffer_size)
 
 
 def checkNoneOption(value):
@@ -133,7 +200,7 @@ def countBasesInFasta(fastaFile):
 urlRE = re.compile(r'[a-z]+\:\/\/')
 
 
-def openInputFile(infile, *args):
+def open_input_file(infile, *args):
     """
     return input stream. Allow for text, gzipped text, or standard input
     if None given.
@@ -153,7 +220,7 @@ def openInputFile(infile, *args):
             import bz2
             return bz2.BZ2File(infile, 'rb')
         else:
-            return open(infile, 'rU')
+            return open(infile, 'rt')
     else:
         return infile
 
@@ -352,7 +419,6 @@ def add_IO_arguments(parser, defaults={}):
              "with input files. (By default, a suffix is appended to the "
              "full path of the input file)")
     parser.add_argument("input_files", nargs="*",
-                        type=argparse.FileType('r'),
                         default=[sys.stdin, ],
                         metavar="INFILE",
                         help="List of input files. Omit to read from STDIN")
@@ -373,7 +439,7 @@ def inputIterator(arguments):
     yields pairs of input and output streams as 2-element tuples
     """
     outfile_name = arguments.output_file
-    infiles = arguments.input_files
+    infiles = [InputFile(f) for f in arguments.input_files]
     if len(infiles) == 1:
         inhandle = infiles[0]
         infile_name = inhandle.name

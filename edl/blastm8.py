@@ -1,8 +1,19 @@
 #! /usr/bin/python
+"""
+COllection of functions and classes to parse and filter  hit tables from:
+    blast
+    hmmer
+    last
+    diamond
+    infernal
+    SAM
+    GFF
+
+"""
 import logging
 import re
 import sys
-from edl.util import LineCounter, openInputFile, parseExp
+from edl.util import InputFile, parseExp
 logger = logging.getLogger(__name__)
 
 #############
@@ -30,29 +41,6 @@ cigarRE = re.compile(r'\d+[^\d]')
 #############
 
 
-class M8Stream(LineCounter):
-    """ Inherits line counting from edl.util.LineCounter plus
-    ability to open anything from edl.util.openIntpuFile. The
-    interface is a simple next() method and a close() method
-    that only does anything if the first argument is a file
-    name (and not a file-like object)
-    """
-
-    def __init__(self, fileName, *args):
-        LineCounter.__init__(self, openInputFile(fileName, *args))
-        try:
-            self.fileName = fileName.name
-        except AttributeError:
-            self.fileName = fileName
-
-    def close(self):
-        """
-        Close any file objects that were opened during __init__
-        """
-        if isinstance(self.fileName, str):
-            self.rawStream.close()
-
-
 class FilterParams:
 
     @staticmethod
@@ -60,7 +48,7 @@ class FilterParams:
         """
         Translate a NameSpace object created using the
         add_hit_table_arguments below into a FilterParams object.
-        The attributes format, sort, and sortReads are expected
+        The attributes format, sort are expected
         to be in the arguments object with the 'hitTable' prefix.
         The attributes bits, evalue, pctid, aln, length, hits_per_read,
         hsps_per_hit, and nonoverlapping with the prefix 'filter'.
@@ -96,7 +84,7 @@ class FilterParams:
             if oparam not in ignore:
                 if hasattr(arguments, oparam):
                     setattr(params, param, getattr(arguments, oparam))
-        for param in ['format', 'sort', 'sortReads']:
+        for param in ['format', 'sort']:
             oparam = 'hitTable' + param[0].upper() + param[1:]
             if oparam not in ignore:
                 if hasattr(arguments, oparam):
@@ -119,7 +107,6 @@ class FilterParams:
             hsps_per_hit=0,
             nonoverlapping=-1,
             sort=None,
-            sortReads=None,
             bad_refs=None):
         self.format = format
         self.top_pct = top_pct
@@ -131,18 +118,17 @@ class FilterParams:
         self.hits_per_read = hits_per_read
         self.hsps_per_hit = hsps_per_hit
         self.nonoverlapping = nonoverlapping
-        self.sortReads = sortReads
         self.sort = sort
         self.bad_refs = None
 
     def __repr__(self):
         return ("FilterParams(format=%r, top_pct=%r, bits=%r, evalue=%r, "
                 "pctid=%r, length=%r, aln=%r, hits_per_read=%r, "
-                "hsps_per_hit=%r, nonoverlapping=%r sort=%r, sortReads=%r)" % (
+                "hsps_per_hit=%r, nonoverlapping=%r sort=%r)" % (
                         self.format, self.top_pct, self.bits, self.evalue,
                         self.pctid, self.length, self.aln, self.hits_per_read,
                         self.hsps_per_hit, self.nonoverlapping, self.sort,
-                        self.sortReads))
+                ))
 
     """
     def __setattr__(self, name, value):
@@ -690,17 +676,15 @@ def filterM8(instream, outstream, params, to_gff=False):
     """
     Filter instream and write output to outstream
     """
-    # if params.sortReads:
-    #    instream=sortLines(instream)
     logger.debug("blastm8.filterM8: reading from {}".format(instream.name))
     line_count = 0
     if to_gff and params.format != GFF:
-        for read, hits in filterM8Stream(instream, params, returnLines=False):
+        for read, hits in filterM8Stream(instream, params, return_lines=False):
             for hit in hits:
                 line_count += 1
                 outstream.write(hit.to_gff())
     else:
-        for line in filterM8Stream(instream, params, returnLines=True):
+        for line in filterM8Stream(instream, params, return_lines=True):
             line_count += 1
             outstream.write(line)
     logger.debug("blastm8.filterM8: wrote {} lines".format(line_count))
@@ -717,29 +701,6 @@ def sortLines(instream):
 
 
 def getHitStream(instream, options):
-    if options.sortReads:
-        return getSortedHits(instream, options)
-    else:
-        return getUnsortedHitStream(instream, options)
-
-
-def getSortedHits(instream, options):
-    """
-    Read in every line to a list of hits, sort by read and return individually
-    """
-    hits = []
-    for line in instream:
-        if len(line) == 0:
-            continue
-        hit = Hit.getHit(line, options)
-        if hit is not None:
-            hits.append(hit)
-
-    hits.sort(key=lambda h: (h.read))
-    return hits
-
-
-def getUnsortedHitStream(instream, options):
     """
     Simply parse lines into Hits one at a time and return them
     """
@@ -763,71 +724,58 @@ def generate_hits(hit_table, format=BLASTPLUS, **filter_args):
     default format is BLAST, change with format=format
     See class FilterParams for other arguments
     """
-    m8stream = M8Stream(hit_table)
-    params = FilterParams(format=format, **filter_args)
-    for read, hits in filterM8Stream(m8stream,
-                                     params,
-                                     returnLines=False,
-                                     ):
-        yield read, hits
-    m8stream.close()
+    with InputFile(hit_table) as m8stream:
+        params = FilterParams(format=format, **filter_args)
+        for read, hits in filterM8Stream(m8stream,
+                                         params,
+                                         return_lines=False,
+                                         ):
+            yield read, hits
+        logger.debug("Read %d lines from %s table", m8stream.lines, format)
 
 
-def filterM8Stream(instream, options, returnLines=True):
+def filterM8Stream(instream, options, return_lines=True):
     """
     return an iterator over the lines in given input stream that pass filter
     """
     logger.debug("Processing stream: %s" % instream)
 
-    currentRead = None
+    current_read = None
     hits = []
     logger.debug(repr(options))
-    needsFilter = doWeNeedToFilter(options)
-    logger.debug("Filtering" if needsFilter else "Not filtering")
-    for line_hit in getHitStream(instream, options):
-        if line_hit.read != currentRead:
-            if currentRead is not None:
-                logger.debug(
-                    "processing %d hits for %s" %
-                    (len(hits), currentRead))
-                if options.sort is not None:
-                    sortHits(hits, options.sort)
-                if needsFilter:
-                    hits = list(
-                        filterHits(
-                            hits,
-                            options,
-                            returnLines=returnLines))
+
+    def build_items_to_generate(current_read, hits,
+                                sort=options.sort,
+                                needs_filter=doWeNeedToFilter(options),
+                                return_lines=return_lines):
+        if current_read is not None:
+            logger.debug(
+                "processing %d hits for %s" %
+                (len(hits), current_read))
+            if options.sort is not None:
+                sortHits(hits, options.sort)
+            if needs_filter:
+                hits = filterHits(hits, options)
+            if return_lines:
+                for hit in hits:
+                    yield hit.line
+            else:
+                if needs_filter:
+                    hits = list(hits)
                 if len(hits) > 0:
-                    if returnLines:
-                        if needsFilter:
-                            for line in hits:
-                                yield line
-                        else:
-                            for hit in hits:
-                                yield hit.line
-                    else:
-                        yield (currentRead, hits)
-                hits = []
-            currentRead = line_hit.read
-        # logging.debug("%s -> %s" % (line_hit.read, line_hit.hit))
+                    yield (current_read, hits)
+
+    for line_hit in getHitStream(instream, options):
+        if line_hit.read != current_read:
+            for item in build_items_to_generate(current_read, hits):
+                yield item
+            hits = []
+            current_read = line_hit.read
+
         hits.append(line_hit)
 
-    if currentRead is not None:
-        if options.sort is not None:
-            sortHits(hits, options.sort)
-        if needsFilter:
-            hits = list(filterHits(hits, options, returnLines=returnLines))
-        if len(hits) > 0:
-            if returnLines:
-                if needsFilter:
-                    for line in hits:
-                        yield line
-                else:
-                    for hit in hits:
-                        yield hit.line
-            else:
-                yield (currentRead, hits)
+    for item in build_items_to_generate(current_read, hits):
+        yield item
 
 
 def sortHits(hits, sortType):
@@ -885,7 +833,7 @@ def doWeNeedToFilter(options):
     return False
 
 
-def filterHits(hits, options, returnLines=True):
+def filterHits(hits, options):
     if options.bad_refs:
         logger.debug("REmoving bad_refs from hits")
         hits = [h for h in hits if h.hit not in options.bad_refs]
@@ -972,10 +920,7 @@ def filterHits(hits, options, returnLines=True):
         hit_count = len(counted_hits)
 
         # print hit
-        if returnLines:
-            yield hit.line
-        else:
-            yield hit
+        yield hit
 
 
 def add_hit_table_arguments(parser,
@@ -989,7 +934,6 @@ def add_hit_table_arguments(parser,
     general hit table handling:
         format (GENE, LIZ, BLASTPLUS, LAST, ...)
         sort (sort hits by 'score', 'pctid', or 'evalue')
-        sortReads (sort lines by read name)
 
     filtering options:
         filter_top_pct (aka top_pct: minimum pct of best score for other
@@ -1056,11 +1000,8 @@ def add_hit_table_arguments(parser,
             type=int,
             help="If a positive number is given, only allow hits within "
                  "this percent of the best hit. Use -1 for no filtering. "
-                 "Use 0 to just take the hit(s) with the best score. If "
-                 "hit table is from last, it will be automatically sorted "
-                 "by read. Sorting by read is slow and should be avoided "
-                 "if you already have a sorted and filtered hit table "
-                 "(e.g. skip this option). Default is {}"
+                 "Use 0 to just take the hit(s) with the best score. "
+                 "Default is {}"
                  .format(defaults.get("filter_top_pct", -1)))
     if flags == 'all' or 'bits' in flags:
         agroup.add_argument('-B', '--bitScore', dest='filter_bits',
@@ -1153,20 +1094,6 @@ def add_hit_table_arguments(parser,
                  "before "
                  "filtering. Secondarily sorted by hit id to make output "
                  "more deterministic")
-    if flags == 'all' or 'sortReads' in flags:
-        default = defaults.get("sortReads", False)
-        agroup.add_argument(
-            '-S',
-            '--sortReads',
-            dest='hitTableSortReads',
-            default=default,
-            action='store_true',
-            help="Sort input lines by read before parsing. Only needed if "
-                 "merging multiple results or when processing raw LAST "
-                 "output.  For REALLY large files, this may fill up "
-                 "available memory and be slow. If that happens, run "
-                 "through 'sort' first. (for last: sort -t $'\\t' -k 7,7 "
-                 "-k1rn,1 FILE)")
 
 
 def parseCigarString(cigar):
@@ -1320,7 +1247,7 @@ def test():
     logging.info("Starting passthrough test")
     m8stream = m8data.__iter__()
     params = FilterParams()
-    outs = filterM8Stream(m8stream, params, returnLines=True)
+    outs = filterM8Stream(m8stream, params, return_lines=True)
     myAssertEq(next(outs), m8data[0])
     myAssertEq(next(outs), m8data[1])
     myAssertEq(next(outs), m8data[2])

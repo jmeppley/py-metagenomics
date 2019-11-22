@@ -4,10 +4,11 @@
     Source fasta data must be supplied via STDIN or the -i flag.
 """
 
+from math import floor
 from Bio import SeqIO, SeqRecord
-from edl.util import add_universal_arguments, setup_logging
+from edl.util import add_universal_arguments, setup_logging, InputFile
 from edl.blastm8 import add_hit_table_arguments, FilterParams, \
-        filterM8Stream, M8Stream, GFF
+        filterM8Stream, GFF
 import argparse
 import sys
 import logging
@@ -80,7 +81,7 @@ def main():
         fastaHandle = sys.stdin
         fastaStr = 'STDIN'
     else:
-        fastaHandle = open(arguments.fasta, "rU")
+        fastaHandle = open(arguments.fasta, "rt")
         fastaStr = arguments.fasta
     logging.info(
         "Extrating sequence fragments from %s based on hits in %s" %
@@ -132,46 +133,49 @@ def loadHitRegions(blastFile, minLength, options):
     Parse a hit table into a map from read names to lists of (start,end,annot)
     """
     hitMap = {}
-    params = FilterParams.create_from_arguments(options)
-    m8stream = M8Stream(blastFile)
-    hitcount = 0
-    readcount = 0
-    keepcount = 0
-    for (read, hits) in filterM8Stream(m8stream, params, returnLines=False):
-        readcount += 1
-        hitTuples = []
-        for hit in hits:
-            hitcount += 1
-            if abs(hit.qstart - hit.qend) + 1 < minLength:
-                continue
+    with InputFile(blastFile) as m8stream:
+        params = FilterParams.create_from_arguments(options)
+        hitcount = 0
+        readcount = 0
+        keepcount = 0
+        for (read, hits) in filterM8Stream(m8stream, params,
+                                           return_lines=False):
+            readcount += 1
+            hitTuples = []
+            for hit in hits:
+                hitcount += 1
+                if abs(hit.qstart - hit.qend) + 1 < minLength:
+                    continue
 
-            keepcount += 1
-            if hit.format == GFF:
-                annot = "# %d # %d # %s # %s;evalue=%s" % (
-                    hit.qstart, hit.qend, hit.strand, hit.hitDesc, hit.evalue)
-            else:
-                try:
-                    annot = "%s [%d,%d] %0.1f%% %d bits" % (
-                        hit.hit, hit.hstart, hit.hend, hit.pctid, hit.score)
-                except AttributeError:
-                    annot = "%s [%d,%d] score: %d" % (
-                        hit.hit, hit.hstart, hit.hend, hit.score)
+                keepcount += 1
+                if hit.format == GFF:
+                    annot = "# %d # %d # %s # %s;evalue=%s" % \
+                            (hit.qstart, hit.qend,
+                             hit.strand, hit.hitDesc, hit.evalue)
+                else:
+                    try:
+                        annot = "%s [%d,%d] %0.1f%% %d bits" % \
+                                (hit.hit, hit.hstart, hit.hend,
+                                 hit.pctid, hit.score)
+                    except AttributeError:
+                        annot = "%s [%d,%d] score: %d" % (
+                            hit.hit, hit.hstart, hit.hend, hit.score)
 
-            if hit.format == GFF:
-                reverse = hit.strand != "+"
-            else:
-                reverse = hit.hstart > hit.hend
+                if hit.format == GFF:
+                    reverse = hit.strand != "+"
+                else:
+                    reverse = hit.hstart > hit.hend
 
-            if reverse:
-                # reverse if hit is backwards
-                hitTuples.append((hit.qend, hit.qstart, annot))
-            else:
-                hitTuples.append((hit.qstart, hit.qend, annot))
-        hitMap[read] = hitTuples
+                if reverse:
+                    # reverse if hit is backwards
+                    hitTuples.append((hit.qend, hit.qstart, annot))
+                else:
+                    hitTuples.append((hit.qstart, hit.qend, annot))
+            hitMap[read] = hitTuples
 
-    logging.debug(
-        "Kept %d of %d hits to %d reads" %
-        (keepcount, hitcount, readcount))
+        logging.debug(
+            "Kept %d of %d hits from %d lines to %d reads" %
+            (keepcount, hitcount, m8stream.lines, readcount))
     return hitMap
 
 
@@ -235,7 +239,8 @@ def extractRecords(record, hitSpans, translate, numbering_prefix):
         else:
             newRec = record[start - 1:end]
         if translate:
-            newRec.seq = newRec.seq.translate()
+            multiple_of_3 = 3 * floor(len(newRec) / 3)
+            newRec.seq = newRec.seq[:multiple_of_3].translate()
 
         # annotations
         if numbering_prefix:

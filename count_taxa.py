@@ -188,7 +188,7 @@ def main():
             readHits = redistribute.pickBestHitByAbundance(
                 multifile,
                 filterParams=params,
-                returnLines=False,
+                return_lines=False,
                 winnerTakeAll=not arguments.proportional,
                 parseStyle=arguments.parseStyle,
                 sequenceWeights=sequenceWeights)
@@ -204,8 +204,8 @@ def main():
             readHits = redistribute.pickBestHitByAbundance(
                 multifile,
                 filterParams=params,
-                returnLines=False,
-                returnTranslations=True,
+                return_lines=False,
+                return_translations=True,
                 winnerTakeAll=not arguments.proportional,
                 taxonomy=taxonomy,
                 hitStringMap=hitStringMap,

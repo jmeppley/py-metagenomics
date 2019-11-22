@@ -5,14 +5,15 @@ import logging
 from urllib.parse import quote_plus
 import numpy as np
 from edl.hits import binAndMapHits, getHitTranslator, HITID
-from edl import blastm8
+from edl.util import InputFile
+from edl.blastm8 import filterM8Stream
 logger = logging.getLogger(__name__)
 
 
 def pickBestHitByAbundance(m8stream,
                            filterParams=None,
-                           returnLines=True,
-                           returnTranslations=False,
+                           return_lines=True,
+                           return_translations=False,
                            organismCounts=None,
                            winnerTakeAll=False,
                            sequenceWeights=None,
@@ -37,16 +38,16 @@ def pickBestHitByAbundance(m8stream,
     Yields (read,hit) tuples, (read, [translated hits]) tuples, or hit
     table lines.
     """
-    if returnLines and returnTranslations:
-        returnLines = False
-        logger.warn("returnTranslations overrides returnLines!")
+    if return_lines and return_translations:
+        return_lines = False
+        logger.warn("return_translations overrides return_lines!")
 
     # filtered hits
     if filterParams is None:
         hitIter = m8stream
     else:
-        hitIter = blastm8.filterM8Stream(
-            m8stream, filterParams, returnLines=False)
+        hitIter = filterM8Stream(
+            m8stream, filterParams, return_lines=False)
 
     # custom function for pulling orgs from hits
     #  if no settings given, just use the hit ID as the 'organism'
@@ -109,9 +110,9 @@ def pickBestHitByAbundance(m8stream,
                 else:
                     increment = 1
                 orgCounts[org] = orgCounts.get(org, 0) + increment
-            if returnLines:
+            if return_lines:
                 yield hit.line
-            elif returnTranslations:
+            elif return_translations:
                 yield (read, orgs)
             else:
                 yield (read, hit)
@@ -129,8 +130,8 @@ def pickBestHitByAbundance(m8stream,
                         hitByOrg, ], organismCounts, winnerTakeAll):
                     yield formatReturn(hit,
                                        org,
-                                       returnLines,
-                                       returnTranslations)
+                                       return_lines,
+                                       return_translations)
 
     logger.info("Processed %d reads:" % (totalReads))
     logger.info(
@@ -162,7 +163,7 @@ def pickBestHitByAbundance(m8stream,
         hits = ambiguousHits[orgs]
         for (hit, org) in assignHits(orgs, hits, orgCounts, winnerTakeAll):
             ambiguousReads += 1
-            yield formatReturn(hit, org, returnLines, returnTranslations)
+            yield formatReturn(hit, org, return_lines, return_translations)
 
     logger.info(
         "Selected top hit for %d ambiguous reads for a total of %d "
@@ -170,10 +171,10 @@ def pickBestHitByAbundance(m8stream,
         (ambiguousReads, ambiguousReads + unambiguousReads))
 
 
-def formatReturn(hit, org, returnLines, returnTranslations):
-    if returnLines:
+def formatReturn(hit, org, return_lines, return_translations):
+    if return_lines:
         return hit.line
-    elif returnTranslations:
+    elif return_translations:
         return (hit.read, [org, ])
     else:
         return (hit.read, hit)
@@ -403,16 +404,14 @@ def multipleFileWrapper(m8files):
     names back to the source file
 
     Read names are altered to have the url-enoded file name as a prefix.
+    A tag can be supplied by passing list or iterator over (file, tag) tuples
+
     To get file name or tag from altered reads, use:
         from urllib.parse import unquote_plus
         encoded_tag, read_name = read_name.split('/',1)
         tag = unquote_plus(encoded_tag)
-    """
-    return _multipleFileGeneratorPrefixed(m8files)
 
 
-def _multipleFileGeneratorPrefixed(m8files):
-    """
     Iterate over all lines in a given list of streams as a single stream
     of hits, but keep track of which read came from which file in the given
     dictionary by renaming reads (adding file name to start)
@@ -425,60 +424,25 @@ def _multipleFileGeneratorPrefixed(m8files):
             fileTag = None
 
         # get file stream
-        m8stream = M8Stream(m8file, file_tag=fileTag)
+        m8stream = TaggedFile(m8file, file_tag=fileTag)
 
         for line in m8stream:
             yield line
 
 
-class M8Stream(blastm8.M8Stream):
+class TaggedFile(InputFile):
     """
-    Variant of M8Stream that encodes a file tag into the read names
+    Variant of InputFile that prepends lines with tag or file name
     """
 
-    def __init__(self, fileName, *args, file_tag=None):
-        blastm8.M8Stream.__init__(self, fileName, *args)
+    def __init__(self, file_name, *args, file_tag=None, tag_sep='/'):
+        super().__init__(file_name, *args)
+        self.tag_sep = tag_sep
         if file_tag:
             self.file_tag = quote_plus(file_tag)
         else:
-            self.file_tag = quote_plus(self.fileName)
+            self.file_tag = quote_plus(self.name)
 
     def __next__(self):
-        line = self.file_tag + "/" + blastm8.M8Stream.__next__(self)
+        line = self.tag_sep.join((self.file_tag, super().__next__()))
         return line
-
-
-# old method
-def _multipleFileGenerator(
-        m8files,
-        filterParams,
-        readFileDict,
-        returnLines=True):
-    """
-    Iterate over all lines in a given list of streams as a single stream
-    of hits, but keep track of which read came from which file in the given
-    dictionary
-
-    Note to self: this causes us to parse Hits twice if the resulting lines
-    are parsed. It may speed things up to be able to return the Hit objects
-    """
-    for m8file in m8files:
-        # allow for list of (file,tag) tuples
-        if isinstance(m8file, tuple):
-            m8file, fileTag = m8file
-        else:
-            fileTag = None
-
-        # get file stream
-        m8stream = blastm8.M8Stream(m8file)
-        if fileTag is None:
-            # let M8Stream class work out the file name for tagging
-            fileTag = m8stream.fileName
-
-        for hit in blastm8.getHitStream(m8stream, filterParams):
-            # build map from reads to files/tags
-            readFileDict[hit.read] = fileTag
-            if returnLines:
-                yield hit.line
-            else:
-                yield hit

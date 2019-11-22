@@ -9,13 +9,13 @@ import pandas
 import numpy
 from Bio import SeqIO, SeqUtils
 try:
-    from edl.util import ascii_histogram
-    import edl.blastm8
+    from edl.util import ascii_histogram, InputFile
+    from edl.blastm8 import FilterParams, filterM8Stream
 except ImportError:
     # This is a little hack to make this module runnable as a script
     sys.path[0] += "/.."
-    from edl.util import ascii_histogram
-    import edl.blastm8
+    from edl.util import ascii_histogram, InputFile
+    from edl.blastm8 import FilterParams, filterM8Stream
 logger = logging.getLogger(__name__)
 
 
@@ -496,7 +496,7 @@ def mira_stats(contigStatsFile, minLength=0, bins=20, **kwargs):
     report += '\nHistograms:\n'
     for key in ['length', 'GC%', 'av.cov', 'mx.cov.', 'av.qual']:
         report += '\n'
-        report += edl.util.ascii_histogram(
+        report += ascii_histogram(
             numpy.histogram(contigStats[key], bins=bins), label=key, **kwargs)
 
     return report
@@ -592,7 +592,7 @@ def plotHitStats(axes, sequenceFile, hitsFile,
 
     # parse hit file
     if params is None:
-        params = edl.blastm8.FilterParams(**kwargs)
+        params = FilterParams(**kwargs)
     hits = getSequenceHits(hitsFile, params)
 
     # plot data
@@ -620,17 +620,16 @@ def getSequenceHits(hitsFile, params):
     """
     sequenceHits = {}
     hitCount = 0
-    m8stream = edl.blastm8.M8Stream(hitsFile)
-    for seqid, hits in edl.blastm8.filterM8Stream(m8stream,
-                                                  params,
-                                                  returnLines=False):
-        hits = list(hits)
-        if len(hits) == 0:
-            continue
-        hitCount += len(hits)
-        sequenceHits[seqid] = hits
-    logging.debug("Parsed %d hits for %d sequences fromm %d lines" %
-                  (hitCount, len(sequenceHits), m8stream.lines))
+    with InputFile(hitsFile) as m8stream:
+        for seqid, hits in filterM8Stream(m8stream,
+                                          params,
+                                          return_lines=False):
+            if len(hits) == 0:
+                continue
+            hitCount += len(hits)
+            sequenceHits[seqid] = hits
+        logging.debug("Parsed %d hits for %d sequences fromm %d lines" %
+                      (hitCount, len(sequenceHits), m8stream.lines))
     return sequenceHits
 
 
