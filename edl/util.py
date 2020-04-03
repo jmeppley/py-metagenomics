@@ -307,22 +307,28 @@ def parseMapFile(
     translation = {}
     badRows = 0
     minWidth = max(keyCol, valueCol)
-    for line in open(mapFile):
-        if skipFirst > 0:
-            skipFirst -= 1
-            continue
-        cells = line.split(delim)
-        if len(cells) > minWidth:
-            key = keyType(cells[keyCol].strip())
-            value = valueType(cells[valueCol].strip())
-            translation[key] = value
-            logger.debug("mapped %s to %s", key, value)
-        else:
-            badRows += 1
+    with InputFile(mapFile) as lines:
+        for line in lines:
+            if skipFirst > 0:
+                skipFirst -= 1
+                continue
+            cells = line.split(delim)
+            if len(cells) > minWidth:
+                key = keyType(cells[keyCol].strip())
+                value = valueType(cells[valueCol].strip())
+                translation[key] = value
+                logger.debug("mapped %s to %s", key, value)
+            else:
+                badRows += 1
+        num_lines = lines.lines
     if badRows > 0:
-        logger.warn("%d rows in map file had too few columns!" % (badRows))
+        logger.warn("%d of %d rows in map file had too few columns!" %
+                    (badRows,
+                     num_lines))
 
-    logger.info("Read %d records from %s" % (len(translation), mapFile))
+    logger.info("Read %d records from %d lines of %s" % (len(translation),
+                                                         num_lines,
+                                                         mapFile))
     return translation
 
 
