@@ -262,8 +262,8 @@ class Hit:
         self.mlen = alen
         self.qstart = qstart
         self.qend = qend
-        self.astart = int(cells[3])
-        self.aend = self.astart + alenh - 1
+        self.hstart = int(cells[3])
+        self.aend = self.hstart + alenh - 1
         self.qlen = len(cells[9])
         self.aln = float(self.mlen) / float(self.qlen)
         self.score = None
