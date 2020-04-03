@@ -263,7 +263,7 @@ class Hit:
         self.qstart = qstart
         self.qend = qend
         self.hstart = int(cells[3])
-        self.aend = self.hstart + alenh - 1
+        self.hend = self.hstart + alenh - 1
         self.qlen = len(cells[9])
         self.aln = float(self.mlen) / float(self.qlen)
         self.score = None
