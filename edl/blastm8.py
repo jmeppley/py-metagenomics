@@ -260,8 +260,7 @@ class Hit:
         (alen, alenh, alenq, qstart, qend, pctid) = \
             parseCigarString(self.cigar)
         self.mlen = alen
-        self.qstart = qstart
-        self.qend = qend
+        self.qstart, self.qend = sam_q_order(qstart, qend, int(cells[1]))
         self.hstart = int(cells[3])
         self.hend = self.hstart + alenh - 1
         self.qlen = len(cells[9])
@@ -599,6 +598,14 @@ class Hit:
 #############
 # Functions #
 #############
+
+
+def sam_q_order(start, end, flags):
+    """
+    if flags include 16, reverse start end
+    """
+    reverse = flags >= 16 and str(bin(flags))[-5] == "1"
+    return tuple(sorted([start, end], reverse=reverse))
 
 
 def computeLastHitValues(blocks):
