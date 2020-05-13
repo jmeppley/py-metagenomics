@@ -98,8 +98,8 @@ def main():
     logging.info("KO mapping from: " + arguments.ko_file)
     logging.debug("Fill: '%s'" % (arguments.fill))
 
-    translation = kegg.readKEGGFile(arguments.ko_file,
-                                    arguments.level)
+    translation = kegg.parse_KEGG_file(arguments.ko_file,
+                                       arguments.level)
 
     # switch to zero indexing
     if arguments.new_column:

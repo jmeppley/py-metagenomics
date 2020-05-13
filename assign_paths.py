@@ -138,7 +138,7 @@ def main():
         valueMap = None
 
     # set up level mapping
-    levelMappers = [getLevelMapper(l, arguments) for l in arguments.levels]
+    levelMappers = [getLevelMapper(lvl, arguments) for lvl in arguments.levels]
 
     # parse input files
     for (inhandle, outhandle) in inputIterator(arguments):
@@ -219,7 +219,7 @@ def getLevelMapper(level, arguments):
         logging.info(
             "Reading KEGG level %s assignments from %s" %
             (level, arguments.heirarchyFile))
-        geneTranslation = kegg.readKEGGFile(
+        geneTranslation = kegg.parse_KEGG_file(
             arguments.heirarchyFile, lookupLevel)
     else:
         # SEED or COG/KOG

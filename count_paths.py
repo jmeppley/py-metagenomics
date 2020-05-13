@@ -316,7 +316,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
                     logging.info(
                         "Reading KEGG level %s assignments from %s",
                         level, options.heirarchyFile)
-                    geneTranslation = kegg.readKEGGFile(
+                    geneTranslation = kegg.parse_KEGG_file(
                         options.heirarchyFile, lookupLevel)
                 else:
                     # SEED or COG/KOG
@@ -329,7 +329,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
             logging.info(
                 "Reading KO descriptions from %s",
                 options.heirarchyFile)
-            geneTranslation = kegg.readKEGGFile(
+            geneTranslation = kegg.parse_KEGG_file(
                 options.heirarchyFile, "DESCRIPTION")
             geneTranslator = lambda_get_gene_and_translation(geneTranslation)
         elif level is not None and options.heirarchyType == 'cog':

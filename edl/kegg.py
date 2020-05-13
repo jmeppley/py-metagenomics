@@ -234,276 +234,225 @@ def _mapGenes(koMap, ko, geneString):
         koMap.setdefault(kGene, []).append(ko)
 
 
-def readKEGGFile(kFile, keggLevel):
-    if len(kFile) > 4 and kFile[-4:] == ".keg":
-        return readKeggFile(kFile, keggLevel)
+def parse_KEGG_file(k_file, kegg_level):
+    """ Checks filename and runs:
+        parse_KO_file if base filename is ko
+        parse_keg_file if file extension is .keg """
+    if os.path.basename(k_file) == 'ko':
+        return parse_ko_file(k_file, kegg_level)
+    elif len(k_file) > 4 and k_file[-4:] == ".keg":
+        return parse_keg_file(k_file, kegg_level)
     else:
-        return readKOFile(kFile, keggLevel)
+        raise Exception("I don't know what to do with file: %s"
+                        % (os.path.basename(k_file)))
 
 
-def readKOFileLevels(kofile, keggLevel):
-    raise Exception(
-        "Cannot parse KEGG levels form ko file. Sorry. Use the brite "
-        "hierarchy file: brite/ko/ko00001.keg")
+def parse_ko_file(ko_file, level):
+    results = {}
 
+    # synonyms
+    if level in ['PATHWAYS', 'PATH', 'PATHS']:
+        level = 'PATHWAY'
+    if level in ['DESCRIPTION', 'FUNCTION']:
+        level = 'DEFINITION'
+    if level == 'EC':
+        level = 'ko01000:4'
 
-def readKOFile(kofile, keggLevel):
-    """
-    Scan ko file and build map from ko to names at the given level.
-    The level can be one of:
-        NAME, PATHWAY, EC, DEFINITION,
-          or a level in the CLASS heirachy: 1, 2, or 3
+    if re.match(r'(ko\d\d\d\d\d:)?(\d+)', str(level)):
+        # these are in the BRITE heirachy
+        #  eg: k00001:2 for level to of the main hierarchy
+        brite_hier, brite_level = \
+            re.match(r'(?:(ko\d\d\d\d\d):)?(\d+)', str(level)).groups()
+        brite_level = int(brite_level)
+        if brite_hier is None:
+            # if its just a number, assume k00001
+            brite_hier = 'ko00001'
+        logger.debug(f"Looking for level {brite_level} in {brite_hier}")
 
-    The returned dictionary maps KO strings to lists of names.
-    """
+    with open(ko_file) as ko_handle:
 
-    # based on kegg level, define what a 'name' line looks like
-    if keggLevel in ['1', '2', '3', 1, 2, 3]:
-        # return readKOFileLevels(kofile, keggLevel)
-        logger.warn(
-            "KEGG leveles can not be parsed from ko files starting "
-            "around 2013. This may fail unless you are using an older file")
-        reString = 'CLASS'
-    else:
-        reString = keggLevel
-
-    koMap = {}
-    reString = keggLevel
-
-    nameRE = re.compile(r'^%s\s+(\S.*\S)\s*$' % (reString))
-    nameSep = None
-    nameIndex = None
-    if keggLevel == 'NAME':
-        nameSep = ','
-    elif reString == 'CLASS':
-        nameSep = ';'
-        nameIndex = int(keggLevel) - 1
-    elif keggLevel == 'EC':
-        nameRE = ecRE
-
-    logger.info(
-        "Looking for %s with %s and (%s,%s)" %
-        (repr(keggLevel),
-         repr(
-            nameRE.pattern),
-            repr(nameSep),
-            repr(nameIndex)))
-
-    ko = None
-    inName = False
-    names = []
-    for line in open(kofile):
-        # find KO first
-        # looking for a KO line
-        match = kokoRE.match(line)
-        if match:
-            ko = match.group(1)
-            logger.debug("Start of %s" % (ko))
-
-        # look for information on this KO
-        elif not inName:
-            # looking for a name line
-            match = nameRE.match(line)
-            if match:
-                inName = True
-                nameString = match.group(1)
-                # contents of name line processed differently based on sep and
-                # index
-                names.extend(_parseName(nameString, nameSep, nameIndex))
-                logger.debug("found names: %s" % (nameString))
-            continue
-
-        elif not endSectionRE.match(line):
-            # not the end of name section: reading more names
-            nameString = line.strip()
-            names.extend(_parseName(nameString, nameSep, nameIndex))
-            logger.debug("found names: %s" % (nameString))
-
-        else:
-            # found all name strings
-            logger.debug("End of names: %s" % (str(names)))
-            koMap[ko.strip()] = names
-            names = []
-            inName = False
-            ko = None
-
-    if len(koMap) == 0:
-        if keggLevel in ['1', '2', '3', 1, 2, 3]:
-            raise Exception(
-                "Cannot parse KEGG levels from newer ko files. Sorry. "
-                "Use the brite heirarchy file: brite/ko/ko00001.keg")
-        else:
-            raise Exception(
-                "No kegg levels were parsed! The newer ko files have a "
-                "modified format. You may need to try the brite heirachy "
-                "file: brite/ko/ko00001.keg")
-    return koMap
-
-
-def _parseName(string, sep, index):
-    """
-    parses string from name line based on separator char and index:
-        if no sep given, return whole string
-        if index given, return that element from split (using sep)
-        otherwise, return all elements from split
-    """
-    if sep is None:
-        return [_removeTrailingBrackets(string).strip(), ]
-    else:
-        bits = string.split(sep)
-        if index is None:
-            bits[-1] = _removeTrailingBrackets(bits[-1]).strip()
-            return bits
-        else:
-            return [_removeTrailingBrackets(bits[index]).strip()]
-
-
-def _removeTrailingBrackets(string):
-    """
-    strips bracketed strings from end
-    """
-    return trailingBracketRE.sub('', string)
-
-##
-# readKegFile(keggFile, keggLevel)
-# map KOs to pathway given .keg file from KEGG
-##
-
-
-def readKeggFile(keggFile, keggLevel):
-    logger.info("Parsing level %s from %s" % (keggLevel, keggFile))
-    kmap = {}
-    if keggLevel == 'PATHWAY':
-        keggLevel = '3'
-    kfile = open(keggFile)
-    keggLevelMap = {
-        '1': re.compile(r'^A\s*<[bB]>(.*)</[bB]>\s*$'),
-        '2': re.compile(r'^B\s*<[bB]>(.*)</[bB]>\s*$'),
-        '3': re.compile(r'^C\s*(\S.*)$')}
-    pathRE = keggLevelMap.get(str(keggLevel), None)
-    # We'll need to get ko lists or descriptsion from brite files
-    briteRE = re.compile(r'^C\s*.+\[BR:(ko\d+)\]\s*$')
-    detailsRE = None
-    if keggLevel == 'NAME':
-        detailsRE = re.compile(r'^(.*);')
-    elif keggLevel == 'DEFINITION':
-        detailsRE = re.compile(r';\s*(\S.*)$')
-    elif keggLevel == 'EC':
-        sys.exit(
-            "Sorry, cannot currently parse EC from a .keg file, you'll "
-            "need to use the 'ko' file")
-        # detailsRE=re.compile(r'\[(EC:[0-9\.]+)\]\s*$')
-
-    logger.debug("Looking for ko with: %s" % (kegkoRE.pattern))
-    if pathRE is not None:
-        logger.debug("Looking for path with: %s" % (pathRE.pattern))
-    if detailsRE is not None:
-        logger.debug("Looking for details with: %s" % (detailsRE.pattern))
-
-    desc = ''
-    if pathRE is not None:
-        # if we're looking for a path in hierarchy...
-        for line in kfile:
-            # Is this a header in the level we cara about (1,2, or 3)
-            m = pathRE.search(line)
-            if m:
-                desc = _removeTrailingBrackets(m.group(1))
-                # Is this a BRITE place holder? if so, scan for KOs
-                m = briteRE.search(line)
-                if m:
-                    processBriteFile(m.group(1), desc, keggFile, kmap)
-                continue
-
-            # Is this a BRITE place holder? if so, scan for KOs
-            m = briteRE.search(line)
-            if m:
-                processBriteFile(m.group(1), desc, keggFile, kmap)
-                continue
-
-            # Is this a KO line, add to most recently seen level header
-            m = kegkoRE.search(line)
-            if m:
-                ko = m.group(1)
-                # make sure we have something to map to
-                if desc == '':
-                    raise Exception("Pathway info not found before ko: %s"
-                                    % ko)
-                try:
-                    if desc not in kmap[ko]:
-                        kmap[ko].append(desc)
-                except KeyError:
-                    kmap[ko] = [desc]
-
-    else:
-        # if we just want descriptions
-        for line in kfile:
-            # we still need to catch the BR:brite files for KO details
-            m = briteRE.search(line)
-            if m:
-                getDescriptionsFromBriteFile(
-                    m.group(1), keggFile, detailsRE, kmap)
-                continue
-
-            m = kegkoRE.search(line)
-            if m:
-                ko = m.group(1)
-                details = m.group(2)
-                if detailsRE is None:
-                    kmap[ko] = [details]
-                else:
-                    m = detailsRE.search(details)
+        # look for single line per entry
+        if level in ['NAME', 'DEFINITION']:
+            kw_expr = re.compile(r'^(ENTRY|{})(\s+)(\S.*)?'.format(level))
+            try:
+                for i, line in enumerate(ko_handle):
+                    m = kw_expr.match(line)
                     if m:
-                        kmap[ko] = kmap.setdefault(ko, []).append(m.group(1))
+                        keyword, spaces, value = m.groups()
+                        if keyword == 'ENTRY':
+                            ko = value.split()[0].strip()
+                        elif keyword == level:
+                            results[ko] = value.strip()
+            except Exception as exc:
+                print(f'Error on line {i}:\n{line}')
+                raise exc
 
-    logger.info("Read %d KOs" % (len(kmap)))
-    return kmap
+        # there can be multiple pathways after and including the PATHWAY line
+        elif level == 'PATHWAY':
+            kw_expr = re.compile(r'^(ENTRY|{})(\s+)(\S.*)?'.format(level))
 
+            def skip(line, indent, pathways):
+                return
 
-def getDescriptionsFromBriteFile(pathway, file1, detailsRE, kmap):
-    """
-    Parse the given brite pathway for KO details
-    """
-    logging.debug("getting descriptions from BRITE:%s" % pathway)
-    briteDir = os.path.split(file1)[0]
-    briteFile = briteDir + os.path.sep + pathway + ".keg"
-    try:
-        with open(briteFile) as f:
-            for line in f:
-                m = britekoRE.search(line)
+            def add_pathway(line, indent, pathways):
+                pathways.append(line[indent:-1])
+
+            pathways, indent = None, 0
+            for line in ko_handle:
+                m = kw_expr.match(line)
                 if m:
-                    ko = m.group(1)
-                    details = m.group(2)
-                    if detailsRE is None:
-                        kmap[ko] = [details]
+                    keyword, spaces, value = m.groups()
+                    if keyword == 'ENTRY':
+                        ko = value.split()[0].strip()
+                        indent = 5 + len(spaces)
+                        process_line = skip
+                        continue
+                    elif keyword == level:
+                        process_line = add_pathway
+                        pathways = results.setdefault(ko, [])
                     else:
-                        m = detailsRE.search(details)
+                        process_line = skip
+                        continue
+
+                process_line(line, indent, pathways)
+
+        else:
+            # BRITE
+            entry_rexp = re.compile(r'^ENTRY\s+(K\d+)')
+            brite_rexp = \
+                re.compile(r'^((?:BRITE)?\s+)(\S.+\S)\s*\[BR:(ko\d+)\]')
+            end_brite_rexp = re.compile(r'^\S')
+            level_rexp = re.compile(r'^(\s+)(\S.+)')
+
+            lines = iter(enumerate(ko_handle))
+            try:
+                # outer loop looping over Entries
+                while True:
+
+                    # find next Entry line
+                    for i, line in lines:
+                        m = entry_rexp.match(line)
                         if m:
-                            kmap[ko] = kmap.setdefault(
-                                ko, []).append(m.group(1))
-    except IOError:
-        logging.warn(
-            "Cannot parse brite pathway: %s from %s" %
-            (pathway, briteFile))
+                            ko = m.group(1)
+                            break
+                    else:
+                        # no more entries
+                        break
+
+                    # find start of BRITE
+                    for i, line in lines:
+                        m = brite_rexp.match(line)
+                        if m:
+                            spaces, name, hierarchy = m.groups()
+                            if hierarchy == brite_hier:
+                                brite_indent = len(spaces)
+                                brite_levels = results.setdefault(ko, [])
+                                break
+
+                    # process BRITE lines
+                    for i, line in lines:
+                        if end_brite_rexp.match(line) or \
+                                brite_rexp.match(line):
+                            # start of next hierarchy or next keyword section
+                            break
+
+                        spaces, level_name = level_rexp.match(line).groups()
+                        # level is number of spaces beyond original indent
+                        if len(spaces) - brite_indent == brite_level:
+                            brite_levels.append(level_name)
+
+                    # end while outer loop
+            except StopIteration:
+                # I don't think we ever get here
+                pass
+            except Exception as exc:
+                print(f"error on line {i}:\n{line}")
+                print(f"found {len(results)} kos so far")
+                raise exc
+
+    return results
 
 
-def processBriteFile(pathway, desc, file1, kmap):
-    logging.debug("getting KOs from BRITE:%s" % pathway)
-    briteDir = os.path.split(file1)[0]
-    briteFile = briteDir + os.path.sep + pathway + ".keg"
-    koCount = 0
-    try:
-        with open(briteFile) as f:
-            for line in f:
-                m = britekoRE.search(line)
+def parse_keg_file(keg_file, level):
+    """ Parse KEGG metadata from brite .keg files
+        level: one of
+
+            * PATH, PATHWAY, or PATHWAYS
+            * 1 - 6 or A - F
+            * DEFINITION, DESCRIPTION, or FUNCITON
+
+    """
+
+    # synonyms
+    if level in ['PATHWAYS', 'PATHWAY', 'PATHS']:
+        level = 'PATH'
+    if level in ['DESCRIPTION', 'FUNCTION']:
+        level = 'DEFINITION'
+    if str(level) in {'1', '2', '3', '4', '5', '6'}:
+        level = 'ABCDEF'[int(level) - 1]
+
+    ko_def_rexp = re.compile(r'^[B-F]\s+(K\d\d\d\d\d)\s+(\S.+\S)\s*$')
+    level_rexp = re.compile(r'^([A-F])\s*(\S.+)')
+    path_rexp = re.compile(r'\s*\[PATH:\s*ko\d+\s*\]')
+    html_rexp = re.compile(r'</?[a-z]+/?>')
+
+    results = {}
+    with open(keg_file) as keg_handle:
+
+        # two types of parsing
+        if level == 'DEFINITION':
+            # just looking for the line with the K# and description
+            #  (ignore hierarchy)
+            for line in keg_handle:
+                m = ko_def_rexp.match(line)
                 if m:
-                    ko = m.group(1)
-                    kmap.setdefault(ko, []).append(desc)
-                    koCount += 1
-        logging.debug("Assigned %d KOs to pathway: %s" % (koCount, desc))
-    except IOError:
-        logging.warn(
-            "Cannot parse brite pathway: %s from %s" %
-            (pathway, briteFile))
+                    ko, desc = m.groups()
+                    results[ko] = desc
+
+        elif level in ['A', 'B', 'C', 'D', 'E', 'F', 'PATH']:
+            # looking for level, and all KOs after that
+            print(f"looking for {level}")
+            level_name = None
+            for line in keg_handle:
+
+                # check for ko first, because it also looks like a level
+                m = ko_def_rexp.match(line)
+                if m:
+                    if level_name is not None:
+                        # if we've seen a level we like
+                        # save ko level
+                        ko = m.group(1)
+                        results.setdefault(ko, []).append(level_name)
+                        continue
+
+                m = level_rexp.match(line)
+                if m:
+                    letter, name = m.groups()
+                    if letter == level:
+                        # found a header at the target level, remember name
+                        level_name = html_rexp.sub('', name)
+                    elif (level == 'PATH' and path_rexp.search(name)):
+                        # found a header at the target level, remember name
+                        level_name = path_rexp.sub('', name)
+                    elif letter < level:
+                        # we've gone back up a level, don't label anything
+                        level_name = None
+                    continue
+
+            # remove duplicates and ensure order
+            results = {ko: sorted(set(paths))
+                       for ko, paths in results.items()}
+
+        else:
+            if level == 'NAME':
+                raise Exception("I can't parse name from a .keg file. "
+                                "Please use the file: ko/ko")
+            if level == 'EC':
+                raise Exception("For EC use the ko/ko file or the EC brite: "
+                                "brite/ko/ko01000.keg and choose a level")
+            raise Exception(f"I don't know what level {level} is!")
+
+    return results
 
 
 def add_path_arguments(parser, defaults={}, choices={}, helps={}):
@@ -681,39 +630,39 @@ def testParseGeneLink(koFile):
 
 
 def testReadKeggFile(keggFile):
-    kDmap = readKeggFile(keggFile, 'DESCRIPTION')
-    myAssertEq(kDmap['K09630'], ['PRSS36; protease, serine, 36 [EC:3.4.21.-]'])
-    kPmap = readKeggFile(keggFile, 'PATHWAY')
-    assert('K00397' in kPmap)
-    myAssertEq(kPmap['K00399'], ['01200 Carbon metabolism',
-                                 '00680 Methane metabolism', '01000 Enzymes'])
-    k2map = readKeggFile(keggFile, 2)
-    myAssertEq(k2map['K13810'][1].lower(), 'Carbohydrate Metabolism'.lower())
-    myAssertEq(k2map['K13810'][0].lower(), 'Overview'.lower())
-    myAssertEq(k2map['K00399'][1].lower(), 'Energy Metabolism'.lower())
-    myAssertEq(k2map['K00399'][0].lower(), 'Overview'.lower())
-    k3map = readKeggFile(keggFile, 3)
-    myAssertEq(k3map['K13810'],
-               ['01230 Biosynthesis of amino acids',
-                '00010 Glycolysis / Gluconeogenesis',
-                '00030 Pentose phosphate pathway',
-                '00500 Starch and sucrose metabolism',
-                '00520 Amino sugar and nucleotide sugar metabolism',
-                '01000 Enzymes',
-                '01000 Enzymes'])
-    myAssertEq(k3map['K00399'], ['01200 Carbon metabolism',
-                                 '00680 Methane metabolism', '01000 Enzymes'])
-    myAssertEq(
-        k3map['K03404'], [
-            '00860 Porphyrin and chlorophyll metabolism', '01000 Enzymes'])
-    myAssertEq(k3map['K01976'], ['01000 Enzymes'])
-    myAssertEq(k3map['K07347'],
-               ['02000 Transporters',
-                '02044 Secretion system',
-                '02035 Bacterial motility proteins',
-                '05133 Pertussis'])
-    myAssertEq(k3map['K09630'], ['01000 Enzymes', '01002 Peptidases'])
-    k3mapQ = readKeggFile(keggFile, '3')
+    kDmap = parse_keg_file(keggFile, 'DESCRIPTION')
+    myAssertEq(kDmap['K01623'],
+               'ALDO; fructose-bisphosphate aldolase, class I [EC:4.1.2.13]')
+    kPmap = parse_keg_file(keggFile, 'PATHWAY')
+    assert('K04519' in kPmap)
+    assert('K15634' in kPmap)
+    myAssertEq(kPmap['K03011'],
+               ['00230 Purine metabolism',
+                '00240 Pyrimidine metabolism',
+                '03020 RNA polymerase',
+                "05016 Huntington's disease",
+                '05169 Epstein-Barr virus infection'])
+    k2map = parse_keg_file(keggFile, 2)
+    myAssertEq(k2map['K13810'][0].lower(), 'Carbohydrate Metabolism'.lower())
+    myAssertEq(k2map['K13810'][1].lower(), 'Overview'.lower())
+    myAssertEq(k2map['K00399'][0].lower(), 'Energy Metabolism'.lower())
+    myAssertEq(k2map['K00399'][1].lower(), 'Overview'.lower())
+    k3map = parse_keg_file(keggFile, 3)
+    myAssertEq(k3map['K13810'], [
+        '00010 Glycolysis / Gluconeogenesis [PATH:ko00010]',
+        '00030 Pentose phosphate pathway [PATH:ko00030]',
+        '00500 Starch and sucrose metabolism [PATH:ko00500]',
+        '00520 Amino sugar and nucleotide sugar metabolism [PATH:ko00520]',
+        '01230 Biosynthesis of amino acids [PATH:ko01230]',
+    ])
+    myAssertEq(k3map['K00399'], [
+        '00680 Methane metabolism [PATH:ko00680]',
+        '01200 Carbon metabolism [PATH:ko01200]',
+    ])
+    myAssertEq(k3map['K03404'], [
+        '00860 Porphyrin and chlorophyll metabolism [PATH:ko00860]',
+    ])
+    k3mapQ = parse_keg_file(keggFile, '3')
     for k in k3map.keys():
         try:
             myAssertEq(k3map[k], k3mapQ[k])
@@ -724,13 +673,13 @@ def testReadKeggFile(keggFile):
 
 
 def testReadKoFile(koFile):
-    kPmap = readKOFile(koFile, 'PATHWAY')
+    kPmap = parse_ko_file(koFile, 'PATHWAY')
     assert('K00397' not in kPmap)
     myAssertEq(kPmap['K00399'],
                ['ko00680  Methane metabolism',
                 'ko01200  Carbon metabolism'])
 
-    kEmap = readKOFile(koFile, 'EC')
+    kEmap = parse_ko_file(koFile, 'EC')
     myAssertEq(kEmap['K00397'], ['EC:1.8.99.-'])
     myAssertEq(kEmap['K00399'], ['EC:2.8.4.1'])
 

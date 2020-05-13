@@ -878,7 +878,8 @@ def plotSortedContigLengths(ax, lengths,
     if len(lengths) == 0:
         raise Exception("Lengths cannot be empty!")
 
-    x, y = getSteppedBars(sorted([l for l in lengths if l > minContigLength],
+    x, y = getSteppedBars(sorted([length for length in lengths
+                                  if length > minContigLength],
                                  reverse=True))
 
     if log:

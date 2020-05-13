@@ -21,11 +21,11 @@
     run diff test/data/contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash.add_k1 test/data/.tst.contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash.add_k1
     [ "$status" = 0 ]
 }
-@test "Testing add_kegg_pathways" {
+@test "Testing add_kegg_pathways long" {
     run ./add_kegg_pathways.py -k test/data/kobrite/ko00001.keg -L test/data/contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash -c 2 -C -1 -o test/data/.tst.contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash.add_path_long
     [ "$status" = 0 ]
 }
-@test "Checking add_kegg_pathways output" {
+@test "Checking add_kegg_pathways output long" {
     run diff test/data/contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash.add_path_long test/data/.tst.contig.CDSs.faa.vs.KEGG.lastal.assignments.ko.3.squash.add_path_long
     [ "$status" = 0 ]
 }
