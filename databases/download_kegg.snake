@@ -1,0 +1,150 @@
+##########################
+#
+# format_KEGG.snake
+#
+# Formats the latest KEGG database for last and/or diamond
+#
+##########################
+import re
+import pandas
+from Bio import SeqIO
+
+# mandatory config:
+KEGG_USER = config['kegg_user']
+KEGG_PASSWORD = config['kegg_password']
+
+def get_kegg_release():
+    """
+    reimpliment make line:
+    KGVER:=$(shell curl --user $(KEGG_USER):$(KEGG_PASSWORD) $(FTP_ROOT)/RELEASE | head -1 | perl -pe 's/[^0-9]//g')
+    """
+    # TODO
+
+
+# version number
+release = config.get('release', get_kegg_release)
+
+# where to put the downloaded files:
+seqdb_root = config.get('seqdb_root','seqdbs')
+download_root = config.get('download_root', seqdb_root)
+
+# other config
+fmt_threads = config.setdefault('fmt_threads', 20)
+
+# file locations
+download_dir = os.path.join(download_root, 'KEGG', release)
+seqdb_dir = os.path.join(seqdb_root, 'KEGG', release)
+
+prok_genes_gz = f"{seqdb_dir}/fasta/prokaryotes.pep.gz"
+euk_genes_gz = f"{seqdb_dir}/fasta/eukaryotes.pep.gz"
+name_root = f"{seqdb_dir}/KeggGene.pep.{release}"
+GENES_FAA = name_root + ".faa"
+KOS_FILE = f"{seqdb_dir}/links/genes_ko.list"
+
+# taxonomy files
+tax_map_file = seqdb_dir + "/taxdump/gtdb.acc.to.taxid"
+names_dmp = seqdb_dir + "/taxdump/names.dmp"
+nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
+
+## final targets
+outputs = config.setdefault('outputs', set())
+
+# FTP locations
+FTP_ROOT = "ftp://ftp.bioinformatics.jp/kegg"
+WGET = "wget -c --user={KEGG_USER} --password={KEGG_PASSWORD}"
+
+config['downloads'] = {
+    'links': 'genes/links/*gz',
+    'fasta': 'genes/fasta/*karyotes.fasta.gz',
+    'genome': 'genes/genome.tar.gz',
+    'brite': 'brite/*.tar.gz',
+    'ko': 'genes/ko.tar.gz',
+    'metadata': ['misc/taxonomy',
+                 'misc/taxonomic_rank',
+                 'genes/MD5.genes',
+                 'genes/README.genes',
+                 'RELEASE'],
+}
+
+def get_download_url(wildcards):
+    """ input function to turn item into URL """
+    dl_data = config['downloads'][wildcards.item]
+    if isinstance(dl_data, list):
+        return " ".join(f"{ftp_root}/{p}" for p in dl_data)
+    else:
+        return f"{ftp_root}/{dl_data}"
+
+# add final targts
+for item, path in config['downloads'].items():
+    if isinstance(path, list):
+        # just download
+        outputs.add(f"{seqdb_dir}/{item}/.download.done")
+    else:
+        # status file to be created after download and untar
+        outputs.add(f"{seqdb_dir}/{item}/.unpack.done")
+
+# formatting for last and diamond happends here
+config['dbs'] = {'GTDB': {'fasta': GENES_FAA, \
+                          'is_prot': True,
+                          'links': {'.kos': KOS_FILE, \
+                                    '.ids': True}}}
+include: 'format_dbs.snake'
+
+rule outputs:
+    input: outputs
+
+rule download:
+    output: f"{seqdb_dir}/{{item}}/.download.done"
+    params:
+        url=get_download_url
+    shell: """
+        cd {seqdb_dir}/{wildcards.item}
+        {wget} {params.url}
+        cd -
+        touch {output}
+        """
+
+rule unpack:
+    """ unpcka all the .gz or tar.gz files downloaded """
+    input: rules.download.output
+    output: f"{seqdb_dir}/{{item}}/.unpack.done"
+    shell: """
+        cd {seqdb_dir}/{wildcards.item}
+        for FGZ in *.gz; do
+            if [ "$FGZ" == *".tar.gz" ]; then
+                tar -zxvf $FGZ
+            else:
+                gunzip $FGZ
+                touch ${{FGZ%%.gz}}
+            fi
+        done
+        cd -
+        touch {output}
+        """
+
+# TODO: It would be cool to parse the taxonomy into a taxdump...
+
+rule genes_faa:
+    input:
+        p="{seqdb_dir}/fasta/prokaryotes.fasta",
+        e="{seqdb_dir}/fasta/eukaryotes.fasta"
+    output: GENES_FAA
+    benchmark: 'benchmarks/concatenate_faa.time'
+    shell: "cat {input.p} {input.e} \
+             | tantan -p \
+             > {output}"
+
+# make sure snakeamke knows these files exist
+rule ko_links:
+    input: f"{seqdb_dir}/links/.unpack.done"
+    output: f"{seqdb_dir}/links/genes_ko.list"
+    shell: """ if [ -e {output} ]; then touch {output}; fi """
+
+rule p_e_fasta:
+    input: f"{seqdb_dir}/fasta/.unpack.done"
+    output:
+        p="{seqdb_dir}/fasta/prokaryotes.fasta",
+        e="{seqdb_dir}/fasta/eukaryotes.fasta"
+    shell: """ if [ -e {output.p} ]; then touch {output.p}; fi
+               if [ -e {output.e} ]; then touch {output.e}; fi 
+           """

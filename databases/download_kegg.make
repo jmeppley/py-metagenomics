@@ -7,8 +7,8 @@
 # Provide KEGG account user/pass in with KEGG_USER= and KEGG_PASSWORD=
 #
 # Files are downloaded to ./KEGG (set with BUILD_ROOT=)
-# if BUILD_LASTDB is set to "True", 
-#  a version is compiled for lastal in ./lastdb (set with LASTDB_ROOT=)
+# if BUILD_LASTDB is set to "True" (default), 
+#  a version is compiled for lastal in ./seqdbs (set with SEQDB_ROOT=)
 #
 ###########################
 
@@ -16,11 +16,11 @@ FTP_ROOT:=ftp://ftp.bioinformatics.jp/kegg
 KGVER:=$(shell curl --user $(KEGG_USER):$(KEGG_PASSWORD) $(FTP_ROOT)/RELEASE | head -1 | perl -pe 's/[^0-9]//g')
 KEGG_USER?=
 KEGG_PASSWORD?=
+SEQDB_ROOT?=./seqdbs
 BUILD_ROOT?=./KEGG
 KGDIR:=$(BUILD_ROOT)/$(KGVER)
 
 BUILD_LASTDB:=True
-LASTDB_ROOT?=./lastdb
 LASTDBCHUNK?=
 LASTDBTHREADS?=
 
@@ -52,7 +52,7 @@ ifeq ($(BUILD_LASTDB),False)
 	KOMAP:=$(LASTDB_DIR)/KeggGene.pep.$(KGVER).kos
 	HITIDMAP:=$(LASTDB_DIR)/KeggGene.pep.$(KGVER).ids
 else
-	LASTDB_DIR:=$(LASTDB_ROOT)/KEGG/KeggGene.pep.$(KGVER)
+	LASTDB_DIR:=$(SEQDB_ROOT)/KEGG/KeggGene.pep.$(KGVER)
 	LASTP:=$(LASTDB_DIR)/lastdb
 	LASTFILE=$(LASTP).prj
 	KOMAP=$(LASTP).kos
