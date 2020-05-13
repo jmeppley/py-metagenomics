@@ -1,7 +1,7 @@
 py-metagenomics: databases
 ==========================
 
-Instructions for downloading and building local copies of RefSeq, Silva, or KEGG sequence databases and metadata
+Instructions for downloading and building local copies of public databases. Downloads are driven by makefiles written in either GNU make or Snakemake.
 
 Overview
 --------
@@ -19,6 +19,21 @@ Two databases (GTDB and PhyloDB) require a second step:
 	
 If you are impatient and are working on a multi-core computer, you can add "-j N" to the command to use N threads when possible.
 
+### snake vs make
+
+The following DBs are downloaded using make:
+
+ * RefSeq
+ * Silva
+ * KEGG
+ * HMMs: COG, TIGR, pFAM
+
+These use snakemake:
+
+ * GTDB
+ * PhyloDB
+ * EGGNOG
+
 ## Requirements ##
 
 You need to have a number of things installed for this to work properly, including:
@@ -29,9 +44,26 @@ You need to have a number of things installed for this to work properly, includi
  * tantan
  * python with modules: biopython, numpy
 
-The above (except for make and perl, which are standard on most systems) will be installed already if you installe py-metagenomics using conda or if you use the provied conda.yml file:
+You can install all of these with conda. The included conda/yaml file includes
+everything but make and perl which are standard on most unix-like systems. To
+set up an environemnt run:
 
     conda env create -p ./conda.env -f conda.yaml
+
+This will create a folder named conda.env that contains all the dependencies
+you need.
+
+Next, run:
+
+    conda activate ./conda.env
+
+This will "activate" the environment and make all the tools accessible to your
+command shell. If your system does not have make and/or perl installed, you can
+also install those with conda. Once the environment is activated, run:
+
+    conda install -c conda-forge perl make
+
+(You can omit "-c conda-forge" if you have the channel already configured.)
 
 # DB specific options #
 ## KEGG ##
