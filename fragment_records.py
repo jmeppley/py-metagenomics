@@ -4,6 +4,9 @@ This script takes any file that can be divided into records and breaks it up
  into the given number of chunks or into chunks of the given size
  size can be measuered in number of records or by record size
 
+Both chunk size (-C) and number (-N) can be specififed to just fragment a
+subset of the input file. 
+
  Records can be fasta, fastq, genbank, or something described by a simple
   RegExp user defined records will be sized on the total contained text
   pre-defined types will use sequence length
@@ -48,7 +51,7 @@ def main():
     arguments = parser.parse_args()
     setup_logging(arguments)
 
-    logging.info("Reading sequences from: " + arguments.infile)
+    logging.info("Reading sequences from: " + str(arguments.infile))
 
     # allow input from STDIN only if chunk given
     if arguments.infile is None and arguments.chunk is None:
