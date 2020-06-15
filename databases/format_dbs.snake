@@ -59,6 +59,11 @@ for database in config.get('dbs'):
         prot_dict[fasta_file] = is_prot
         
         for link, target in dbinfo.get('links', {}).items():
+            if link == ".ids":
+                if not isinstance(target, str):
+                    # special case:
+                    # autogenerate .ids file
+                    target = fasta_file + ".headers"
             if link.startswith("."):
                 # link string is a suffix
                 link_file_name = db_loc + link
@@ -70,6 +75,13 @@ for database in config.get('dbs'):
 
 rule all:
     input: outputs
+
+rule genes_headers:
+    input: '{fasta_path}'
+    output: '{fasta_path}.headers'
+    shell: """
+        grep "^>" {input} | perl -pe 's/^>(\\S+)\\s+/\\1\\t/' > {output}
+        """
 
 rule lastdb:
     input: '{db_root}'

@@ -13,13 +13,10 @@ or
 
     snakemake -s download_XXX.snake --config seqdb_root=/path/in/which/to/create/seqdbs
 
-Two databases (GTDB and PhyloDB) require a second step:
+Two databases (GTDB and PhyloDB) are a bit different. See "DB Specific Options"
+below for details.
 
-    snakemake -s format_XXX.snake
-	
-If you are impatient and are working on a multi-core computer, you can add "-j N" to the command to use N threads when possible.
-
-### snake vs make
+### snake vs make ###
 
 The following DBs are downloaded using make:
 
@@ -33,6 +30,10 @@ These use snakemake:
  * GTDB
  * PhyloDB
  * EGGNOG
+
+### Multi Threading ###
+	
+If you are impatient and are working on a multi-core computer, you can add "-j N" to the command to use N threads when possible. This works for make and snakemake.
 
 ## Requirements ##
 
@@ -92,4 +93,15 @@ and COG with, EG:
     make -f download_hmms.make GET_TIGR=True
 
 # GTDB and PhyloDB #
+## GTDB in two steps ##
+After running download_gtdb.snake, run format_gtdb.snake to produce the final
+files. 
+
+    snakemake -s format_gtdb.snake [--config {options}]
+
+## manually donwload PhyloDB ##
+PhyloDB files are in Google Drive and need to be manually downloaded. See
+format_phylodb.snake for details. 
+
+## GTDB + PhyloDB ##
 You can generate a merged GTDB (prokaryotes) and PhyloDB (everything else) db using format_mergedb.snake.

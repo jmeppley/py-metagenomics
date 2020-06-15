@@ -67,7 +67,7 @@ nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
 config['dbs'] = {'GTDB': {'fasta': faa_file, \
                           'is_prot': True,
                           'links': {'.tax': tax_map_file, \
-                                    '.ids': header_file, \
+                                    '.ids': True, \
                                     'names.dmp': names_dmp, \
                                     'nodes.dmp': nodes_dmp}}}
 include: 'format_dbs.snake'
@@ -88,13 +88,6 @@ rule taxonomy:
         logger.debug("generate_taxdump('{input.genes}')")
         generate_taxdump(fasta=input.genes, \
                          dump=os.path.join(seqdb_dir, 'taxdump'))
-
-rule genes_headers:
-    input: faa_file
-    output: header_file
-    shell: """
-        grep "^>" {input} | perl -pe 's/^>(\\S+)\\s+/\\1\\t/' > {output}
-        """
 
 rule genes_faa:
     input: expand(work_dir + "/prokka/{orgid}/{orgid}.renamed.faa", \

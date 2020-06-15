@@ -20,6 +20,7 @@ BUILD_ROOT?=./KEGG
 KGDIR:=$(BUILD_ROOT)/$(KGVER)
 
 BUILD_LASTDB:=True
+LASTDB8:=False
 LASTDB_ROOT?=./lastdb
 LASTDBCHUNK?=
 LASTDBTHREADS?=
@@ -52,7 +53,13 @@ ifeq ($(BUILD_LASTDB),False)
 	KOMAP:=$(LASTDB_DIR)/KeggGene.pep.$(KGVER).kos
 	HITIDMAP:=$(LASTDB_DIR)/KeggGene.pep.$(KGVER).ids
 else
-	LASTDB_DIR:=$(LASTDB_ROOT)/KEGG/KeggGene.pep.$(KGVER)
+	ifeq ($(LASTDB8),False)
+		LASTDB_CMD=lastdb
+		LASTDB_DIR:=$(LASTDB_ROOT)/KEGG/KeggGene.pep.$(KGVER).ldb
+	else
+		LASTDB_CMD=lastdb8
+		LASTDB_DIR:=$(LASTDB_ROOT)/KEGG/KeggGene.pep.$(KGVER).ldb8
+	endif
 	LASTP:=$(LASTDB_DIR)/lastdb
 	LASTFILE=$(LASTP).prj
 	KOMAP=$(LASTP).kos
@@ -102,7 +109,7 @@ $(HITIDMAP): $(KEGGGENES) | $(LASTDB_DIR)
 	grep ">" $< | perl -pe 's/^>(\S+)\s+(\S.*)/\1\t\2/' > $@
 
 $(LASTFILE): $(KEGGGENES) | $(LASTDB_DIR)
-	lastdb -v -c -p $(LASTDBCHUNK_OPTION) $(LASTDBTHREADS_OPTION) $(LASTP) $(KEGGGENES)
+	$(LASTDB_CMD) -v -c -p $(LASTDBCHUNK_OPTION) $(LASTDBTHREADS_OPTION) $(LASTP) $(KEGGGENES)
 
 $(LASTDB_DIR):
 	mkdir -p $(LASTDB_DIR)

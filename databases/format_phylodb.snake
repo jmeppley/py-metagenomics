@@ -5,10 +5,17 @@
 # Formats the latest PhyloDB database for last and/or diamond
 #  Uses prokka to predict and annotate genes
 #
-# first run download_phylodb.snake to get the necessary files
+# Currently the DB files are only available on Google Drive and
+# should be downloaded manually to:
 #
-# a large number of files are written to the working directory in
-# "PhyloDB/{release}"
+#  {download_root}/PhyloDB/{release}/
+#
+#EG:
+#
+#  seqdbs/PhyloDB/1.076/
+#
+# WARNING: a large number of files are written to that folder when unpacking the
+# downloaded archives.
 ##########################
 import re
 import pandas
@@ -46,7 +53,7 @@ nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
 config['dbs'] = {'PhyloDB': {'fasta': faa_file,
                              'is_prot': True,
                              'links': {'.tax': tax_map_file, \
-                                       '.ids': header_file, \
+                                       '.ids': True, \
                                        'names.dmp': names_dmp, \
                                        'nodes.dmp': nodes_dmp}}}
 include: 'format_dbs.snake'
@@ -75,13 +82,6 @@ rule taxonomy:
                          style=PHYLODB,
                          map_file_name=os.path.basename(output.tax_map),
                          dump=os.path.join(seqdb_dir, 'taxdump'))
-
-rule genes_headers:
-    input: faa_file
-    output: header_file
-    shell: """
-        grep "^>" {input} | perl -pe 's/^>(\\S+)\\s+/\\1\\t/' > {output}
-        """
 
 rule genes_faa:
     """ Injects lineages into the faa header, a la GTDB """
