@@ -6,6 +6,8 @@
 #
 ##########################
 import re
+import subprocess
+
 import pandas
 from Bio import SeqIO
 
@@ -13,13 +15,27 @@ from Bio import SeqIO
 KEGG_USER = config['kegg_user']
 KEGG_PASSWORD = config['kegg_password']
 
+# FTP locations
+FTP_ROOT = "ftp://ftp.bioinformatics.jp/kegg"
+WGET = "wget -c --user={KEGG_USER} --password={KEGG_PASSWORD}"
+
 def get_kegg_release():
     """
     reimpliment make line:
     KGVER:=$(shell curl --user $(KEGG_USER):$(KEGG_PASSWORD) $(FTP_ROOT)/RELEASE | head -1 | perl -pe 's/[^0-9]//g')
     """
-    # TODO
 
+    # read file contents
+    import urllib.request
+    with urllib.request.urlopen(f"{FTP_ROOT}/RELEASE") as response:
+       release_data = response.read()
+    release_data = subprocess.check_call(
+
+    # pullout date digits from release string
+    # EG: "KEGG FTP Release 2016-09-19"
+    release_date =  re.search(r'KEGG (?:FTP )?Release (\S+)\w', release_date)
+    # return just the digits
+    return re.sub(r'[^0-9]', '', release_date)
 
 # version number
 release = config.get('release', get_kegg_release)
@@ -48,10 +64,6 @@ nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
 
 ## final targets
 outputs = config.setdefault('outputs', set())
-
-# FTP locations
-FTP_ROOT = "ftp://ftp.bioinformatics.jp/kegg"
-WGET = "wget -c --user={KEGG_USER} --password={KEGG_PASSWORD}"
 
 config['downloads'] = {
     'links': 'genes/links/*gz',
