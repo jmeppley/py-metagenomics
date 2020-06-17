@@ -6,18 +6,27 @@
 #
 ##########################
 import re
+import os
 import subprocess
 
 import pandas
 from Bio import SeqIO
+from edl import taxon
+from edl import  util
 
 # mandatory config:
-KEGG_USER = config['kegg_user']
-KEGG_PASSWORD = config['kegg_password']
+KEGG_USER = config['KEGG_USER']
+KEGG_PASSWORD = config['KEGG_PASSWORD']
 
 # FTP locations
 FTP_ROOT = "ftp://ftp.bioinformatics.jp/kegg"
-WGET = "wget -c --user={KEGG_USER} --password={KEGG_PASSWORD}"
+WGET = f"wget -c --user={KEGG_USER} --password={KEGG_PASSWORD}"
+
+def get_credentialled_ftp_root():
+	# encode user/pass in URL
+    keggun = config['KEGG_USER']
+    keggpw = config['KEGG_PASSWORD']
+    return re.sub("ftp://", f"ftp://{keggun}:{keggpw}@", FTP_ROOT)
 
 def get_kegg_release():
     """
@@ -25,20 +34,28 @@ def get_kegg_release():
     KGVER:=$(shell curl --user $(KEGG_USER):$(KEGG_PASSWORD) $(FTP_ROOT)/RELEASE | head -1 | perl -pe 's/[^0-9]//g')
     """
 
-    # read file contents
     import urllib.request
-    with urllib.request.urlopen(f"{FTP_ROOT}/RELEASE") as response:
-       release_data = response.read()
-    release_data = subprocess.check_call(
 
+    # read file contents
+    with urllib.request.urlopen(f"{get_credentialled_ftp_root()}/RELEASE") as response:
+        release_data = response.read()
+    
+    # make into a string for regex
+    if isinstance(release_data, bytes):
+        release_data = release_data.decode()
+        
     # pullout date digits from release string
     # EG: "KEGG FTP Release 2016-09-19"
-    release_date =  re.search(r'KEGG (?:FTP )?Release (\S+)\w', release_date)
+    release_date = re.search(r'KEGG (?:FTP )?Release ([-0-9]+)', \
+                             release_data).group(1)
+    
     # return just the digits
-    return re.sub(r'[^0-9]', '', release_date)
+    return re.sub(r'[^0-9]', \
+                  '', \
+                  release_date)
 
 # version number
-release = config.get('release', get_kegg_release)
+release = config.get('release', get_kegg_release())
 
 # where to put the downloaded files:
 seqdb_root = config.get('seqdb_root','seqdbs')
@@ -55,7 +72,7 @@ prok_genes_gz = f"{seqdb_dir}/fasta/prokaryotes.pep.gz"
 euk_genes_gz = f"{seqdb_dir}/fasta/eukaryotes.pep.gz"
 name_root = f"{seqdb_dir}/KeggGene.pep.{release}"
 GENES_FAA = name_root + ".faa"
-KOS_FILE = f"{seqdb_dir}/links/genes_ko.list"
+KOS_FILE = f"{seqdb_dir}/genes_ko.list"
 
 # taxonomy files
 tax_map_file = seqdb_dir + "/taxdump/gtdb.acc.to.taxid"
@@ -67,12 +84,12 @@ outputs = config.setdefault('outputs', set())
 
 config['downloads'] = {
     'links': 'genes/links/*gz',
-    'fasta': 'genes/fasta/*karyotes.fasta.gz',
+    'fasta': 'genes/fasta/[ep]*karyotes.pep.gz',
     'genome': 'genes/genome.tar.gz',
     'brite': 'brite/*.tar.gz',
     'ko': 'genes/ko.tar.gz',
-    'metadata': ['misc/taxonomy',
-                 'misc/taxonomic_rank',
+    'metadata': ['genes/misc/taxonomy',
+                 'genes/misc/taxonomic_rank',
                  'genes/MD5.genes',
                  'genes/README.genes',
                  'RELEASE'],
@@ -82,9 +99,9 @@ def get_download_url(wildcards):
     """ input function to turn item into URL """
     dl_data = config['downloads'][wildcards.item]
     if isinstance(dl_data, list):
-        return " ".join(f"{ftp_root}/{p}" for p in dl_data)
+        return " ".join(f"{FTP_ROOT}/{p}" for p in dl_data)
     else:
-        return f"{ftp_root}/{dl_data}"
+        return f"{FTP_ROOT}/{dl_data}"
 
 # add final targts
 for item, path in config['downloads'].items():
@@ -100,7 +117,10 @@ config['dbs'] = {'GTDB': {'fasta': GENES_FAA, \
                           'is_prot': True,
                           'links': {'.kos': KOS_FILE, \
                                     '.ids': True}}}
+
 include: 'format_dbs.snake'
+
+logger.debug(outputs)
 
 rule outputs:
     input: outputs
@@ -111,7 +131,7 @@ rule download:
         url=get_download_url
     shell: """
         cd {seqdb_dir}/{wildcards.item}
-        {wget} {params.url}
+        {WGET} {params.url}
         cd -
         touch {output}
         """
@@ -125,7 +145,7 @@ rule unpack:
         for FGZ in *.gz; do
             if [ "$FGZ" == *".tar.gz" ]; then
                 tar -zxvf $FGZ
-            else:
+            else
                 gunzip $FGZ
                 touch ${{FGZ%%.gz}}
             fi
@@ -134,12 +154,94 @@ rule unpack:
         touch {output}
         """
 
-# TODO: It would be cool to parse the taxonomy into a taxdump...
+## taxdump
+# Functions
+def add_node_to_map(id_map, name, taxid, parent, rank=None):
+    node = taxon.TaxNode(taxid, parent.id if parent is not None else None, rank)
+    node.setParent(parent)
+    node.name = name
+    id_map[taxid] = node
+    return node
+
+def parse_ranks(ranks_file):
+    """ turn the taxonomic_rank file into a taxdump """
+    org_map = {}
+    taxid_map = {}
+    last_taxid = 0
+    root = add_node_to_map(taxid_map, 'root', last_taxid, None)
+    current_parent = root
+    current_level = 0
+
+    with open(ranks_file) as rank_lines:
+        for line in rank_lines:
+            line = line.strip()
+            if line.startswith("#"):
+                if not line.endswith("#"):
+                    depth, name = re.search(r"^(#+)\s+(\S.*\S)\s*$", line).groups()
+                    level = len(depth)
+                    while level <= current_level:
+                        current_parent = current_parent.parent
+                        current_level -= 1
+
+                    last_taxid += 1
+                    tax_node = add_node_to_map(taxid_map, name, last_taxid, current_parent)
+                    current_level = level
+                    current_parent = tax_node
+
+            else:
+                bits = line.split('\t')
+                org = bits[0]
+                name = bits[5]
+                last_taxid += 1
+                tax_node = add_node_to_map(taxid_map, name, last_taxid, current_parent)
+                org_map[org] = last_taxid
+
+    return root, org_map
+
+def save_taxdump(root_node, directory):
+    with open(os.path.join(directory, 'names.dmp')) as names_out:
+        with open(os.path.join(directory, 'nodes.dmp')) as nodes_out:
+            for node in util.treeGenerator(root_node):
+                nid = node.id
+                nname = node.name
+                if node==root_node:
+                    nparent = node.id
+                else:
+                    nparent = node.parent.id
+                nrank = "no rank"
+                nodes_out.write("%s\t|\t%s\t|\t%s\t\n" % (nid,nparent,nrank))
+                names_out.write("%s\t|\t%s\t|\t\t|\tscientific name\t\n" % (nid,nname))
+
+rule taxdump:
+    input:
+        metadata=f"{seqdb_dir}/metadata/.download.done",
+        gene_names=GENES_FAA + ".headers",
+    output:
+        names=names_dmp,
+        nodes=nodes_dmp,
+        taxmap=tax_map_file,
+    params:
+        rank_file=f"{seqdb_dir}/metadata/taxonomic_rank",
+    run:
+        # parse taxonomic rank file
+        root, org_map = parse_ranks(params.rank_file)
+        
+        # write map from gene id to taxid
+        with open(output.taxmap, 'wt') as map_out:
+            with open(input.gene_name) as name_lines:
+                for line in name_lines:
+                    acc = line.split(None, 1)[0]
+                    org = acc.split(":", 1)[0]
+                    taxid = org_map[org]
+                    map_out.write(f"{acc}\t{taxid}\n")
+        
+        # write taxdump files
+        save_taxdump(root, os.path.dirname(input.names))
 
 rule genes_faa:
     input:
-        p="{seqdb_dir}/fasta/prokaryotes.fasta",
-        e="{seqdb_dir}/fasta/eukaryotes.fasta"
+        p=f"{seqdb_dir}/fasta/prokaryotes.fasta",
+        e=f"{seqdb_dir}/fasta/eukaryotes.fasta"
     output: GENES_FAA
     benchmark: 'benchmarks/concatenate_faa.time'
     shell: "cat {input.p} {input.e} \
@@ -149,14 +251,14 @@ rule genes_faa:
 # make sure snakeamke knows these files exist
 rule ko_links:
     input: f"{seqdb_dir}/links/.unpack.done"
-    output: f"{seqdb_dir}/links/genes_ko.list"
-    shell: """ if [ -e {output} ]; then touch {output}; fi """
+    output: f"{seqdb_dir}/genes_ko.list"
+    shell: """ ln -s links/genes_ko.list {output} """
 
 rule p_e_fasta:
     input: f"{seqdb_dir}/fasta/.unpack.done"
     output:
         p="{seqdb_dir}/fasta/prokaryotes.fasta",
         e="{seqdb_dir}/fasta/eukaryotes.fasta"
-    shell: """ if [ -e {output.p} ]; then touch {output.p}; fi
-               if [ -e {output.e} ]; then touch {output.e}; fi 
+    shell: """ ln -s prokaryotes.pep {output.p}
+               ln -s eukaryotes.pep {output.e}
            """
