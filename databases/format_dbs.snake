@@ -71,7 +71,7 @@ for database in config.get('dbs'):
                 # link string is a file name
                 link_file_name = os.path.dirname(db_loc) + os.path.sep + link
             outputs.add(link_file_name)
-            print(f"Will link {link_file_name} to {target}")
+            logger.debug(f"Will link {link_file_name} to {target}")
             links[link_file_name] = target
 
 rule all:
