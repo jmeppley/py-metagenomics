@@ -175,11 +175,23 @@ def get_complete_taxids(wildcards):
     return get_complete_files(wildcards, suffix='.taxid')
 
 rule dl_proteins:
+    """
+    Using shell instead of FTP because building the DAG crashes with 2200
+    FTP files: ftputil.error.FTPOSError: [Errno 24] Too many open files
+
     input:
         lambda w:
             FTPRemote.remote(f"{FTP_SERVER}/{RELEASE_PATH}/complete/{w.filename}.gpff.gz")
+    """
     output: f"{seqdb_dir}/complete/{{filename}}.gpff"
-    shell: "gunzip -c {input} > {output}"
+    params:
+        url=lambda w:
+           f"{FTP_REL}/complete/{w.filename}.gpff.gz"
+    #shell: "gunzip -c {input} > {output}"
+    shell: """ curl -s {params.url} \
+                | gunzip -c \
+                > {output} """
+
 
 rule extract_proteins:
     input: f"{seqdb_dir}/complete/{{filename}}.gpff"
