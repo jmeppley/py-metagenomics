@@ -286,7 +286,7 @@ rule genes_counts:
             | perl -lane 'if ($F[1] eq "reads") 
                             {{$read = $F[2]; $reads += $read}}
                           elsif ($F[1] eq "loci")
-                            {{$locus += $F[2]; $loci += $locus}};
+                            {{$locus = $F[2]; $loci += $locus}};
                           print "$reads\t$loci";' \
             | tail -n 1 \
             >> {output}
