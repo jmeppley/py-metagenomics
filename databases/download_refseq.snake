@@ -94,11 +94,12 @@ include: 'format_dbs.snake'
 #   get_formatted_db_outputs defined by format_dbs.snake
 rule outputs:
     input:
-        config.get('outputs', {}),
-        f'{SEQDB_DIR}/metadata/.done.catalog',
-        expand('{SEQDB_DIR}/metadata/{file_name}', \
+        formatting_outputs=config.get('outputs', {}),
+        catalog_metadata=f'{SEQDB_DIR}/metadata/.done.catalog',
+        other_metadata=expand('{SEQDB_DIR}/metadata/{file_name}', \
                SEQDB_DIR=SEQDB_DIR, \
-               file_name=config['metadata_templates'].keys())
+               file_name=config['metadata_templates'].keys()),
+        fragment_counts=f'{SEQDB_DIR}/complete/counts.txt'
 
 ###
 # Checkpoints
@@ -253,6 +254,35 @@ rule extract_proteins:
                 | get_sequences_from_gb.py -F fasta -r \
                 | tantan -p \
                 > {output}"
+
+rule count_fragment_genes:
+    input:
+        gb=f"{SEQDB_DIR}/complete/{{filename}}.gpff",
+        faa=f"{SEQDB_DIR}/complete/{{filename}}.faa"
+    output: f"{SEQDB_DIR}/complete/{{filename}}.counts"
+    threads: 2
+    shell: """
+        prinseq-lite.pl -fasta {input.faa} -stats_info > {output}
+        echo -ne "gb_file\tloci\t" >> {output}
+        grep -c "^LOCUS" {input.gb} >> {output}
+        """
+
+rule genes_counts:
+    input: partial(get_complete_outputs, "counts")
+    output: f'{SEQDB_DIR}/complete/counts.txt'
+    run:
+        # add up all the fragments
+        totals = {}
+        for count_file in input:
+            with open(count_file) as counts_in:
+                    for line in counts_in:
+                        key, value = [b.strip() \
+                                      for b in line.split('\t')[1:]]
+                        totals[key] = totals.get(key, 0) + int(value)
+        # save to output
+        with open(output[0], 'wt') as counts_out:
+            for key, total in totals.items():
+                counts_out.write(f"{key}\t{total}\n")
 
 rule genes_faa:
     input: partial(get_complete_outputs, "faa")
