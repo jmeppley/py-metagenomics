@@ -142,10 +142,14 @@ rule blastdb:
 rule count:
     input: '{db_root}'
     output: '{db_root}.prinseq.stats'
+    params:
+        aa_flag=lambda w: "-aa" if prot_dict[w.db_root] else "",
     benchmark: 'benchmarks{db_root}.stats.time'
     shell: """
-        prinseq-lite.pl -fasta {input} -stats_len -stats_info \
+        prinseq-lite.pl {params.aa_flag} -fasta {input} -stats_len -stats_info \
              > {output}
+        # prinseq doesn't do exit codes. Fail if output empty
+        if [ ! -s {output} ]; then false; fi
         # print to screen in case someone's watching
         echo {output}
         head -5 {output}

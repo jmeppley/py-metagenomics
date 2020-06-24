@@ -262,7 +262,9 @@ rule count_fragment_genes:
     output: f"{SEQDB_DIR}/complete/{{filename}}.counts"
     threads: 2
     shell: """
-        prinseq-lite.pl -fasta {input.faa} -stats_info > {output}
+        prinseq-lite.pl -aa -fasta {input.faa} -stats_info > {output}
+        # prinseq doesn't do exit codes. Fail if output empty
+        if [ ! -s {output} ]; then false; fi
         echo -ne "gb_file\tloci\t" >> {output}
         grep -c "^LOCUS" {input.gb} >> {output}
         """
@@ -275,14 +277,34 @@ rule genes_counts:
         totals = {}
         for count_file in input:
             with open(count_file) as counts_in:
-                    for line in counts_in:
-                        key, value = [b.strip() \
-                                      for b in line.split('\t')[1:]]
-                        totals[key] = totals.get(key, 0) + int(value)
-        # save to output
+                reads, loci = 0, 0
+                for line in counts_in:
+                    key, value = [b.strip() \
+                                  for b in line.split('\t')[1:]]
+                    value = int(value)
+                    totals[key] = totals.get(key, 0) + value
+                    if key == 'reads':
+                        reads = value
+                    elif key == 'loci':
+                        loci = value
+                if reads != loci:
+                    raise Exception(f"Fragment {count_file} has a different" \
+                                    f" number of entries in the genbank and" \
+                                    f" fasta formats! ({reads} != {loci})")
+    # save to output
         with open(output[0], 'wt') as counts_out:
             for key, total in totals.items():
                 counts_out.write(f"{key}\t{total}\n")
+
+rule check_gene_counts:
+    input:
+        final_counts=GENES_FAA + ".prinseq.stats",
+        fragment_totals=f'{SEQDB_DIR}/complete/counts.txt'
+    output:
+        f'{SEQDB_DIR}/complete/.counts.checked'
+    run:
+        pass
+
 
 rule genes_faa:
     input: partial(get_complete_outputs, "faa")
