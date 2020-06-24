@@ -265,36 +265,32 @@ rule count_fragment_genes:
         prinseq-lite.pl -aa -fasta {input.faa} -stats_info > {output}
         # prinseq doesn't do exit codes. Fail if output empty
         if [ ! -s {output} ]; then false; fi
-        echo -ne "gb_file\tloci\t" >> {output}
-        grep -c "^LOCUS" {input.gb} >> {output}
+        LOCI=$(grep -c "^LOCUS" {input.gb})
+        echo -e "gb_file\tloci\t$LOCI" >> {output}
+
+        READS=$(grep reads {output} | cut -f 3)
+        if [ "$READS" != "$LOCI" ]; then
+            echo "sequences counts are different from genbank and fasta files"
+            echo {input}
+            false
+        fi
         """
 
 rule genes_counts:
     input: partial(get_complete_outputs, "counts")
     output: f'{SEQDB_DIR}/complete/counts.txt'
-    run:
-        # add up all the fragments
-        totals = {}
-        for count_file in input:
-            with open(count_file) as counts_in:
-                reads, loci = 0, 0
-                for line in counts_in:
-                    key, value = [b.strip() \
-                                  for b in line.split('\t')[1:]]
-                    value = int(value)
-                    totals[key] = totals.get(key, 0) + value
-                    if key == 'reads':
-                        reads = value
-                    elif key == 'loci':
-                        loci = value
-                if reads != loci:
-                    raise Exception(f"Fragment {count_file} has a different" \
-                                    f" number of entries in the genbank and" \
-                                    f" fasta formats! ({reads} != {loci})")
-    # save to output
-        with open(output[0], 'wt') as counts_out:
-            for key, total in totals.items():
-                counts_out.write(f"{key}\t{total}\n")
+    shell:
+        """
+        echo -e "READS\tLOCI" > {output}
+        cat seqdbs/RefSeq/200/complete/*counts \
+            | perl -lane 'if ($F[1] eq "reads") 
+                            {{$read = $F[2]; $reads += $read}}
+                          elsif ($F[1] eq "loci")
+                            {{$locus += $F[2]; $loci += $locus}};
+                          print "$reads\t$loci";' \
+            | tail -n 1 \
+            >> {output}
+        """
 
 rule check_gene_counts:
     input:
