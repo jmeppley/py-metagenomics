@@ -11,6 +11,7 @@ import os
 import subprocess
 import urllib.request
 from ftplib import FTP
+from functools import partial
 
 import pandas
 from Bio import SeqIO
@@ -18,7 +19,7 @@ from edl import taxon
 from edl import  util
 
 from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
-FTPRemote = FTPRemoteProvider()
+FTPR = FTPRemoteProvider()
 
 # FTP locations
 FTP_SERVER = 'ftp.ncbi.nlm.nih.gov'
@@ -27,6 +28,12 @@ FTP_REL = f'ftp://{FTP_SERVER}/{RELEASE_PATH}'
 TAXDUMP_PATH = 'pub/taxonomy/taxdump_archive'
 FTP_TAX = f'ftp://{FTP_SERVER}/{TAXDUMP_PATH}'
 
+###
+# release number
+#
+# this doesn't work as a checkpoint because
+# format_dbs.snake needs to know all the file names ahead of time
+# for the wildcard_constraints to work
 def get_refseq_release():
     """
     reimpliment make line:
@@ -35,38 +42,111 @@ def get_refseq_release():
     # read file contents
     with urllib.request.urlopen(f"{FTP_REL}/RELEASE_NUMBER") as response:
         release_data = response.read()
-    
+
     # make into a string for regex
     if isinstance(release_data, bytes):
         release_data = release_data.decode()
-        
+
     return release_data.strip()
 
 # version number
 release = config.get('release', get_refseq_release())
 
-def get_refseq_release_date(release):
-    # read file contents
-    url = f"{FTP_REL}/release-notes/RefSeq-release{release}.txt"
-    with urllib.request.urlopen(url) as response:                    
-        notes = response.read()                                                        
-                                                                                              
-    # make into a string for regex 
-    if isinstance(notes, bytes):                                                       
-        notes = notes.decode()    
-        
-    return datetime.datetime.strptime(re.search(f'([A-Z][a-z]+\s+\d+,\s+\d\d\d\d)', 
-                                                notes).group(1),
-                                      "%B %d, %Y")
+# where to put the downloaded files:
+seqdb_root = config.get('seqdb_root','seqdbs')
+download_root = config.get('download_root', seqdb_root)
 
-# date
-release_date = get_refseq_release_date(release)
+# file locations
+REFSEQ_DL_DIR = os.path.join(download_root, 'RefSeq')
+SEQDB_DIR = os.path.join(seqdb_root, 'RefSeq', release)
+NAME_ROOT = f"{SEQDB_DIR}/RefSeq-{release}.AllProteins"
+GENES_FAA = NAME_ROOT + ".faa"
+# taxonomy files
+ACCS_TAXIDS = SEQDB_DIR + "/taxdump/acc.to.taxid"
+NAMES_DMP = SEQDB_DIR + "/taxdump/names.dmp"
+NODES_DMP = SEQDB_DIR + "/taxdump/nodes.dmp"
 
-def get_taxdump_file(refseq_date):
+# other config
+fmt_threads = config.setdefault('fmt_threads', 20)
+
+###
+# final targets
+
+config['metadata_templates'] = {
+    f'RefSeq-{release}.stats.txt': \
+        'release-statistics/RefSeq-release{release}.{release_date:%m%d%Y}.stats.txt',
+    f'RefSeq-{release}.txt': 'release-notes/RefSeq-release{release}.txt'}
+
+# formatting for last and diamond happends here
+#  we give format_dbs executables instead of paths to wait for the release
+#  number
+config['dbs'] = {'RefSeq': {'fasta': GENES_FAA, \
+                          'is_prot': True, \
+                          'links': {'.tax': ACCS_TAXIDS, \
+                                    'names.dmp': NAMES_DMP, \
+                                    'nodes.dmp': NODES_DMP, \
+                                    '.ids': True}}}
+
+# default is last8 and diamond change with config['db_fmts']
+include: 'format_dbs.snake'
+
+# all rule: define what files need to be created
+#   get_formatted_db_outputs defined by format_dbs.snake
+rule outputs:
+    input:
+        config.get('outputs', {}),
+        f'{SEQDB_DIR}/metadata/.done.catalog',
+        expand('{SEQDB_DIR}/metadata/{file_name}', \
+               SEQDB_DIR=SEQDB_DIR, \
+               file_name=config['metadata_templates'].keys())
+
+###
+# Checkpoints
+
+# notes have the release date
+checkpoint release_notes:
+    input:
+        FTPR.remote(f'{FTP_SERVER}/{RELEASE_PATH}/release-notes/' \
+                    'RefSeq-release{release}.txt')
+    output: f'{REFSEQ_DL_DIR}/release-notes/RefSeq-{{release}}.txt'
+    shell: """ ls -lrth {input}
+               cp {input} {output}
+           """
+
+# gene files
+checkpoint get_pep_list:
+    """ get the list of protein files to download o
+        we could use FTPR.glob_wildcards, but that adds 7 seconds to every re-run instead of checking the local filesystem
+    """
+    output: f"{SEQDB_DIR}/complete/pep.gz.list"
+    shell: """curl -s -l ftp://{FTP_SERVER}/{RELEASE_PATH}/complete/ | grep "protein\.gpff" > {output}"""
+
+
+###
+# checkpoint functions
+#  - functions to get filenames and other strings that depend on checkpoints
+
+# get release date
+def get_release_date():
+    """ we need this for the taxdump and the stats file """
+    release_notes_file = checkpoints.release_notes.get(release=release).output[0]
+    with open(release_notes_file) as rel_notes_lines:
+
+        # find the first line that looks like a date
+        for line in rel_notes_lines:
+            m = re.search(f'([A-Z][a-z]+\s+\d+,\s+\d\d\d\d)', line)
+            if m:
+                # convert to datetime object (to be formatted later)
+                return datetime.datetime.strptime(m.group(1),
+                                                  "%B %d, %Y")
+
+def get_taxdump_file():
     """ find the newst taxdump from before the release """
     ftp = FTP(FTP_SERVER)
     ftp.login()
     ftp.cwd(TAXDUMP_PATH)
+
+    refseq_date = get_release_date()
 
     taxdump_list = []
     ftp.retrlines('LIST', taxdump_list.append)           # list directory contents
@@ -84,95 +164,67 @@ def get_taxdump_file(refseq_date):
                     best_file = file_name
         except:
             pass
-    
+
     return best_file
 
-taxdump_file = get_taxdump_file(release_date)
+# get list of complete fragment names
+def get_complete_files():
+    gz_list = checkpoints.get_pep_list.get(release=release).output[0]
+    with open(gz_list) as gz_files:
+        return [g.strip() for g in iter(gz_files) \
+                if re.search(r'^complete\..+\.protein.gpff.gz$', g)]
 
-# where to put the downloaded files:
-seqdb_root = config.get('seqdb_root','seqdbs')
-download_root = config.get('download_root', seqdb_root)
+def get_complete_outputs(suffix, wildcards):
+    return [f'{SEQDB_DIR}/complete/' + re.sub(r'gpff.gz$', suffix, f) for f in get_complete_files()]
 
-# other config
-fmt_threads = config.setdefault('fmt_threads', 20)
 
-# file locations
-download_dir = os.path.join(download_root, 'RefSeq', release)
-seqdb_dir = os.path.join(seqdb_root, 'RefSeq', release)
-name_root = f"{seqdb_dir}/RefSeq-{release}.AllProteins"
-GENES_FAA = name_root + ".faa"
-# taxonomy files
-ACCS_TAXIDS = seqdb_dir + "/taxdump/acc.to.taxid"
-names_dmp = seqdb_dir + "/taxdump/names.dmp"
-nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
+# metadata
 
-## final targets
-outputs = config.setdefault('outputs', set())
-outputs.add(names_dmp)
-outputs.add(GENES_FAA)
-outputs.add(ACCS_TAXIDS)
+def get_md_remote(wildcards):
+    file_name = wildcards.file_name
+    input_template = config['metadata_templates'][file_name]
+    if re.search('release_date', input_template):
+        input_path = input_template.format(release=release,
+                                           release_date=get_release_date())
+    else:
+        input_path = input_template.format(release=release)
 
-# formatting for last and diamond happends here
-config['dbs'] = {'RefSeq': {'fasta': GENES_FAA, \
-                          'is_prot': True,
-                          'links': {'.tax': ACCS_TAXIDS, \
-                                    '.ids': True}}}
+    return FTPR.remote(f"{FTP_SERVER}/{RELEASE_PATH}/{input_path}")
 
-# default is last8 and diamond change with config['db_fmts']
-include: 'format_dbs.snake'
+###
+# Rules
 
-rule outputs:
-    input: outputs
-
-# other downloads
+# get the NCBI taxdump
 rule taxdump:
-    input: FTPRemote.remote(f'{FTP_SERVER}/{TAXDUMP_PATH}/{taxdump_file}')
+    input:
+        lambda w:
+            FTPR.remote(f'{FTP_SERVER}/{TAXDUMP_PATH}/{get_taxdump_file()}')
     output:
-        names=names_dmp,
-        nodes=nodes_dmp
+        names=NAMES_DMP,
+        nodes=NODES_DMP
     shell:
         """
         ZIP=$(realpath {input})
-        cd {seqdb_dir}/taxdump
+        cd {SEQDB_DIR}/taxdump
         unzip $ZIP
         """
 
-config['metadata_paths'] = {
-    f'RefSeq-{release}.stats.txt': \
-        f'release-statistics/RefSeq-release{release}.{release_date.strftime("%m%d%Y")}.stats.txt ',
-    f'RefSeq-{release}.txt': f'release-notes/RefSeq-release{release}.txt'}
-
+# other metadata files
 rule metadata_file:
-    input: lambda w: FTPRemote.remote(f"{FTP_SERVER}/{RELEASE_PATH}/{config['metadata_paths'][w.file_name]}")
-    output: f'{seqdb_dir}/metadata/{{file_name}}'
-    shell: "mv {input} {output}"
+    input: get_md_remote
+    output: f'{SEQDB_DIR}/metadata/{{file_name}}'
+    shell: "cp {input} {output}"
 
 rule catalog_metadata:
     """ a bunch of files we don't use explicitly, but might be useful """
-    output: f"{seqdb_dir}/metadata/.catalog.files.done"
+    output:
+        f'{SEQDB_DIR}/metadata/.done.catalog'
     shell: """
-        cd {seqdb_dir}/metadata
+        cd {SEQDB_DIR}/metadata
         wget -c {FTP_REL}/release-catalog/[Rr]*
         cd -
         touch {output}
         """
-
-# genes
-checkpoint get_pep_list:
-    """ get the list of protein files to download """
-    output: f"{seqdb_dir}/complete/pep.gz.list"
-    shell: """curl -s -l {FTP_REL}/complete/ | grep "protein\.gpff" > {output}"""
-
-def get_complete_files(wildcards, suffix='.faa'):
-    gz_list = checkpoints.get_pep_list.get().output[0]
-    with open(gz_list) as gz_files:
-        return [os.path.join(seqdb_dir,
-                             'complete',
-                             re.sub(".gpff.gz$", suffix, f.strip()))
-                for f in gz_files]
-
-def get_complete_taxids(wildcards):
-    return get_complete_files(wildcards, suffix='.taxid')
 
 rule dl_proteins:
     """
@@ -181,9 +233,9 @@ rule dl_proteins:
 
     input:
         lambda w:
-            FTPRemote.remote(f"{FTP_SERVER}/{RELEASE_PATH}/complete/{w.filename}.gpff.gz")
+            FTPR.remote(f"{FTP_SERVER}/{RELEASE_PATH}/complete/{w.filename}.gpff.gz")
     """
-    output: f"{seqdb_dir}/complete/{{filename}}.gpff"
+    output: f"{SEQDB_DIR}/complete/{{filename}}.gpff"
     params:
         url=lambda w:
            f"{FTP_REL}/complete/{w.filename}.gpff.gz"
@@ -194,8 +246,8 @@ rule dl_proteins:
 
 
 rule extract_proteins:
-    input: f"{seqdb_dir}/complete/{{filename}}.gpff"
-    output: f"{seqdb_dir}/complete/{{filename}}.faa"
+    input: f"{SEQDB_DIR}/complete/{{filename}}.gpff"
+    output: f"{SEQDB_DIR}/complete/{{filename}}.faa"
     threads: 2
     shell: "cat {input} \
                 | get_sequences_from_gb.py -F fasta -r \
@@ -203,7 +255,7 @@ rule extract_proteins:
                 > {output}"
 
 rule genes_faa:
-    input: get_complete_files
+    input: partial(get_complete_outputs, "faa")
     output: GENES_FAA
     run:
         with open(output[0], 'wt') as genes_out:
@@ -216,12 +268,12 @@ rule genes_faa:
 $(ACCPREFP): $(RSDIR)/complete/.download.complete.aa
 	# For some multispecies entries, you'll get multiple lines in the tax map
 	gunzip -c $(RSDIR)/complete/complete.*.protein.gpff.gz \
-       | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; } 
+       | perl -ne 'if (m/^ACCESSION\s+(\S+)\b/) { $$acc=$$1; }
                   elsif (m/db_xref="taxon:(\d+)"/) { print "$$acc\t$$1\n"; }' \
        > $@
 """
 rule acc_taxid_map:
-    input: get_complete_taxids
+    input: partial(get_complete_outputs, "taxid")
     output: ACCS_TAXIDS
     run:
         with open(output[0], 'wt') as taxids_out:
@@ -234,8 +286,8 @@ ACC_REXP = re.compile(r'^ACCESSION\s+(\S+)\b')
 TAXID_REXP = re.compile(r'db_xref="taxon:(\d+)')
 
 rule extract_taxids:
-    input: f"{seqdb_dir}/complete/{{filename}}.gpff"
-    output: f"{seqdb_dir}/complete/{{filename}}.taxid"
+    input: f"{SEQDB_DIR}/complete/{{filename}}.gpff"
+    output: f"{SEQDB_DIR}/complete/{{filename}}.taxid"
     run:
         with open(output[0], 'wt') as output_handle:
             with open(input[0]) as input_handle:
