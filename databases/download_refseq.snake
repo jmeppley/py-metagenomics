@@ -99,7 +99,7 @@ rule outputs:
         other_metadata=expand('{SEQDB_DIR}/metadata/{file_name}', \
                SEQDB_DIR=SEQDB_DIR, \
                file_name=config['metadata_templates'].keys()),
-        fragment_counts=f'{SEQDB_DIR}/complete/counts.txt'
+        fragment_counts=f'{SEQDB_DIR}/complete/.counts.checked'
 
 ###
 # Checkpoints
@@ -283,7 +283,7 @@ rule genes_counts:
         """
         echo -e "READS\tLOCI" > {output}
         cat seqdbs/RefSeq/200/complete/*counts \
-            | perl -lane 'if ($F[1] eq "reads") 
+            | perl -lane 'if ($F[1] eq "reads")
                             {{$read = $F[2]; $reads += $read}}
                           elsif ($F[1] eq "loci")
                             {{$locus = $F[2]; $loci += $locus}};
@@ -299,7 +299,28 @@ rule check_gene_counts:
     output:
         f'{SEQDB_DIR}/complete/.counts.checked'
     run:
-        pass
+        # read one row table with headers into dict
+        fragment_sums = pandas.read_csv(input.fragment_totals, sep='\t') \
+                              .T[0].to_dict()
+
+        if fragment_sums['READS'] != fragment_sums['LOCI']:
+            raise Exception("Total faa genes don't match total gb genes! \n" \
+                            f" {fragment_sums['READS']} is not " \
+                            f"{fragment_sums['LOCI']}")
+
+        # read second and third columsn as keys and values into dict
+        prinseq_counts = pandas.read_csv(input.final_counts, sep='\t', \
+                                         header=None, usecols=[1,2], \
+                                         names=['key','value'], \
+                                         index_col=0)['value'].to_dict()
+
+        if fragment_sums['READS'] != prinseq_counts['reads']:
+            raise Exception("Total faa genes don't final faa count! \n" \
+                            f" {fragment_sums['READS']} is not " \
+                            f"{prinseq_counts['reads']}")
+
+        with open(output[0], 'wt') as out:
+            out.write("checks out")
 
 
 rule genes_faa:
