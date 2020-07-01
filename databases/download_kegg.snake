@@ -141,11 +141,14 @@ rule unpack:
     input: rules.download.output
     output: f"{seqdb_dir}/{{item}}/.unpack.done"
     shell: """
+        echo Unpacking {wildcards.item} downloads
         cd {seqdb_dir}/{wildcards.item}
         for FGZ in *.gz; do
-            if [ "$FGZ" == *".tar.gz" ]; then
+            if [[ "$FGZ" =~ .*".tar.gz" ]]; then
+                echo Untarring $FGZ
                 tar -zxvf $FGZ
             else
+                echo Unzipping $FGZ
                 gunzip $FGZ
                 touch ${{FGZ%%.gz}}
             fi
