@@ -5,7 +5,7 @@ This script takes any file that can be divided into records and breaks it up
  size can be measuered in number of records or by record size
 
 Both chunk size (-C) and number (-N) can be specififed to just fragment a
-subset of the input file. 
+subset of the input file.
 
  Records can be fasta, fastq, genbank, or something described by a simple
   RegExp user defined records will be sized on the total contained text
