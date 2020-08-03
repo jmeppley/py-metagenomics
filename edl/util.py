@@ -126,6 +126,12 @@ class InputFile():
         if self.close_me:
             self.raw_data.close()
 
+    def readline(self, *args):
+        try:
+            return next(iter(self))
+        except StopIteration:
+            return ""
+
 
 def iterable_to_stream(iterable,
                        str_to_bytes=True,
