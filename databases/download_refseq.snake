@@ -231,11 +231,11 @@ rule dl_proteins:
     """
     Using shell instead of FTP because building the DAG crashes with 2200
     FTP files: ftputil.error.FTPOSError: [Errno 24] Too many open files
-
     input:
         lambda w:
-            FTPR.remote(f"{FTP_SERVER}/{RELEASE_PATH}/complete/{w.filename}.gpff.gz")
-    """
+            FTPR.remote(f"{FTP_SERVER}/{RELEASE_PATH}/complete/{w.filename}.gpff.gz",
+                        immediate_close=True)
+	"""
     output: f"{SEQDB_DIR}/complete/{{filename}}.gpff"
     params:
         url=lambda w:
