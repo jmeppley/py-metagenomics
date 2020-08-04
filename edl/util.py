@@ -436,7 +436,7 @@ def add_IO_arguments(parser, defaults={}):
                         help="List of input files. Omit to read from STDIN")
 
 
-def inputIterator(arguments):
+def inputIterator(arguments, use_file_wrapper=True):
     """
     processes arguments from add_IO_arguments:
      input_files: list of file(...,'r') objects
@@ -451,7 +451,11 @@ def inputIterator(arguments):
     yields pairs of input and output streams as 2-element tuples
     """
     outfile_name = arguments.output_file
-    infiles = [InputFile(f) for f in arguments.input_files]
+    if use_file_wrapper:
+        input_wrapper = InputFile
+    else:
+        input_wrapper = open
+    infiles = [input_wrapper(f) for f in arguments.input_files]
     if len(infiles) == 1:
         inhandle = infiles[0]
         infile_name = inhandle.name
