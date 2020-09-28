@@ -542,8 +542,7 @@ class Hit:
         buf_st = start + buffer
         buf_en = end - buffer
 
-        for i in range(len(regions)):
-            occupiedRange = regions[i]
+        for i, occupiedRange in enumerate(regions):
             # hit cannot intersect an used range
             if (buf_st >= occupiedRange[1] or buf_en <= occupiedRange[0]):
                 # does not overlap this range (try next range)
@@ -910,7 +909,8 @@ def filterHits(hits, options):
                 continue
         except ValueError:
             if hit.score is None:
-                raise Exception("This format (%s) does not have a score" % hit.format)
+                raise Exception("This format (%s) does not have a score"
+                                % hit.format)
             raise
         if options.format != LAST0\
                 and options.evalue is not None\
@@ -925,10 +925,10 @@ def filterHits(hits, options):
                              (hit.pctid, options.pctid))
                 continue
         except AttributeError:
-                raise Exception(
-                    "This hit type (%s) does not have a PCTID defined."
-                    "You cannot filter by PCTID" %
-                    (hit.format))
+            raise Exception(
+                "This hit type (%s) does not have a PCTID defined."
+                "You cannot filter by PCTID" %
+                (hit.format))
 
         if abs(hit.mlen) < options.length:
             logger.debug("hit too short: %r" % hit.mlen)
