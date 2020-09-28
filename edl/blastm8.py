@@ -272,6 +272,9 @@ class Hit:
             if tagstr.startswith('MD:Z:'):
                 if pctid == 0:
                     pctid = get_alignment_percent_identity(tagstr[4:])
+            if tagstr.startswith('ZW:f:') and self.score is None:
+                # kallisto will put the probablility here
+                self.score = float(tagstr[5:])
         if self.score is None:
             raise Exception("No score (AS tag) found in line:\n%s" % (line))
         if pctid != 0:
