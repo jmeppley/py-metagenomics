@@ -33,7 +33,8 @@ CMSEARCH = 'cmsearch'
 CMSCAN = 'cmscan'
 SAM = 'sam'
 GFF = 'gff'
-formatsWithNoDescription = [LAST0, FRHIT, BLASTPLUS, SAM]
+PAF = 'paf'
+formatsWithNoDescription = [LAST0, FRHIT, BLASTPLUS, PAF, SAM]
 cigarRE = re.compile(r'\d+[^\d]')
 
 #############
@@ -207,6 +208,8 @@ class Hit:
             self.parseLine = self.parseCmScanLine
         elif self.format == SAM:
             self.parseLine = self.parseSamLine
+        elif self.format == PAF:
+            self.parseLine = self.parsePafLine
         elif self.format == GFF:
             self.parseLine = self.parseGFFLine
             self.to_gff = lambda self: self.line
@@ -247,6 +250,29 @@ class Hit:
         self.score = float(cells[9])
         self.evalue = parseExp(cells[10])
         self.aln = float(cells[11])
+
+    def parsePafLine(self, line):
+        """
+        PAF_COLUMNS = ['query','qlen','qstart','qend','strand',
+                       'hit', 'hlen','hstart','hend','matches',
+                                      'mlen','mapqv']
+        """
+        cells = line.rstrip('\n\r').split('\t')
+        self.read = cells[0]
+        self.qlen = int(cells[1])
+        self.qstart = int(cells[2])
+        self.qend = int(cells[3])
+        if cells[4] == "-":
+            self.qstart, self.qend = self.qend, self.qstart
+        self.hit = cells[5]
+        self.hlen = int(cells[6])
+        self.hstart = int(cells[7])
+        self.hend = int(cells[8])
+        self.matches = int(cells[9])
+        self.mlen = int(cells[10])
+        self.pctid = 100 * self.matches / self.mlen
+        self.aln = self.mlen / self.qlen
+        self.score = None
 
     def parseSamLine(self, line):
         if line[0] == '@':
@@ -878,9 +904,14 @@ def filterHits(hits, options):
         logger.debug("hit: %s::%s - score:%s" % (hit.read, hit.hit, hit.score))
 
         # Simple comparison tests
-        if options.format != FRHIT and hit.score < minScore:
-            logger.debug("score too low: %r" % hit.score)
-            continue
+        try:
+            if minScore > 0 and hit.score < minScore:
+                logger.debug("score too low: %r" % hit.score)
+                continue
+        except ValueError:
+            if hit.score is None:
+                raise Exception("This format (%s) does not have a score" % hit.format)
+            raise
         if options.format != LAST0\
                 and options.evalue is not None\
                 and hit.evalue > options.evalue:
@@ -889,12 +920,11 @@ def filterHits(hits, options):
 
         # PCTID
         try:
-            if hit.pctid < options.pctid:
+            if options.pctid > 0 and hit.pctid < options.pctid:
                 logger.debug("pct ID too low: %r < %r" %
                              (hit.pctid, options.pctid))
                 continue
         except AttributeError:
-            if options.pctid > 0:
                 raise Exception(
                     "This hit type (%s) does not have a PCTID defined."
                     "You cannot filter by PCTID" %
@@ -989,6 +1019,7 @@ def add_hit_table_arguments(parser,
                 LAST0,
                 BLASTPLUS,
                 SAM,
+                PAF,
                 GFF,
                 CMSEARCH,
                 CMSCAN,
