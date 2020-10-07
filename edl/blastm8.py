@@ -427,6 +427,7 @@ class Hit:
 
         hmlen = int(cells[3])
         hlen = int(cells[5])
+        self.hlen = hlen
         if cells[4] == '+':
             self.hstart = int(cells[2]) + 1
             self.hend = self.hstart + hmlen - 1
@@ -438,6 +439,7 @@ class Hit:
         self.read = cells[6]
         qmlen = int(cells[8])
         qlen = int(cells[10])
+        self.qlen = qlen
         if cells[9] == '+':
             self.qstart = int(cells[7]) + 1
             self.qend = self.qstart + qmlen - 1
