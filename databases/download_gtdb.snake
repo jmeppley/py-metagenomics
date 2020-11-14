@@ -21,7 +21,7 @@ seqdb_root = config.get('seqdb_root','seqdbs')
 hostname = config.get('hostname', 'data.ace.uq.edu.au')
 
 # version number
-release = config.get('release', '89.0')
+release = str(config.get('release', '95.0'))
 
 ## end configurable params
 
@@ -32,24 +32,35 @@ out_dir = os.path.join(seqdb_root, 'GTDB', release)
 remote_db_path = config.get('remote_db_path', '/public/gtdb/data/releases')
 rel = release.split(".")[0]
 remote_base = \
-    '{hostname}{remote_db_path}/release{rel}/{release}' \
+    '{hostname}{remote_db_path}/release{rel}/{release}/' \
     .format(**locals())
 
 # files to download
+file_locations = {
+    f'sp_clusters_r{rel}.tsv': 'auxillary_files/',
+    f'gtdbtk_r{rel}_data.tar.gz': 'auxillary_files/',
+    'VERSION': '',
+    'RELEASE_NOTES': '',
+    'ssu_all_r95.tar.gz': 'genomic_files_all/',
+    'metadata_field_desc.tsv': 'auxillary_files/',
+    'FILE_DESCRIPTIONS': '',
+}
+
 file_list = [out_dir + "/" + f.format(rel=rel) \
-             for f in ['gtdbtk_r{rel}_data.tar.gz', \
-                       'sp_clusters_r{rel}.tsv', \
-                       'VERSION', \
-                       'RELEASE_NOTES', \
-                       'ssu_r{rel}.tsv', \
-                       'metadata_field_desc.tsv', \
-                       'FILE_DESCRIPTIONS']]
+             for f in file_locations]
+
+def get_remote_path(filename):
+    return remote_base + file_locations[filename] + filename
+
+def get_filename_url(wildcards):
+    filename = wildcards.filename
+    return "HTTPS://" + get_remote_path(filename)
 
 rule outputs:
     input: file_list
 
-
 rule download_file:
-    input: HTTPS.remote(remote_base + '/{filename}')
     output: out_dir + '/{filename}'
-    shell: 'mv {input} {output}'
+    params:
+        url=get_filename_url
+    shell: 'curl {params.url} > {output}'
