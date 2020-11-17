@@ -4,6 +4,8 @@ channels:
  - bioconda
 dependencies:
  - snakemake
+ - biopython
+ - prinseq
  - last
  - wget
  - curl

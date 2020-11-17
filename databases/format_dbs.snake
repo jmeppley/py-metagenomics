@@ -44,7 +44,7 @@ prot_dict = {}
 for database in config.get('dbs'):
     dbinfo = config['dbs'][database]
     is_prot = dbinfo.get('is_prot', False)
-    fasta_file = os.path.abspath(dbinfo['fasta'])
+    fasta_file = dbinfo['fasta']
     dbinfo['fasta'] = fasta_file
     # count records
     outputs.add(fasta_file + ".prinseq.stats")
@@ -71,6 +71,7 @@ for database in config.get('dbs'):
                 # link string is a file name
                 link_file_name = os.path.dirname(db_loc) + os.path.sep + link
             outputs.add(link_file_name)
+            logger.debug(f"Will link {link_file_name} to {target}")
             links[link_file_name] = target
 
 rule all:
@@ -141,10 +142,14 @@ rule blastdb:
 rule count:
     input: '{db_root}'
     output: '{db_root}.prinseq.stats'
+    params:
+        aa_flag=lambda w: "-aa" if prot_dict[w.db_root] else "",
     benchmark: 'benchmarks{db_root}.stats.time'
     shell: """
-        prinseq-lite.pl -fasta {input} -stats_len -stats_info \
-             > {output}'
+        prinseq-lite.pl {params.aa_flag} -fasta {input} -stats_len -stats_info \
+             > {output}
+        # prinseq doesn't do exit codes. Fail if output empty
+        if [ ! -s {output} ]; then false; fi
         # print to screen in case someone's watching
         echo {output}
         head -5 {output}
@@ -164,11 +169,17 @@ def get_link_command(wildcards):
         os.path.abspath(input_file)
     )
 
+def get_link_target(wildcards):
+    target = links[wildcards.link_file_name]
+    logger.debug(f"link: {target} -> {wildcards.link_file_name}")
+    return target
+
 rule link:
-    input: lambda w: links[w.link_file_name]
+    input: get_link_target
     output: "{link_file_name}"
     wildcard_constraints:
         link_file_name=pattern
     params:
         command = get_link_command,
     shell: "rm -f {output} && {params.command} {output}"
+

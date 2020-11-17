@@ -62,6 +62,7 @@ def fragmentInput(infile, options, tmpdir, fragmentBase,
                     "setting padding to {} based on splits={}".format(
                         kwargs['padding'], options.splits))
 
+    fragment_limit = None
     if options.chunk is None:
         if options.splits is None:
             sys.exit("Please tell me how many chunks (-N) or how big (-C)!")
@@ -71,9 +72,12 @@ def fragmentInput(infile, options, tmpdir, fragmentBase,
             fileType,
             splitOnSize=options.splitOnSize)
     else:
-        if options.even_out_chunks:
-            options.chunk = even_out_chunks(
-                infile, options.chunk, fileType, options.splitOnSize)
+        if options.splits is None:
+            if options.even_out_chunks:
+                options.chunk = even_out_chunks(
+                    infile, options.chunk, fileType, options.splitOnSize)
+        else:
+            fragment_limit = options.splits
 
     return fragmentInputBySize(
         infile,
@@ -81,7 +85,8 @@ def fragmentInput(infile, options, tmpdir, fragmentBase,
         options.chunk,
         fileType,
         fragmentBase,
-        splitOnSize=options.splitOnSize,
+        options.splitOnSize,
+        fragment_limit,
         **kwargs)
 
 
@@ -321,7 +326,8 @@ def gbRecordSizer(recordLines):
 
 
 def fragmentInputBySize(infile, tmpdir, chunk, fileType,
-                        fragmentBase, splitOnSize=True, **kwargs):
+                        fragmentBase, splitOnSize=True,
+                        num_fragment_limit=None, **kwargs):
     """
     Break up input into files of size chunk in tmpdir.
     Return number of fragments.
@@ -340,7 +346,8 @@ def fragmentInputBySize(infile, tmpdir, chunk, fileType,
         chunk,
         fileType,
         fragmentBase,
-        splitOnSize=splitOnSize,
+        splitOnSize,
+        num_fragment_limit,
         **kwargs)
     if infile is not None:
         inhandle.close()
@@ -354,6 +361,7 @@ def fragmentInputStreamBySize(
         fileType,
         fragmentBase,
         splitOnSize=True,
+        num_fragment_limit=None,
         **kwargs):
     if splitOnSize:
         # get a custom function that returns the size of this type of record
@@ -374,7 +382,12 @@ def fragmentInputStreamBySize(
 
         if count > chunk:
             # close previous chunk and open new one
-            tmpFile.close
+            tmpFile.close()
+            # stop if we hit the limit
+            if num_fragment_limit is not None and num == num_fragment_limit:
+                return num
+
+            # otherwise keep going
             num += 1
             tmpFileName = getFragmentPath(tmpdir, fragmentBase, num, **kwargs)
             # logging.debug('Writing fragment (%d,%d,%d): %s'\

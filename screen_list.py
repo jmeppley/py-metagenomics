@@ -49,7 +49,9 @@ def main():
     numReads = len(read_set)
     logging.info("Loaded list of %d reads" % (numReads))
 
-    for (fastaIn, fastaOut) in inputIterator(arguments):
+    # seqio wants a fully functional file object, my wrapper doesn't work
+    for (fastaIn, fastaOut) in inputIterator(arguments,
+                                             use_file_wrapper=False):
         scanFileForReads(
             read_set,
             fastaIn,

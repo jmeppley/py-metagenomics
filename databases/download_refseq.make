@@ -119,7 +119,7 @@ $(FAA): $(RSDIR)/complete/.download.complete.aa
 $(RSDIR)/complete:
 	mkdir -p $@
 
-# Dowload directory listing tto file so we can make sure we got everything
+# Dowload directory listing to file so we can make sure we got everything
 $(RSDIR)/complete/complete.ftp.ls: | $(RSDIR)/complete
 	curl -s -l ${FTP_ROOT}/complete/ | grep "protein\.gpff" > $@
 

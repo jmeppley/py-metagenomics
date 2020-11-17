@@ -248,7 +248,15 @@ def parse_KEGG_file(k_file, kegg_level):
 
 
 def parse_ko_file(ko_file, level):
-    results = {}
+    """ Parse KEGG metadata from the ko metadata file:
+
+        level: one of
+
+            * PATH, PATHWAY, or PATHWAYS
+            * NAME, DEFINITION, DESCRIPTION, or FUNCITON
+            * 1,2 or 3 (for a level in the BRITE:ko00001 hier.
+            * EG: ko00002:2 (for level 2 of BRITE:ko00002)
+    """
 
     # synonyms
     if level in ['PATHWAYS', 'PATH', 'PATHS']:
