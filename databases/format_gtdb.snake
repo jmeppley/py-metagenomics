@@ -15,12 +15,15 @@ import pandas
 from Bio import SeqIO
 from edl.gtdb import generate_taxdump
 
-# where to put the downloaded files:
+# where to put the formatted files:
 seqdb_root = config.get('seqdb_root','seqdbs')
+# where to get the downloaded files:
 download_root = config.get('download_root', seqdb_root)
+# local disk to do heavy file-related processing
+work_root = config.get('work_root', '/data/scope')
 
 # version number
-release = config.get('release', '89.0')
+release = str(config.get('release', 89.0))
 rel = release.split(".")[0]
 fmt_threads = config.setdefault('fmt_threads', 20)
 
@@ -30,7 +33,8 @@ seqdb_dir = os.path.join(seqdb_root, 'GTDB', release)
 gtdb_tarball = "{download_dir}/gtdbtk_r{rel}_data.tar.gz".format(**locals())
 
 # get list of genomes
-tax_table = download_dir + "/sp_clusters_r89.tsv"
+tax_table = download_dir + f"/sp_clusters_r{rel}.tsv"
+logger.debug("PARSING GTDB tax table...")
 genome_tax_table = pandas.read_csv(tax_table, \
                                    sep='\t', \
                                    skiprows=config.get('skiprows', None),
@@ -43,6 +47,8 @@ genome_taxonomy = {re.sub(r'^(RS|GB)_', '', g):t + ";" + s \
                    for g,s,t in genome_tax_table.itertuples()}
 orgid_to_genome = {re.sub(r'\.\d+$', '', g):g \
                    for g in genome_taxonomy}
+logger.debug("FOUND %d organisms in GTDB tax table." % (len(orgid_to_genome)))
+
 """
 genome_set = set(pandas.read_csv(tax_table, \
                                  sep='\t', \
@@ -53,7 +59,7 @@ orgids = [re.sub(r'\.\d+$', '', g) for g in genome_set]
 
 # file names
 outputs = config.setdefault('outputs', set())
-work_dir = "GTDB/" + release
+work_dir = work_root + "/GTDB/" + release
 name_root = seqdb_dir + "/gtdb_r" + release
 faa_file = name_root + ".faa"
 header_file = name_root + ".headers"
@@ -70,8 +76,13 @@ config['dbs'] = {'GTDB': {'fasta': faa_file, \
                                     '.ids': True, \
                                     'names.dmp': names_dmp, \
                                     'nodes.dmp': nodes_dmp}}}
+
+# formatted dbs are added to outputs in the format_dbs snakefile
 include: 'format_dbs.snake'
 
+logger.debug("OUTPUTS: \n    " + "\n    ".join(outputs))
+
+# first rule defines the default outputs
 rule outputs:
     input: outputs
 
@@ -141,6 +152,7 @@ rule prokka:
                     .format(work_dir=work_dir, orgid=w.orgid)
     threads: config.get("prokka_threads", 5)
     shell: """
+        export LD_LIBRARY_PATH=$CONDA_PREFIX/lib
         prokka --outdir={params.outdir} --prefix {wildcards.orgid} \
                --kingdom={params.kingdom} --force {input} --cpus {threads} \
             > {output}.log 2>&1
