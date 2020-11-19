@@ -251,6 +251,7 @@ rule extract_proteins:
     output: f"{SEQDB_DIR}/complete/{{filename}}.faa"
     threads: 2
     shell: "cat {input} \
+                | grep -v Assembly-Data \
                 | get_sequences_from_gb.py -F fasta -r \
                 | tantan -p \
                 > {output}"
@@ -282,7 +283,7 @@ rule genes_counts:
     shell:
         """
         echo -e "READS\tLOCI" > {output}
-        cat seqdbs/RefSeq/200/complete/*counts \
+        cat {SEQDB_DIR}/complete/*counts \
             | perl -lane 'if ($F[1] eq "reads")
                             {{$read = $F[2]; $reads += $read}}
                           elsif ($F[1] eq "loci")

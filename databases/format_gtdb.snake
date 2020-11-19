@@ -156,7 +156,7 @@ rule prokka:
         prokka --outdir={params.outdir} --prefix {wildcards.orgid} \
                --kingdom={params.kingdom} --force {input} --cpus {threads} \
             > {output}.log 2>&1
-            """
+        """
 
 rule gunzip:
     input: "{gzroot}_genomic.fna.gz"
