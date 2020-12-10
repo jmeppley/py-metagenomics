@@ -121,6 +121,9 @@ class FilterParams:
         self.nonoverlapping = nonoverlapping
         self.sort = sort
         self.bad_refs = None
+        
+    def set_nonoverlapping(self, value):
+        self.nonoverlapping = value
 
     def __repr__(self):
         return ("FilterParams(format=%r, top_pct=%r, bits=%r, evalue=%r, "
