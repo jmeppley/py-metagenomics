@@ -72,9 +72,9 @@ LSUREF_URL:=$(FTP_BASE)/$(LSUREF_FILE)
 
 # The taxonomy files were new in 115 and changed locations in 119
 # For now, I'm only going to support the new way in this makefile
-SSU_TAXFILE_URL:=$(FTP_BASE)/taxonomy/tax_slv_ssu_$(REL_TAX).txt
+SSU_TAXFILE_URL:=$(FTP_BASE)/taxonomy/tax_slv_ssu_$(REL_TAX).txt.gz
 SSU_TAXFILE=$(BUILDDIR)/Silva_$(SSU_REL)_SSURef_NR99_tax_silva_trunc.tax
-LSU_TAXFILE_URL:=$(FTP_BASE)/taxonomy/tax_slv_lsu_$(REL_TAX).txt
+LSU_TAXFILE_URL:=$(FTP_BASE)/taxonomy/tax_slv_lsu_$(REL_TAX).txt.gz
 LSU_TAXFILE=$(BUILDDIR)/Silva_$(LSU_REL)_LSURef_tax_silva_trunc.tax
 
 # LOCATIONS for compiled sequence dbs and associated files
@@ -184,10 +184,10 @@ $(LSU_FASTA): | $(BUILDDIR)
 taxfiles: $(SSU_TAXFILE) $(LSU_TAXFILE)
 
 $(SSU_TAXFILE): | $(BUILDDIR)
-	curl $(SSU_TAXFILE_URL) > $(SSU_TAXFILE)
+	curl $(SSU_TAXFILE_URL) | gunzip -c > $(SSU_TAXFILE)
 
 $(LSU_TAXFILE): | $(BUILDDIR)
-	curl $(LSU_TAXFILE_URL) > $(LSU_TAXFILE)
+	curl $(LSU_TAXFILE_URL) | gunzip -c > $(LSU_TAXFILE)
 
 $(LSU_TAXIDMAP): $(LSU_TAXFILE) $(LSU_FASTA) | $(LSU_SEQDB_DIR)
 	python $(TAXSCRIPT) -o $(TAXIDMAP) -t $(LSU_TAXFILE) $(LSU_FASTA) $(LSU_SEQDB_DIR)

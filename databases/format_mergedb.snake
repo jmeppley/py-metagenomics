@@ -14,10 +14,9 @@ seqdb_root = config.get('seqdb_root','seqdbs')
 fmt_threads = config.setdefault('fmt_threads', 20)
 
 # PhyloDB
-release = config.get('release', '1.076')
-prel = release
-pref = "phylodb_" + release
-seqdb_dir = os.path.join(seqdb_root, 'PhyloDB', release)
+prelease = config.get('pdb_release', '1.076')
+pref = "phylodb_" + prelease
+seqdb_dir = os.path.join(seqdb_root, 'PhyloDB', prelease)
 pdb_faa_file = seqdb_dir + "/" + pref + ".faa"
 pdb_tax_map_file = seqdb_dir + "/taxdump/" + pref + ".id.to.tax"
 pdb_header_file = seqdb_dir + "/" + pref + ".ids"
@@ -25,10 +24,9 @@ pdb_names_dmp = seqdb_dir + "/taxdump/names.dmp"
 pdb_nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
 
 # GTDB
-release = config.get('release', '89.0')
-grel = release
-seqdb_dir = os.path.join(seqdb_root, 'GTDB', release)
-name_root = seqdb_dir + "/gtdb_r" + release
+grelease = config.get('gtdb_release', '95.0')
+seqdb_dir = os.path.join(seqdb_root, 'GTDB', grelease)
+name_root = seqdb_dir + "/gtdb_r" + grelease
 gtdb_faa_file = name_root + ".faa"
 gtdb_header_file = name_root + ".headers"
 gtdb_tax_map_file = seqdb_dir + "/taxdump/gtdb.acc.to.taxid"
@@ -36,9 +34,8 @@ gtdb_names_dmp = seqdb_dir + "/taxdump/names.dmp"
 gtdb_nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
 
 # combined output
-seqdb_dir = os.path.join(seqdb_root, 'GTDB_PhyloDB', "_".join((grel, prel)))
+seqdb_dir = os.path.join(seqdb_root, 'GTDB_PhyloDB', "_".join((grelease, prelease)))
 faa_file = seqdb_dir + "/gt_phylo_db.faa"
-header_file = seqdb_dir + "/gt_phylo_db.ids"
 tax_map_file = seqdb_dir + "/taxdump/gtdb.acc.to.taxid"
 names_dmp = seqdb_dir + "/taxdump/names.dmp"
 nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
@@ -47,7 +44,7 @@ nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
 config['dbs'] = {'GTDB_PDB': {'fasta': faa_file, \
                           'is_prot': True,
                           'links': {'.tax': tax_map_file, \
-                                    '.ids': header_file, \
+                                    '.ids': True, \
                                     'names.dmp': names_dmp, \
                                     'nodes.dmp': nodes_dmp}}}
 include: 'format_dbs.snake'
@@ -160,16 +157,4 @@ rule build_faa_file:
             > {output.faa}
         screen_list.py -k -l {input.plist} -C 0 {input.pfaa} >> {output.faa}
         """
-
-rule genes_headers:
-    input: faa_file
-    output: header_file
-    shell: """
-        grep "^>" {input} | perl -pe 's/^>(\\S+)\\s+/\\1\\t/' > {output}
-        """
-
-
-    
-
-
 
