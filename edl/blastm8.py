@@ -275,7 +275,17 @@ class Hit:
         self.mlen = int(cells[10])
         self.pctid = 100 * self.matches / self.mlen
         self.aln = self.mlen / self.qlen
-        self.score = None
+        # look for a score value in the remaining columns in the 
+        # form of s1:i::## or as:i:##
+        for cell in cells[12:]:
+            bits = cell.split(":")
+            if len(bits) == 3 and bits[0].upper() in ["AS","S1"]:
+                try:
+                    self.score = int(bits[2])
+                    break
+                except ValueError:
+                    # not an int, try next
+                    continue
 
     def parseSamLine(self, line):
         if line[0] == '@':
