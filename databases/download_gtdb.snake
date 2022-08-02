@@ -17,8 +17,8 @@ HTTPS = HTTPRemoteProvider()
 seqdb_root = config.get('seqdb_root','seqdbs')
 
 # where to get the files from
-#  https://data.ace.uq.edu.au/public/gtdb/data/releases/
-hostname = config.get('hostname', 'data.ace.uq.edu.au')
+#  https://data.gtdb.ecogenomic.org/releases/
+hostname = config.get('hostname', 'data.gtdb.ecogenomic.org')
 
 # version number
 release = str(config.get('release', '95.0'))
@@ -29,7 +29,7 @@ release = str(config.get('release', '95.0'))
 out_dir = os.path.join(seqdb_root, 'GTDB', release)
 
 # variables for downloading
-remote_db_path = config.get('remote_db_path', '/public/gtdb/data/releases')
+remote_db_path = config.get('remote_db_path', '/releases')
 rel = release.split(".")[0]
 remote_base = \
     '{hostname}{remote_db_path}/release{rel}/{release}/' \
@@ -41,7 +41,7 @@ file_locations = {
     f'gtdbtk_r{rel}_data.tar.gz': 'auxillary_files/',
     'VERSION': '',
     'RELEASE_NOTES': '',
-    'ssu_all_r95.tar.gz': 'genomic_files_all/',
+    f'ssu_all_r{rel}.tar.gz': 'genomic_files_all/',
     'metadata_field_desc.tsv': 'auxillary_files/',
     'FILE_DESCRIPTIONS': '',
 }
@@ -49,18 +49,23 @@ file_locations = {
 file_list = [out_dir + "/" + f.format(rel=rel) \
              for f in file_locations]
 
-def get_remote_path(filename):
+def get_remote_path(wildcards):
+    """ translate a local destination to its remote counterpart """
+    filename = wildcards.filename
     return remote_base + file_locations[filename] + filename
 
 def get_filename_url(wildcards):
-    filename = wildcards.filename
-    return "HTTPS://" + get_remote_path(filename)
+    """ get the remote path as a URL """
+    return "HTTPS://" + get_remote_path(wildcards)
+
+def get_https_input(wildcards):
+    """ get the remote path as a RemoteProvider HTTP object """
+    return HTTPS.remote(get_remote_path(wildcards), keep_local=True)
 
 rule outputs:
     input: file_list
 
 rule download_file:
+    input: get_https_input
     output: out_dir + '/{filename}'
-    params:
-        url=get_filename_url
-    shell: 'curl {params.url} > {output}'
+    shell: 'mv {input} {output}'

@@ -12,3 +12,4 @@ dependencies:
  - diamond
  - bwa
  - tantan
+ - prokka

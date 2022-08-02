@@ -20,7 +20,7 @@ seqdb_root = config.get('seqdb_root','seqdbs')
 # where to get the downloaded files:
 download_root = config.get('download_root', seqdb_root)
 # local disk to do heavy file-related processing
-work_root = config.get('work_root', '/data/scope')
+work_root = config.get('work_root', seqdb_root)
 
 # version number
 release = str(config.get('release', 89.0))
@@ -99,6 +99,9 @@ rule taxonomy:
         logger.debug("generate_taxdump('{input.genes}')")
         generate_taxdump(fasta=input.genes, \
                          dump=os.path.join(seqdb_dir, 'taxdump'))
+
+
+localrules: genes_faa
 
 rule genes_faa:
     input: expand(work_dir + "/prokka/{orgid}/{orgid}.renamed.faa", \
