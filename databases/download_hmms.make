@@ -6,6 +6,7 @@
 #  PFAM
 #  COG
 #  TIGRFAM
+#  RFAM
 #
 # Files are downloaded to ./seqdbs
 #  change the location with SEQDB_ROOT=
@@ -26,7 +27,8 @@ DBLIST=
 
 # PFAM
 GET_PFAM?=True
-PFAM_FTP=ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release
+#PFAM_FTP=ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release
+PFAM_FTP=http://ftp.ebi.ac.uk/pub/databases/Pfam/current_release
 ifeq ($(GET_PFAM),True)
 	DBLIST:=$(DBLIST) pfam
 	PFAM_RELEASE:=$(shell curl -s $(PFAM_FTP)/relnotes.txt | perl -ne 'if (m/^\s*RELEASE\s+(\d[-_0-9.]+)/) { print $$1; }' | head -1)
@@ -53,7 +55,7 @@ TIGRFAM_HMM_NAME=TIGRFAMS.hmm
 GET_RFAM?=False
 ifeq ($(GET_RFAM),True)
 	RFAM_RELEASE?=CURRENT
-	RFAM_FTP=ftp://ftp.ebi.ac.uk/pub/databases/Rfam/$(RFAM_RELEASE)
+	RFAM_FTP:=ftp://ftp.ebi.ac.uk/pub/databases/Rfam/$(RFAM_RELEASE)
 	DBLIST:=$(DBLIST) rfam
 	ifeq ($(RFAM_RELEASE),CURRENT)
 		RFAM_RELEASE:=$(shell curl -s $(RFAM_FTP)/README | grep "^Release " | cut -c 9- | head -n 1)
