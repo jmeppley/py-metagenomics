@@ -66,6 +66,20 @@ endif
 RFAM_DIR:=$(SEQDB_ROOT)/RFAM/$(RFAM_RELEASE)
 RFAM_CM_DIR:=$(RFAM_DIR)/rfam_cms
 
+# VOG
+GET_VOG?=False
+ifeq ($(GET_VOG),True)
+	VOG_RELEASE?=latest
+	VOG_FTP:=http://fileshare.csb.univie.ac.at/vog/$(VOG_RELEASE)
+	DBLIST:=$(DBLIST) vog
+	ifeq ($(VOG_RELEASE),latest)
+		VOG_RELEASE:=$(shell curl -s $(VOG_FTP)/release.txt)
+	endif
+	VOG_HMMS_FILE=vog.hmm.tar.gz
+	VOG_ANNOT_FILE=vog.annotations.tsv.gz
+endif
+
+VOG_DIR:=$(SEQDB_ROOT)/VOG/$(VOG_RELEASE)
 
 # CDD files for COG (And maybe others in the future?)
 CDD_README_URL=ftp://ftp.ncbi.nih.gov/pub/mmdb/cdd/README
@@ -134,6 +148,21 @@ $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME): $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).tar.gz | 
 
 $(TIGRFAM_DIR)/$(TIGRFAM_HMM_NAME).tar.gz: | $(TIGRFAM_DIR)
 	curl -s $(TIGRFAM_FTP)/$(TIGRFAM_HMM_FILE) > $@
+
+# VOG
+vog: vog_version $(VOG_DIR)/VOGS.hmm $(VOG_DIR)/VOGS.tsv
+
+vog_version:
+	@echo VOG version: $(VOG_RELEASE)
+
+$(VOG_DIR):
+	mkdir -p $@
+
+$(VOG_DIR)/VOGS.hmm: | $(VOG_DIR)
+	curl -s $(VOG_FTP)/$(VOG_HMMS_FILE) | gunzip -c > $@
+
+$(VOG_DIR)/VOGS.tsv: | $(VOG_DIR)
+	curl -s $(VOG_FTP)/$(VOG_ANNOT_FILE) | gunzip -c > $@
 
 #RFAM
 rfam: rfam_version $(RFAM_DIR)/README $(RFAM_DIR)/rRNA.cm $(RFAM_DIR)/tRNA.cm $(RFAM_DIR)/cm_counts $(RFAM_DIR)/rRNA.cm.hmm_counts $(RFAM_DIR)/tRNA.cm.hmm_counts 
