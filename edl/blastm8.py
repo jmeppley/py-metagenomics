@@ -33,7 +33,8 @@ CMSEARCH = 'cmsearch'
 CMSCAN = 'cmscan'
 SAM = 'sam'
 GFF = 'gff'
-formatsWithNoDescription = [LAST0, FRHIT, BLASTPLUS, SAM]
+PAF = 'paf'
+formatsWithNoDescription = [LAST0, FRHIT, BLASTPLUS, PAF, SAM]
 cigarRE = re.compile(r'\d+[^\d]')
 
 #############
@@ -120,6 +121,9 @@ class FilterParams:
         self.nonoverlapping = nonoverlapping
         self.sort = sort
         self.bad_refs = None
+        
+    def set_nonoverlapping(self, value):
+        self.nonoverlapping = value
 
     def __repr__(self):
         return ("FilterParams(format=%r, top_pct=%r, bits=%r, evalue=%r, "
@@ -207,6 +211,8 @@ class Hit:
             self.parseLine = self.parseCmScanLine
         elif self.format == SAM:
             self.parseLine = self.parseSamLine
+        elif self.format == PAF:
+            self.parseLine = self.parsePafLine
         elif self.format == GFF:
             self.parseLine = self.parseGFFLine
             self.to_gff = lambda self: self.line
@@ -248,6 +254,39 @@ class Hit:
         self.evalue = parseExp(cells[10])
         self.aln = float(cells[11])
 
+    def parsePafLine(self, line):
+        """
+        PAF_COLUMNS = ['query','qlen','qstart','qend','strand',
+                       'hit', 'hlen','hstart','hend','matches',
+                                      'mlen','mapqv']
+        """
+        cells = line.rstrip('\n\r').split('\t')
+        self.read = cells[0]
+        self.qlen = int(cells[1])
+        self.qstart = int(cells[2])
+        self.qend = int(cells[3])
+        if cells[4] == "-":
+            self.qstart, self.qend = self.qend, self.qstart
+        self.hit = cells[5]
+        self.hlen = int(cells[6])
+        self.hstart = int(cells[7])
+        self.hend = int(cells[8])
+        self.matches = int(cells[9])
+        self.mlen = int(cells[10])
+        self.pctid = 100 * self.matches / self.mlen
+        self.aln = self.mlen / self.qlen
+        # look for a score value in the remaining columns in the 
+        # form of s1:i::## or as:i:##
+        for cell in cells[12:]:
+            bits = cell.split(":")
+            if len(bits) == 3 and bits[0].upper() in ["AS","S1"]:
+                try:
+                    self.score = int(bits[2])
+                    break
+                except ValueError:
+                    # not an int, try next
+                    continue
+
     def parseSamLine(self, line):
         if line[0] == '@':
             raise EmptyHitException("reference sequence line")
@@ -272,6 +311,9 @@ class Hit:
             if tagstr.startswith('MD:Z:'):
                 if pctid == 0:
                     pctid = get_alignment_percent_identity(tagstr[4:])
+            if tagstr.startswith('ZW:f:') and self.score is None:
+                # kallisto will put the probablility here
+                self.score = float(tagstr[5:])
         if self.score is None:
             raise Exception("No score (AS tag) found in line:\n%s" % (line))
         if pctid != 0:
@@ -398,6 +440,7 @@ class Hit:
 
         hmlen = int(cells[3])
         hlen = int(cells[5])
+        self.hlen = hlen
         if cells[4] == '+':
             self.hstart = int(cells[2]) + 1
             self.hend = self.hstart + hmlen - 1
@@ -409,6 +452,7 @@ class Hit:
         self.read = cells[6]
         qmlen = int(cells[8])
         qlen = int(cells[10])
+        self.qlen = qlen
         if cells[9] == '+':
             self.qstart = int(cells[7]) + 1
             self.qend = self.qstart + qmlen - 1
@@ -513,8 +557,7 @@ class Hit:
         buf_st = start + buffer
         buf_en = end - buffer
 
-        for i in range(len(regions)):
-            occupiedRange = regions[i]
+        for i, occupiedRange in enumerate(regions):
             # hit cannot intersect an used range
             if (buf_st >= occupiedRange[1] or buf_en <= occupiedRange[0]):
                 # does not overlap this range (try next range)
@@ -875,9 +918,15 @@ def filterHits(hits, options):
         logger.debug("hit: %s::%s - score:%s" % (hit.read, hit.hit, hit.score))
 
         # Simple comparison tests
-        if options.format != FRHIT and hit.score < minScore:
-            logger.debug("score too low: %r" % hit.score)
-            continue
+        try:
+            if minScore > 0 and hit.score < minScore:
+                logger.debug("score too low: %r" % hit.score)
+                continue
+        except ValueError:
+            if hit.score is None:
+                raise Exception("This format (%s) does not have a score"
+                                % hit.format)
+            raise
         if options.format != LAST0\
                 and options.evalue is not None\
                 and hit.evalue > options.evalue:
@@ -886,16 +935,15 @@ def filterHits(hits, options):
 
         # PCTID
         try:
-            if hit.pctid < options.pctid:
+            if options.pctid > 0 and hit.pctid < options.pctid:
                 logger.debug("pct ID too low: %r < %r" %
                              (hit.pctid, options.pctid))
                 continue
         except AttributeError:
-            if options.pctid > 0:
-                raise Exception(
-                    "This hit type (%s) does not have a PCTID defined."
-                    "You cannot filter by PCTID" %
-                    (hit.format))
+            raise Exception(
+                "This hit type (%s) does not have a PCTID defined."
+                "You cannot filter by PCTID" %
+                (hit.format))
 
         if abs(hit.mlen) < options.length:
             logger.debug("hit too short: %r" % hit.mlen)
@@ -986,6 +1034,7 @@ def add_hit_table_arguments(parser,
                 LAST0,
                 BLASTPLUS,
                 SAM,
+                PAF,
                 GFF,
                 CMSEARCH,
                 CMSCAN,

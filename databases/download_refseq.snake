@@ -50,7 +50,7 @@ def get_refseq_release():
     return release_data.strip()
 
 # version number
-release = config.get('release', get_refseq_release())
+release = str(config.get('release', get_refseq_release()))
 
 # where to put the downloaded files:
 seqdb_root = config.get('seqdb_root','seqdbs')
@@ -115,12 +115,37 @@ checkpoint release_notes:
            """
 
 # gene files
+rule get_pep_list_x:
+    """ get the list of protein files to download o
+        we could use FTPR.glob_wildcards, but that adds 7 seconds to every re-run instead of checking the local filesystem
+
+        I'm getting errors every time, so I"m swallowing the rror and running the download twice to make sure it's correct.
+    """
+    output: temp(f"{SEQDB_DIR}/complete/pep.gz.{{x}}.list")
+    shell: """curl -s -l ftp://{FTP_SERVER}/{RELEASE_PATH}/complete/ | grep "protein.gpff" > {output} || true"""
+
+
+# gene files
 checkpoint get_pep_list:
     """ get the list of protein files to download o
         we could use FTPR.glob_wildcards, but that adds 7 seconds to every re-run instead of checking the local filesystem
+
+        I'm getting errors every time, so I"m swallowing the rror and running the download twice to make sure it's correct.
+
+        Here we count the outputs to make sure they look good.
     """
+    input: 
+        a=f"{SEQDB_DIR}/complete/pep.gz.a.list",
+        b=f"{SEQDB_DIR}/complete/pep.gz.b.list",
     output: f"{SEQDB_DIR}/complete/pep.gz.list"
-    shell: """curl -s -l ftp://{FTP_SERVER}/{RELEASE_PATH}/complete/ | grep "protein\.gpff" > {output}"""
+    run:
+        size_a = os.path.getsize(str(input.a))
+        size_b = os.path.getsize(str(input.b))
+        if size_a != size_b:
+            raise Exception(f"Two attempts at getting file list are different! Delete them both and try again\n    rm {input}")
+        if size_a < config.get("min_complete_list_size", 20_000):
+            raise Exception(f"List of complete files is smaller {size_a} than excpected! Try deleting lists and running again\n rm {input}\n\n ... or make cutoff smaller with --config min_complete_list_size={size_a - 10}")
+        shell("cp {input.a} {output}")
 
 
 ###
@@ -251,6 +276,7 @@ rule extract_proteins:
     output: f"{SEQDB_DIR}/complete/{{filename}}.faa"
     threads: 2
     shell: "cat {input} \
+                | grep -v Assembly-Data \
                 | get_sequences_from_gb.py -F fasta -r \
                 | tantan -p \
                 > {output}"
@@ -282,7 +308,7 @@ rule genes_counts:
     shell:
         """
         echo -e "READS\tLOCI" > {output}
-        cat seqdbs/RefSeq/200/complete/*counts \
+        cat {SEQDB_DIR}/complete/*counts \
             | perl -lane 'if ($F[1] eq "reads")
                             {{$read = $F[2]; $reads += $read}}
                           elsif ($F[1] eq "loci")
