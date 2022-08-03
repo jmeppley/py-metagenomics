@@ -70,9 +70,12 @@ RFAM_CM_DIR:=$(RFAM_DIR)/rfam_cms
 GET_VOG?=False
 ifeq ($(GET_VOG),True)
 	VOG_RELEASE?=latest
-	VOG_FTP:=http://fileshare.csb.univie.ac.at/vog/$(VOG_RELEASE)
 	DBLIST:=$(DBLIST) vog
+	ifneq ($(VOG_RELEASE),latest)
+		VOG_FTP:=http://fileshare.csb.univie.ac.at/vog/vog$(VOG_RELEASE)
+	endif
 	ifeq ($(VOG_RELEASE),latest)
+		VOG_FTP:=http://fileshare.csb.univie.ac.at/vog/$(VOG_RELEASE)
 		VOG_RELEASE:=$(shell curl -s $(VOG_FTP)/release.txt)
 	endif
 	VOG_HMMS_FILE=vog.hmm.tar.gz
@@ -158,8 +161,12 @@ vog_version:
 $(VOG_DIR):
 	mkdir -p $@
 
-$(VOG_DIR)/VOGS.hmm: | $(VOG_DIR)
-	curl -s $(VOG_FTP)/$(VOG_HMMS_FILE) | gunzip -c > $@
+$(VOG_DIR)/VOGS:
+	mkdir -p $@
+
+$(VOG_DIR)/VOGS.hmm: | $(VOG_DIR)/VOGS
+	curl -s $(VOG_FTP)/$(VOG_HMMS_FILE) | tar -C $(VOG_DIR)/VOGS -zxf -
+	cat $(VOG_DIR)/VOGS/*hmm > $@
 
 $(VOG_DIR)/VOGS.tsv: | $(VOG_DIR)
 	curl -s $(VOG_FTP)/$(VOG_ANNOT_FILE) | gunzip -c > $@
