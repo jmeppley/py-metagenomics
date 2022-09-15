@@ -21,6 +21,8 @@ seqdb_root = config.get('seqdb_root','seqdbs')
 download_root = config.get('download_root', seqdb_root)
 # local disk to do heavy file-related processing
 work_root = config.get('work_root', '/data/scope')
+# compile a nucleotide DB
+build_nucl_db = config.get('build_nucl_db', False)
 
 # version number
 release = str(config.get('release', 89.0))
@@ -62,10 +64,11 @@ outputs = config.setdefault('outputs', set())
 work_dir = work_root + "/GTDB/" + release
 name_root = seqdb_dir + "/gtdb_r" + release
 faa_file = name_root + ".faa"
-header_file = name_root + ".headers"
+fna_file = name_root + ".genomic.fna"
 
 # taxonomy files
 tax_map_file = seqdb_dir + "/taxdump/gtdb.acc.to.taxid"
+tax_map_nucl = seqdb_dir + "/taxdump/gtdb.genomic.to.taxid"
 names_dmp = seqdb_dir + "/taxdump/names.dmp"
 nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
 
@@ -76,6 +79,18 @@ config['dbs'] = {'GTDB': {'fasta': faa_file, \
                                     '.ids': True, \
                                     'names.dmp': names_dmp, \
                                     'nodes.dmp': nodes_dmp}}}
+
+# optinally create a nucleotide version
+if build_nucl_db:
+    config['dbs']['GTDB_nucl'] = {
+        'fasta': fna_file,
+        'is_prot': False,
+        'links': {'.tax': tax_map_nucl,
+                  '.ids': True,
+                  'names.dmp': names_dmp,
+                  'nodes.dmp': nodes_dmp,
+                 }
+    }
 
 # formatted dbs are added to outputs in the format_dbs snakefile
 include: 'format_dbs.snake'
@@ -157,6 +172,48 @@ rule prokka:
                --kingdom={params.kingdom} --force {input} --cpus {threads} \
             > {output}.log 2>&1
         """
+
+## GENOMIC
+rule genomic:
+    input: expand(work_dir + "/prokka/{orgid}/{orgid}.renamed.faa", \
+                  orgid = orgid_to_genome.keys(), **locals())
+    output: fna_file
+
+
+rule rename_faa:
+    input:
+        faa=work_dir + "/prokka/{orgid}/{orgid}.faa",
+        tax_table=tax_table
+    output: work_dir + "/prokka/{orgid}/{orgid}.renamed.faa"
+    run:
+        # the tax table has already been parsed, so let's not re-do it here
+        lineage = genome_taxonomy[orgid_to_genome[wildcards.orgid]]
+        lineage = re.sub(' ','_',lineage)
+        with open(output[0], 'wt') as out_handle:
+            gene_count = 0
+            for gene in SeqIO.parse(input.faa, 'fasta'):
+                gene_count += 1
+                gene_id, function = gene.description.split(None, 1)
+                gene_no = int(gene.id.split("_", 1)[1])
+                gene.id = '{org}_{N:07d}'.format(org=wildcards.orgid, N=gene_no)
+                gene.description = '{tax} {function}' \
+                    .format(tax=lineage, function=function)
+                out_handle.write(gene.format('fasta'))
+        logger.debug("renamed %d genes in %s" % (gene_count, wildcards.orgid))
+
+rule taxonomy_genomic:
+    input:
+        genes=faa_file
+    output:
+        names=names_dmp,
+        nodes=nodes_dmp,
+        tax_map=tax_map_file
+    benchmark:
+        'benchmarks/{}/taxonomy.time'.format(release)
+    run:
+        logger.debug("generate_taxdump('{input.genes}')")
+        generate_taxdump(fasta=input.genes, \
+                         dump=os.path.join(seqdb_dir, 'taxdump'))
 
 rule gunzip:
     input: "{gzroot}_genomic.fna.gz"
