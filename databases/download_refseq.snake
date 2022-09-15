@@ -65,6 +65,10 @@ GENES_FAA = NAME_ROOT + ".faa"
 ACCS_TAXIDS = SEQDB_DIR + "/taxdump/acc.to.taxid"
 NAMES_DMP = SEQDB_DIR + "/taxdump/names.dmp"
 NODES_DMP = SEQDB_DIR + "/taxdump/nodes.dmp"
+NAMES_REF = SEQDB_DIR + "/tax_pruned/names.dmp"
+NODES_REF = SEQDB_DIR + "/tax_pruned/nodes.dmp"
+ACCS_TAXIDS_FIXED = SEQDB_DIR + "/taxdump/acc.to.taxid.fixed"
+ACCS_TAXIDS_DENSE = SEQDB_DIR + "/taxdump/acc.to.taxid.dense"
 
 # other config
 fmt_threads = config.setdefault('fmt_threads', 20)
@@ -82,9 +86,9 @@ config['metadata_templates'] = {
 #  number
 config['dbs'] = {'RefSeq': {'fasta': GENES_FAA, \
                           'is_prot': True, \
-                          'links': {'.tax': ACCS_TAXIDS, \
-                                    'names.dmp': NAMES_DMP, \
-                                    'nodes.dmp': NODES_DMP, \
+                          'links': {'.tax': ACCS_TAXIDS_FIXED, \
+                                    'names.dmp': NAMES_REF, \
+                                    'nodes.dmp': NODES_REF, \
                                     '.ids': True}}}
 
 # default is last8 and diamond change with config['db_fmts']
@@ -234,6 +238,18 @@ rule taxdump:
         cd {SEQDB_DIR}/taxdump
         unzip $ZIP
         """
+
+# prune the tax dump to just the refseq taxa (for faster reading)
+rule prune_taxonomy:
+    input:
+        names=NAMES_DMP,
+        nodes=NODES_DMP,
+        taxids=ACCS_TAXIDS,
+    output:
+        names=NAMES_REF,
+        nodes=NODES_REF,
+        taxids=ACCS_TAXIDS_FIXED,
+    script: "prune_refseq_taxonomy.py"
 
 # other metadata files
 rule metadata_file:
