@@ -189,6 +189,8 @@ rule unpack:
     """
     Unpacks the big archive and touches all the gzipped genome fna files so that
     we don't unpack again when rerun
+
+    TODO: just touch the files listed in output
     """
     input: gtdb_tarball
     output: expand(GENOME_FNA_TEMPLATE + ".gz", \
