@@ -73,7 +73,7 @@ def main():
     if arguments.countMethod == 'toporg':
         (taxonomy, hitStringMap) = readMaps(arguments)
 
-    wta = not(arguments.proportional)
+    wta = not (arguments.proportional)
 
     if len(arguments.input_files) <= 1 or arguments.individual:
         # loop over input

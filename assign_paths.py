@@ -176,7 +176,7 @@ def main():
 def cleanLevels(levelList):
     # don't allow duplicates
     newList = list(set(levelList))
-    newList.sort(key=lambda l: levelList.index(l))
+    newList.sort(key=lambda item: levelList.index(item))
 
     # return levels
     return newList

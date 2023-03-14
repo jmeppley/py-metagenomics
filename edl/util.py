@@ -263,14 +263,14 @@ def get_value_type_function(valueType, valueDelim):
 
 def get_process_line_function(col, delim, keyType):
     if col is None and delim is None:
-        return lambda l: keyType(l.strip())
+        return lambda item: keyType(item.strip())
     else:
         if delim is not None and col is None:
             col = 0
         logger.debug("List col: %d" % col)
         if delim is not None:
             logger.debug("List delim: %r" % delim)
-        return lambda l: keyType(l.split(delim)[col].strip())
+        return lambda item: keyType(item.split(delim)[col].strip())
 
 
 def parseMapFile(
@@ -465,7 +465,7 @@ def inputIterator(arguments, use_file_wrapper=True):
         else:
             outhandle = open(outfile_name, 'w')
             logger.info("IO: %s -> %s" % (infile_name, outfile_name))
-            yield(inhandle, outhandle)
+            yield (inhandle, outhandle)
             outhandle.close()
         inhandle.close()
     else:
@@ -738,7 +738,7 @@ def head(iterable, N=10):
     while N > 0:
         N -= 1
         try:
-            yield(next(iterator))
+            yield (next(iterator))
         except StopIteration:
             break
 

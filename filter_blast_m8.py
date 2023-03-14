@@ -40,7 +40,7 @@ def main():
     parser.add_argument('-G', '--gff', default=False, action='store_true',
                         help="output GFF format instead of input format")
     parser.add_argument('hit_table', nargs='*',
-                        type=argparse.FileType('rU'), default=[sys.stdin, ],
+                        type=argparse.FileType('r'), default=[sys.stdin, ],
                         help="Table of search results to be filtered. "
                              "If absent, data will be read from STDIN")
 

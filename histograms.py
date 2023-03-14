@@ -16,7 +16,7 @@ def main():
     description = __doc__
 
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('infile', nargs='?', type=argparse.FileType('rU'),
+    parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
                         default=sys.stdin,
                         help=("Input file (defaults to STDIN) containing "
                               "a value on each line"))

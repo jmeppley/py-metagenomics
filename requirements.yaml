@@ -2,8 +2,9 @@ channels:
         - conda-forge
         - bioconda
 dependencies:
+        - python >3.3
         - numpy
-        - biopython
+        - biopython >=1.76
         - pandas
         - simplejson
         - matplotlib

@@ -615,7 +615,7 @@ def _getReadHitsAll(cells, readCol, hitCol, hitSep):
     every entry in cells (other than read) is a hit
     """
     read = cells.pop(readCol)
-    return(read, cells)
+    return (read, cells)
 
 
 def _getReadHitsSep(cells, readCol, hitCol, hitSep):

@@ -6,7 +6,6 @@ a list of sequences.
 
 from Bio import SeqIO, SeqRecord
 from Bio.Seq import Seq
-from Bio.Alphabet import IUPAC
 import argparse
 import sys
 import traceback
@@ -93,7 +92,7 @@ def main():
     else:
         for name in arguments.args:
             log("reading %s sequences from %s" % (arguments.formatIn, name))
-            instream = open(name, 'rU')
+            instream = open(name, 'r')
             try:
                 translateStream(
                     instream,
@@ -192,7 +191,7 @@ def getCodingSequences(record, makeRefSeq):
                     translation = f.qualifiers['translation'][0]
                 else:
                     continue
-                seq = Seq(translation, IUPAC.protein)
+                seq = Seq(translation)
                 r = SeqRecord.SeqRecord(seq,
                                         id="gi|%s|acc|%s|" % (gi, acc),
                                         name=acc)
