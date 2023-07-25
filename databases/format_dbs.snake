@@ -26,7 +26,7 @@ fmt_threads = config.setdefault('fmt_threads', 20)
 formatter_config = {
     'last8': {'base':'.ldb8/lastdb', 'suff': 'prj'},
     'last': {'base':'.ldb/lastdb', 'suff': 'prj'},
-    'diamond': {'base':'', 'suff': 'dmnd'},
+    'diamond': {'base':'', 'suff': 'dmnd', 'prot_only':True},
     'blast': {'base':'.bdb/blastdb', 'suff': 'pal'},
     'bwa': {'base': '.bwa/bwadb', 'suff': 'bwt', 'nucl_only':True}
 }
@@ -52,7 +52,11 @@ for database in config.get('dbs'):
     for db_formatter in dbinfo.get('fmts', db_fmt_list):
         fcnf = formatter_config[db_formatter]
         if is_prot and fcnf.get('nucl_only', False):
-            raise Exception("Cant format protein DB for " + db_formatter)
+            print(f"WARNING: Cant format protein DB {database} for {db_formatter}. Skipping.")
+            continue
+        if not is_prot and fcnf.get('prot_only', False):
+            print(f"WARNING: Cant format nucleotide DB {database} for {db_formatter}. Skipping.")
+            continue
         db_loc = fasta_file + fcnf['base']
         db_fmt_file = db_loc + "." + fcnf['suff']
         outputs.add(db_fmt_file)

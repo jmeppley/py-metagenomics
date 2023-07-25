@@ -20,7 +20,7 @@ seqdb_root = config.get('seqdb_root','seqdbs')
 # where to get the downloaded files:
 download_root = config.get('download_root', seqdb_root)
 # local disk to do heavy file-related processing
-work_root = config.get('work_root', '/data/scope')
+work_root = config.get('work_root', seqdb_root)
 # compile a nucleotide DB
 build_nucl_db = config.get('build_nucl_db', False)
 
@@ -115,11 +115,14 @@ rule taxonomy:
         generate_taxdump(fasta=input.genes, \
                          dump=os.path.join(seqdb_dir, 'taxdump'))
 
+
+localrules: genes_faa, unpack
+
 rule genes_faa:
     input: expand(work_dir + "/prokka/{orgid}/{orgid}.renamed.faa", \
                   orgid = orgid_to_genome.keys(), **locals())
     output: faa_file
-    benchmark: 'benchmarks/concatenate_faa.time'
+    benchmark: f'benchmarks/{release}/concatenate_faa.time'
     #shell: "rm {output}; for F in {input} ; do echo $F >> {output}; done"
     run:
         if len(input) == 0:
@@ -135,6 +138,7 @@ rule rename_faa:
         faa=work_dir + "/prokka/{orgid}/{orgid}.faa",
         tax_table=tax_table
     output: work_dir + "/prokka/{orgid}/{orgid}.renamed.faa"
+    benchmark: f'benchmarks/{release}/prokka/{{orgid}}/rename.faa.time'
     run:
         # the tax table has already been parsed, so let's not re-do it here
         lineage = genome_taxonomy[orgid_to_genome[wildcards.orgid]]
@@ -151,16 +155,40 @@ rule rename_faa:
                 out_handle.write(gene.format('fasta'))
         logger.debug("renamed %d genes in %s" % (gene_count, wildcards.orgid))
 
+# where the fasta files get unpacked to
+GENOME_FNA_TEMPLATE= f"{work_dir}/release{rel}/fastani/database/{{genome}}_genomic.fna"
+
 def get_domain(wildcards):
     return genome_taxonomy[orgid_to_genome[wildcards.orgid]] \
             .split(";")[0].split("__")[1]
 
+def add_prefix_to_genome(genome):
+    """
+        after rel 95, there are subdirs inserted before the genome name,
+        so there are two cases
+    """
+    if float(rel) > 100:
+        genome = f"{genome[:3]}/{genome[4:7]}/{genome[7:10]}/{genome[10:13]}/{genome}"
+    return genome
+
+def get_org_genome_fna(wildcards):
+    """ input fuction to get path to genomic fasta for wildcards.orgid
+
+        just calls function below with wildcards.orgid
+    """
+    return get_genome_fna_from_orgid(wildcards.orgid)
+
+def get_genome_fna_from_orgid(orgid):
+    """ fuction to get path to genomic fasta for given orgid """
+    genome = orgid_to_genome[orgid]
+
+    # add prefix to genome if needed
+    return GENOME_FNA_TEMPLATE.format(genome=add_prefix_to_genome(genome))
+
 rule prokka:
-    input: lambda w: \
-        "{work_dir}/release{rel}/fastani/database/{genome}_genomic.fna" \
-        .format(genome=orgid_to_genome[w.orgid], work_dir=work_dir, rel=rel)
+    input: get_org_genome_fna
     output: work_dir + "/prokka/{orgid}/{orgid}.faa"
-    benchmark: "benchmarks/prokka/{orgid}/{orgid}.faa"
+    benchmark: f"benchmarks/{release}/prokka/{{orgid}}/faa.time"
     params:
         kingdom=get_domain,
         outdir=lambda w: "{work_dir}/prokka/{orgid}" \
@@ -174,46 +202,45 @@ rule prokka:
         """
 
 ## GENOMIC
-rule genomic:
-    input: expand(work_dir + "/prokka/{orgid}/{orgid}.renamed.faa", \
-                  orgid = orgid_to_genome.keys(), **locals())
+rule compile_genomic_fna:
+    input: [get_genome_fna_from_orgid(o) for o in orgid_to_genome.keys()]
     output: fna_file
-
-
-rule rename_faa:
-    input:
-        faa=work_dir + "/prokka/{orgid}/{orgid}.faa",
-        tax_table=tax_table
-    output: work_dir + "/prokka/{orgid}/{orgid}.renamed.faa"
+    benchmark: f"benchmarks/{release}/genomic.fna.time"
     run:
-        # the tax table has already been parsed, so let's not re-do it here
-        lineage = genome_taxonomy[orgid_to_genome[wildcards.orgid]]
-        lineage = re.sub(' ','_',lineage)
-        with open(output[0], 'wt') as out_handle:
-            gene_count = 0
-            for gene in SeqIO.parse(input.faa, 'fasta'):
-                gene_count += 1
-                gene_id, function = gene.description.split(None, 1)
-                gene_no = int(gene.id.split("_", 1)[1])
-                gene.id = '{org}_{N:07d}'.format(org=wildcards.orgid, N=gene_no)
-                gene.description = '{tax} {function}' \
-                    .format(tax=lineage, function=function)
-                out_handle.write(gene.format('fasta'))
-        logger.debug("renamed %d genes in %s" % (gene_count, wildcards.orgid))
+        with open(str(output), 'wt') as FNA_OUT:
+            for orgid in orgid_to_genome.keys():
+                org_fna = get_genome_fna_from_orgid(orgid)
+                contig_count = 0
+                for contig in SeqIO.parse(org_fna, 'fasta'):
+                    contig_count += 1
+                    contig.id = f"{orgid}_{contig_count:04d}"
+                    FNA_OUT.write(contig.format('fasta'))
 
 rule taxonomy_genomic:
     input:
-        genes=faa_file
+        ids=f"{fna_file}.headers",
+        taxids=tax_map_file,
     output:
-        names=names_dmp,
-        nodes=nodes_dmp,
-        tax_map=tax_map_file
+        tax_map_nucl
     benchmark:
-        'benchmarks/{}/taxonomy.time'.format(release)
+        'benchmarks/{}/taxonomy.nucl.time'.format(release)
     run:
-        logger.debug("generate_taxdump('{input.genes}')")
-        generate_taxdump(fasta=input.genes, \
-                         dump=os.path.join(seqdb_dir, 'taxdump'))
+        # Load gene taxid map and save taxid for each orgid
+        org_taxids = {}
+        with open(str(input.taxids)) as TAX:
+            for line in TAX:
+                gene, taxid = line.strip().split()
+                orgid = re.sub(r'_\d+$', '', gene)
+                org_taxids[orgid] = int(taxid)
+
+        # PArse headesr file and assign taxid to each contig
+        with open(str(output), 'wt') as OUTPUT:
+            with open(str(input.ids)) as IDS:
+                for line in IDS:
+                    contig = line.split(None, 1)[0]
+                    orgid = re.sub(r'_\d+$', '', contig)
+                    taxid = org_taxids[orgid]
+                    OUTPUT.write(f"{contig}\t{taxid}\n")
 
 rule gunzip:
     input: "{gzroot}_genomic.fna.gz"
@@ -222,11 +249,20 @@ rule gunzip:
         "gunzip -c {input} > {output}"
 
 rule unpack:
+    """
+    Unpacks the big archive and touches all the gzipped genome fna files so that
+    we don't unpack again when rerun
+
+    TODO: just touch the files listed in output
+    """
     input: gtdb_tarball
-    output: expand( \
-        "{work_dir}/release{rel}/fastani/database/{genome}_genomic.fna.gz", \
-        genome=genome_taxonomy.keys(), **locals())
+    output: expand(GENOME_FNA_TEMPLATE + ".gz", \
+                   genome=[add_prefix_to_genome(g) for g in orgid_to_genome.values()], \
+                  )
+    benchmark: f'benchmarks/{release}/unpack.tarball.time'
     shell:
-        "cd {work_dir} && tar -zxf {input} && \
-            find release{rel} -type f | xargs touch"
- 
+        """tar -C {work_dir} -zxf {input}
+           find {work_dir}/release{rel}/fastani/database -type f -name "*genomic.fna.gz" \
+                | xargs touch
+        """
+
