@@ -107,9 +107,9 @@ def main():
             parser.error("Cannot select levels without a heirarchy (ko) file")
         if arguments.levels is None:
             # set a default
-            if arguments.heirarchyType is 'kegg':
+            if arguments.heirarchyType == 'kegg':
                 arguments.levels = ['ko', '1', '2', 'pathway']
-            if arguments.heirarchyType is 'seed':
+            if arguments.heirarchyType == 'seed':
                 arguments.levels = ['role', '1', '2', 'subsystem']
             else:
                 arguments.levels = ['gene', 'group']
@@ -235,7 +235,7 @@ def main():
     else:
         # Original way, just process each file separately
         for (filename, filetag) in fileLabels.items():
-            infile = open(filename, 'rU')
+            infile = open(filename, 'r')
 
             hitIter = parseM8FileIter(infile,
                                       valueMap,
@@ -363,7 +363,7 @@ def printCountTablesByLevel(fileCounts, totals, fileNames, options):
                 # update counts
                 # Some KOs will map to multiple pathways,
                 #  so... allow for multiple translated values
-                if not(
+                if not (
                     isinstance(
                         pathway,
                         list) or isinstance(

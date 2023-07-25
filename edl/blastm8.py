@@ -121,7 +121,7 @@ class FilterParams:
         self.nonoverlapping = nonoverlapping
         self.sort = sort
         self.bad_refs = None
-        
+
     def set_nonoverlapping(self, value):
         self.nonoverlapping = value
 
@@ -275,11 +275,11 @@ class Hit:
         self.mlen = int(cells[10])
         self.pctid = 100 * self.matches / self.mlen
         self.aln = self.mlen / self.qlen
-        # look for a score value in the remaining columns in the 
+        # look for a score value in the remaining columns in the
         # form of s1:i::## or as:i:##
         for cell in cells[12:]:
             bits = cell.split(":")
-            if len(bits) == 3 and bits[0].upper() in ["AS","S1"]:
+            if len(bits) == 3 and bits[0].upper() in ["AS", "S1"]:
                 try:
                     self.score = int(bits[2])
                     break

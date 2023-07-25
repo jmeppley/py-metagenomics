@@ -642,8 +642,8 @@ def testReadKeggFile(keggFile):
     myAssertEq(kDmap['K01623'],
                'ALDO; fructose-bisphosphate aldolase, class I [EC:4.1.2.13]')
     kPmap = parse_keg_file(keggFile, 'PATHWAY')
-    assert('K04519' in kPmap)
-    assert('K15634' in kPmap)
+    assert ('K04519' in kPmap)
+    assert ('K15634' in kPmap)
     myAssertEq(kPmap['K03011'],
                ['00230 Purine metabolism',
                 '00240 Pyrimidine metabolism',
@@ -682,7 +682,7 @@ def testReadKeggFile(keggFile):
 
 def testReadKoFile(koFile):
     kPmap = parse_ko_file(koFile, 'PATHWAY')
-    assert('K00397' not in kPmap)
+    assert ('K00397' not in kPmap)
     myAssertEq(kPmap['K00399'],
                ['ko00680  Methane metabolism',
                 'ko01200  Carbon metabolism'])

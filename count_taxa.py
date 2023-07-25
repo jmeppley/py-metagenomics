@@ -231,7 +231,7 @@ def main():
     else:
         # Original way, just process each file separately
         for (filename, filetag) in fileLabels.items():
-            infile = open(filename, 'rU')
+            infile = open(filename, 'r')
 
             hitIter = parseM8FileIter(infile,
                                       hitStringMap,
@@ -323,13 +323,14 @@ def printCountTablesByRank(fileCounts, totals, fileNames, options):
                         taxon,
                         rank,
                         default=fallback,
-                        useChildOfFirstRankedAncestor=not(
-                            options.collapseToDomain))
+                        useChildOfFirstRankedAncestor=not (
+                            options.collapseToDomain)
+                    )
                     if ranked is None:
                         # This shouldn't happen...
                         logging.warning(
                             "getAncestorClosestRoRank return None!")
-                        # ...but if it doesn, leave unchanged
+                        # ...but if it doesn't, leave unchanged
                         ranked = taxon
 
                 # update counts
