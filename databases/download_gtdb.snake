@@ -8,8 +8,8 @@
 #
 ###########################
 import ftplib, re, os, datetime, getpass
-from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
-HTTPS = HTTPRemoteProvider()
+#from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+#HTTPS = HTTPRemoteProvider()
 
 ## Configurable params
 
@@ -38,16 +38,21 @@ remote_base = \
 # files to download
 file_locations = {
     f'sp_clusters_r{rel}.tsv': 'auxillary_files/',
-    f'gtdbtk_r{rel}_data.tar.gz': 'auxillary_files/',
+    f'gtdbtk_r{rel}_data.tar.gz': 'auxillary_files/gtdbtk_package/full_package/',
     'VERSION.txt': '',
     'RELEASE_NOTES.txt': '',
-    f'ssu_all_r{rel}.tar.gz': 'genomic_files_all/',
+    f'ssu_all_r{rel}.fna.gz': 'genomic_files_all/',
     'metadata_field_desc.tsv': 'auxillary_files/',
     'FILE_DESCRIPTIONS.txt': '',
 }
 
 file_list = [out_dir + "/" + f.format(rel=rel) \
              for f in file_locations]
+gtdb_tarball = [
+    f for f in file_list 
+    if os.path.basename(f).startswith('gtdbtk_r') 
+    and f.endswith('data.tar.gz')
+][0]
 
 def get_remote_path(wildcards):
     """ translate a local destination to its remote counterpart """
@@ -60,12 +65,26 @@ def get_filename_url(wildcards):
 
 def get_https_input(wildcards):
     """ get the remote path as a RemoteProvider HTTP object """
-    return HTTPS.remote(get_remote_path(wildcards), keep_local=True)
+    return storage(get_filename_url(wildcards), keep_local=True)
 
 rule outputs:
-    input: file_list
-
+    input: 
+        downloads=file_list,
+        unpack=f'{out_dir}/.gtdbtk.unpacked'
+        
 rule download_file:
     input: get_https_input
     output: out_dir + '/{filename}'
     shell: 'mv {input} {output}'
+
+
+rule unpack:
+    """
+    Unpacks the big archive
+    """
+    input: ancient(gtdb_tarball)
+    output: touch(f'{out_dir}/.gtdbtk.unpacked')
+    benchmark: f'benchmarks/{release}/unpack.tarball.time'
+    shell:
+        """tar -C {work_dir} -zxf {input}
+        """

@@ -3,8 +3,7 @@ channels:
  - conda-forge
  - bioconda
 dependencies:
- - snakemake-minimal=8
- - snakemake-storage-plugin-http
+ - snakemake-minimal<8
  - biopython
  - prinseq
  - last
@@ -14,3 +13,4 @@ dependencies:
  - bwa
  - tantan
  - prokka
+ - pandas

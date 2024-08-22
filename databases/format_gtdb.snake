@@ -3,7 +3,7 @@
 # format_gtdb.snake
 #
 # Formats the latest GTDB database for last and/or diamond
-#  Uses prokka to predict and annotate genes
+#  Uses prodigal to predict genes
 #
 # first run download_gtdb.snake to get the necessary files
 #
@@ -32,7 +32,7 @@ fmt_threads = config.setdefault('fmt_threads', 20)
 # already downloaded files
 download_dir = os.path.join(download_root, 'GTDB', release)
 seqdb_dir = os.path.join(seqdb_root, 'GTDB', release)
-gtdb_tarball = "{download_dir}/gtdbtk_r{rel}_data.tar.gz".format(**locals())
+
 
 # get list of genomes
 tax_table = download_dir + f"/sp_clusters_r{rel}.tsv"
@@ -49,7 +49,12 @@ genome_taxonomy = {re.sub(r'^(RS|GB)_', '', g):t + ";" + s \
                    for g,s,t in genome_tax_table.itertuples()}
 orgid_to_genome = {re.sub(r'\.\d+$', '', g):g \
                    for g in genome_taxonomy}
-logger.debug("FOUND %d organisms in GTDB tax table." % (len(orgid_to_genome)))
+logger.debug(f"FOUND {len(orgid_to_genome)} organisms in GTDB tax table.")
+
+release_pkg_ani_dir = config.get(
+    'release_pkg_ani_dir',
+    'skani' if float(release) > 215 else 'fastani'
+)
 
 """
 genome_set = set(pandas.read_csv(tax_table, \
@@ -119,8 +124,8 @@ rule taxonomy:
 localrules: genes_faa, unpack
 
 rule genes_faa:
-    input: expand(work_dir + "/prokka/{orgid}/{orgid}.renamed.faa", \
-                  orgid = orgid_to_genome.keys(), **locals())
+    input: expand(work_dir + "/prodigal/{orgid}/{orgid}.renamed.faa", \
+                  orgid=list(orgid_to_genome.keys()))
     output: faa_file
     benchmark: f'benchmarks/{release}/concatenate_faa.time'
     #shell: "rm {output}; for F in {input} ; do echo $F >> {output}; done"
@@ -135,10 +140,10 @@ rule genes_faa:
 
 rule rename_faa:
     input:
-        faa=work_dir + "/prokka/{orgid}/{orgid}.faa",
+        faa=work_dir + "/prodigal/{orgid}/{orgid}.faa",
         tax_table=tax_table
-    output: work_dir + "/prokka/{orgid}/{orgid}.renamed.faa"
-    benchmark: f'benchmarks/{release}/prokka/{{orgid}}/rename.faa.time'
+    output: work_dir + "/prodigal/{orgid}/{orgid}.renamed.faa"
+    benchmark: f'benchmarks/{release}/prodigal/{{orgid}}/rename.faa.time'
     run:
         # the tax table has already been parsed, so let's not re-do it here
         lineage = genome_taxonomy[orgid_to_genome[wildcards.orgid]]
@@ -147,16 +152,14 @@ rule rename_faa:
             gene_count = 0
             for gene in SeqIO.parse(input.faa, 'fasta'):
                 gene_count += 1
-                gene_id, function = gene.description.split(None, 1)
-                gene_no = int(gene.id.split("_", 1)[1])
-                gene.id = '{org}_{N:07d}'.format(org=wildcards.orgid, N=gene_no)
-                gene.description = '{tax} {function}' \
-                    .format(tax=lineage, function=function)
+                gene.id = '{org}_{N:07d}'.format(org=wildcards.orgid, N=gene_count)
+                gene.description = lineage
                 out_handle.write(gene.format('fasta'))
         logger.debug("renamed %d genes in %s" % (gene_count, wildcards.orgid))
 
 # where the fasta files get unpacked to
-GENOME_FNA_TEMPLATE= f"{work_dir}/release{rel}/fastani/database/{{genome}}_genomic.fna"
+GENOME_FNA_TEMPLATE = \
+    f"{work_dir}/release{rel}/{release_pkg_ani_dir}/database/{{genome}}_genomic.fna"
 
 def get_domain(wildcards):
     return genome_taxonomy[orgid_to_genome[wildcards.orgid]] \
@@ -185,20 +188,16 @@ def get_genome_fna_from_orgid(orgid):
     # add prefix to genome if needed
     return GENOME_FNA_TEMPLATE.format(genome=add_prefix_to_genome(genome))
 
-rule prokka:
+rule prodigal:
     input: get_org_genome_fna
-    output: work_dir + "/prokka/{orgid}/{orgid}.faa"
-    benchmark: f"benchmarks/{release}/prokka/{{orgid}}/faa.time"
-    params:
-        kingdom=get_domain,
-        outdir=lambda w: "{work_dir}/prokka/{orgid}" \
-                    .format(work_dir=work_dir, orgid=w.orgid)
-    threads: config.get("prokka_threads", 5)
+    output:
+        faa=work_dir + "/prodigal/{orgid}/{orgid}.faa",
+        gff=work_dir + "/prodigal/{orgid}/{orgid}.gff",
+    benchmark: f"benchmarks/{release}/prodigal/{{orgid}}/faa.time"
     shell: """
-        export LD_LIBRARY_PATH=$CONDA_PREFIX/lib
-        prokka --outdir={params.outdir} --prefix {wildcards.orgid} \
-               --kingdom={params.kingdom} --force {input} --cpus {threads} \
-            > {output}.log 2>&1
+        prodigal -i {input} -g 11 \
+            -a {output.faa} -o {output.gff} -f gff \
+         > {output.gff}.log 2>&1
         """
 
 ## GENOMIC
@@ -248,21 +247,4 @@ rule gunzip:
     shell:
         "gunzip -c {input} > {output}"
 
-rule unpack:
-    """
-    Unpacks the big archive and touches all the gzipped genome fna files so that
-    we don't unpack again when rerun
-
-    TODO: just touch the files listed in output
-    """
-    input: gtdb_tarball
-    output: expand(GENOME_FNA_TEMPLATE + ".gz", \
-                   genome=[add_prefix_to_genome(g) for g in orgid_to_genome.values()], \
-                  )
-    benchmark: f'benchmarks/{release}/unpack.tarball.time'
-    shell:
-        """tar -C {work_dir} -zxf {input}
-           find {work_dir}/release{rel}/fastani/database -type f -name "*genomic.fna.gz" \
-                | xargs touch
-        """
 
