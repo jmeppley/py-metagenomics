@@ -33,6 +33,19 @@ fmt_threads = config.setdefault('fmt_threads', 20)
 download_dir = os.path.join(download_root, 'GTDB', release)
 seqdb_dir = os.path.join(seqdb_root, 'GTDB', release)
 
+# naming prefixes
+work_dir = work_root + "/GTDB/" + release
+name_root = seqdb_dir + "/gtdb_r" + release
+
+# where the fasta files get unpacked to
+release_pkg_ani_dir = config.get(
+    'release_pkg_ani_dir',
+    'skani' if float(release) > 215 else 'fastani'
+)
+GENOME_FNA_TEMPLATE = \
+    f"{work_dir}/release{rel}/{release_pkg_ani_dir}/database/{{genome}}_genomic.fna"
+GENOME_FAA_TEMPLATE = \
+    f"{work_dir}/protein_faa_reps/{{domain}}/{{db}}_{{genome}}_protein.faa"
 
 # get list of genomes
 tax_table = download_dir + f"/sp_clusters_r{rel}.tsv"
@@ -45,29 +58,40 @@ genome_tax_table = pandas.read_csv(tax_table, \
                                    usecols=[0,1,2], \
                                    names=['genome','species','lineage'], \
                                    header=0)
-genome_taxonomy = {re.sub(r'^(RS|GB)_', '', g):t + ";" + s \
-                   for g,s,t in genome_tax_table.itertuples()}
-orgid_to_genome = {re.sub(r'\.\d+$', '', g):g \
-                   for g in genome_taxonomy}
-logger.debug(f"FOUND {len(orgid_to_genome)} organisms in GTDB tax table.")
 
-release_pkg_ani_dir = config.get(
-    'release_pkg_ani_dir',
-    'skani' if float(release) > 215 else 'fastani'
-)
+def get_domain_from_lineage(lineage):
+    return lineage.split(";")[0].split("__")[1].lower()
 
-"""
-genome_set = set(pandas.read_csv(tax_table, \
-                                 sep='\t', \
-                                 usecols=[0,], \
-                                 index_col=0).index)
-orgids = [re.sub(r'\.\d+$', '', g) for g in genome_set]
-"""
+def add_prefix_to_genome(genome):
+    """
+        after rel 95, there are subdirs inserted before the genome name,
+        so there are two cases
+    """
+    if float(rel) > 100:
+        genome = f"{genome[:3]}/{genome[4:7]}/{genome[7:10]}/{genome[10:13]}/{genome}"
+    return genome
+
+genome_taxonomy = {}
+faa_db_inputs = {}
+fna_db_inputs = {}
+for full_genome, species, lineage in genome_tax_table.itertuples():
+    # parse genome name 
+    org_db, orgid, org_ver = re.search(r'^(RS|GB)_(\S+)\.(\d+)$', full_genome).groups()
+    genome = ".".join((orgid, org_ver))
+
+    # save taxonomic lineage
+    genome_taxonomy[orgid] = lineage + ";" + species
+
+    # set up final DBs
+    domain = get_domain_from_lineage(lineage)
+    faa_db_inputs[orgid] = GENOME_FAA_TEMPLATE.format(
+        domain=domain, db=org_db, genome=genome
+    )
+    fna_db_inputs[orgid] = GENOME_FNA_TEMPLATE.format(genome=add_prefix_to_genome(genome))
+
 
 # file names
 outputs = config.setdefault('outputs', set())
-work_dir = work_root + "/GTDB/" + release
-name_root = seqdb_dir + "/gtdb_r" + release
 faa_file = name_root + ".faa"
 fna_file = name_root + ".genomic.fna"
 
@@ -120,99 +144,41 @@ rule taxonomy:
         generate_taxdump(fasta=input.genes, \
                          dump=os.path.join(seqdb_dir, 'taxdump'))
 
-
-localrules: genes_faa, unpack
-
 rule genes_faa:
-    input: expand(work_dir + "/prodigal/{orgid}/{orgid}.renamed.faa", \
-                  orgid=list(orgid_to_genome.keys()))
+    """
+    Collect genes from faa files, but rename with simplified accessions and full lineage in the description
+    """
+    input: faa_db_inputs.values()
     output: faa_file
-    benchmark: f'benchmarks/{release}/concatenate_faa.time'
+    benchmark: f'benchmarks/{release}/compile_rename_faa.time'
     #shell: "rm {output}; for F in {input} ; do echo $F >> {output}; done"
     run:
         if len(input) == 0:
             raise Exception("There are no input files!!!")
-        input_iter = iter(input)
-        input_file = next(input_iter)
-        shell("cat {input_file} > {output}")
-        for input_file in input_iter:
-            shell("cat {input_file} >> {output}")
+        
+        with open(str(output), 'wt') as FAA_OUT:
+            for orgid, org_faa in faa_db_inputs.items():
+                lineage = genome_taxonomy[orgid]
+                lineage = re.sub(' ','_',lineage)
 
-rule rename_faa:
-    input:
-        faa=work_dir + "/prodigal/{orgid}/{orgid}.faa",
-        tax_table=tax_table
-    output: work_dir + "/prodigal/{orgid}/{orgid}.renamed.faa"
-    benchmark: f'benchmarks/{release}/prodigal/{{orgid}}/rename.faa.time'
-    run:
-        # the tax table has already been parsed, so let's not re-do it here
-        lineage = genome_taxonomy[orgid_to_genome[wildcards.orgid]]
-        lineage = re.sub(' ','_',lineage)
-        with open(output[0], 'wt') as out_handle:
-            gene_count = 0
-            for gene in SeqIO.parse(input.faa, 'fasta'):
-                gene_count += 1
-                gene.id = '{org}_{N:07d}'.format(org=wildcards.orgid, N=gene_count)
-                gene.description = lineage
-                out_handle.write(gene.format('fasta'))
-        logger.debug("renamed %d genes in %s" % (gene_count, wildcards.orgid))
+                gene_count = 0
+                for gene in SeqIO.parse(org_faa, 'fasta'):
+                    gene_count += 1
+                    gene.id = '{org}_{N:07d}'.format(org=orgid, N=gene_count)
+                    gene.description = lineage
+                    FAA_OUT.write(gene.format('fasta'))
 
-# where the fasta files get unpacked to
-GENOME_FNA_TEMPLATE = \
-    f"{work_dir}/release{rel}/{release_pkg_ani_dir}/database/{{genome}}_genomic.fna"
-
-def get_domain(wildcards):
-    return genome_taxonomy[orgid_to_genome[wildcards.orgid]] \
-            .split(";")[0].split("__")[1]
-
-def add_prefix_to_genome(genome):
-    """
-        after rel 95, there are subdirs inserted before the genome name,
-        so there are two cases
-    """
-    if float(rel) > 100:
-        genome = f"{genome[:3]}/{genome[4:7]}/{genome[7:10]}/{genome[10:13]}/{genome}"
-    return genome
-
-def get_org_genome_fna(wildcards):
-    """ input fuction to get path to genomic fasta for wildcards.orgid
-
-        just calls function below with wildcards.orgid
-    """
-    return get_genome_fna_from_orgid(wildcards.orgid)
-
-def get_genome_fna_from_orgid(orgid):
-    """ fuction to get path to genomic fasta for given orgid """
-    genome = orgid_to_genome[orgid]
-
-    # add prefix to genome if needed
-    return GENOME_FNA_TEMPLATE.format(genome=add_prefix_to_genome(genome))
-
-rule prodigal:
-    input: get_org_genome_fna
-    output:
-        faa=work_dir + "/prodigal/{orgid}/{orgid}.faa",
-        gff=work_dir + "/prodigal/{orgid}/{orgid}.gff",
-    benchmark: f"benchmarks/{release}/prodigal/{{orgid}}/faa.time"
-    shell: """
-        prodigal -i {input} -g 11 \
-            -a {output.faa} -o {output.gff} -f gff \
-         > {output.gff}.log 2>&1
-        """
-
-## GENOMIC
 rule compile_genomic_fna:
-    input: [get_genome_fna_from_orgid(o) for o in orgid_to_genome.keys()]
+    input: fna_db_inputs.values()
     output: fna_file
     benchmark: f"benchmarks/{release}/genomic.fna.time"
     run:
         with open(str(output), 'wt') as FNA_OUT:
-            for orgid in orgid_to_genome.keys():
-                org_fna = get_genome_fna_from_orgid(orgid)
+            for orgid, org_fna in fna_db_inputs.items():
                 contig_count = 0
                 for contig in SeqIO.parse(org_fna, 'fasta'):
                     contig_count += 1
-                    contig.id = f"{orgid}_{contig_count:04d}"
+                    contig.id = f"{orgid}_c{contig_count:04d}"
                     FNA_OUT.write(contig.format('fasta'))
 
 rule taxonomy_genomic:
@@ -237,14 +203,14 @@ rule taxonomy_genomic:
             with open(str(input.ids)) as IDS:
                 for line in IDS:
                     contig = line.split(None, 1)[0]
-                    orgid = re.sub(r'_\d+$', '', contig)
+                    orgid = re.sub(r'_c\d+$', '', contig)
                     taxid = org_taxids[orgid]
                     OUTPUT.write(f"{contig}\t{taxid}\n")
 
 rule gunzip:
-    input: "{gzroot}_genomic.fna.gz"
-    output: "{gzroot}_genomic.fna"
+    input: "{gzroot}_{suffix}.gz"
+    output: temp("{gzroot}_{suffix}")
+    wildcard_constraints:
+        suffix="(genomic.fna|protein.faa)"
     shell:
         "gunzip -c {input} > {output}"
-
-

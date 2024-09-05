@@ -13,4 +13,5 @@ dependencies:
  - diamond
  - bwa
  - tantan
- - prokka
+ - prodigal
+ - pandas

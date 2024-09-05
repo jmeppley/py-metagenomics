@@ -39,6 +39,7 @@ remote_base = \
 file_locations = {
     f'sp_clusters_r{rel}.tsv': 'auxillary_files/',
     f'gtdbtk_r{rel}_data.tar.gz': 'auxillary_files/gtdbtk_package/full_package/',
+    f'gtdb_proteins_aa_reps_r{rel}.tar.gz': 'genomic_files_reps/',
     'VERSION.txt': '',
     'RELEASE_NOTES.txt': '',
     f'ssu_all_r{rel}.fna.gz': 'genomic_files_all/',
@@ -48,10 +49,15 @@ file_locations = {
 
 file_list = [out_dir + "/" + f.format(rel=rel) \
              for f in file_locations]
-gtdb_tarball = [
+GTDB_TARBALL = [
     f for f in file_list 
     if os.path.basename(f).startswith('gtdbtk_r') 
     and f.endswith('data.tar.gz')
+][0]
+FAA_TARBALL = [
+    f for f in file_list 
+    if os.path.basename(f).startswith('gtdb_proteins_aa') 
+    and f.endswith('.tar.gz')
 ][0]
 
 def get_remote_path(wildcards):
@@ -70,7 +76,8 @@ def get_https_input(wildcards):
 rule outputs:
     input: 
         downloads=file_list,
-        unpack=f'{out_dir}/.gtdbtk.unpacked'
+        unpackaa=f'{out_dir}/.gtdbaa.unpacked',
+        unpacktk=f'{out_dir}/.gtdbtk.unpacked',
         
 rule download_file:
     input: get_https_input
@@ -78,13 +85,24 @@ rule download_file:
     shell: 'mv {input} {output}'
 
 
-rule unpack:
+rule unpack_gtdbtk:
     """
     Unpacks the big archive
     """
-    input: ancient(gtdb_tarball)
+    input: ancient(GTDB_TARBALL)
     output: touch(f'{out_dir}/.gtdbtk.unpacked')
     benchmark: f'benchmarks/{release}/unpack.tarball.time'
     shell:
-        """tar -C {work_dir} -zxf {input}
+        """tar -C {out_dir} -zxf {input}
+        """
+
+rule unpack_faas:
+    """
+    Unpacks the protein archive
+    """
+    input: ancient(FAA_TARBALL)
+    output: touch(f'{out_dir}/.gtdbaa.unpacked')
+    benchmark: f'benchmarks/{release}/unpack.tarball.time'
+    shell:
+        """tar -C {out_dir} -zxf {input}
         """
