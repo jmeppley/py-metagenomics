@@ -1,0 +1,160 @@
+#############################################
+#
+# format_mergedb.snake
+#
+# Combines GTDB? with non-prokaryotic genes from RefSeq
+#
+# GTDB and RefSeq databases must be downloaded and formatted first
+##############################################
+
+import os, pandas, re
+from edl.gtdb import dump_taxonomy
+
+seqdb_root = config.get('seqdb_root','seqdbs')
+fmt_threads = config.setdefault('fmt_threads', 20)
+
+# RefSeq
+rrelease = config.get('refseq_release', '225')
+pref = "RefSeq-" + rrelease
+seqdb_dir = os.path.join(seqdb_root, 'RefSeq', rrelease)
+refseq_faa_file = seqdb_dir + "/" + pref + ".AllProteins.faa"
+refseq_tax_map_file = seqdb_dir + "/taxdump/acc.to.taxid.fixed"
+refseq_header_file = seqdb_dir + "/" + pref + ".ids"
+refseq_names_dmp = seqdb_dir + "/tax_pruned/names.dmp"
+refseq_nodes_dmp = seqdb_dir + "/tax_pruned/nodes.dmp"
+
+# GTDB
+grelease = config.get('gtdb_release', '95.0')
+seqdb_dir = os.path.join(seqdb_root, 'GTDB', grelease)
+name_root = seqdb_dir + "/gtdb_r" + grelease
+gtdb_faa_file = name_root + ".faa"
+gtdb_header_file = name_root + ".headers"
+gtdb_tax_map_file = seqdb_dir + "/taxdump/gtdb.acc.to.taxid"
+gtdb_names_dmp = seqdb_dir + "/taxdump/names.dmp"
+gtdb_nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
+
+# combined output
+seqdb_dir = os.path.join(seqdb_root, 'GTDB_RefSeq', "_".join((grelease, rrelease)))
+faa_file = seqdb_dir + "/gt_refseq_db.faa"
+tax_map_file = seqdb_dir + "/taxdump/gtdb.acc.to.taxid"
+names_dmp = seqdb_dir + "/taxdump/names.dmp"
+nodes_dmp = seqdb_dir + "/taxdump/nodes.dmp"
+
+# formatting for last and diamond happends here
+config['dbs'] = {'GTDB_RefSeq': {'fasta': faa_file, \
+                          'is_prot': True,
+                          'links': {'.tax': tax_map_file, \
+                                    '.ids': True, \
+                                    'names.dmp': names_dmp, \
+                                    'nodes.dmp': nodes_dmp}}}
+include: 'format_dbs.snake'
+
+rule outputs:
+    input: config['outputs']
+
+# We just need rules to
+#  * select subsets of dbs
+#  * merge all the files
+rule merge_taxonomies:
+    """ loads both full taxonomies and:
+     * builds list of seqids to keep from each db
+     * write new taxdump
+     """
+    input:
+        pnames=refseq_names_dmp,
+        pnodes=refseq_nodes_dmp,
+        gnames=gtdb_names_dmp,
+        gnodes=gtdb_nodes_dmp,
+    output:
+        names=names_dmp,
+        nodes=nodes_dmp,
+        plist=seqdb_dir + "/taxdump/refseq.keep.taxids",
+    benchmark: 'benchmarks/merge_taxonomies.time'
+    run:
+        from edl.taxon import readTaxonomy
+        ptax = readTaxonomy(os.path.dirname(input.pnames))
+        gtax = readTaxonomy(os.path.dirname(input.gnames))
+
+        # what's the highest taxid in GTDB
+        max_gtdb_id = max(taxid for taxid in gtax.idMap.keys())
+
+        # get taxids for non-prok taxa
+        # recursive function to update ids
+        def update_taxids(taxon, curr_max_id, changed_ids):
+            old_id = taxon.id
+            curr_max_id += 1
+            taxon.id = curr_max_id
+            changed_ids[old_id] = curr_max_id
+
+            for child in taxon.children:
+                curr_max_id = update_taxids(child, curr_max_id, changed_ids)
+
+            return curr_max_id
+        # map of old ids to new
+        p_g_taxid_map = {}
+        # add non-prok domains to gtdb taxonomy from RefSeq
+        for domain in [t for t in ptax.root.children if t is not ptax.root]:
+            # skip archaea and bacteria
+            if re.search('archae', domain.name, re.I):
+                continue
+            if re.search('bacteri', domain.name, re.I):
+                continue
+
+            # update RefSeq taxa ids to not collide with GTDB tax ids
+            max_gtdb_id = update_taxids(domain, max_gtdb_id, p_g_taxid_map)
+            
+            # add to GTDB taxonomy
+            domain.setParent(gtax.root)
+
+        # write list of refseq taxids to keep
+        with open(output.plist, 'wt') as taxids_outh:
+            for old_id, new_id in p_g_taxid_map.items():
+                taxids_outh.write(f'{old_id}\t{new_id}\n')
+
+        # write out merged taxonomy
+        dump_taxonomy(gtax, os.path.dirname(output.names), map_file_name=None)
+
+        # (instead of loading and fixing tax map above, it's done in a 
+        #  separate rule below using a script)
+
+rule get_refseq_tax_map:
+    """ use translate_column to pull out seqids w/renamed taxa
+    and create new tax id table """
+    input:
+        plist=seqdb_dir + "/taxdump/refseq.keep.taxids",
+        pmap=refseq_tax_map_file
+    output:
+        ptaxmap=seqdb_dir + "/taxdump/refseq.keep.id.to.tax",
+    benchmark: 'benchmarks/get_refseq_tax_map.time'
+    shell:
+        "translate_column.py -m {input.plist} -c 2 -D 2 {input.pmap} \
+          > {output.ptaxmap}"
+        
+rule cat_tax_maps:
+    input:
+        gmap=gtdb_tax_map_file,
+        pmap=rules.get_refseq_tax_map.output.ptaxmap
+    output:
+        taxmap=tax_map_file
+    benchmark: 'benchmarks/cat_tax_maps.time'
+    shell: 'cat {input} > {output}'
+
+rule build_faa_file:
+    """ collect faa from GTDB and RefSeq
+     * reformat GTDB headers to match RefSeq
+     * only keep non-prok genes from RefSeq
+     """
+    input:
+        gfaa=gtdb_faa_file,
+        pfaa=refseq_faa_file,
+        plist=rules.get_refseq_tax_map.output.ptaxmap
+    output:
+        faa=faa_file
+    benchmark: 'benchmarks/build_faa_file.time'
+    shell: """
+        cat {input.gfaa} \
+            | perl -pe 's/\\s+(\\S+)\\s+/\\t\\1\\t/; s/_?[dpcofgs]__//g;' \
+            > {output.faa}
+        screen_list.py -k -l {input.plist} -C 0 {input.pfaa} >> {output.faa}
+        """
+
