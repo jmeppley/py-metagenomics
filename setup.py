@@ -1,12 +1,10 @@
 import glob
 import edl
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
 
 DESCRIPTION = "Python scripts for metagenomics"
-LONG_DESCRIPTION = open('README.md').read()
+with open('README.md') as readme_handle:
+    LONG_DESCRIPTION = readme_handle.read()
 NAME = "py-metagenomics"
 AUTHOR = "John Eppley"
 AUTHOR_EMAIL = "jmeppley@mit.edu"
@@ -21,6 +19,7 @@ setup(name=NAME,
       version=VERSION,
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
+      long_description_content_type='text/markdown',
       author=AUTHOR,
       author_email=AUTHOR_EMAIL,
       maintainer=MAINTAINER,
@@ -29,13 +28,17 @@ setup(name=NAME,
       download_url=DOWNLOAD_URL,
       license=LICENSE,
       packages=['edl', ],
+      python_requires='>=3.10',
+      install_requires=['numpy', 'biopython>=1.80', 'pandas'],
+      extras_require={'plots': ['matplotlib']},
       scripts=[s for s in glob.glob('*.py')
                if s != 'setup.py'],
       classifiers=[
           'Development Status :: 4 - Beta',
           'Environment :: Console',
           'Intended Audience :: Science/Research',
-          'License :: OSI Approved :: GPL License',
+          'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
           'Natural Language :: English',
-          'Programming Language :: Python :: 3.5'],
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3 :: Only'],
       )

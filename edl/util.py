@@ -328,9 +328,9 @@ def parseMapFile(
                 badRows += 1
         num_lines = lines.lines
     if badRows > 0:
-        logger.warn("%d of %d rows in map file had too few columns!" %
-                    (badRows,
-                     num_lines))
+        logger.warning("%d of %d rows in map file had too few columns!" %
+                       (badRows,
+                        num_lines))
 
     logger.info("Read %d records from %d lines of %s" % (len(translation),
                                                          num_lines,
@@ -716,7 +716,7 @@ def getBarString(value, maxValue, maxWidth, log):
 def rightPad(name, width):
     if width < 6:
         width = 6
-        logger.warn("Can't force names to be fewer than 6 characters")
+        logger.warning("Can't force names to be fewer than 6 characters")
     if len(name) > width:
         # remove middle and insert elipsis to get to -width- characters
         return name[:width - 4] + '***' + name[-1:]
@@ -798,7 +798,7 @@ def reservoir_sample(iterator, N=100, return_count=False):
         elif val < numerator / n:
             # Replace random item in sample
             # with next element with probabliity N/i
-            sample[random.random_integers(0, N - 1)] = item
+            sample[random.randint(0, N)] = item
 
     if return_count:
         return (sample, n)
@@ -867,7 +867,7 @@ class ReservoirSamplingList(list):
         if val < self.N / float(self.total_added):
             # Replace random item in sample
             # with next element with probabliity N/i
-            self[random.random_integers(0, self.N - 1)] = item
+            self[random.randint(0, self.N)] = item
 
     def _append_preserve_order(self, item):
         """
@@ -890,12 +890,12 @@ class ReservoirSamplingList(list):
         # with next element with probabliity N/i
         if val < self.N / float(self.total_added):
             # pick random element to replace
-            drop_index = random.random_integers(0, self.N - 1)
+            drop_index = random.randint(0, self.N)
             # shift following items over
-            for i in xrange(drop_index, len(self) - 1):
+            for i in range(drop_index, len(self) - 1):
                 self[i] = self[i + 1]
             # add new one at the end
-            self[i + 1] = item
+            self[-1] = item
 
     def extend(self, iterable):
         for item in iterable:

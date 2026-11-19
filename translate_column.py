@@ -133,11 +133,11 @@ def main():
                 print(new_line, file=outhandle)
                 lines_kept += 1
             except Exception:
-                logging.warn(
+                logging.warning(
                     "Unexpected error (%s): %s" %
                     (sys.exc_info()[0], sys.exc_info()[1]))
-                logging.warn(traceback.format_tb(sys.exc_info()[2]))
-                logging.warn('Skipping %s' % (line))
+                logging.warning(traceback.format_tb(sys.exc_info()[2]))
+                logging.warning('Skipping %s' % (line))
                 skipped_lines += 1
                 if not invalid_line:
                     first_invalid_line = i + 1
@@ -165,7 +165,7 @@ applied to column %d" % (inhandle,
             message += '\nSkipped %d lines' % (skipped_lines)
         logging.info(message)
         if invalid_line:
-            logging.warn(
+            logging.warning(
                 'Invalid lines found! EG line #%d: "%s"' %
                 (first_invalid_line, invalid_line))
 

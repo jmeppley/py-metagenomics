@@ -170,7 +170,7 @@ def main():
             logging.info("Read %d items into map. EG: %s",
                          len(valueMap), next(iter(valueMap.items())))
         else:
-            logging.warn("Read 0 items into value map!")
+            logging.warning("Read 0 items into value map!")
     else:
         valueMap = None
 

@@ -107,8 +107,8 @@ def parseSeedMap(mapFile):
     """
     accMap = {}
     with open(mapFile) as f:
-        f.next()
-        f.next()
+        next(f)
+        next(f)
         for line in f:
             # logger.debug(line)
             (acc, code, subsys) = line.rstrip('\r\n').split('\t', 2)
@@ -158,7 +158,7 @@ def parseLinkFile(mapFile, stripKeys=False, stripVals=True):
         else:
             badRows += 1
     if badRows > 0:
-        logger.warn("%d rows in map file had too few columns!" % (badRows))
+        logger.warning("%d rows in map file had too few columns!" % (badRows))
 
     logger.info(
         "Read %d records from %d lines of %s" %

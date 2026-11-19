@@ -6,7 +6,7 @@ py-metagenomics
 
 About
 -----
-This is a collection of python (3.5) modules and scripts for metagenomic analyses for use on the command-line or in [http://ipython.org/](iPython).
+This is a collection of python (3.10+) modules and scripts for metagenomic analyses for use on the command-line or in [http://ipython.org/](iPython).
 
 The primary scripts are useful for filtering sequence search results from common bioinformatics tools (blast, last, hmmer, etc) by hit metadata.
 
@@ -28,12 +28,12 @@ I also consolodated and simplified the assignXXX scripts, so some features will 
 Installation
 ------------
 ### Dependencies ###
-You must have a number of python modules installed to run all the included scripts. These are listed in requirements.txt. 
+You must have a number of python modules installed to run all the included scripts. These are listed in requirements.yaml (a conda environment file). 
 
 The most critical are biopython and numpy. Pandas and matplotlib are only used in some obscure corners of the modules, but they are invaluable if you are planning to use pymg within ipython.
 
 ### Comand-line ###
-This version of py-metagenomics is compatible with python 3 or greater. There is a python 2 branch, with more features, but less active development. 
+This version of py-metagenomics requires python 3.10 or greater and has been tested with python 3.13 and 3.14, numpy 2.5, pandas 3.1 and biopython 1.88. There is a python 2 branch, with more features, but less active development. 
 
 The scripts will be usable from anywhere. As long as the "edl" folder is in the same location as the scripts, they will be able to find the necessary modules.
 
@@ -42,9 +42,15 @@ It is recommended that you put the root directory of py-metagenomics in your PAT
 ### iPython ###
 You may want to use the modules yourself from within iPython. If you are working in a [https://virtualenv.pypa.io/en/latest/](virtual environment) or wish to install the modules to the central library, you can use the setup.py script to install the modules into your python environment:
 
-    $ python setup.py install
+    $ pip install .
 
-Don't forget to install the dependencies listed in requirements.txt!
+This will also install the core dependencies (numpy, pandas, and biopython). Add matplotlib (`pip install .[plots]`) if you want the plotting functions in edl.assembly.
+
+### Testing ###
+The unit tests use pytest and the command-line tests use bats. From the root of the repository:
+
+    $ python -m pytest test
+    $ bats test/bats
 
 Overview
 --------

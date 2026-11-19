@@ -34,3 +34,18 @@ def test_contig_length_stats():
     assert data['count'] == 100
     assert data['mean'] == 157.97
 
+
+
+def test_contig_lengths_from_caf():
+    """getContigLengthsFromCAF parses contigs from a minimal CAF stream."""
+    import io
+    caf_text = ("Sequence : contig1\n"
+                "Is_contig\n"
+                "Padded\n"
+                "\n"
+                "DNA : contig1\n"
+                "ACGT\n"
+                "GG\n"
+                "BaseQuality : contig1\n")
+    lengths = assembly.getContigLengthsFromCAF(io.StringIO(caf_text))
+    assert len(lengths) == 1

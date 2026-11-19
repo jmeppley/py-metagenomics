@@ -152,7 +152,7 @@ def buildPR2Tree(fastaFile, fastaout=None, nextId=0):
 
     # There should only be one child of root: Eukaryota
     if len(rootNode.children) != 1:
-        logging.warn("There should only be one child of root! Not %d:\n%s" % \
+        logging.warning("There should only be one child of root! Not %d:\n%s" % \
                 (len(rootNode.children),
                  ", ".join([c.name for c in rootNode.children])))
     rootNode=rootNode.children[0]
@@ -180,7 +180,7 @@ def buildSilvaTree(taxFile, fastaFile, logger):
         node.rank = rankMapping.get(rank,rank)
         node.ncbi_tax_id = silvaTaxidMap[lineage]
         if not isinstance(node.ncbi_tax_id,int):
-            logger.warn("NCBI taxid is not an int: %s (%s)" % (node.ncbi_tax_id, node.name))
+            logger.warning("NCBI taxid is not an int: %s (%s)" % (node.ncbi_tax_id, node.name))
 
     logger.info("Built tree of %d taxa with the largest ID of %d" % (len(silvaTree),maxTaxid))
 

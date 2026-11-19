@@ -62,7 +62,7 @@ def main():
             arguments.formatOut)
 
     if len(read_set) > 0:
-        logging.warn(
+        logging.warning(
             "%d of %d items in list were not found in fasta data" %
             (len(read_set), numReads))
         logging.debug(read_set)

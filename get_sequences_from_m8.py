@@ -272,14 +272,14 @@ def maskRead(record, hitSpans, minLength):
     logging.debug("Hits: %r" % (hitSpans))
     newSpans = [[1, len(record)], ]
     # Start with the full span and chip away hits to reveal unhit spans
-    for i in reversed(xrange(len(hitSpans))):
+    for i in reversed(range(len(hitSpans))):
         (start, end) = hitSpans[i][0:2]
         if start > end:
             stemp = start
             start = end
             end = stemp
 
-        for j in reversed(xrange(len(newSpans))):
+        for j in reversed(range(len(newSpans))):
             (ustart, uend) = newSpans[j][0:2]
             if (ustart > end) or (uend < start):
                 # hit does not overlap this unmatched region
