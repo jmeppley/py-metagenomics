@@ -7,7 +7,8 @@ import re
 import logging
 import pandas
 import numpy
-from Bio import SeqIO, SeqUtils
+from Bio import SeqIO
+from Bio.SeqUtils import gc_fraction
 try:
     from edl.util import ascii_histogram, InputFile
     from edl.blastm8 import FilterParams, filterM8Stream
@@ -86,7 +87,7 @@ def get_contig_stats(contigs_fasta,
         logger.info("Parsing read count file: {}"
                     .format(contig_read_counts_file))
         read_count_table = pandas.read_table(contig_read_counts_file,
-                                             delim_whitespace=True,
+                                             sep=r'\s+',
                                              names=['read count',
                                                     'contig'])\
                                  .set_index('contig')
@@ -157,7 +158,7 @@ def get_stats_from_contigs(contigs_fasta):
             length = len(sequence)
             contigs.append(contig)
             lengths.append(length)
-            gcs.append(SeqUtils.GC(sequence))
+            gcs.append(gc_fraction(sequence, ambiguous="ignore") * 100)
 
     # convert to DataFrame and return
     return pandas.DataFrame({'contig': contigs,
@@ -719,12 +720,12 @@ def plotTranscriptCoverageByLengthBins(ax, lengths, hits,
         raise Exception("Lengths cannot be empty!")
 
     transcriptCounts, boundaries = numpy.histogram(
-        lengths.values(), bins=bins, range=lengthRange)
+        list(lengths.values()), bins=bins, range=lengthRange)
 
     # count bases by bin
     hitBaseCounts = numpy.zeros(transcriptCounts.shape)
     totalBaseCounts = numpy.zeros(transcriptCounts.shape)
-    for transcript, hitList in hits.iteritems():
+    for transcript, hitList in hits.items():
         try:
             index = getBin(lengths[transcript], boundaries)
         except ValueError:
@@ -734,7 +735,7 @@ def plotTranscriptCoverageByLengthBins(ax, lengths, hits,
         hitBaseCounts[index] += longestHit(hitList)
 
     if includeMissed:
-        for transcript, length in lengths.iteritems():
+        for transcript, length in lengths.items():
             if transcript not in hits:
                 totalBaseCounts[index] += length
 
@@ -742,7 +743,7 @@ def plotTranscriptCoverageByLengthBins(ax, lengths, hits,
     ax2 = ax.twinx()
     x, y = getSteppedBars(totalBaseCounts, boundaries)
     if hlog:
-        ax2.set_yscale("log", nonposy='clip')
+        ax2.set_yscale("log", nonpositive='clip')
     ax2.plot(x, y, color=hcolor)
     ax2.set_ylabel('total bases', color=hcolor)
     for tl in ax2.get_yticklabels():
@@ -788,7 +789,7 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths,
         raise Exception("Lengths cannot be empty!")
 
     transcriptCounts, boundaries = numpy.histogram(
-        lengths.values(), bins=bins, range=lengthRange)
+        list(lengths.values()), bins=bins, range=lengthRange)
 
     get_hit_length = build_get_hit_length_function(referenceLengths)
 
@@ -796,7 +797,7 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths,
     hitBaseCounts = numpy.zeros(transcriptCounts.shape)
     referenceBaseCounts = numpy.zeros(transcriptCounts.shape)
     totalBaseCounts = numpy.zeros(transcriptCounts.shape)
-    for transcript, hitList in hits.iteritems():
+    for transcript, hitList in hits.items():
         try:
             index = getBin(lengths[transcript], boundaries)
         except ValueError:
@@ -812,7 +813,7 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths,
         hitBaseCounts[index] += numpy.abs(firstHit.hend - firstHit.hstart) + 1
 
     if includeMissed:
-        for transcript, length in lengths.iteritems():
+        for transcript, length in lengths.items():
             if transcript not in hits:
                 totalBaseCounts[index] += length
 
@@ -820,7 +821,7 @@ def plotHitCoverageByLengthBins(ax, lengths, hits, referenceLengths,
     ax2 = ax.twinx()
     x, y = getSteppedBars(totalBaseCounts, boundaries)
     if hlog:
-        ax2.set_yscale("log", nonposy='clip')
+        ax2.set_yscale("log", nonpositive='clip')
     ax2.plot(x, y, color=hcolor)
     ax2.set_ylabel('total bases', color=hcolor)
     for tl in ax2.get_yticklabels():
@@ -883,7 +884,7 @@ def plotSortedContigLengths(ax, lengths,
                                  reverse=True))
 
     if log:
-        ax.set_yscale("log", nonposy='clip')
+        ax.set_yscale("log", nonpositive='clip')
     objects = ax.plot(x, y, color=linecolor)
     ax.set_ylabel('contig length')
     ax.set_xlabel('contig number')
@@ -954,7 +955,7 @@ def getContigLengthsFromCAF(cafFile):
     lengths = {}
     try:
         while True:
-            line = cafHandle.next()
+            line = next(cafHandle)
             m = sequenceRE.match(line)
             if m is None:
                 continue
@@ -962,21 +963,21 @@ def getContigLengthsFromCAF(cafFile):
             # found a sequence header
             seqName = m.group()
 
-            if cafHandle.next().strip() != 'Is_contig':
+            if next(cafHandle).strip() != 'Is_contig':
                 continue
 
             # it is a contig
             contigName = seqName
             # jump to sequence
             while True:
-                line = cafHandle.next()
+                line = next(cafHandle)
                 if dnaRE.match(line):
                     break
 
             # parse out sequence
             sequenceLength = 0
             while True:
-                line = cafHandle.next()
+                line = next(cafHandle)
                 sequenceLength += len(line.strip())
                 if qualityRE.match(line):
                     break

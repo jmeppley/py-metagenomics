@@ -102,7 +102,7 @@ def main():
     logging.info("Hit names in col: '" + str(arguments.hitCol))
     if splitHits:
         logging.info("Splitting hits with: %s" % (arguments.hitSep))
-        logging.warn(
+        logging.warning(
             "Splitting hits has not been tested yet! Let me know how it goes.")
     if takeFirst:
         logging.info("Taking first hit for each read.")

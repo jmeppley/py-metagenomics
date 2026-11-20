@@ -176,7 +176,7 @@ def getTypeFromFileName(filename):
     if fileType is not None:
         return fileType
     else:
-        logging.warn("""Cannot guess type of %s!
+        logging.warning("""Cannot guess type of %s!
 
 The input file does not have a recognized extension:
 %s
@@ -294,7 +294,7 @@ def fastaRecordSizer(recordLines):
         whitespace at the start and end of lines
     """
     size = 0
-    for i in xrange(1, len(recordLines)):
+    for i in range(1, len(recordLines)):
         size += len(recordLines[i].strip())
     return size
 
@@ -306,13 +306,13 @@ def fastqRecordSizer(recordLines):
     whitespace at the start and end of lines
     """
     size = 0
-    for i in xrange(1, len(recordLines)):
+    for i in range(1, len(recordLines)):
         line = recordLines[i]
         if len(line) > 0 and line[0] == '+':
             return size
         size += len(line.strip())
 
-    logging.warn("Did not find quality line in record: %s" % recordLines)
+    logging.warning("Did not find quality line in record: %s" % recordLines)
     return size
 
 

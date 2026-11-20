@@ -116,7 +116,7 @@ class SilvaTaxNode(edl.taxon.TaxNode):
             if name not in collapsedCounts:
                 collapsedCounts[name] = count
             else:
-                logging.warn("Duplicate name in collapsed count: %s" % name)
+                logging.warning("Duplicate name in collapsed count: %s" % name)
                 collapsedCounts[name] += count
             return None
         else:
@@ -134,7 +134,7 @@ def translateSSUTaxToNCBIDump(ssuFasta, ssuRanks, outDir):
     # Create ranked nodes from rank file
     rankMap = edl.util.parseMapFile(ssuRanks, valueCol=2, skipFirst=1)
     silvaTree = {}
-    for (lineage, rank) in rankMap.iteritems():
+    for (lineage, rank) in rankMap.items():
         node = SilvaTaxNode.addToTreeFromString(
             lineage, silvaTree, removeSpaces=False)
         node.rank = rank
@@ -152,7 +152,7 @@ def translateSSUTaxToNCBIDump(ssuFasta, ssuRanks, outDir):
 
     # Assign taxids to nodes (parsing expects integers)
     i = 0
-    rootNode = silvaTree.itervalues().next().getRootNode()
+    rootNode = next(iter(silvaTree.values())).getRootNode()
     for node in edl.util.treeGenerator(rootNode):
         i += 1
         node.id = i
@@ -167,7 +167,7 @@ def translateSSUTaxToNCBIDump(ssuFasta, ssuRanks, outDir):
     # Write hit->tax mapping file
     with open(os.path.sep.join((outDir, 'ssu.hitid.to.taxid.silva')),
               'w') as taxMapFile:
-        for (hitid, taxNode) in taxmap.iteritems():
+        for (hitid, taxNode) in taxmap.items():
             taxMapFile.write("%s\t%d\n" % (hitid, taxNode.id))
 
 

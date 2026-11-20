@@ -64,10 +64,10 @@ def crossTabulateHits(hitFile1, hitFile2,
             types2.add(h2)
 
     # generate dataframe
-    logger.warn(
+    logger.warning(
         "%d of %d reads only in file 1" %
         (len(hitmap), readMatchCount))
-    logger.warn(
+    logger.warning(
         "%d of %d reads only in file 2" %
         (len(readsOnlyIn2), readMatchCount))
     return pandas.DataFrame(counts)

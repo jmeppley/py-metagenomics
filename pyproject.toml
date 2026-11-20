@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-metagenomics"
+dynamic = ["version"]
+description = "Python scripts for metagenomics"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "John Eppley", email = "jmeppley@hawaii.edu" }]
+maintainers = [{ name = "John Eppley", email = "jmeppley@hawaii.edu" }]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "pandas",
+    "biopython>=1.80",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+[project.optional-dependencies]
+plots = ["matplotlib"]
+test = ["pytest", "pycodestyle"]
+
+[project.urls]
+Homepage = "https://github.com/jmeppley/py-metagenomics"
+Source = "https://github.com/jmeppley/py-metagenomics"
+Issues = "https://github.com/jmeppley/py-metagenomics/issues"
+
+[tool.setuptools]
+packages = ["edl"]
+# The command-line scripts are installed as-is (they also run directly
+# from a checkout). Keep this list in sync with the top-level *.py files.
+script-files = [
+    "add_kegg_pathways.py",
+    "assign_paths.py",
+    "assign_taxa.py",
+    "assign_top_hit.py",
+    "compile_hit_counts.py",
+    "count_hits.py",
+    "count_paths.py",
+    "count_taxa.py",
+    "filter_blast_m8.py",
+    "fragment_records.py",
+    "get_sequences_from_gb.py",
+    "get_sequences_from_m8.py",
+    "histograms.py",
+    "identify_reads.py",
+    "merge_gffs.py",
+    "merge_hits.py",
+    "sample_records.py",
+    "screen_list.py",
+    "screen_table.py",
+    "translate_column.py",
+]
+
+[tool.setuptools.dynamic]
+# Single source of truth for the version: edl/__init__.py
+# (read statically, without importing edl or its dependencies)
+version = { attr = "edl.__version__" }
+
+[tool.pytest.ini_options]
+testpaths = ["test"]

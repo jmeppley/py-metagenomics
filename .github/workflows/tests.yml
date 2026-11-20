@@ -1,0 +1,70 @@
+name: tests
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install bats
+        run: sudo apt-get update && sudo apt-get install -y bats
+
+      - name: Install package with test and plotting extras
+        run: python -m pip install ".[test,plots]"
+
+      - name: Show versions
+        run: python -c "import sys, numpy, pandas, Bio, edl; print(sys.version); print('numpy', numpy.__version__, 'pandas', pandas.__version__, 'biopython', Bio.__version__, 'edl', edl.__version__)"
+
+      - name: Unit tests (pytest)
+        run: python -m pytest -W error::DeprecationWarning -W error::FutureWarning
+
+      - name: Command-line tests (bats)
+        run: bats test/bats
+
+  build:
+    name: Build and check distributions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install build
+          python -m build
+
+      - name: Check that a release tag matches edl.__version__
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          package_version=$(python -c "import re; print(re.search(r\"__version__ = '([^']+)'\", open('edl/__init__.py').read()).group(1))")
+          tag_version="${GITHUB_REF_NAME#v}"
+          echo "tag: ${tag_version}  edl.__version__: ${package_version}"
+          test "${tag_version}" = "${package_version}"

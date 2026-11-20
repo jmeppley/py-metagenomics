@@ -164,7 +164,7 @@ def applyFractionalCutoff(counts, threshold=None, cutoff=None, label='Other'):
     """
     if threshold is None:
         if cutoff is None:
-            logger.warn("Nothing to do for applyFractionalCutoff")
+            logger.warning("Nothing to do for applyFractionalCutoff")
             return
         threshold = float(cutoff) * sum(counts.values())
 
@@ -599,7 +599,7 @@ def _getReadHitsEval(cells, readCol, hitCol, hitSep):
     try:
         hit = eval(hit)
     except Exception:
-        logger.warn("exception from 'eval(%r)'" % (hit))
+        logger.warning("exception from 'eval(%r)'" % (hit))
 
     # make it iterable if it's not
     try:

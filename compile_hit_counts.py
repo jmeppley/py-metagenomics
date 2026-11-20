@@ -31,9 +31,9 @@ import argparse
 import logging
 import sys
 from edl.hits import parseHits
-from edl.util import tupleIteratorToMap,\
-                     add_universal_arguments,\
-                     setup_logging,\
+from edl.util import tupleIteratorToMap, \
+                     add_universal_arguments, \
+                     setup_logging, \
                      parseMapFile
 
 

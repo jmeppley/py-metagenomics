@@ -161,7 +161,7 @@ class Hit:
         except EmptyHitException:
             return None
         except Exception:
-            logger.warn("Error parsing line:\n%s" % (line))
+            logger.warning("Error parsing line:\n%s" % (line))
             raise
 
     def __init__(self, line, options):

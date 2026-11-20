@@ -47,3 +47,15 @@ def test_parse_file_to_set():
     assert len(value_set) == 7
     assert sorted(list(value_set)) == [59919, 74546, 93058, 93060, 146891, 167542, 167546]
 
+
+
+def test_reservoir_sampling_list():
+    """Both append modes of ReservoirSamplingList keep exactly N unique items."""
+    for preserve_order in (False, True):
+        sampled = edl.util.ReservoirSamplingList(
+            sample_size=10, iterable=range(1000), preserve_order=preserve_order)
+        assert len(sampled) == 10
+        assert len(set(sampled)) == 10
+        assert sampled.total_added == 1000
+        if preserve_order:
+            assert list(sampled) == sorted(sampled)

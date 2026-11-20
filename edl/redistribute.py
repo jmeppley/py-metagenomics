@@ -40,7 +40,7 @@ def pickBestHitByAbundance(m8stream,
     """
     if return_lines and return_translations:
         return_lines = False
-        logger.warn("return_translations overrides return_lines!")
+        logger.warning("return_translations overrides return_lines!")
 
     # filtered hits
     if filterParams is None:
@@ -86,7 +86,7 @@ def pickBestHitByAbundance(m8stream,
                     # This should be REALLY rare.
                     sameOrgCount += 1
                     sameOrgExample = (read, hit.hit, org)
-                    logger.warn(
+                    logger.warning(
                         "Read (%s) has two best hits to same org (%s)!" %
                         (read, org))
                     # always keep the first alphabetically, for reproducibility
@@ -150,7 +150,7 @@ def pickBestHitByAbundance(m8stream,
     if sameOrgCount > 0:
         elements = list(sameOrgExample)
         elements.insert(0, sameOrgCount)
-        logger.warn(
+        logger.warning(
             "found %d cases where a read had an extra hit to the same "
             "organism. For Example: %s (%s,%s)" %
             tuple(elements))
@@ -300,7 +300,7 @@ def redistributeHits(hitMap, rank):
             for read in nhits:
                 hitMap[read] = [node, ]
         else:
-            logger.warn("hits (%s) not a list for %s!" % (nhits, node.name))
+            logger.warning("hits (%s) not a list for %s!" % (nhits, node.name))
 
     return hitMap
 
@@ -320,7 +320,7 @@ def redistributeHitsForNode(node, hits, rank):
     if not isinstance(nodeHits, list):
         nodeHits = [nodeHits, ]
         hits[node] = nodeHits
-        logger.warn("Hit for %s was a list: %s" % (node.name, nodeHits[0]))
+        logger.warning("Hit for %s was a list: %s" % (node.name, nodeHits[0]))
     nodeHitCount = len(nodeHits)
 
     # check children for hits

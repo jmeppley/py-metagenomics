@@ -80,7 +80,7 @@ def main():
 
     # print table
     changes=0
-    for (acc,(taxid,name)) in accToOrg.iteritems():
+    for (acc,(taxid,name)) in accToOrg.items():
         if taxid not in taxonomy.idMap:
             node = getNodeFromHit(name, taxonomy.nameMap)
             logging.debug("Changing %s to %s" % (taxid,node.id))

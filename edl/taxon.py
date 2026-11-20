@@ -204,7 +204,7 @@ class TaxNode:
         # add sum of children (those under cutoff)
         for child in self.children:
             if child is self:
-                logger.warn(
+                logger.warning(
                     "node %s(%s) is child of itself!" %
                     (repr(self), str(self)))
                 continue
@@ -380,16 +380,17 @@ def compareRanks(r1, r2):
     r2anc = comparisons.get((r2, r1), 0)
 
     if r1anc > 0 and r2anc > 0:
-        logger.warn(
+        logger.warning(
             "ambiguos relationshp between %s and %s: (%d,%d)" %
             (r1, r2, r1anc, r2anc))
 
     if r1anc == 0 and r2anc == 0:
-        logger.warn(
+        logger.warning(
             "no information for %s and %s: (%d, %d)" %
             (r1, r2, r1anc, r2anc))
 
-    return cmp(r1anc, r2anc)
+    # equivalent of python2's cmp(): -1, 0, or 1
+    return (r1anc > r2anc) - (r1anc < r2anc)
 
 
 def deduceRankOrder(taxMap):
@@ -429,14 +430,14 @@ def deduceRankOrder(taxMap):
 
         # just checking:
         if (key[1],key[0]) in comparisons:
-            logger.warn("%s is an ancestor of %s %d times and "
+            logger.warning("%s is an ancestor of %s %d times and "
                         "vice versa %d times!" %
                  (key[0],key[1],v,comparisons[(key[1],key[0])]))
 
     for rank in ranks:
         if rank not in aCounts:
             if rank not in dCounts:
-                logger.warn("rank %s is not counted!" % (rank))
+                logger.warning("rank %s is not counted!" % (rank))
                 continue
             sortKey[rank]=600.0
         elif rank not in dCounts:
@@ -492,7 +493,7 @@ def readTaxonomy(taxDir, namesMap=False):
         try:
             parent = taxMap[node.parentid]
         except KeyError:
-            logger.warn(
+            logger.warning(
                 "Can't find parent (%s) for %s" %
                 (node.parentid, node.id))
         else:
@@ -655,7 +656,7 @@ def getNodeFromHit(hit, nameMap, exhaustive=True):
                     methodCount['sub'] += 1
                 return nameMap[startingName]
 
-    logger.warn("Can't translate name: %s" % (hit))
+    logger.warning("Can't translate name: %s" % (hit))
     if logger.getEffectiveLevel() <= logging.DEBUG:
         methodCount['none'] += 1
     return None
@@ -868,7 +869,7 @@ def test_transmogrify(tree):
                     assert node.transmogrify(rank, orgs) == answers[
                         taxid][rank][str(orgs)]
                 except AssertionError:
-                    logging.warn(
+                    logging.warning(
                         "%d:%s at rank %s%s goes to: %s, not %s" %
                         (taxid, node.name, rank, str(orgs), node.transmogrify(
                             rank, orgs), answers[taxid][rank][
@@ -948,7 +949,7 @@ def test_get_lineage():
     try:
         assert node1.getLineageString(';') == 'root;' + lineage
     except AssertionError:
-        logging.warn(
+        logging.warning(
             "%s is not %s" %
             (node1.getLineageString(';'), 'root;' + lineage))
         raise AssertionError
@@ -957,7 +958,7 @@ def test_get_lineage():
     try:
         assert node2.getLineageString(';') == 'root;' + lineage
     except AssertionError:
-        logging.warn(
+        logging.warning(
             "%s is not %s" %
             (node2.getLineageString(';'), 'root;' + lineage))
         raise AssertionError

@@ -75,13 +75,13 @@ def main():
     else:
         if arguments.heirarchyFile is None \
                 and arguments.heirarchyType != 'cazy':
-            logging.warn("Type: %s" % (arguments.heirarchyType))
+            logging.warning("Type: %s" % (arguments.heirarchyType))
             parser.error("Cannot select levels without a heirarchy (ko) file")
         if arguments.levels is None:
             # set a default
-            if arguments.heirarchyType is 'kegg':
+            if arguments.heirarchyType == 'kegg':
                 arguments.levels = ['ko', '1', '2', 'pathway']
-            if arguments.heirarchyType is 'seed':
+            elif arguments.heirarchyType == 'seed':
                 arguments.levels = ['role', '1', '2', 'subsystem']
             else:
                 arguments.levels = ['gene', 'group']
@@ -133,7 +133,7 @@ def main():
             logging.info("Read %d items into map. EG: %s" %
                          (len(valueMap), next(iter(valueMap.items()))))
         else:
-            logging.warn("Read 0 items into value map!")
+            logging.warning("Read 0 items into value map!")
     else:
         valueMap = None
 
