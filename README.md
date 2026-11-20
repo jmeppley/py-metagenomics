@@ -59,8 +59,10 @@ The version number is set in one place: `__version__` in `edl/__init__.py` (pypr
 The conda recipe is in the `conda` folder and reads the version from the same place. To build and upload the conda package for a release:
 
     $ git checkout v1.4.2
-    $ conda build -c conda-forge -c bioconda conda
-    $ anaconda upload --user jmeppley $(conda build -c conda-forge -c bioconda conda --output)
+    $ conda-build -c conda-forge -c bioconda conda
+    $ anaconda upload --user jmeppley $(conda-build -c conda-forge -c bioconda conda --output)
+
+(`conda-build` comes from the conda-build package; the `conda build` subcommand only works when conda-build is installed in the base environment.)
 
 Only bump `build: number` in conda/meta.yaml when rebuilding a version that has already been uploaded.
 

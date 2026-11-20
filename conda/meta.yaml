@@ -1,14 +1,16 @@
-{#
-  conda recipe for py-metagenomics, built from this checkout.
-
-  The version is read from edl/__init__.py (the single place it is set), so
-  there is nothing to edit here for a new release. To build a release:
-
-    git checkout vX.Y.Z
-    conda build -c conda-forge -c bioconda conda
-
-  Bump build.number only when rebuilding the same version.
-#}
+# conda recipe for py-metagenomics, built from this checkout.
+#
+# The version is read from edl/__init__.py (the single place it is set), so
+# there is nothing to edit here for a new release. To build a release:
+#
+#   git checkout vX.Y.Z
+#   conda-build -c conda-forge -c bioconda conda
+#
+# Bump build.number only when rebuilding the same version.
+#
+# Note: use plain "#" comments in this file. conda-build blanks every line
+# starting with "#" before rendering the jinja template, so a multi-line
+# jinja comment loses its closing "#}" line and fails to render.
 {% set name = "py-metagenomics" %}
 {% set version = load_file_regex(load_file="../edl/__init__.py", regex_pattern="__version__ = '([^']+)'", from_recipe_dir=True).group(1) %}
 
