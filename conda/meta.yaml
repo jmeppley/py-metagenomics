@@ -1,0 +1,83 @@
+# conda recipe for py-metagenomics, built from this checkout.
+#
+# The version is read from edl/__init__.py (the single place it is set), so
+# there is nothing to edit here for a new release. To build a release:
+#
+#   git checkout vX.Y.Z
+#   conda-build -c conda-forge -c bioconda conda
+#
+# Bump build.number only when rebuilding the same version.
+#
+# Note: use plain "#" comments in this file. conda-build blanks every line
+# starting with "#" before rendering the jinja template, so a multi-line
+# jinja comment loses its closing "#}" line and fails to render.
+{% set name = "py-metagenomics" %}
+{% set version = load_file_regex(load_file="../edl/__init__.py", regex_pattern="__version__ = '([^']+)'", from_recipe_dir=True).group(1) %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  noarch: python
+
+requirements:
+  host:
+    - python >=3.10
+    - pip
+    - setuptools >=77
+  run:
+    - python >=3.10
+    - numpy
+    - biopython >=1.80
+    - pandas
+    - last
+    - tantan
+    - hmmer
+
+test:
+  imports:
+    - edl
+    - edl.blastm8
+    - edl.assembly
+    - edl.taxon
+    - edl.kegg
+  requires:
+    - pip
+  commands:
+    # the installed package must report the version this recipe was rendered with
+    - python -c "import edl; assert edl.__version__ == '{{ version }}', edl.__version__"
+    - pip check
+    - add_kegg_pathways.py -h
+    - assign_paths.py -h
+    - assign_taxa.py -h
+    - assign_top_hit.py -h
+    - compile_hit_counts.py -h
+    - count_hits.py -h
+    - count_paths.py -h
+    - count_taxa.py -h
+    - filter_blast_m8.py -h
+    - fragment_records.py -h
+    - get_sequences_from_gb.py -h
+    - get_sequences_from_m8.py -h
+    - histograms.py -h
+    - identify_reads.py -h
+    - merge_gffs.py -h
+    - merge_hits.py -h
+    - sample_records.py -h
+    - screen_list.py -h
+    - screen_table.py -h
+    - translate_column.py -h
+    - $CONDA_PREFIX/share/py-metagenomics/databases/buildRefSeqAccToTaxidMap.py -h
+
+about:
+  home: https://github.com/jmeppley/py-metagenomics
+  dev_url: https://github.com/jmeppley/py-metagenomics
+  summary: Some python libs and scripts for metagenomic analyses
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
