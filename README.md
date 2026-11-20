@@ -2,7 +2,7 @@ py-metagenomics
 ===============
 
 - Author: John Eppley <jmeppley@hawaii.edu>
-- License: GPL v2
+- License: MIT
 
 About
 -----
@@ -40,11 +40,16 @@ The scripts will be usable from anywhere. As long as the "edl" folder is in the 
 It is recommended that you put the root directory of py-metagenomics in your PATH. This way, you won't have to type the full path each time.
 
 ### iPython ###
-You may want to use the modules yourself from within iPython. If you are working in a [https://virtualenv.pypa.io/en/latest/](virtual environment) or wish to install the modules to the central library, you can use the setup.py script to install the modules into your python environment:
+You may want to use the modules yourself from within iPython. If you are working in a [https://virtualenv.pypa.io/en/latest/](virtual environment) or wish to install the modules to the central library, you can use pip to install the modules and scripts into your python environment:
 
     $ pip install .
 
 This will also install the core dependencies (numpy, pandas, and biopython). Add matplotlib (`pip install .[plots]`) if you want the plotting functions in edl.assembly.
+
+### Releasing ###
+The version number is set in one place: `__version__` in `edl/__init__.py` (pyproject.toml reads it from there). To make a release, update that value, commit, and tag the commit with the same version prefixed by "v" (e.g. `v1.4.2`).
+
+New command-line scripts must also be added to the `script-files` list in pyproject.toml (a test checks this).
 
 ### Testing ###
 The unit tests use pytest and the command-line tests use bats. From the root of the repository:
